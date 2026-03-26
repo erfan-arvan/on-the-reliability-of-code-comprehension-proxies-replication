@@ -1,0 +1,144 @@
+Root   --> 111 leaves
+└── QS Categories   --> 111 leaves
+    ├── Program Function   --> 27 leaves
+    │   ├── Bounded Function   --> 6 leaves
+    │   │   ├── Why does the variable ENTRI, in the FOR loop of the main segment of the program, stop at NEXTENTRI -...RI? (S71 )
+    │   │   ├── What is the content of a data object? (S82)
+    │   │   ├── What does the identifier "ListLimit" signify? (a) Maximum number of lists the program can handle. (b...ord. (S31)
+    │   │   ├── Which best explains the distinction between PLACE (line 61) and STANDING (line 60)? (A) STANDING(NEX...TAL. (S32)
+    │   │   ├── How can this line be expressed in notes? (Music Programming) (2024-music)
+    │   │   └── Give a Functional / Machine explanation of line n/n-m (2023-first day)
+    │   └── Whole Program Function   --> 21 leaves
+    │       ├── Whole Program Function - Bin   --> 4 leaves
+    │       │   ├── Will an average be computed? (S44)
+    │       │   ├── Does the program convert the input currency into two different currencies for output? (S62)
+    │       │   ├── Does the program calculate the average of a group of inputs? (S91)
+    │       │   └── Does the program compare the speed of two cars? [Yes / No] (S45)
+    │       ├── Whole Program Function - FR   --> 9 leaves
+    │       │   ├── a short essay question that asked the subjects to describe what the program did (S36)
+    │       │   ├── write a summary of the code (S37 )
+    │       │   ├── This is the only question in the complete set of questions which is not a multiple choice question. ...sh”. (S77)
+    │       │   ├── In less than 25 words, describe what this program does. (S71 )
+    │       │   ├── What is the overall functionality? (S82)
+    │       │   ├── What does the code compute? (S82)
+    │       │   ├── provide an explanation in plain English of the effect of the code (2024-live)
+    │       │   ├── Write a short, high-level English language description of the following function. Do not give a line...4-purpose)
+    │       │   └── Briefly describe in your own words the function of the following Sonic Pi code (Music Programming) (...024-music)
+    │       └── Whole Program Function - MC   --> 8 leaves
+    │           ├── answer a multiple-choice question about the algorithmic idea. (S37 )
+    │           ├── The code contained a single “while” condition, which stepped an integer variable “i” through a serie...did. (S77)
+    │           ├── 3. What does the PROCEDURE CalculateNumericScores do? (a) Calculates the numeric score for each stud...ass. (S31)
+    │           ├── What is the role of PROCEDURE AssignGrades? (a) Assigns a grade to each student based on the student...rds. (S31)
+    │           ├── What does PROCEDURE SelectionSort do? (a) Sorts the list of student records so that the fields are i...ade. (S31)
+    │           ├── What information about students does PROCEDURE PrintRecords display? (a) The entire student record. ...ove. (S31)
+    │           ├── The sorting algorithm (lines 46-62) can best be described as: (A) Bubble sort (B) Selection sort (C)...sort (S32)
+    │           └── 12. In what order are the TEAMRECORDs printed at the end of the program? (A) TEAMRECORD(1) ... TEAMR...hese (S32)
+    ├── Semantics   --> 49 leaves
+    │   ├── Program Analysis   --> 15 leaves
+    │   │   ├── Program Equivalence   --> 3 leaves
+    │   │   │   ├── Students were given a piece of code and were required to find the matching flow chart. (S77)
+    │   │   │   ├── the students were supplied with a structure diagram and had to select the piece of code that perform...ask. (S77)
+    │   │   │   └── Students were given a piece of code, a single “if” statement with an “else” component, that set a bo...ion. (S77)
+    │   │   ├── Semantics - Count   --> 4 leaves
+    │   │   │   ├── The maximum number of input records is? (S36)
+    │   │   │   ├── What is the maximum number of references (fetch or store) to the array CASH that can occur during a ...AFE? (S67)
+    │   │   │   ├── What is the maximum number of words the input file can hold? (S71 )
+    │   │   │   └── Determining the number of possible variants. (S52)
+    │   │   ├── Semantics - Scope   --> 2 leaves
+    │   │   │   ├── All variables in this program are global. (S36)
+    │   │   │   └── Circle the global variables in the following list: TABLE, CHARCOUNT, BUFFER, ENTRI, LETTERS, TABLEFULL. (S71 )
+    │   │   └── Slicing   --> 6 leaves
+    │   │       ├── where does execution continue after a given statement? (S43)
+    │   │       ├── Will the value of COUNT-CLIENTS affect the value of ACTIVE-AVG? (S44)
+    │   │       ├── Does the value of VAR1 affect the value of VAR2? (S62 )
+    │   │       ├── Does the value of variable X affect the value of variable Y? (S91)
+    │   │       ├── Does the value of Passengers affect the value of Speed? [Yes / No] (S45)
+    │   │       └── Identifying code fragments that belong to a variant. (S52)
+    │   └── Simulated Execution   --> 34 leaves
+    │       ├── Conditional Execution   --> 7 leaves
+    │       │   ├── Is the last record in ORDER-FILE counted in COUNT-CLIENTS? (S44)
+    │       │   ├── When ORDER-EXIT is reached, will ORDER-REC-ID have a particular known value? (S44)
+    │       │   ├── When VAR1 and VAR2 are found to be equal, is an error message printed? (S62 )
+    │       │   ├── What would happen if the name of a team (line 20) were longer than 16 characters? (A) All of the nam...ge). (S32)
+    │       │   ├── What happens in the sorting algorithm if two or more teams have the same TOTAL (i.e., TEAMRECORD(K)....oop. (S32)
+    │       │   ├── What happens in the sorting algorithm if TOTAL is equal to 0 for one of the teams? (A) Nothing unusu...57). (S32)
+    │       │   └── When the cout statement is reached, is the value of Speed less than 55? [Yes / No] (S45)
+    │       ├── Output of Whole Program   --> 10 leaves
+    │       │   ├── What is the expected output? (S5)
+    │       │   ├── A “fixed-code” question. The code consisted of nested “for” loops, with a simple “if” condition with...oop. (S77)
+    │       │   ├── A “fixed-code” question, identical to question 2 from the Leeds working group. The code contained a ...ays. (S77)
+    │       │   ├── What output is produced with the following input? "HE", HE SAID, SAID "WHAT". WHAT SAID HE? HE SAID,...T". (S71 )
+    │       │   ├── What output will the following input (contained in a file) generate? Input: * 1234 John Doe 50 53 57...e: C (S31)
+    │       │   ├── What will be printed if you run the following code? (2024-gaze)
+    │       │   ├── The Google form contained ten basic but tricky-coding questions related to C programming. These incl...-emotions)
+    │       │   ├── What is the program output (2024-self-regulated)
+    │       │   ├── select the output produced by the program for some concrete input (tracing) (2024-live)
+    │       │   └── select inputs that produce a given output (reverse tracing) (2024-live)
+    │       └── Internal State   --> 17 leaves
+    │           ├── Internal State with Specific Input   --> 5 leaves
+    │           │   ├── Assume that the input file starts as follows: PROTONS, WHICH ARE NONPHOTOMICROGRAPHICAL, ARE... Give...ORD (S71 )
+    │           │   ├── What is the final value of POS (line 32) when processing the following line of input data? Input: KN...9 11 (S32)
+    │           │   ├── How many times will IVALUE be multiplied by 10 (line 31) when processing the following line of input...01 0 (S32)
+    │           │   ├── What TOTAL will be computed (line 36) when processing the following line of input data? Input: BLUE ...+1 1 (S32)
+    │           │   └── What is the maximum number of comparisons that can be made in sorting (line 54) when LASTTEAM is equ... 10? (S32)
+    │           └── Internal State without Specific Input   --> 12 leaves
+    │               ├── What are the intermediate and final values of x as a and b change? (S8)
+    │               ├── Write the value of a variable after program execution. (S37 )
+    │               ├── What is the value of variable x at the sixth line in the second loop? (S86 )
+    │               ├── Excecute the fixed-code: A “fixed-code” question, identical to Question 5 from the Leeds working gro...oop. (S77)
+    │               ├── Is VAR1 set to 0? (S62 )
+    │               ├── How many items have been replaced after the third iteration of the loop (S80)
+    │               ├── How many times does the loop execute? (S80)
+    │               ├── What is the sequence of execution? (S82)
+    │               ├── Is variable X assigned the value 0 before variable Y is assigned the value 0? (S91)
+    │               ├── Is the speed of mycar set to 25? [Yes / No] (S45)
+    │               ├── Is the output statement executed before the speed is checked? [Yes / No] (S45)
+    │               └── Hand-execute the program, one line at a time, writing down all variable associations as they are mad...first day)
+    ├── Syntax   --> 30 leaves
+    │   ├── Syntax - Whole Program   --> 18 leaves
+    │   │   ├── Syntax - Whole Program - Arithmetic   --> 3 leaves
+    │   │   │   ├── How many FOR loops are there? (S67)
+    │   │   │   ├── How many DO WHILE statements are there? (S32)
+    │   │   │   └── Determining the maximum depth of #ifdef nesting. (S52)
+    │   │   └── Syntax - Whole Program - Locate   --> 15 leaves
+    │   │       ├── Does the method throw exceptions directly in its body using a throw statement? (S89)
+    │   │       ├── Are all local variables immediately initialized (assigned) as part of their declaration? (S89)
+    │   │       ├── Is subtraction (-) used in an expression? Any use counts, for example: a - b, -1, -i, x -= 3. (S89)
+    │   │       ├── Is the 'this' identifier used in the method? (S89)
+    │   │       ├── Is there a local variable (not a method parameter) of type String? (S89)
+    │   │       ├── Is there an if statement with an else branch? Both else and if-else count. (S89)
+    │   │       ├── Is the type of the second method parameter 'int'? (S89)
+    │   │       ├── Is there a loop nested inside another loop? (S89)
+    │   │       ├── Is there a top-level loop (not nested inside any other statement) that appears after some code conta...ted. (S89)
+    │   │       ├── Does the method explicitly create new objects of any type, including arrays or exceptions? (S89)
+    │   │       ├── Does the method catch any exceptions? (S89)
+    │   │       ├── Is there a loop that contains two or more method/constructor calls? The calls can be anywhere inside...nts. (S89)
+    │   │       ├── Are there multiple points from which the method can return (the end of the body is usually one such ...unt. (S89)
+    │   │       ├── Does the method use an explicit type cast? (S89)
+    │   │       └── Identifying all (different) preprocessor variables. (S52)
+    │   └── Syntax - Bounded   --> 12 leaves
+    │       ├── Syntax - Bounded - Arithmetic   --> 7 leaves
+    │       │   ├── how many exit points does a given loop have? (S43)
+    │       │   ├── how many levels deep is a given statement? (S43)
+    │       │   ├── how many conditions must be evaluated for a given statement to execute? (S43)
+    │       │   ├── If each integer requires 4 bytes of memory and each Boolean variable requires 1 byte, then how many ... 9)? (S67)
+    │       │   ├── How many times does CASH appear in lines 18 through 72? (S67)
+    │       │   ├── Does the method have exactly 3 parameters? (S89)
+    │       │   └── If each character requires one byte of memory and each FIXED BINARY(31) value requires 4 bytes, how ...ORD? (S32)
+    │       └── Syntax - Bounded - Locate   --> 5 leaves
+    │           ├── where does a given loop end? (S43)
+    │           ├── Is TOTAL-ORDERS initialized to zero? (S44)
+    │           ├── Is FUNC1 defined before FUNC2? (S62)
+    │           ├── Is variable temp initialized to 0? (S91)
+    │           └── Which code blocks repeat something in Sonic Pi? (Music Programming) (2024-music)
+    └── Other   --> 5 leaves
+        ├── Other - Algorithm Question   --> 1 leaves
+        │   └── how the algorithm might be adjusted to meet a different criteria (2024-live)
+        ├── Other - Fix Bug   --> 1 leaves
+        │   └── The complete text of this question is given later in the paper. The students were given some buggy c...bug. (S77)
+        ├── Other - Modify   --> 1 leaves
+        │   └── A “skeleton-code” question, with part of one line missing, the boolean condition of an “if” statemen...ent. (S77)
+        ├── Other - Subjective Opinion   --> 1 leaves
+        │   └── Circle the number indicating the difficulty encountered in comprehending the program. (Scale: 1 = ve...rd) (S71 )
+        └── Other - TRIVIA   --> 1 leaves
+            └── Name the language construct on Line n/n-m (2023-first day)
