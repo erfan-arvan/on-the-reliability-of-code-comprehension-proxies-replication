@@ -1,7 +1,7 @@
 # Replication Package  
 ## On the Reliability of Code Comprehension Proxies
 
-This repository contains all data, scripts, and analysis artifacts used in the paper. It supports full reproduction of the results, including proxy computation, correlation analysis, and visualization.
+This repository contains the data, scripts, and analysis artifacts used in the paper. It supports reproduction of the main results, including proxy computation, correlation analysis, and visualization.
 
 ---
 
@@ -12,17 +12,21 @@ This repository contains all data, scripts, and analysis artifacts used in the p
 - `students_graded.xlsx`  
   Main dataset containing student responses, including time, accuracy, and subjective ratings.
 
-- `studentsFinal.json`  
-  Snippet order per participant.
-
-- `function_grades.xlsx`, `all_real_gradings.xlsx`  
-  Grading data for free-response function summaries.
-
 - `cs_knowledge_results.xlsx`  
   Background knowledge results.
 
-- `background_stats.csv`, `background_vs_experts.csv`  
-  Processed background variables.
+---
+
+## Study Materials
+
+- `code_snippets/`  
+  Contains all selected repositories, code snippets, comprehension questions, and survey instruments used in the study.
+
+- `open_coding/`  
+  Contains the results of the open-coding study used to categorize comprehension tasks.
+
+- `gradings/`  
+  Contains grading data and materials for evaluating free-response function questions.
 
 ---
 
@@ -41,7 +45,7 @@ This repository contains all data, scripts, and analysis artifacts used in the p
 ## Factor and Regression Analysis
 
 - `analyze_student_factors.py`  
-  Analyzes effects of participant characteristics.
+  Analyzes the effects of participant characteristics.
 
   **Outputs:**
   - `student_factor_model_results.csv`
@@ -49,25 +53,14 @@ This repository contains all data, scripts, and analysis artifacts used in the p
 
 - `student_factor_long_question*.csv`  
 - `student_factor_long_snippet*.csv`  
-  Long-format datasets used for modeling.
-
-  Tie-related analysis outputs.
+  Long-format datasets used for modeling and analysis.
 
 ---
 
 ## Plotting and Visualization
 
 - `plot_all.py`  
-  Generates main figures.
-
-- `plot_proxy_results.py`, `plot_proxy_results_single.py`  
-  Visualizes correlation results.
-
-- `plot_proxy_stats.py`  
-  Summary statistics plots.
-
-- `plot_case_dist.py`  
-  Distribution of ranking cases.
+  Generates the main figures used in the paper.
 
 ---
 
@@ -76,13 +69,13 @@ This repository contains all data, scripts, and analysis artifacts used in the p
 ### Correlation Results
 
 - `correlation_results.csv`  
-  Main results.
+  Main results (aggregated students vs aggregated experts).
 
 - `correlation_results_single.csv`  
-  Per-student results.
+  Per-student correlation results.
 
 - `correlation_results_second.csv`  
-  Alternative analysis results.
+  Results based on individual expert comparisons.
 
 ---
 
@@ -97,16 +90,18 @@ This repository contains all data, scripts, and analysis artifacts used in the p
 ## Cross-Institution Analysis
 
 - `compare_University1_University2_correlations.py`  
-  Compares proxy performance across institutions.
+  Compares proxy performance across the two student populations.
+
 ---
 
 # Key Outputs
 
-The main results are derived from:
+The main results of the paper are derived from:
 
 - `correlation_results.csv`
-- `proxy_noise_summary.csv`
 - `student_factor_model_results.csv`
+
+---
 
 # How to Run
 

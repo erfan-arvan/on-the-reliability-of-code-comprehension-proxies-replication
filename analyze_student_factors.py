@@ -13,7 +13,7 @@ from pathlib import Path
 EXCEL_FILE = "students_graded.xlsx"
 ORDER_FILE = "studentsFinal.json"
 
-OUT_MODEL_RESULTS = "student_factor_model_results_raw_time.csv"
+OUT_MODEL_RESULTS = "student_factor_model_results.csv"
 
 QUESTION_TYPES = ["function", "output", "syntaxBL"]
 SNIPPETS = list(range(1, 9))

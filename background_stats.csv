@@ -1,6 +1,0 @@
-column,mean,std,min,max
-javaExperience.s.ClassMates (1-5),3.455,0.761,2,5
-javaExperience.s.JavaExperience (1-5),3.091,1.291,1,5
-javaExperience.s.Logical (1-5),2.045,0.939,1,5
-javaExperience.s.ObjectOriented (1-5),3.864,0.702,3,5
-javaExperience.s.PE (1-10),6.545,1.47,3,9
