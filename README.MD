@@ -133,7 +133,7 @@ python compare_University1_University2_correlations.py
   Full taxonomy tree generated from the open coding study
 
 - `open_coding/open_coding_logs.xlsx`  
-  Logs of open coding decisions by each expert
+  Logs of open coding decisions by authors
 
 - `open_coding/kappa_open_coding.py`  
   Script to compute inter-rater agreement for open coding
