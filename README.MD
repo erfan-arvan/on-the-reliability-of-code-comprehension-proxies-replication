@@ -22,12 +22,13 @@ This will generate all results used in the paper, including:
 
 - `students_graded.xlsx`  
   **Main dataset containing all student study data**, including:
-  - Response times
-  - Accuracy (function, output, syntax)
-  - Subjective ratings
-  - Per-question and per-snippet measurements  
+  - Responses to survey questions
+  - Timing data
+  - Accuracy data
+  - Per-snippet records
+  - Per-task-type records
 
-All correlation, regression, and analysis results are derived from this file.
+All main student-side analyses in the repository are derived from this file.
 
 ---
 
