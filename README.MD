@@ -26,7 +26,6 @@ All correlation-based figures are generated from the following files:
 
 - **Figures 3–5 (Aggregated students vs aggregated experts):**
   - Source: `correlation_results.csv`
-  - Contains Kendall and Spearman correlations across all aggregation strategies
 
 - **Figures 6–7 (Aggregated students vs individual experts):**
   - Source: `correlation_results_second.csv`
@@ -77,18 +76,70 @@ python compare_University1_University2_correlations.py
 
 ---
 
-#### Figure 1 (Taxonomy of Question Categories)
+### Study Materials
 
-- Source:
+#### Grading (Function Question Evaluation)
+
+- `gradings/function_question_grading_log.xlsx`  
+  Grading records for free-response function questions
+
+- `gradings/kappa_for_gradings.py`  
+  Script to compute inter-rater agreement (Cohen’s kappa)
+
+---
+
+#### Study Materials Folder
+
+- `study_materials/familaritySurvey.js`  
+  Background knowledge survey used in the student study
+
+- `study_materials/javaExperienceQuestions.js`  
+  Java experience survey used in the student study
+
+- `study_materials/tasks_per_snippet.js`  
+  Full list of comprehension tasks (questions) per snippet
+
+- `study_materials/selected_methods.csv`  
+  All methods extracted from repositories that met selection criteria
+
+- `study_materials/snippets-implementations.java`  
+  Implementations of the final selected snippets
+
+- `study_materials/repositories.csv`  
+  Full list of repositories used in the study
+
+- `study_materials/question_design_process_and_prompts_used.txt`  
+  Documentation of the question design process and prompts used
+
+---
+
+#### Open Coding Study
+
+- `open_coding/FinalTreeWithNumbers.txt`  
+  Full taxonomy tree generated from the open coding study
+
+- `open_coding/open_coding_logs.xlsx`  
+  Logs of open coding decisions by each expert
+
+- `open_coding/kappa_open_coding.py`  
+  Script to compute inter-rater agreement for open coding
+
+To view the taxonomy (Figure 1):
 ```bash
 cat open_coding/FinalTreeWithNumbers.txt
 ```
 
 ---
 
-#### Table 4 (Expert Study Statistics)
+#### Expert Study Materials
 
-- Source:
+- `experts_study/disagreement_points.js`  
+  Disagreement points shown to experts in Rounds 2 and 3
+
+- `experts_study/rounds_stats.txt`  
+  Summary statistics for expert study rounds
+
+To view expert study statistics (Table 4):
 ```bash
 cat experts_study/rounds_stats.txt
 ```
