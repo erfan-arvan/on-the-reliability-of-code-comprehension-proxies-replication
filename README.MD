@@ -24,9 +24,7 @@ This will generate all results used in the paper, including:
   **Main dataset containing all student study data**, including:
   - Responses to survey questions
   - Timing data
-  - Accuracy data
-  - Per-snippet records
-  - Per-task-type records
+  - Accuracy (Correctness) data
 
 All main student-side analyses in the repository are derived from this file.
 
