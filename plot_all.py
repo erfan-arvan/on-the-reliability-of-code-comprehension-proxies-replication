@@ -613,8 +613,6 @@ for metric, agg_col in [
     ("spearman", "spearman_mean"),
     ("kendall", "kendall_mean")
 ]:
-    print(f"Processing STRICT-only heatmap ({metric})...")
-
     df_strict = agg_df[agg_df["case"] == "strict"].copy()
 
     # Aggregate across expert rankings (since strict may have multiple configs)
@@ -645,11 +643,11 @@ for metric, agg_col in [
     plt.xlabel("Strict")
     plt.tight_layout()
 
-    plt.savefig(f"plots/heatmap_agg_vs_strict_{metric}.png", dpi=300)
+    # plt.savefig(f"plots/heatmap_agg_vs_strict_{metric}.png", dpi=300)
     plt.close()
 
 
-    # =====================================================
+# =====================================================
 # EXTRA: Distributions for STRICT Experts ONLY
 # =====================================================
 
@@ -657,21 +655,21 @@ for metric, agg_col in [
     ("spearman", "spearman_mean"),
     ("kendall", "kendall_mean")
 ]:
-    print(f"Processing STRICT-only distributions ({metric})...")
+    # print(f"Processing STRICT-only distributions ({metric})...")
 
     # ----------------------------------------
     # 1. Aggregated Students vs STRICT Experts
     # ----------------------------------------
     df_strict_agg = agg_df[agg_df["case"] == "strict"].copy()
 
-    boxplot_with_stats(
-        df=df_strict_agg,
-        x="proxy",
-        y=agg_col,
-        title=f"Aggregated Students vs STRICT Experts ({metric})",
-        output_path=f"plots/box_agg_vs_strict_{metric}.png",
-        n_description="n = number of strict expert rankings"
-    )
+    # boxplot_with_stats(
+    #     df=df_strict_agg,
+    #     x="proxy",
+    #     y=agg_col,
+    #     title=f"Aggregated Students vs STRICT Experts ({metric})",
+    #     output_path=f"plots/box_agg_vs_strict_{metric}.png",
+    #     n_description="n = number of strict expert rankings"
+    # )
 
     # ----------------------------------------
     # 2. Per-student vs STRICT Experts
@@ -680,14 +678,14 @@ for metric, agg_col in [
         (per_student_df["case"] == "strict")
     ].dropna(subset=[metric]).copy()
 
-    boxplot_with_stats(
-        df=df_strict_per_student,
-        x="proxy",
-        y=metric,
-        title=f"Per-student vs STRICT Experts ({metric})",
-        output_path=f"plots/box_perstudent_vs_strict_{metric}.png",
-        n_description="n = number of student correlations (strict only)"
-    )
+    # boxplot_with_stats(
+    #     df=df_strict_per_student,
+    #     x="proxy",
+    #     y=metric,
+    #     title=f"Per-student vs STRICT Experts ({metric})",
+    #     output_path=f"plots/box_perstudent_vs_strict_{metric}.png",
+    #     n_description="n = number of student correlations (strict only)"
+    # )
 
     # ----------------------------------------
     # 3. Full Pairwise (Student vs Expert) STRICT only
@@ -696,16 +694,16 @@ for metric, agg_col in [
         (per_student_df["case"] == "strict")
     ].dropna(subset=[metric]).copy()
 
-    boxplot_with_stats(
-        df=df_strict_pairwise,
-        x="proxy",
-        y=metric,
-        title=f"Full Pairwise (Student vs Expert, STRICT) ({metric})",
-        output_path=f"plots/box_full_pairwise_strict_{metric}.png",
-        n_description="n = (student × expert) correlations (strict only)"
-    )
+    # boxplot_with_stats(
+    #     df=df_strict_pairwise,
+    #     x="proxy",
+    #     y=metric,
+    #     title=f"Full Pairwise (Student vs Expert, STRICT) ({metric})",
+    #     output_path=f"plots/box_full_pairwise_strict_{metric}.png",
+    #     n_description="n = (student × expert) correlations (strict only)"
+    # )
 
-    # =====================================================
+# =====================================================
 # PATCH: Add ordering support to boxplot helper
 # =====================================================
 
@@ -792,117 +790,7 @@ def boxplot_with_stats_ordered(
 
 
 # =====================================================
-# STRICT-ONLY ANALYSIS (ORDERED)
-# =====================================================
-
-for metric, agg_col in [
-    ("spearman", "spearman_mean"),
-    ("kendall", "kendall_mean")
-]:
-
-    print(f"Processing STRICT-only plots ({metric})...")
-
-    # ----------------------------------------
-    # FILTER STRICT
-    # ----------------------------------------
-    df_strict_agg = agg_df[agg_df["case"] == "strict"].copy()
-
-    # ----------------------------------------
-    # CREATE ORDER (BEST → WORST)
-    # ----------------------------------------
-    strict_order = (
-        df_strict_agg
-        .groupby("proxy")[agg_col]
-        .mean()
-        .sort_values(ascending=False)
-        .index
-    )
-
-    # ----------------------------------------
-    # HEATMAP (already sorted)
-    # ----------------------------------------
-    df_heat = (
-        df_strict_agg
-        .groupby("proxy", as_index=False)
-        .agg({agg_col: "mean"})
-    )
-
-    pivot_strict = (
-        df_heat
-        .set_index("proxy")[[agg_col]]
-        .loc[strict_order]   # enforce SAME ordering
-    )
-
-    plt.figure(figsize=dynamic_figsize(len(pivot_strict), width=6))
-    sns.heatmap(
-        pivot_strict,
-        annot=True,
-        cmap="coolwarm",
-        vmin=-1,
-        vmax=1,
-        center=0
-    )
-
-    plt.title(f"AVG (Students) vs STRICT Experts ({metric})")
-    plt.ylabel("Proxy")
-    plt.xlabel("Strict")
-    plt.tight_layout()
-
-    plt.savefig(f"plots/heatmap_agg_vs_strict_{metric}.png", dpi=300)
-    plt.close()
-
-    # ----------------------------------------
-    # BOXPLOT: Aggregated Students vs STRICT
-    # ----------------------------------------
-    boxplot_with_stats_ordered(
-        df=df_strict_agg,
-        x="proxy",
-        y=agg_col,
-        order=strict_order,
-        title=f"Aggregated Students vs STRICT Experts ({metric})",
-        output_path=f"plots/box_agg_vs_strict_{metric}.png",
-        n_description="n = number of strict expert rankings"
-    )
-
-    # ----------------------------------------
-    # BOXPLOT: Per-student vs STRICT
-    # ----------------------------------------
-    df_strict_per_student = per_student_df[
-        (per_student_df["case"] == "strict")
-    ].dropna(subset=[metric]).copy()
-
-    boxplot_with_stats_ordered(
-        df=df_strict_per_student,
-        x="proxy",
-        y=metric,
-        order=strict_order,
-        title=f"Per-student vs STRICT Experts ({metric})",
-        output_path=f"plots/box_perstudent_vs_strict_{metric}.png",
-        n_description="n = student correlations (strict only)"
-    )
-
-    # ----------------------------------------
-    # BOXPLOT: Full Pairwise STRICT
-    # ----------------------------------------
-
-    df_strict_pairwise = per_student_df[
-        (per_student_df["case"] == "strict")
-    ].dropna(subset=[metric]).copy()
-
-    boxplot_with_stats_ordered(
-        df=df_strict_pairwise,
-        x="proxy",
-        y=metric,
-        order=strict_order,
-        title=f"Full Pairwise (Student vs Expert, STRICT) ({metric})",
-        output_path=f"plots/box_full_pairwise_strict_{metric}.png",
-        n_description="n = (student × expert) correlations"
-    )
-
-
-
-    # =====================================================
-# MAJORITY-ONLY ANALYSIS (ORDERED)  <-- NEW PATCH
+# MAJORITY-ONLY ANALYSIS (ORDERED)
 # =====================================================
 
 for metric, agg_col in [

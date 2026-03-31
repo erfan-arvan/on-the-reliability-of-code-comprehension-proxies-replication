@@ -1,0 +1,674 @@
+Design questions
+
+To design questions based on the selected subcategories of tasks, we developed a clear and semi-reproducible procedure–unlike many previous studies, which often provided little to no detail about how their comprehension questions were constructed and thus offered no replicable methodology.
+ 
+Our process began by compiling the definition of each selected subcategory, along with sample questions drawn from prior studies. This documentation was included in an explanatory prompt for ChatGPT, which we then used to generate candidate questions for each of the 8 code snippets. The prompt was designed to mimic the style and structure of prior work in the literature.
+
+Example prompts:
+I'm working on a study involving 8 code snippets, each of which is a small real-world Java method, and I need to create comprehension questions for each one. These questions fall into different question categories, such as Program Function, Semantics, Syntax, and Other, with more specific subcategories (e.g., Simulated Execution -> Internal State with Specific Input). I'll start by sending you one snippet along with a specific question category and a few example questions. For each example that's applicable to the snippet, please generate three candidate questions in that same style. If an example is a yes/no question, then provide three candidates with the answer "Yes" and three with the answer "No." Note: These questions are being designed for a code comprehension study involving undergraduate computer science students. Please ensure the questions are suitable for that audience. Let me know if anything is unclear. I’ll send the first Java method snippet and question category next.
+Here’s the first question category: "Semantics -> Program Analysis -> Semantics - Count" This category focuses on questions that require counting or evaluating quantities based on the program’s logic and behavior. 
+Example questions from this category (drawn from various programming languages): 
+
+"What is the maximum number of references (fetch or store) to the array CASH that can occur during a call to the function SAFE??
+
+What is the maximum number of words the input file can hold?”
+
+ Here’s the first Java method snippet: 
+
+"public static boolean isValidProjectName(String name) { if (name == null) { return false; } if (name.startsWith(".")) { return false; } if ((name.length() < 1) || (name.length() > MAX_NAME_LENGTH)) { return false; } for (int i = 0; i < name.length(); i++) { char c = name.charAt(i); if (!Character.isLetterOrDigit(c) && !VALID_NAME_SET.contains(c)) { return false; } } return true; }" Please analyze this snippet and—for each applicable example question—generate three candidate questions in the same style, adjusted to this code.
+
+
+
+
+The list of candidates:
+
+All candidates:
+
+Snippet 1:
+
+✅ Category 1: Method → Return → Longest Path
+Question:
+What value does the method return when called with the following input?
+isValidProjectName("a1_")
+
+Assumptions:
+●	MAX_NAME_LENGTH = 10
+
+●	VALID_NAME_SET contains '_', '-', and '.'
+
+Answer:
+true
+Why it’s longest path:
+●	Passes all if checks
+
+●	Executes entire loop (3 iterations)
+
+●	Reaches the final return true
+
+
+✅ Optional: Method → Return → Failing Path 
+Question:
+What value does the method return when called with the following input?
+
+isValidProjectName(".abc")
+
+Same assumptions as before
+Answer:
+false
+Why it’s a failing path:
+Fails at .startsWith("."), which is an early return. Useful as a distractor but not a longest path.
+
+
+ 
+✅ Category 2: Syntax → Bounded → Locate
+1.	Is the loop variable i declared in the for loop header?
+ (Answer: Yes)
+
+2.	Does the for loop end at the closing brace of line 9?
+ (Answer: Yes)
+
+3.	Is the variable c declared inside the body of the for loop?
+ (Answer: Yes)
+
+4.	On which line is the method startsWith called?
+ (Answer: Line 3 — or based on formatting)
+
+5.	Is MAX_NAME_LENGTH used inside a comparison expression?
+ (Answer: Yes)
+
+
+Snippet 2:
+
+ ✅ Category 1: Method → Return → Longest Path
+Question:
+What value does the method return when called with the following input?
+isRemote(URI.create("http://example.com"))
+
+Assumptions:
+●	The method isFilesystemPath(uri) returns false for this input.
+
+Answer:
+true
+Why it’s the longest path:
+●	Avoids all early return false conditions:
+
+○	Not a filesystem path
+
+○	scheme != null
+
+○	scheme is neither "file" nor "jar"
+
+●	Falls through the switch and reaches return true at the end
+
+✅ Optional: Method → Return → Failing Path
+Question:
+What value does the method return when called with the following input?
+
+isRemote(URI.create("file:///tmp/foo"))
+
+Same assumption:
+●	isFilesystemPath(...) returns false
+
+Answer:
+false
+Why this is a valid early exit (but not longest path):
+●	scheme = "file" → triggers case "file" → return false before reaching the end
+
+ 
+✅ Category 2: Syntax → Bounded → Locate
+1.	Is the method getScheme called inside an assignment statement?
+ (Answer: Yes)
+
+2.	Does the switch statement include more than two case labels?
+ (Answer: No — it has exactly two: "file" and "jar")
+
+3.	On which line is the variable scheme declared?
+ (Answer: Line 3 — or depending on formatting)
+
+4.	Is the method isFilesystemPath called within a conditional expression?
+ (Answer: Yes — it’s inside an if condition)
+
+5.	Does the default label in the switch block contain a break statement?
+ (Answer: Yes)
+
+
+
+
+Snippet 3:
+
+✅ Category 1: Method → Return → Longest Path
+
+Question:
+What value does the method return when called with the following input?
+
+isMachineTypeDefined((short) 9999)
+
+Assumptions:
+●	IMAGE_FILE_MACHINE_UNKNOWN = 0
+
+●	CoffMachineType has the following three public static final short fields:
+
+○	IMAGE_FILE_MACHINE_AMD64 = (short) 34404
+
+○	IMAGE_FILE_MACHINE_ARM = (short) 448
+
+○	IMAGE_FILE_MACHINE_I386 = (short) 332
+
+●	These fields:
+
+○	Are not synthetic
+
+○	Are declared static final
+
+○	Are accessible without throwing IllegalAccessException
+
+●	getDeclaredFields() returns the fields in the order listed
+
+Answer:
+False
+
+
+✅ Optional: Method → Return → Success Path
+Question:
+What value does the method return when called with the following input?
+isMachineTypeDefined((short) 448)
+
+Same assumptions as above
+Answer:
+true
+
+✅ Category 2: Syntax → Bounded → Locate
+1.	Is the loop declared using a traditional for (int i = 0; ...) syntax?
+ (Answer: No — it uses an enhanced for loop)
+
+2.	Is the method isFinal called inside a conditional expression?
+ (Answer: Yes)
+
+3.	Does the catch block declare more than one exception variable?
+ (Answer: No — only e is declared)
+
+4.	On which line is the method getDeclaredFields called?
+ (Answer: Line 3 — or based on actual formatting)
+
+5.	Is the object field passed as an argument to any method call?
+ (Answer: No — it is always the receiver)
+Additional
+Is the for loop declared using an enhanced for loop syntax?
+ (Answer: Yes)
+
+On which line is the try block introduced?
+ (Answer: Line 7 — or depending on actual formatting)
+
+Is the variable modifiers initialized using a method call?
+ (Answer: Yes)
+
+Does the catch block contain a continue statement?
+ (Answer: Yes)
+
+Is the method isSynthetic called on the object field?
+ (Answer: Yes)
+
+
+Snippet 4:
+
+✅ Category 1: Method → Return → Longest Path
+Question:
+What value does the method return when called with the following input?
+indexOfIgnoreCase("abऩd", "ऩ", 0)
+
+Assumptions:
+●	INDEX_NOT_FOUND = -1
+
+●	regionMatches(...) performs a case-insensitive match similar to String.regionMatches(...)
+
+●	'ऩ' is a character with code point 0x929 (non-ASCII)
+
+●	All comparisons succeed without exception
+
+Answer:
+2
+Why it’s the longest path:
+●	Passes all null and boundary checks
+
+●	Does not return early
+
+●	Iterates through several characters in the loop
+
+●	Match found at position 2 → returns from inside the loop
+
+ 
+✅ Category 1 (alternative): Method → Return → Longest Path (Failure)
+Question:
+What value does the method return when called with the following input?
+
+indexOfIgnoreCase("abc", "xyz", 0)
+
+Same assumptions
+Answer:
+-1
+Why it’s the longest failing path:
+●	Runs through the entire loop without finding a match
+
+●	Returns from the final line (INDEX_NOT_FOUND)
+
+ 
+✅ Category 2: Syntax → Bounded → Locate
+1.	Is the method regionMatches called with exactly six arguments?
+ (Answer: Yes)
+
+2.	Is the variable endLimit declared inside the for loop?
+ (Answer: No — it is declared before the loop)
+
+3.	On which line is the variable searchStrLen declared?
+ (Answer: Line 4 — or depending on formatting)
+
+4.	Does the for loop header include an increment expression?
+ (Answer: Yes — i++ is present)
+
+5.	Is INDEX_NOT_FOUND reassigned inside the method body?
+ (Answer: No — it is only used in return statements)
+
+
+Snippet 5:
+
+✅ Category 1: Method → Return → Longest Path
+Question:
+What value does the method return when called with the following input?
+deleteRecursively(Paths.get("/tmp/example"))
+
+Assumptions:
+●	/tmp/example is a directory that exists
+
+●	It contains exactly one file: /tmp/example/foo.txt
+
+●	Files.exists(...) returns true for the root
+
+●	Files.walkFileTree(...) visits the file first, then the directory
+
+●	Files.delete(...) succeeds for both file and directory
+
+●	No exceptions are thrown during execution
+
+Answer:
+true
+Why it’s the longest path:
+●	Passes all early returns
+
+●	Executes both overridden methods in the anonymous visitor class
+
+●	Reaches the final return true after full traversal and deletion
+
+ 
+✅ Category 1 (alternative): Method → Return → Failing Path
+Question:
+What value does the method return when called with the following input?
+deleteRecursively(null)
+
+Answer:
+false
+Why this is a short failing path:
+●	Triggers the first if check → returns immediately
+
+ 
+✅ Category 2: Syntax → Bounded → Locate
+1.	Is the method walkFileTree passed exactly two arguments?
+ (Answer: Yes)
+
+2.	Does the anonymous class override more than two methods?
+ (Answer: No — it overrides exactly two: visitFile and postVisitDirectory)
+
+3.	Is the method delete called in both overridden methods?
+ (Answer: Yes)
+
+4.	Is the variable root reassigned after its declaration?
+ (Answer: No — it is only used as a method argument and in conditionals)
+
+5.	On which line is the anonymous class declared?
+ (Answer: Line 4 — or based on actual formatting)
+
+
+
+Snippet 6: 
+
+✅ Category 1: Method → Return → Longest Path
+Question:
+What value does the method return when called with the following input?
+
+encodedLength("abऩd")
+
+Assumptions:
+●	encodedLengthGeneral(...) returns 2 for this input
+
+●	'ऩ' has Unicode code point 0x929 (≥ 0x800)
+
+●	No exception is thrown (i.e., utf8Length >= utf16Length)
+
+Answer:
+6
+Why it’s the longest path:
+●	Runs both loops
+
+●	Skips early exits
+
+●	Triggers the else block and calls encodedLengthGeneral(...)
+
+●	Reaches the final return statement
+
+ 
+✅ Category 1 (alternative): Method → Return → Failing Path
+Question:
+What value is returned when the method is called with the following input?
+
+encodedLength("\u0800\u0800\u0800")
+
+Assumptions:
+●	Each character is ≥ 0x800
+
+●	encodedLengthGeneral(...) returns a large enough value that causes utf8Length < utf16Length to be true
+
+Answer:
+An IllegalArgumentException is thrown
+Why it’s a failing path:
+●	Skips ASCII and mid-range paths
+
+●	Jumps directly to encodedLengthGeneral
+
+●	Causes overflow logic to trigger and throw an exception
+
+ 
+✅ Category 2: Syntax → Bounded → Locate
+1.	Does the for loop include a blank initialization section?
+ (Answer: Yes — the initializer is empty)
+
+2.	Is the variable c declared inside the body of the for loop?
+ (Answer: Yes)
+
+3.	Is the method encodedLengthGeneral called with three arguments?
+ (Answer: No — it is called with two)
+
+4.	Is the operator >>> used in a conditional expression?
+ (Answer: Yes — it's inside the if (c < 0x800) block)
+
+5.	On which line is the variable utf8Length first assigned a value?
+ (Answer: Line 2 — or as per actual formatting)
+
+
+Snippet 7:
+✅ Category 1: Method → Return → Longest Path
+Question:
+What value does the method return when called with the following input?
+
+lowestPositiveRoot(1f, 2f, -3f)
+
+Answer:
+1.0
+Why it’s the longest path:
+●	Discriminant is positive → avoids early return
+
+●	Computes both roots
+
+●	Takes the if (r1 > r2) branch → triggers a variable swap
+
+●	Evaluates both if (r1 > 0) and if (r2 > 0)
+
+●	Returns from the second conditional
+
+ 
+✅ Category 1 (alternative): Method → Return → Failing Path
+Question:
+What value does the method return when called with the following input?
+
+lowestPositiveRoot(1f, 2f, 3f)
+
+Answer:
+Float.NaN
+Why it fails early:
+●	Discriminant is negative → triggers the first return
+
+ 
+✅ Category 2: Syntax → Bounded → Locate
+1.	Is the method Math.sqrt called within a type cast?
+ (Answer: Yes — it is cast to float)
+
+2.	Does the if (r1 > r2) block contain a variable declaration?
+ (Answer: Yes — float tmp)
+
+3.	Is Float.NaN used as an argument to any method call?
+ (Answer: No — it’s only returned)
+
+4.	Are both r1 and r2 assigned values on the same line?
+ (Answer: No — each is assigned on its own line)
+
+5.	On which line is the variable invA declared?
+ (Answer: Line 5 — or depending on formatting)
+
+
+Snippet 8:
+
+✅ Category 1: Method → Return → Longest Path
+Question:
+What value does the method return when called with the following input?
+
+atan2(-1f, -1f)
+
+Assumptions:
+●	atanUnchecked(1.0f) = 0.7853982f
+
+●	PI = 3.1415927f
+
+●	HALF_PI = 1.5707964f
+
+Answer:
+-2.3561945f
+ (= 0.7853982 - 3.1415927)
+Why it’s the longest path:
+●	n = 1.0, not NaN → skips first if
+
+●	x = -1, y = -1 → enters x < 0 branch, and inner y < 0 case
+
+●	Triggers deepest return (atanUnchecked(n) - PI)
+
+ 
+✅ Category 1 (alternative): Method → Return → Failing/Shortest Path
+Question:
+What value does the method return when called with the following input?
+
+atan2(0f, 0f)
+
+Answer:
+0.0
+Why it’s a short path:
+●	n = 0 / 0 = NaN → triggers n != n, sets n = -1f
+
+●	Then x == 0, y == 0 → final return x + y = 0 + 0
+
+ 
+✅ Category 2: Syntax → Bounded → Locate
+1.	Is the ternary operator ? : used in this method?
+ (Answer: Yes — in n = (y == x ? 1f : -1f))
+
+2.	Is atanUnchecked called more than once in this method?
+ (Answer: Yes — it’s called in three places)
+
+3.	Is the variable n declared inside a conditional block?
+ (Answer: No — it’s declared at the top of the method)
+
+4.	Does the final return statement include a method call?
+ (Answer: No — it returns x + y)
+
+5.	On which line is the comparison y >= 0 used?
+ (Answer: Line 9 — or depending on formatting)
+
+
+
+Next, we manually reviewed each generated question and its anticipated answer. We excluded any question that, in our judgment:
+ 
+·  	Revealed the function or intent of the snippet directly in the question wording,
+·  	Was potentially ambiguous or confusing to readers,
+·  	Or contained factual inaccuracies.
+ 
+From the pool of valid and clearly formulated candidates, we then randomly selected one question per snippet for inclusion in the final study.
+ 
+ 
+Final Questions: 
+
+Snippet 1
+1.	output:
+ What value does the method return when called with the input "a1_", assuming MAX_NAME_LENGTH = 10 and VALID_NAME_SET contains '_', '-', and '.'?
+
+2.	syntaxBL:
+ Is MAX_NAME_LENGTH used in a conditional expression?
+
+3.	function:
+ What does this code snippet do? Briefly describe its main functionality.
+
+4.	scaleST / scaleSM:
+
+○	How easy or difficult were the tasks you performed for this snippet?
+
+○	How easy or difficult was this snippet to understand?
+
+ 
+Snippet 2
+1.	output:
+ What value does the method return when called with isRemote(URI.create("http://example.com")), assuming isFilesystemPath(uri) returns false?
+
+2.	syntaxBL:
+ Does the switch statement include more than two case labels?
+
+3.	function:
+ What does this code snippet do? Briefly describe its main functionality.
+
+4.	scaleST / scaleSM:
+
+○	How easy or difficult were the tasks you performed for this snippet?
+
+○	How easy or difficult was this snippet to understand?
+
+ 
+Snippet 3
+1.	output:
+ What value does the method return when called with (short) 999, assuming:
+
+○	IMAGE_FILE_MACHINE_UNKNOWN = 0
+
+○	CoffMachineType has three declared public static final short fields
+
+○	Fields are returned in declaration order
+
+○	No exceptions are thrown
+
+2.	syntaxBL:
+ Is the variable modifiers initialized using a method call?
+
+3.	function:
+ What does this code snippet do? Briefly describe its main functionality.
+
+4.	scaleST / scaleSM:
+
+○	How easy or difficult were the tasks you performed for this snippet?
+
+○	How easy or difficult was this snippet to understand?
+
+ 
+Snippet 4
+1.	output:
+ What value does the method return for input Str = "AbcXabc", searchStr = "ABC", startPos = 1, assuming INDEX_NOT_FOUND = -1.
+
+2.	syntaxBL:
+ Is the variable endLimit declared inside the for loop?
+
+3.	function:
+ What does this code snippet do? Briefly describe its main functionality.
+
+4.	scaleST / scaleSM:
+
+○	How easy or difficult were the tasks you performed for this snippet?
+
+○	How easy or difficult was this snippet to understand?
+
+ 
+Snippet 5
+1.	output:
+ What value does the method return for input Paths.get("/tmp/example"), assuming:
+
+○	The directory exists and contains foo.txt
+
+○	Files.exists returns true
+
+○	No exceptions occur
+
+2.	syntaxBL:
+ Is the method walkFileTree passed exactly two arguments?
+
+3.	function:
+ What does this code snippet do? Briefly describe its main functionality.
+
+4.	scaleST / scaleSM:
+
+○	How easy or difficult were the tasks you performed for this snippet?
+
+○	How easy or difficult was this snippet to understand?
+
+ 
+Snippet 6
+1.	output:
+ What value does the method return for input "abऩd", assuming:
+
+○	encodedLengthGeneral(...) returns 2
+
+○	The character 'ऩ' has code point 0x929
+
+○	No exception is thrown
+
+2.	syntaxBL:
+ Is the variable c declared inside the body of the for loop?
+
+3.	function:
+ What does this code snippet do? Briefly describe its main functionality.
+
+4.	scaleST / scaleSM:
+
+○	How easy or difficult were the tasks you performed for this snippet?
+
+○	How easy or difficult was this snippet to understand?
+
+ 
+Snippet 7
+1.	output:
+ What value does the method return for input a = 1f, b = 2f, c = -3f?
+
+2.	syntaxBL:
+ Does the if (r1 > r2) block contain a variable declaration?
+
+3.	function:
+ What does this code snippet do? Briefly describe its main functionality.
+
+4.	scaleST / scaleSM:
+
+○	How easy or difficult were the tasks you performed for this snippet?
+
+○	How easy or difficult was this snippet to understand?
+
+ 
+Snippet 8
+1.	output:
+ What value does the method return for input x = -1f, y = -1f, assuming:
+
+○	atanUnchecked(x) behaves like Math.atan(x)
+
+○	atanUnchecked(1.0f) = 0.7853982f
+
+○	PI = 3.1415927f, HALF_PI = 1.5707964f
+
+2.	syntaxBL:
+Is the variable n declared inside a conditional block?
+
+3.	function:
+ What does this code snippet do? Briefly describe its main functionality.
+
+4.	scaleST / scaleSM:
+
+○	How easy or difficult were the tasks you performed for this snippet?
+
+○	How easy or difficult was this snippet to understand?

@@ -15,7 +15,7 @@ Uni2_FILE   = "correlation_resultsUni2.csv"
 
 OUTPUT_PREFIX = "Uni1_vs_Uni2"
 
-AGGREGATIONS = ["per_student", "avg", "median"]
+AGGREGATIONS = ["per_student", "avg"]
 
 
 # -------------------------------------------------
@@ -34,7 +34,7 @@ df = pd.merge(
     suffixes=("_Uni1", "_Uni2")
 )
 
-print(f"Total matched rows: {len(df)}")
+# print(f"Total matched rows: {len(df)}")
 
 
 # -------------------------------------------------
@@ -60,7 +60,7 @@ def analyze_subset(df_sub, label):
     y = valid["spearman_mean_Uni2"]
 
     # ---------------------------------------------
-    # 1. VECTOR CORRELATION (MAIN RESULT)
+    # 1. VECTOR CORRELATION
     # ---------------------------------------------
     rho, p = spearmanr(x, y)
 
@@ -75,13 +75,13 @@ def analyze_subset(df_sub, label):
     print(f"Median |Δρ| = {delta.median():.4f}")
 
     # ---------------------------------------------
-    # 3. WILCOXON (CAUTION)
+    # 3. WILCOXON
     # ---------------------------------------------
-    try:
-        w = wilcoxon(x, y)
-        print(f"Wilcoxon p = {w.pvalue:.4g}  (interpret with caution)")
-    except:
-        print("Wilcoxon failed (likely identical values)")
+    # try:
+    #     w = wilcoxon(x, y)
+    #     print(f"Wilcoxon p = {w.pvalue:.4g}  (interpret with caution)")
+    # except:
+    #     print("Wilcoxon failed (likely identical values)")
 
     # ---------------------------------------------
     # 4. SCATTER PLOT
@@ -101,7 +101,7 @@ def analyze_subset(df_sub, label):
 
     plt.tight_layout()
 
-    filename = f"{OUTPUT_PREFIX}_{label}.png"
+    filename = f"plots/{OUTPUT_PREFIX}_{label}.png"
     plt.savefig(filename)
     plt.close()
 
@@ -111,6 +111,9 @@ def analyze_subset(df_sub, label):
 # -------------------------------------------------
 # RUN PER AGGREGATION
 # -------------------------------------------------
+print("\n" + "=" * 100)
+print("Cross-Institutional Consistency Analysis")
+print("=" * 100)
 
 for agg in AGGREGATIONS:
 
@@ -119,13 +122,11 @@ for agg in AGGREGATIONS:
     analyze_subset(df_sub, agg)
 
 
-# -------------------------------------------------
-# OPTIONAL: SAVE CLEAN TABLE
-# -------------------------------------------------
-
 df["delta_spearman"] = df["spearman_mean_Uni1"] - df["spearman_mean_Uni2"]
 df["abs_delta_spearman"] = df["delta_spearman"].abs()
 
 df.to_csv(f"{OUTPUT_PREFIX}_merged.csv", index=False)
 
 print("\nSaved merged dataset.")
+
+print("\n" + "=" * 100)

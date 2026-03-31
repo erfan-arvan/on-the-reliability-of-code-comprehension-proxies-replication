@@ -228,7 +228,7 @@ def extract_proxy(df, proxy):
         series = series.dropna()
 
         if not series.empty:
-            print(f"Proxy {proxy}, snippet {sid}, count = {series.count()}", flush=True)
+            # print(f"Proxy {proxy}, snippet {sid}, count = {series.count()}", flush=True)
             result[sid] = series
 
     return result
@@ -365,7 +365,7 @@ def compute_correlations(expert_order, proxy_values, case_name, expert_str, prox
             len(per_student),
         ),
         "avg": (*corr_from(avg_vals), len(avg_vals)),
-        "median": (*corr_from(median_vals), len(median_vals)),
+        # "median": (*corr_from(median_vals), len(median_vals)),
     }
 
     return aggregated, per_student_rows
@@ -389,19 +389,19 @@ def main():
         + ["scaleSM", "scaleST"]
     )
 
-    print("Extracting proxy data...", flush=True)
+    # print("Extracting proxy data...", flush=True)
     proxy_data = {proxy: extract_proxy(df, proxy) for proxy in proxies}
-    print("Done extracting proxy data", flush=True)
+    # print("Done extracting proxy data", flush=True)
 
-    print("Exporting long-format student data...", flush=True)
+    # print("Exporting long-format student data...", flush=True)
     snippet_rows, question_rows = export_student_long_data(df)
-    print("Done exporting long-format student data", flush=True)
+    # print("Done exporting long-format student data", flush=True)
 
     corr_rows = []
 
     agg_file = "correlation_results.csv"
-    snippet_file = "student_factor_long_snippet.csv"
-    question_file = "student_factor_long_question.csv"
+    # snippet_file = "student_factor_long_snippet.csv"
+    # question_file = "student_factor_long_question.csv"
     per_student_file = "per_student_correlations.csv"
 
     with open(agg_file, "w", newline="") as f:
@@ -422,25 +422,25 @@ def main():
 
         for case, expert_orders in EXPERT_RANKINGS.items():
 
-            print(f"\nCASE: {case}", flush=True)
+            # print(f"\nCASE: {case}", flush=True)
 
             for expert_order in expert_orders:
 
-                print(f"  Expert ranking: {expert_order}", flush=True)
+                # print(f"  Expert ranking: {expert_order}", flush=True)
 
                 expert_str = "-".join(map(str, expert_order))
 
                 for proxy in proxies:
 
-                    print(f"    Proxy: {proxy}", flush=True)
+                    # print(f"    Proxy: {proxy}", flush=True)
 
                     proxy_vals = proxy_data.get(proxy, {})
 
                     if len(proxy_vals) < 2:
-                        print("      Skipping: fewer than 2 snippets have data", flush=True)
+                        # print("      Skipping: fewer than 2 snippets have data", flush=True)
                         continue
 
-                    print("      Computing correlations...", flush=True)
+                    # print("      Computing correlations...", flush=True)
 
                     results, per_student_rows = compute_correlations(
                         expert_order,
@@ -452,7 +452,7 @@ def main():
 
                     corr_rows.extend(per_student_rows)
 
-                    print("      Done computing correlations", flush=True)
+                    # print("      Done computing correlations", flush=True)
 
                     for agg, (rho_mean, rho_std, tau_mean, tau_std, n) in results.items():
 
@@ -470,8 +470,8 @@ def main():
 
     print("\nWriting additional CSV files...", flush=True)
 
-    pd.DataFrame(snippet_rows).to_csv(snippet_file, index=False)
-    pd.DataFrame(question_rows).to_csv(question_file, index=False)
+    # pd.DataFrame(snippet_rows).to_csv(snippet_file, index=False)
+    # pd.DataFrame(question_rows).to_csv(question_file, index=False)
     pd.DataFrame(corr_rows).to_csv(per_student_file, index=False)
 
     print("Done writing additional CSV files", flush=True)
@@ -479,8 +479,8 @@ def main():
     print("\n====================================", flush=True)
     print("Output files generated:", flush=True)
     print(f"  {agg_file}", flush=True)
-    print(f"  {snippet_file}", flush=True)
-    print(f"  {question_file}", flush=True)
+    # print(f"  {snippet_file}", flush=True)
+    # print(f"  {question_file}", flush=True)
     print(f"  {per_student_file}", flush=True)
     print("====================================\n", flush=True)
 

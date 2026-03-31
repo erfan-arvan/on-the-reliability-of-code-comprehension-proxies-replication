@@ -220,7 +220,7 @@ def fit_logit(df, predictor, label):
     se = res.bse[predictor]
     ci_low, ci_high = ci_bounds(coef, se)
 
-    return [label, "accuracy", predictor, coef, se, res.pvalues[predictor], ci_low, ci_high]
+    return [label, "accuracy", label, coef, se, res.pvalues[predictor], ci_low, ci_high]
 
 
 def fit_mixed(df, outcome, predictor, label):
@@ -241,7 +241,7 @@ def fit_mixed(df, outcome, predictor, label):
     se = res.bse[predictor]
     ci_low, ci_high = ci_bounds(coef, se)
 
-    return [label, outcome, predictor, coef, se, res.pvalues[predictor], ci_low, ci_high]
+    return [label, outcome, label, coef, se, res.pvalues[predictor], ci_low, ci_high]
 
 
 # ============================================================
@@ -258,11 +258,11 @@ def main():
     results = []
 
     predictors = [
-        ("ClassMates_z","Classmates"),
+        ("ClassMates_z","PRP"),
         ("JavaYears_z","JavaExp"),
         ("OOP_z","OOP"),
-        ("PE_z","Exam"),
-        ("CSKnow_z","CSKnow"),
+        ("PE_z","PE"),
+        ("CSKnow_z","BK"),
     ]
 
     for predictor, label in predictors:
@@ -276,7 +276,7 @@ def main():
             results.append(fit_mixed(sub, "time_correct", predictor, f"{label} time_correct_{q}"))
 
         results.append(fit_mixed(snippet_df, "read_time", predictor, f"{label} readTime"))
-        results.append(fit_mixed(snippet_df, "snippet_total_time", predictor, f"{label} snippet_total_time"))
+        # results.append(fit_mixed(snippet_df, "snippet_total_time", predictor, f"{label} snippet_total_time"))
 
     # ======================
     # FATIGUE
@@ -303,6 +303,28 @@ def main():
 
     print(f"\nResults saved to: {Path(OUT_MODEL_RESULTS).resolve()}\n")
 
+    # ============================================================
+    # PRINT FINAL TABLE 
+    # ============================================================
+
+    display_df = pd.read_csv(OUT_MODEL_RESULTS)
+
+    # round for readability
+    display_df["coef"] = display_df["coef"].round(3)
+    display_df["se"] = display_df["se"].round(3)
+    display_df["p_value"] = display_df["p_value"].round(4)
+    display_df["ci_low"] = display_df["ci_low"].round(3)
+    display_df["ci_high"] = display_df["ci_high"].round(3)
+
+    display_df = display_df.sort_values(by=["analysis", "outcome"])
+
+    print("\n" + "="*100)
+    print("FINAL MODEL RESULTS TABLE")
+    print("="*100 + "\n")
+
+    print(display_df.to_string(index=False))
+
+    print("\n" + "="*100 + "\n")
 
 if __name__ == "__main__":
     main()

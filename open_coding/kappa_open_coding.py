@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.metrics import cohen_kappa_score
 
-file_path = "openCodingFinal.xlsx"
+file_path = "open_coding_logs.xlsx"
 df = pd.read_excel(file_path)
 
 # Clean column names
@@ -25,8 +25,8 @@ print("Cohen's kappa:", round(kappa, 4))
 
 # Agreement
 agreement = (df[col1] == df[col2]).mean()
-print("Observed agreement:", round(agreement, 4))
+# print("Observed agreement:", round(agreement, 4))
 
 # Debug: check weird values
-print("\nUnique values Map1:", df[col1].unique())
-print("Unique values Map2:", df[col2].unique())
+# print("\nUnique values Map1:", df[col1].unique())
+# print("Unique values Map2:", df[col2].unique())

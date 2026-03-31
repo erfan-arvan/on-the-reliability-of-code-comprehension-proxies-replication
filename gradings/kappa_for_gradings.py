@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.metrics import cohen_kappa_score
 
 # === 1. Load file ===
-df = pd.read_excel("all_real_gradings.xlsx")
+df = pd.read_excel("function_question_grading_log.xlsx")
 
 # === 2. Extract paired ratings ===
 rater1_scores = []
@@ -38,8 +38,8 @@ print(f"Total paired items used: {len(r1)}")
 # unweighted
 kappa_unweighted = cohen_kappa_score(r1, r2)
 
-# quadratic weighted (RECOMMENDED)
+# quadratic weighted
 kappa_weighted = cohen_kappa_score(r1, r2, weights='quadratic')
 
-print("Cohen's kappa (unweighted):", round(kappa_unweighted, 4))
+# print("Cohen's kappa (unweighted):", round(kappa_unweighted, 4))
 print("Cohen's kappa (quadratic weighted):", round(kappa_weighted, 4))
