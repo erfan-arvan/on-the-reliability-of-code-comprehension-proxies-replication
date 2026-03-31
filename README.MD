@@ -18,6 +18,19 @@ This will generate all results used in the paper, including:
 
 ---
 
+### Core Dataset
+
+- `students_graded.xlsx`  
+  **Main dataset containing all student study data**, including:
+  - Response times
+  - Accuracy (function, output, syntax)
+  - Subjective ratings
+  - Per-question and per-snippet measurements  
+
+All correlation, regression, and analysis results are derived from this file.
+
+---
+
 ### Accessing Specific Artifacts and Underlying Data
 
 #### Figures 3–11 (Correlation Results)
