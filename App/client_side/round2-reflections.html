@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>round 2 Reflections — Expert Disagreement Summary</title>
+    <script>
+        /* Apply stored theme ASAP to avoid flash */
+        (function () {
+            try {
+                var t = sessionStorage.getItem('codeTheme') || localStorage.getItem('codeTheme');
+                if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+            } catch (e) { }
+        })();
+    </script>
+    <style>
+        html,
+        body {
+            max-width: 100%;
+            /* overflow-x: hidden;  */
+        }
+
+        /* ========= THEME TOKENS ========= */
+
+        /* Default (LIGHT) */
+        :root {
+            --bg: #f7f9fc;
+            --panel: #ffffff;
+            --panel2: #f6f8fb;
+            --text: #0b1220;
+            --muted: #667085;
+            --accent: #6e59f9;
+            --accent2: #4f46e5;
+            --ok: #16a34a;
+            --warn: #d97706;
+            --danger: #dc2626;
+            --border: #e5e7eb;
+            --chip: #f3f4f6;
+            --chip2: #eef2ff;
+            --shadow: 0 1px 2px rgba(16, 24, 40, .06);
+            --shadow-soft: 0 1px 1px rgba(16, 24, 40, .04);
+            --hover: color-mix(in srgb, var(--accent2) 10%, transparent);
+            --code-bg: #f3f4f6;
+        }
+
+        /* Force LIGHT when data-theme="light" (keeps explicit control) */
+        :root[data-theme="light"] {
+            --bg: #f7f9fc;
+            --panel: #ffffff;
+            --panel2: #f6f8fb;
+            --text: #0b1220;
+            --muted: #667085;
+            --accent: #6e59f9;
+            --accent2: #4f46e5;
+            --ok: #16a34a;
+            --warn: #d97706;
+            --danger: #dc2626;
+            --border: #e5e7eb;
+            --chip: #f3f4f6;
+            --chip2: #eef2ff;
+            --shadow: 0 1px 2px rgba(16, 24, 40, .06);
+            --shadow-soft: 0 1px 1px rgba(16, 24, 40, .04);
+            --hover: color-mix(in srgb, var(--accent2) 10%, transparent);
+            --code-bg: #f3f4f6;
+        }
+
+        /* Force DARK when data-theme="dark" */
+        :root[data-theme="dark"] {
+            --bg: #0b0c10;
+            --panel: #151821;
+            --panel2: #10131a;
+            --text: #e6e9ef;
+            --muted: #a3aab9;
+            --accent: #7c5cff;
+            --accent2: #a590ff;
+            --ok: #22c55e;
+            --warn: #f59e0b;
+            --danger: #ef4444;
+            --border: #232735;
+            --chip: #1e2230;
+            --chip2: #2a2f42;
+            --shadow: 0 1px 2px rgba(0, 0, 0, .35);
+            --shadow-soft: 0 1px 1px rgba(0, 0, 0, .25);
+            --hover: color-mix(in srgb, var(--accent2) 18%, transparent);
+            --code-bg: #0f1220;
+        }
+
+        /* AUTO: follow OS dark if not explicitly forced to light */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0b0c10;
+                --panel: #151821;
+                --panel2: #10131a;
+                --text: #e6e9ef;
+                --muted: #a3aab9;
+                --accent: #7c5cff;
+                --accent2: #a590ff;
+                --ok: #22c55e;
+                --warn: #f59e0b;
+                --danger: #ef4444;
+                --border: #232735;
+                --chip: #1e2230;
+                --chip2: #2a2f42;
+                --shadow: 0 1px 2px rgba(0, 0, 0, .35);
+                --shadow-soft: 0 1px 1px rgba(0, 0, 0, .25);
+                --hover: color-mix(in srgb, var(--accent2) 18%, transparent);
+                --code-bg: #0f1220;
+            }
+        }
+
+        /* ========= BASE ========= */
+        html,
+        body {
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        a {
+            color: var(--accent2);
+            text-underline-offset: 2px
+        }
+
+        /* Focus styles */
+        :focus-visible {
+            outline: 2px solid var(--accent2);
+            outline-offset: 2px;
+            border-radius: 6px;
+        }
+
+        /* Text selection */
+        ::selection {
+            background: color-mix(in srgb, var(--accent2) 30%, transparent);
+            color: #fff
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 16px 60px
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            backdrop-filter: blur(6px);
+            background: linear-gradient(180deg,
+                    color-mix(in srgb, var(--panel) 92%, transparent),
+                    color-mix(in srgb, var(--panel) 78%, transparent));
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 700
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        button,
+        .btn {
+            background: var(--chip);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: var(--shadow-soft);
+            transition: background .15s ease, transform .05s ease;
+        }
+
+        button:hover {
+            background: var(--chip2)
+        }
+
+        button:active {
+            transform: translateY(1px)
+        }
+
+        .pill {
+            font-size: 12px;
+            padding: 6px 10px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 18px;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* ========= TOC ========= */
+        .toc {
+            position: sticky;
+            top: 64px;
+            align-self: start;
+            background: var(--panel2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .toc h3 {
+            margin: 6px 8px 12px;
+            font-size: 14px;
+            color: var(--muted)
+        }
+
+        .toc a {
+            display: block;
+            padding: 8px 10px;
+            margin: 4px 0;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid transparent
+        }
+
+        .toc a:hover {
+            background: var(--hover);
+            border-color: var(--border)
+        }
+
+        /* ========= CARDS / CONTENT ========= */
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .disagreement {
+            margin-bottom: 16px
+        }
+
+        .disagreement h2 {
+            font-size: 18px;
+            margin: 0 0 6px
+        }
+
+        .meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        details {
+            background: var(--panel2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 10px 12px;
+            margin: 10px 0;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .experts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 12px
+        }
+
+        @media (max-width: 1000px) {
+            .experts {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .expert {
+            background: var(--panel2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .expert h4 {
+            margin: 0 0 10px;
+            font-size: 15px
+        }
+
+        .qa {
+            margin: 8px 0
+        }
+
+        .qa .q {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 4px
+        }
+
+        .qa .a {
+            white-space: pre-wrap
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px
+        }
+
+        .chip {
+            font-size: 12px;
+            background: var(--chip);
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            border-radius: 999px
+        }
+
+        .footer {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 24px
+        }
+
+        code {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 0 4px;
+            border-radius: 6px
+        }
+
+        /* ========= PRINT ========= */
+        @media print {
+            :root {
+                --bg: #ffffff;
+                --panel: #ffffff;
+                --panel2: #ffffff;
+                --text: #000000;
+                --muted: #565e6b;
+                --border: #d1d5db;
+                --chip: #ffffff;
+                --chip2: #ffffff;
+                --shadow: none;
+                --shadow-soft: none;
+                --hover: transparent;
+                --code-bg: #f6f8fa;
+            }
+
+            header {
+                position: static;
+                backdrop-filter: none;
+                box-shadow: none
+            }
+
+            .toc {
+                border-color: #ddd
+            }
+
+            button,
+            .controls {
+                display: none !important
+            }
+
+            a {
+                color: #000;
+                text-decoration: underline
+            }
+        }
+
+        .sticky-back-btn {
+            position: fixed;
+            right: 16px;
+            bottom: calc(16px + env(safe-area-inset-bottom, 0));
+            z-index: 1000;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            text-decoration: none;
+            font-weight: 700;
+
+            background: linear-gradient(145deg, var(--accent, #6e59f9), var(--accent2, #4f46e5));
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
+            transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+        }
+
+        .sticky-back-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .22);
+            filter: brightness(1.02);
+        }
+
+        .sticky-back-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .18);
+        }
+
+        .sticky-back-btn:focus-visible {
+            outline: 3px solid color-mix(in srgb, white 70%, var(--accent2, #4f46e5));
+            outline-offset: 2px;
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent2, #4f46e5) 35%, transparent);
+        }
+
+        /* Respect printing */
+        @media print {
+            .sticky-back-btn {
+                display: none !important;
+            }
+        }
+
+        /* Optional: nudge up on very small screens */
+        @media (max-width: 420px) {
+            .sticky-back-btn {
+                right: 12px;
+                bottom: 12px;
+            }
+        }
+
+        /* 1) The critical fix: allow grid children to shrink */
+        .grid>* {
+            min-width: 0;
+        }
+
+        main,
+        nav.toc {
+            min-width: 0;
+        }
+
+        /* 2) Prevent the page itself from scrolling horizontally */
+        html,
+        body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        /* 3) Contain long words/links inside cards and details */
+        .card,
+        details,
+        .expert,
+        .qa .a {
+            overflow-wrap: anywhere;
+            /* let very long tokens wrap */
+            word-break: break-word;
+            /* older fallback */
+        }
+
+        /* 4) Code/pre blocks shouldn't push the layout */
+        pre,
+        code {
+            max-width: 100%;
+        }
+
+        pre {
+            white-space: pre;
+            /* keep code formatting */
+            overflow-x: auto;
+            /* scroll INSIDE the pre, not the page */
+        }
+
+        /* 5) Defensive: never let media exceed the container */
+        img,
+        iframe,
+        video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 6) If something still squeaks by, clip it at the container edge */
+        .wrap {
+            overflow-x: clip;
+        }
+
+        /* modern, safer than hidden */
+
+        /* === Top sheet (themed) === */
+        .top-sheet {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 50vh;
+            /* default half page */
+            min-height: 240px;
+            max-height: 95vh;
+
+            background: var(--panel, #fff);
+            color: var(--text, #0b1220);
+            border-bottom: 1px solid var(--border, #e5e7eb);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+            z-index: 3000;
+
+            transform: translateY(-100%);
+            transition: transform .35s ease;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            overflow: hidden;
+        }
+
+        .top-sheet.open {
+            transform: translateY(0);
+        }
+
+        /* Header */
+        .top-sheet-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--panel2, #f6f8fb);
+            color: var(--text, #0b1220);
+            border-bottom: 1px solid var(--border, #e5e7eb);
+            font-weight: 700;
+        }
+
+        .panel-close {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid var(--border, #e5e7eb);
+            color: var(--text, #0b1220);
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .panel-close:hover {
+            background: color-mix(in srgb, var(--accent2, #4f46e5) 8%, transparent);
+            border-color: color-mix(in srgb, var(--accent2, #4f46e5) 40%, var(--border, #e5e7eb));
+        }
+
+        /* Iframe fills remaining space */
+        #summary-frame {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: var(--panel, #fff);
+            display: block;
+        }
+
+        /* Overlay close button on top-right of the sheet (above iframe) */
+        .frame-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid var(--border, #e5e7eb);
+            background: var(--panel2, #f6f8fb);
+            color: var(--text, #0b1220);
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: var(--shadow, 0 6px 20px rgba(0, 0, 0, .15));
+        }
+
+        .frame-close-btn:hover {
+            background: color-mix(in srgb, var(--accent2, #4f46e5) 10%, var(--panel2, #f6f8fb));
+            border-color: color-mix(in srgb, var(--accent2, #4f46e5) 35%, var(--border, #e5e7eb));
+        }
+
+        /* Drag handle at the bottom edge */
+        .top-sheet-resizer {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 10px;
+            cursor: ns-resize;
+            background: transparent;
+        }
+
+        .top-sheet-resizer::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 3px;
+            width: 60px;
+            height: 4px;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--border, #e5e7eb) 70%, transparent);
+        }
+
+        /* Hide when printing */
+        @media print {
+            .top-sheet {
+                display: none !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <a href="discussion.html" class="sticky-back-btn" aria-label="Go back to the last round (discussions)">
+        ← Back to last round
+    </a>
+    <header>
+        <div class="bar">
+            <div class="title">round 2 Reflections — Expert Disagreement Summary</div>
+            <div class="controls">
+                <!-- <button id="btn-expand" class="pill" title="Expand all details">Expand all</button>
+                <button id="btn-collapse" class="pill" title="Collapse all details">Collapse all</button> -->
+                <button id="btn-print" class="pill" title="Print or save to PDF">Print</button>
+                <button id="btn-theme" class="pill" title="Theme mode">Theme: Auto 🌗</button>
+                <button style="color: white; background: linear-gradient(145deg, var(--accent), var(--accent2));
+" id="summary-open-btn" type="button" class="done-toggle-btn" aria-controls="summary-top-sheet" aria-expanded="false">
+                    <strong>Round 1 Rankings</strong>
+                </button>
+                <select id="expert-filter" class="pill" title="Filter by expert">
+                    <option value="all">Show all experts</option>
+                    <option value="Martin">Martin only</option>
+                    <option value="Oscar">Oscar only</option>
+                    <option value="Nadeeshan">Nadeeshan only</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <div class="grid">
+            <nav class="toc" id="toc">
+                <h3>Disagreements</h3>
+                <!-- dynamically populated -->
+            </nav>
+
+            <main id="content"></main>
+        </div>
+
+        <div class="footer">Generated summary uses the exact discussion-point text and the exact round 2 questions and
+            answers provided by each expert.</div>
+    </div>
+
+    <script>
+        // ========= Source Data =========
+        // Exact round 2 questions (verbatim)
+const QUESTIONS = ["1. Did any of the other experts\u2019 perspectives seem reasonable or worth reflecting on, even if you don\u2019t fully agree with them?", "2. Did the other experts\u2019 feedback affect your understanding of the snippet\u2019s difficulty or its comprehensibility for typical software engineers?", "3. Would you consider revising your ranking for this snippet later, after completing all the disagreement reflections?"];
+
+        // Exact disagreement texts (the 'text' body used for Round 2 recap is preserved verbatim)
+
+const disagreements = [
+  {
+  snippet: "isMachineTypeDefined",
+  text: `
+<p>
+  <strong>isMachineTypeDefined</strong> is one of the most divisive methods, with experts placing it
+  anywhere from near-easy to the hardest in the set.
+</p>
+
+<ul>
+  <li>
+    <strong>Expert D</strong> placed <code>isMachineTypeDefined</code> toward the easy side at Position 2.
+    <ul>
+      <li>
+        They described it as “clear, concise,” praising how reflection is used in a straightforward
+        way to iterate over constants and check for a match. Even though reflection requires some
+        prior knowledge, they felt the intent remained easy to follow.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Expert C</strong> placed it in Position 3.
+    <ul>
+      <li>
+        They said the control flow is understandable but expressed uncertainty about what each field
+        represents and what <code>isSynthetic</code> is doing. They noted that the method “requires
+        business knowledge about the domain,” and that using reflection to inspect declared fields
+        is “advanced Java stuff that is not very common.”
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Expert A</strong> placed it in Position 4.
+    <ul>
+      <li>
+        They wrote that the method is “simple to comprehend for someone familiar with reflection”
+        but still requires specific API knowledge. They viewed it similarly to
+        <code>deleteRecursively</code> in terms of difficulty and noted that both methods require
+        more contextual knowledge than the simplest ones like <code>isValidProjectName</code>.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Expert E</strong> placed it significantly harder, at Position 6.
+    <ul>
+      <li>
+        They explained that although the reflective loop is recognizable once you see that it's
+        iterating over constants, the method still relies on understanding modifiers, synthetic vs
+        non-synthetic fields, and why reflection is being used at all. They consistently judged it
+        harder than more linear, mathematical methods like <code>lowestPositiveRoot</code>.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Expert B</strong> placed <code>isMachineTypeDefined</code> at the extreme hard end
+    (Position 8).
+    <ul>
+      <li>
+        They called it “difficult to comprehend,” arguing that the name implies a general
+        MachineType check, yet the implementation is tied specifically to
+        <code>CoffMachineType</code>. They also noted that one path always triggers a null-pointer
+        exception. They grouped it with <code>encodedLength</code> and <code>atan2</code> as “hacky
+        or cryptic” functions full of hidden assumptions and errors requiring significant “mental
+        debugging.”
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+  <strong>Overall</strong>, experts disagreed sharply depending on how comfortable they are with
+  reflection, how much domain context they inferred or expected, and how they assessed the clarity
+  and intention behind the method’s structure.
+</p>
+`
+},
+    {
+    snippet: "isValidProjectName",
+    // title: "minor disagreement on isValidProjectName",
+    text: `
+<p>
+  <strong>isValidProjectName</strong> shows noticeable disagreement across experts,
+  with most placing it in the easiest tier and others rating it slightly or significantly harder.
+</p>
+
+<ul>
+  <li>
+    <strong>Experts A, B, and E</strong> all ranked <code>isValidProjectName</code> in Position 1.
+    <ul>
+      <li>
+        <strong>Expert A</strong> described it as “simple to understand” with “very clear”
+        method and variable names. They emphasized that short, self-contained methods like this
+        have an obvious purpose and that “the purpose of local variables and called methods is
+        clear,” which makes it belong among the easiest code.
+      </li>
+      <li>
+        <strong>Expert B</strong> also viewed it as one of the simplest methods, praising its
+        well-structured conditions and noting that each check contributes independently to the
+        overall validation. In comparing it to <code>isRemote</code>, they said that “the problem
+        of defining a valid project name is more straightforward than that of defining a URI as
+        local” and that the project-name validator is “very self explanatory,” reinforcing why
+        they consider it strictly easier.
+      </li>
+      <li>
+        <strong>Expert E</strong> likewise considered it very easy, saying that the method
+        signature and the simple sequence of checks made it “pretty easy to understand.” They
+        highlighted that “everything isValidProjectName does is right there in front of you and
+        self-contained,” unlike <code>isRemote</code>, which relies on domain knowledge about URI
+        schemes and an unseen helper.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Expert C</strong> ranked <code>isValidProjectName</code> slightly harder, in Position 2.
+    <ul>
+      <li>
+        They found it mostly easy to follow but were unsure why both a letter-or-digit check and
+        a separate valid-character-set check were necessary. They explained that
+        <code>isValidProjectName</code> (and <code>isRemote</code>) requires a bit more domain
+        knowledge to understand the special cases, whereas their easiest methods—
+        <code>indexOfIgnoreCase</code> and <code>deleteRecursively</code>—can be followed line by
+        line without additional assumptions.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Expert D</strong> placed <code>isValidProjectName</code> much higher, at Position 4.
+    <ul>
+      <li>
+        They wrote that the method is understandable, but that the initial chain of validations is
+        too long and could be “summarized a little without losing the readability.” They
+        consistently favored code whose naming and structure felt more compact and directly aligned
+        with its purpose, which pushed <code>isValidProjectName</code> outside the easiest tier
+        for them.
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+  <strong>Overall</strong>, the disagreement arises from how experts weigh the method's length,
+  redundancy of checks, and the small amount of domain knowledge it assumes. For some, these
+  details are negligible, leaving the method firmly among the easiest; for others, they introduce
+  enough overhead to move it into a slightly or significantly harder tier.
+</p>
+`
+  },
+
+ {
+  snippet: "indexOfIgnoreCase",
+  text: `
+<p>
+  <strong>indexOfIgnoreCase</strong> shows varied difficulty assessments, with experts split
+  between viewing it as one of the easiest methods and placing it solidly in the mid-range.
+</p>
+
+<ul>
+  <li>
+    <strong>Expert C</strong> placed <code>indexOfIgnoreCase</code> in Position 1.
+    <ul>
+      <li>
+        They said it “flowed very naturally,” with each condition playing an obvious role in the
+        search logic. They grouped it with <code>deleteRecursively</code>, explaining that both
+        methods can be followed line by line, with meaningful variable names and straightforward
+        logic.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Experts E and D</strong> placed <code>indexOfIgnoreCase</code> in Position 3.
+    <ul>
+      <li>
+        <strong>Expert E</strong> emphasized that the method's control flow is clear and the
+        earlier return checks are intuitive. They also contrasted it with more complicated methods
+        such as reflection-based ones or UTF-8 encoding, noting that
+        <code>indexOfIgnoreCase</code> is fully self-contained.
+      </li>
+      <li>
+        <strong>Expert D</strong> described it as structurally clear and readable, though more
+        complex than the very simplest methods.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Experts A and B</strong> placed it at Position 5.
+    <ul>
+      <li>
+        <strong>Expert A</strong> acknowledged that the implementation is generally expected but
+        pointed out naming issues (e.g., “str,” “endLimit”), saying these reduce readability. They
+        felt this pushes the method slightly harder than some reflection-based ones because the
+        naming obscures intent.
+      </li>
+      <li>
+        <strong>Expert B</strong> called the method “ok” but noted that the number of intermediate
+        values and the hand-rolled search logic makes it less transparent than shorter, simpler
+        methods. They said <code>deleteRecursively</code> is easier to follow once one ignores its
+        misleading name, and they argued that <code>lowestPositiveRoot</code> can be easier than
+        <code>indexOfIgnoreCase</code> because the latter is “reinventing the wheel” instead of
+        using built-in substring operations.
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+  <strong>Overall</strong>, <code>indexOfIgnoreCase</code> is a clear point of disagreement about
+  what counts as truly easy code: some see it as a straightforward implementation of string search,
+  while others find its naming, intermediate variables, and reinvention of built-in functionality
+  enough to place it in a more effortful mid-range tier.
+</p>
+`
+},
+
+ {
+  snippet: "lowestPositiveRoot",
+  text: `
+<p>
+  <strong>lowestPositiveRoot</strong> shows disagreement about how much mathematical familiarity
+  should influence perceived difficulty.
+</p>
+
+<ul>
+  <li>
+    <strong>Expert B</strong> placed <code>lowestPositiveRoot</code> in Position 4.
+    <ul>
+      <li>
+        They described the method as “alright,” explaining that implementing a well-known quadratic
+        formula makes it easier to follow than methods like <code>indexOfIgnoreCase</code>. Although
+        variable names like “det” and “inv” are not ideal, the mathematical structure is familiar.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Expert E</strong> placed it in Position 5.
+    <ul>
+      <li>
+        They noted that once you recognize the flow as a direct translation of how one solves a
+        quadratic equation by hand, the logic becomes easy to track. Still, they acknowledged it
+        requires some mathematical background. They contrasted it with reflection-heavy methods,
+        saying <code>lowestPositiveRoot</code> has a linear and self-contained structure.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Experts A, C, and D</strong> all placed <code>lowestPositiveRoot</code> at Position 7.
+    <ul>
+      <li>
+        <strong>Expert A</strong> wrote “Not good,” highlighting that it requires previous
+        knowledge of the quadratic formula and that abbreviated names like “det,” “sqrtD,” “invA,”
+        “r1,” and “r2” provide no clarity to someone unfamiliar with the math involved.
+      </li>
+      <li>
+        <strong>Expert C</strong> said they were “not familiar enough” with the abbreviations and
+        felt uncertain about the purpose of swapping the roots. They compared it unfavorably to
+        <code>encodedLength</code>, saying <code>lowestPositiveRoot</code> involves “even more
+        complicated math.”
+      </li>
+      <li>
+        <strong>Expert D</strong> similarly argued that the unclear variable names and reliance on
+        unannotated mathematical steps make the method “quite difficult to understand,” even though
+        the underlying idea is just the quadratic formula.
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+  <strong>Overall</strong>, <code>lowestPositiveRoot</code> ranges from moderately complex to one
+  of the hardest methods, depending on the expert's mathematical comfort level, expectations about
+  naming clarity, and tolerance for compact representations of formulas.
+</p>
+`
+}
+];
+
+
+        // Exact round 2 answers by expert, aligned to disagreements order above (index 0..3)
+const expertResponses = {"expertA": [{"q1": "Yes. Expert D also mentions the role of previous knowledge about reflection. I guess the disagreement is just on the difficulty score. I would consider that a snippet that requires previous knowledge is in principle, difficult. The thing is that this snippet is short enough to not be \n\"that\" difficult.", "q2": "No", "q3": "No"}, {"q1": "No. The comments that explain the higher ranking (and in turn the whole disagreement) do not seem to be about the comprehensibility of the snippet, but rather about its quality.", "q2": "NO", "q3": "No"}, {"q1": "I do share the reasoning of Expert E when it comes to less intuitive snippets that require previous knowledge.", "q2": "No", "q3": "Maybe down to 4. The purpose of the method is easy to understand mostly due to its title, but its implementation is still hard to follow due to poor variable naming."}, {"q1": "Expert 5 reasoning suggests that more than one pass was required to get an idea of the purpose of the method (see \"once you recognize the flow\"). If multiple passes and careful walkthroughs are needed, the method is simply very hard (> 5) to understand.", "q2": "No", "q3": "No"}], "expertB": [{"q1": "Yes, after reading the feedback for the method from other experts I realised the null pointer exception is not an issue and instead the method returns final static fields only.", "q2": "Yes, in particular the explanation of Expert E made things clearer.", "q3": "Yes, I'd position it now into number 6 in the ranking."}, {"q1": "I agree with the experts that set it as the easiest snippet", "q2": "No", "q3": "No"}, {"q1": "I agree with most of the comments by other experts.", "q2": "No", "q3": "Yes, maybe I could consider moving it one step upwards in the list (to position 4)"}, {"q1": "Yes, the variable names are still not the clearest and having previous math knowledge is required in order to understand the full code. Extra comments or more explicit names could help", "q2": "Yes", "q3": "Yes, I would consider moving it one step downwards in the ranking (to position 5)"}], "expertC": [{"q1": "The need to specific API knowledge and understanding what 'synthetic' means in this context.", "q2": "It's made me realize it's easier to understand if you're familiar with reflection but overall doesn't change my understanding (without looking it up myself)", "q3": "No, but if I read the API spec or looked it up I bet I would change my ranking to be easier"}, {"q1": "I agree with Expert D that it could be shorter", "q2": "Not really but I think I understand it completely", "q3": "No, I put it in position 2 because I think the other methods were just slightly easier to understand. Not that this one was hard but it wasn't the easiest."}, {"q1": "Not really resonating but rather I disagree with the feedback on variable names, they make sense to me and I think make the code more readable.", "q2": "No.", "q3": "No."}, {"q1": "A and D's notes on variable names and unannotated mathematical steps - I agree!", "q2": "Seeing the feedback that this is how you would solve quadratic by hand makes me think this code is easier to understand, given that background knowledge.", "q3": "I'd leave it at 7"}], "expertD": [{"q1": "I'm mildly agree with the observations, given that the constants used by the code can be deduced from the names of those constants. However, it is true that the code can fail at one point, and this is confusing.", "q2": "allowed me to see details that I hadn't noticed before", "q3": "With that clarification, I would change my decision, but not by much."}, {"q1": "I agree with the statements made by the other experts, as the code has aspects of readability that make it understandable.", "q2": "The comments show me some points of comparison with other functions that justify why it is more readable than other pieces of code.", "q3": "I would change the order of this piece of code. I wouldn't leave it in first position, but I would leave it in second position."}, {"q1": "In some respects, such as the naming of variables, I disagree, since variables can be understood.", "q2": "No, because the comments explain why it is in third place, in my opinion.", "q3": "I don't see the need for it."}, {"q1": "I strongly agree that the code expects the reader to understand the context of how the square root works and that the names of the variables should be improved.", "q2": "I think most of us end up in a similar position.", "q3": "No, because the method must improve the names of the variables to better explain the mathematical procedure."}], "expertE": [{"q1": "Yes, several of the concerns raised by the other experts resonate with me, especially those from Experts C, A, and E. I agree that while the overall control flow is understandable, the method relies heavily on familiarity with Java\u2019s reflection API and concepts like synthetic fields and field modifiers. Without that background, it\u2019s harder to quickly grasp what the code is doing and why reflection is being used in the first place. I also agree that understanding the intent requires some domain context about CoffMachineType, which isn\u2019t obvious from the method alone.", "q2": "Yes, their feedback helped clarify why this method can feel harder or easier depending on perspective and experience. In particular, it highlighted how much the perceived difficulty depends on prior experience with reflection and how much domain context a reader assumes. While my understanding of what the code does didn\u2019t change, the feedback made it clearer why others might rate it as easier if they see the reflective pattern immediately, or much harder if they focus on the hidden assumptions and required background knowledge.", "q3": "No, I would not change my ranking. After reviewing the feedback, I still think placing this snippet toward the harder side is appropriate. While the intent becomes clear once you recognize the reflective pattern, the method still depends on specific API knowledge, familiarity with reflection details in Java and some implicit domain context. The feedback reinforced why others might rank it differently, but it didn\u2019t change my assessment of the overall cognitive effort required to understand it."}, {"q1": "To a small extent, yes. I can see why Experts C and D mentioned the length of the validation chain and questioned whether some of the checks could be consolidated. The distinction between checking for letters or digits and then separately checking a predefined valid character set could momentarily raise questions about redundancy, and the method does assume some understanding of what characters are considered valid in the project\u2019s domain. With that said, these concerns didn\u2019t significantly affect my perception of difficulty, since each check is still simple and the overall intent remains very clear.", "q2": "Their feedback didn\u2019t change my understanding of what the snippet does, but it did help clarify why some people might rate it as slightly harder. In particular, the comments about check redundancy and method length made it clearer how different experts / developers might weigh conciseness versus explicitness. While I still find the method fairly easy to understand, the feedback does definitely highlight how even small design choices can affect perceived complexity for some developers.", "q3": "No, I would not change my ranking. After reviewing the feedback, I still think placing this snippet on the easiest side of the ranking make sense. The method is self-contained, the logic is explicit, and each check is easy to follow on its own. While some experts preferred a more compact approach, the clarity and straightforward structure outweigh those concerns for me."}, {"q1": "Yes, some of their concerns do resonate with me, particularly those from Experts A and B. I can see how the number of intermediate variables and the manual implementation of a substring search might make the method feel more involved than the simplest snippets. The naming choices, like str and endLimit, are serviceable but not especially descriptive, and that can slightly slow down comprehension. With that said, these issues didn\u2019t outweigh the fact that the control flow is still clear and the logic follows a familiar / logical pattern, which is why I kept it on the easier side overall.", "q2": "Their feedback didn\u2019t change my understanding of what the snippet does, but again it did help clarify why some people might rate it as harder than I did. In particular, the points about naming choices and the fact that the method reimplements functionality that could be handled by built-in APIs made it clearer why others see additional cognitive overhead. While I still find the logic easy to follow, the feedback highlighted how design decisions like naming and abstraction level can influence perceived readability.", "q3": "No, I would not change my ranking. After considering the feedback, I still think Position 3 is appropriate. The method remains readable, self-contained and follows a familiar search pattern, even if it has more moving parts than the very simplest snippets. The feedback helped explain differing opinions, but it didn\u2019t change my overall assessment of its difficulty as I think some of the complaints are more related to style rather than the logic of the method."}, {"q1": "Yes, some of their concerns resonate with me, especially the points about naming conventions of the variables and mathematical background. I agree that abbreviated variable names like det, invA, r1, and r2 don\u2019t offer much help to someone who isn\u2019t already comfortable with the quadratic formula. I also understand why the swapping of the roots might be confusing without that context. With that said, I still see the method as more of a math-familiarity issue than a code-structure problem, which is why I didn\u2019t place it among the hardest snippets.", "q2": "Their feedback didn\u2019t change my understanding of what the snippet is doing, but again it did clarify why others found it significantly harder to comprehend. In particular, it highlighted how much the perceived difficulty depends on a reader\u2019s comfort with the underlying math and their expectations around variable naming and documentation. While I was able to follow the logic by recognizing the quadratic formula, the feedback helped explain why someone without that background might struggle more with the snippet.", "q3": "No, I would not change my ranking. After reviewing the feedback, I still think Position 5 is appropriate. The method\u2019s control flow is straightforward and self-contained, and the primary challenge comes from the underlying math rather than the code itself. While clearer variable names or brief comments could lower the barrier for readers without a strong math background, the feedback didn\u2019t change my overall assessment of its difficulty relative to the other snippets."}]};
+
+    </script>
+
+    <script>
+        // ---- names -> use these instead of indices/ids ----
+        const SNIPPET_NAMES = {
+            1: "isValidProjectName",
+            2: "isRemote",
+            3: "isMachineTypeDefined",
+            4: "indexOfIgnoreCase",
+            5: "deleteRecursively",
+            6: "encodedLength",
+            7: "lowestPositiveRoot",
+            8: "atan2",
+        };
+        const nameFor = id => SNIPPET_NAMES[id] || `Snippet ${id}`;
+        const slugify = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+        // ========= Rendering =========
+        const content = document.getElementById('content');
+        const toc = document.getElementById('toc');
+
+        function render() {
+            content.innerHTML = '';
+            toc.innerHTML = '<h3>Disagreements</h3>';
+
+            disagreements.forEach((d, idx) => {
+                const snippetName = nameFor(d.snippet);
+                const anchor = `d-${slugify(snippetName)}`;
+
+                const card = document.createElement('section');
+                card.className = 'card disagreement';
+                card.id = anchor;
+
+                const h = document.createElement('h2');
+                // show the name, not the numeric id
+                h.textContent = `Disagreement ${idx + 1} — ${snippetName}`;
+
+                const meta = document.createElement('div');
+                meta.className = 'meta';
+                meta.innerHTML = `<span>Round 2 discussion point:</span>`;
+
+                // OPTIONAL fallback: if d.text still contains "Snippet X", rewrite to names here.
+                // (You can remove this block if you already ran the Python replacer on the HTML.)
+                let html = d.text;
+                Object.entries(SNIPPET_NAMES).forEach(([id, nm]) => {
+                    const re = new RegExp(`\\b[Ss]nippet\\s+${id}(?![0-9A-Za-z])`, 'g'); // singular only
+                    html = html.replace(re, nm);
+                });
+
+                const point = document.createElement('div');
+                point.innerHTML = html; // preserve exact structure (post-rewrite if fallback used)
+
+                const chips = document.createElement('div');
+                chips.className = 'chips';
+                ['Exact recap', 'Reflection Q&A included', 'Printable'].forEach(c => {
+                    const span = document.createElement('span');
+                    span.className = 'chip';
+                    span.textContent = c; chips.appendChild(span);
+                });
+
+                const expertsWrap = document.createElement('div');
+                expertsWrap.className = 'experts';
+
+                const filterVal = document.getElementById('expert-filter')?.value || 'all';
+
+                Object.entries(expertResponses).forEach(([name, arr]) => {
+                    const resp = arr[idx]; // keeps your existing alignment by disagreement order
+                    if (!resp) return;
+                    if (filterVal !== 'all' && filterVal !== name) return;
+
+                    const box = document.createElement('article');
+                    box.className = 'expert';
+                    box.dataset.expert = name;
+                    box.innerHTML = `<h4>${name}</h4>`;
+
+                    // Render the three Q/A exactly, using the provided QUESTION labels
+                    QUESTIONS.forEach((q, qi) => {
+                        const qa = document.createElement('div');
+                        qa.className = 'qa';
+                        const qEl = document.createElement('div'); qEl.className = 'q'; qEl.textContent = q;
+                        const aEl = document.createElement('div'); aEl.className = 'a'; aEl.textContent = String(resp[`q${qi + 1}`] ?? '');
+                        qa.appendChild(qEl); qa.appendChild(aEl); box.appendChild(qa);
+                    });
+
+                    expertsWrap.appendChild(box);
+                });
+
+                card.appendChild(h);
+                card.appendChild(meta);
+                card.appendChild(point);
+                card.appendChild(chips);
+
+                const hr = document.createElement('div'); hr.style.height = '8px';
+                card.appendChild(hr);
+                const qaTitle = document.createElement('h3'); qaTitle.textContent = 'round 2 — Exact Answers'; qaTitle.style.margin = '0 0 8px'; qaTitle.style.fontSize = '16px';
+                card.appendChild(qaTitle);
+                card.appendChild(expertsWrap);
+
+                content.appendChild(card);
+
+                // TOC entry uses the name, not the id
+                const link = document.createElement('a');
+                link.href = `#${anchor}`;
+                link.textContent = snippetName;
+                toc.appendChild(link);
+            });
+        }
+
+        render();
+
+        // ========= UI Actions =========
+        const btnExpand = document.getElementById('btn-expand');
+        const btnCollapse = document.getElementById('btn-collapse');
+        const btnPrint = document.getElementById('btn-print');
+        const expertFilter = document.getElementById('expert-filter');
+
+        btnExpand.addEventListener('click', () => {
+            document.querySelectorAll('details').forEach(d => d.open = true);
+        });
+        btnCollapse.addEventListener('click', () => {
+            document.querySelectorAll('details').forEach(d => d.open = false);
+        });
+        btnPrint.addEventListener('click', () => window.print());
+        expertFilter.addEventListener('change', render);
+    </script>
+
+
+    <script>
+        /**
+         * Theme control using existing 'codeTheme' key.
+         * Values:
+         *   - 'light' => force light
+         *   - 'dark'  => force dark
+         *   - AUTO    => (key absent) follow OS
+         * Reads from sessionStorage first, then localStorage.
+         * Writes back to the same store it was read from; defaults to localStorage.
+         */
+        (function () {
+            const KEY = 'codeTheme';
+            const btn = document.getElementById('btn-theme');
+
+            function readStore() {
+                try {
+                    const s = sessionStorage.getItem(KEY);
+                    if (s === 'dark' || s === 'light') return { val: s, store: 'session' };
+                } catch { }
+                try {
+                    const l = localStorage.getItem(KEY);
+                    if (l === 'dark' || l === 'light') return { val: l, store: 'local' };
+                } catch { }
+                return { val: 'auto', store: null };
+            }
+
+            function writeStore(mode, storeHint) {
+                if (mode === 'auto') {
+                    try { sessionStorage.removeItem(KEY); } catch { }
+                    try { localStorage.removeItem(KEY); } catch { }
+                    return;
+                }
+                const where = storeHint || 'local';
+                try {
+                    if (where === 'session') sessionStorage.setItem(KEY, mode);
+                    else localStorage.setItem(KEY, mode);
+                } catch {
+                    // fallback to localStorage if session fails
+                    try { localStorage.setItem(KEY, mode); } catch { }
+                }
+            }
+
+            function apply(mode) {
+                if (mode === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else if (mode === 'light') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                } else {
+                    document.documentElement.removeAttribute('data-theme'); // AUTO
+                }
+                updateBtn(mode);
+            }
+
+            function updateBtn(mode) {
+                const label = mode === 'dark' ? 'Dark 🌙' : mode === 'light' ? 'Light 🌞' : 'Auto 🌗';
+                if (btn) {
+                    btn.textContent = `Theme: ${label}`;
+                    btn.setAttribute('aria-label', `Switch theme (current: ${mode})`);
+                }
+            }
+
+            function cycle() {
+                const cur = readStore();
+                const next = cur.val === 'auto' ? 'light' : (cur.val === 'light' ? 'dark' : 'auto');
+                writeStore(next, cur.store);
+                apply(next);
+            }
+
+            // init
+            const initial = readStore().val;
+            apply(initial);
+
+            // react to OS changes when in AUTO
+            const mql = window.matchMedia('(prefers-color-scheme: dark)');
+            mql.addEventListener?.('change', () => { if (readStore().val === 'auto') apply('auto'); });
+
+            if (btn) btn.addEventListener('click', cycle);
+        })();
+    </script>
+
+    <!-- Top sheet: slides from the top, half-screen by default -->
+    <div id="summary-top-sheet" class="top-sheet" aria-hidden="true">
+        <div class="top-sheet-header">
+            <span>round 1 Summary</span>
+            <button id="summary-sheet-close" class="panel-close" aria-label="Close">X</button>
+        </div>
+
+        <!-- “X” overlay on the iframe itself (handy when scrolled) -->
+        <button id="summary-frame-close" class="frame-close-btn" aria-label="Close">X</button>
+
+        <iframe id="summary-frame" src="about:blank" title="round 1 Summary"></iframe>
+
+        <!-- Drag handle to resize vertically -->
+        <div id="summary-resizer" class="top-sheet-resizer" title="Drag to resize"></div>
+    </div>
+
+    <script>
+        (function () {
+            const openBtn = document.getElementById('summary-open-btn');
+            const sheet = document.getElementById('summary-top-sheet');
+            const closeHdr = document.getElementById('summary-sheet-close');
+            const closeFab = document.getElementById('summary-frame-close');
+            const resizer = document.getElementById('summary-resizer');
+            const frame = document.getElementById('summary-frame');
+
+            if (!openBtn || !sheet || !frame) return;
+
+            function setOpenSummary(isOpen) {
+                if (isOpen) {
+                    // load the page (cache-busted) only when opening
+                    const base = 'round1-rankings.html';
+                    frame.src = base + '?t=' + Date.now();
+
+                    sheet.classList.add('open');
+                    sheet.setAttribute('aria-hidden', 'false');
+                    openBtn.setAttribute('aria-expanded', 'true');
+                } else {
+                    sheet.classList.remove('open');
+                    sheet.setAttribute('aria-hidden', 'true');
+                    openBtn.setAttribute('aria-expanded', 'false');
+                    // optional: clear src to stop timers in the iframe
+                    // frame.src = 'about:blank';
+                }
+            }
+            // Expose if you want to control it elsewhere
+            window.setOpenSummary = setOpenSummary;
+
+            // Open button
+            openBtn.addEventListener('click', () => setOpenSummary(true));
+            openBtn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpenSummary(true); }
+            });
+
+            // Close buttons
+            closeHdr?.addEventListener('click', () => setOpenSummary(false));
+            closeFab?.addEventListener('click', () => setOpenSummary(false));
+
+            // Escape to close
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && sheet.classList.contains('open')) setOpenSummary(false);
+            });
+
+            // Vertical resize (drag bottom edge)
+            if (resizer) {
+                let dragging = false;
+                function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+
+                function start(e) {
+                    if (!sheet.classList.contains('open')) return;
+                    dragging = true;
+                    document.body.classList.add('no-select');
+                    // prevent iframe from stealing events while dragging
+                    frame.style.pointerEvents = 'none';
+                    e.preventDefault();
+                }
+                function move(e) {
+                    if (!dragging) return;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    const vh = window.innerHeight;
+                    const min = 240;
+                    const max = Math.round(vh * 0.95);
+                    const newH = clamp(clientY, min, max); // distance from top to cursor
+                    sheet.style.height = newH + 'px';
+                }
+                function end() {
+                    if (!dragging) return;
+                    dragging = false;
+                    document.body.classList.remove('no-select');
+                    frame.style.pointerEvents = '';
+                }
+
+                resizer.addEventListener('mousedown', start);
+                window.addEventListener('mousemove', move);
+                window.addEventListener('mouseup', end);
+
+                resizer.addEventListener('touchstart', start, { passive: false });
+                window.addEventListener('touchmove', move, { passive: false });
+                window.addEventListener('touchend', end);
+            }
+
+            // Keep height reasonable on viewport resize
+            window.addEventListener('resize', () => {
+                if (!sheet.classList.contains('open')) return;
+                const h = sheet.getBoundingClientRect().height;
+                const max = Math.round(window.innerHeight * 0.95);
+                sheet.style.height = Math.min(h, max) + 'px';
+            });
+        })();
+
+    </script>
+
+</body>
+
+</html>

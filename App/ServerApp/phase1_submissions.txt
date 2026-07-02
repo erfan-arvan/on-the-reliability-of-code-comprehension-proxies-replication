@@ -1,0 +1,107 @@
+=== Phase 1 Submission ===
+Time: 2025-05-01T19:28:03.982859
+Name: Erfan Arvan
+snippet1: method 1 correct
+snippet2: method 2
+snippet3: method 3
+snippet4: method 4
+snippet5: method 5
+snippet6: 
+snippet7: 
+snippet8: 
+
+=== Phase 1 Submission ===
+Time: 2025-05-01T19:29:43.728214
+Name: Erfan Arvan
+snippet1: method 1 correct
+snippet2: method 2
+snippet3: method 3
+snippet4: method 4
+snippet5: method 5
+snippet6: 6
+snippet7: 7
+snippet8: 8888
+
+=== Phase 1 Submission ===
+Time: 2025-05-01T19:30:32.987930
+Name: Erfan Arvan
+snippet1: method 1 not correct
+snippet2: 
+snippet3: 
+snippet4: 
+snippet5: 
+snippet6: 
+snippet7: 
+snippet8: 
+
+=== Phase 1 Submission ===
+Time: 2025-05-01T19:35:04.091172
+Name: Erfan Arvan
+snippet1: method 1 not correct
+snippet2: method 2
+snippet3: 
+snippet4: 
+snippet5: 
+snippet6: 
+snippet7: 
+snippet8: 
+
+=== Phase 1 Submission ===
+Time: 2025-05-01T19:35:20.929711
+Name: Erfan Arvan
+snippet1: method 1 not correct
+snippet2: method 2
+snippet3: method 3 
+snippet4: 
+snippet5: 
+snippet6: 
+snippet7: 
+snippet8: 
+
+=== Phase 1 Submission ===
+Time: 2025-05-01T19:37:02.753380
+Name: Erfan Arvan
+summary1: method 1 not correct
+summary2: method 2
+summary3: method 3 
+summary4: method 4
+summary5: method 5
+summary6: 6
+summary7: 7
+summary8: 8888
+
+=== Phase 1 Submission ===
+Time: 2025-05-01T19:37:26.453767
+Name: Erfan Arvan
+summary1: method 1 not correct
+summary2: method 2
+summary3: method 3 
+summary4: method 4
+summary5: method 5
+summary6: 699
+summary7: 7
+summary8: 8888
+
+=== Phase 1 Submission ===
+Time: 2025-05-01T20:40:18.574730
+Name: Akbar
+summary1: method 1 not correct
+summary2: method 2
+summary3: method 3 
+summary4: method 4
+summary5: method 5
+summary6: 699
+summary7: 7oh
+summary8: 8888
+
+=== Phase 1 Submission ===
+Time: 2025-05-01T21:01:01.622557
+Name: Akbar
+summary1: method 1 not correct
+summary2: method 2
+summary3: method 3 
+summary4: method 4
+summary5: method 5
+summary6: 699
+summary7: mahshad
+summary8: 8888

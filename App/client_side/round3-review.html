@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Final Review</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0 40px 40px 40px;
+      /* top right bottom left */
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    pre,
+    .code-box {
+      background: #2d2d2d;
+      color: #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px 10px 0 0;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .nav-button {
+      background-color: #777;
+      color: white;
+    }
+
+    .submit-button {
+      background-color: #4CAF50;
+      color: white;
+      animation: glowPulse 1.5s infinite alternate;
+    }
+
+    /*status bar*/
+    .status-bar {
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .phase-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .phase-link:hover:not(.disabled) {
+      background-color: #4CAF50;
+    }
+
+    .phase-link.active {
+      background-color: #4CAF50;
+    }
+
+    .phase-link.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 10px #4CAF50;
+      }
+
+      100% {
+        box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="status-bar">
+    <div class="user-dropdown" style="position: relative;">
+      <div style="padding: 8px 12px; color: gainsboro; font-weight: bold;"><span id="user-info"></span> (<button
+          onclick="logout()"
+          style="color: white; background: none; border: none; cursor: pointer; margin: 0;padding: 0;">🚪
+          Logout</button>)</div>
+    </div>
+  <a href="round3.html" class="phase-link" id="link-home">🏠 Home</a>
+  <a href="round3-phase1.html" class="phase-link" id="link-phase1">Phase 1</a>
+  <a href="round3-phase2.html" class="phase-link disabled" id="link-phase2">Phase 2</a>
+  <a href="round3-phase3.html" class="phase-link disabled" id="link-phase3">Phase 3</a>
+  <a href="round3-phase4.html" class="phase-link disabled" id="link-phase4">Phase 4</a>
+  <a href="round3-phase5.html" class="phase-link disabled" id="link-phase5">Phase 5</a>
+  <a href="round3-review.html" class="phase-link" id="link-review">Review & Submit</a>
+  </div>
+
+  <div id="instructions-box"
+    style="background-color: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 80px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2 style="margin: 0;">Review and Submit</h2>
+      <button onclick="toggleInstructions()"
+        style="padding: 6px 12px; font-size: 14px; border-radius: 5px; background-color: #ddd; border: none; cursor: pointer;">Hide</button>
+    </div>
+
+    <div id="instructions-content" style="margin-top: 15px;">
+      <p>Please review your responses for all phases. If everything looks good, click the "Submit All Responses" button.
+      </p>
+      <p>You can edit each phase by clicking on the corresponding "Update" buttons.</p>
+    </div>
+  </div>
+
+
+
+  <div class="section" style="display: none;">
+    <h2>Phase 1: Summary and Comprehensibility</h2>
+    <div id="phase1"></div>
+    <button class="nav-button" onclick="location.href='/round3-phase1.html'">Update Phase 1</button>
+  </div>
+
+  <div class="section">
+    <h2>Completion Status</h2>
+    <div id="completion-status"></div>
+    <!-- <button class="nav-button" onclick="location.href='/round3-phase1.html'">Update Phase 1</button> -->
+  </div>
+
+  <div class="section">
+    <h2>Reflect on expert disagreements:</h2>
+    <div id="disagreements"></div>
+    <button class="nav-button" onclick="location.href='/round3-phase3.html'">Update Responses</button>
+  </div>
+
+
+  <div class="section">
+    <h2>Snippet Ranking</h2>
+    <div id="phase2"></div>
+    <button class="nav-button" onclick="location.href='/round3-phase4.html'">Update Ranking</button>
+  </div>
+
+  <div class="section">
+    <h2>Ranking Reasoning</h2>
+    <div id="phase3"></div>
+    <button class="nav-button" onclick="location.href='/round3-phase5.html'">Update Responses</button>
+  </div>
+
+  <button class="submit-button" onclick="submitAll()">✅ Submit All Responses</button>
+
+  <div id="validation-modal" style="
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff0f0;
+  color: #660000;
+  border: 1px solid #ff9999;
+  padding: 20px;
+  border-radius: 10px;
+  width: 440px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 1002;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  ">
+    <p id="validation-message" style="font-weight: bold;"></p>
+    <button onclick="document.getElementById('validation-modal').style.display = 'none';" style="
+      margin-top: 15px;
+      padding: 8px 14px;
+      background-color: #ff9999;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">OK</button>
+  </div>
+
+  <div id="submission-modal" style="
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #e6fff2;
+    color: #003d2f;
+    border: 1px solid #7fdcbf;
+    padding: 20px;
+    border-radius: 10px;
+    width: 440px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 1001;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+">
+    <p id="submission-message" style="font-weight: bold;">Phase 1 submitted successfully, please </p>
+    <button onclick="hideSubmissionModal()" style="
+        margin-top: 15px;
+        padding: 8px 14px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    ">OK</button>
+  </div>
+
+  <script>
+    function showSubmissionModal(message) {
+      document.getElementById('submission-message').innerText = message;
+      document.getElementById('submission-modal').style.display = 'block';
+    }
+
+    function hideSubmissionModal() {
+      document.getElementById('submission-modal').style.display = 'none';
+    }
+  </script>
+
+  <script>
+    function showValidationMessage(msg) {
+      document.getElementById('validation-message').innerText = msg;
+      document.getElementById('validation-modal').style.display = 'block';
+    }
+  </script>
+
+  <script>
+    function renderPhase1() {
+      const container = document.getElementById('phase1');
+      let foundAny = false;
+
+      for (let i = 1; i <= 8; i++) {
+        const summaryKey = `summary${i}`;
+        const compKey = `compSummary${i}`;
+
+        const summary = sessionStorage.getItem(summaryKey) || localStorage.getItem(summaryKey) || '';
+        const comp = sessionStorage.getItem(compKey) || localStorage.getItem(compKey) || '';
+
+        if (summary || comp) {
+          foundAny = true;
+          container.innerHTML += `
+            <div style="margin-bottom: 15px;">
+              <strong>Snippet ${i}</strong><br>
+              <strong>Summary:</strong> ${summary || '<em>No summary</em>'}<br>
+              <strong>Comprehensibility:</strong> ${comp || '<em>No explanation</em>'}
+            </div>
+          `;
+        }
+      }
+
+      if (!foundAny) {
+        container.innerHTML = '<em>No data found.</em>';
+      }
+    }
+
+    function renderPhase2() {
+      const data = JSON.parse(sessionStorage.getItem('phase3_ranking') || localStorage.getItem('phase3_ranking') || '{}');
+      const container = document.getElementById('phase2');
+      if (!data || Object.keys(data).length === 0) {
+        container.innerHTML = '<em>No data found.</em>';
+        return;
+      }
+      Object.entries(data).forEach(([rank, ids]) => {
+        container.innerHTML += `<p><strong>Position ${rank}:</strong> ${ids.map(id => id.replace('snippet-', '')).join(', ')}</p>`;
+      });
+    }
+
+    function renderPhase3() {
+      const data = JSON.parse(sessionStorage.getItem('phase3_reasoning') || '{}');
+      const container = document.getElementById('phase3');
+      if (!data || Object.keys(data).length === 0) {
+        container.innerHTML = '<em>No data found.</em>';
+        return;
+      }
+      Object.entries(data).forEach(([key, answer], i) => {
+        container.innerHTML += `<p><strong>Q${i + 1}:</strong> ${answer}</p>`;
+      });
+    }
+
+    function renderround3Responses() {
+  const container = document.getElementById('disagreements');
+  container.innerHTML = ''; // Clear existing content
+
+  let foundAny = false;
+
+  for (let i = 0; i <= 4; i++) {
+    const key = `round3_response_${i}`;
+    const raw = sessionStorage.getItem(key) || localStorage.getItem(key);
+    if (!raw) continue;
+
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (e) {
+      console.warn(`Failed to parse ${key}:`, e);
+      parsed = { error: "Invalid JSON format" };
+    }
+
+    container.innerHTML += `<h4>Disagreement ${i + 1}</h4><ul>`;
+    Object.entries(parsed).forEach(([qKey, answer]) => {
+      container.innerHTML += `<li><strong>${qKey}:</strong> ${answer}</li>`;
+    });
+    container.innerHTML += `</ul>`;
+    foundAny = true;
+  }
+
+  if (!foundAny) {
+    container.innerHTML = '<em>No disagreement responses found.</em>';
+  }
+}
+
+function renderround3CompletionStatus() {
+  const container = document.getElementById('completion-status');
+  container.innerHTML = ''; // Clear existing content
+
+  let foundAny = false;
+
+  for (let i = 1; i <= 5; i++) {
+    const key = `round3-phase${i}-complete`;
+    const value = sessionStorage.getItem(key) || localStorage.getItem(key) || 'false';
+
+    container.innerHTML += `
+      <p>
+        <strong>Phase ${i}:</strong> ${value === 'true' ? '✅ Complete' : '❌ Incomplete'}
+      </p>
+    `;
+    foundAny = true;
+  }
+
+  if (!foundAny) {
+    container.innerHTML = '<em>No completion data found.</em>';
+  }
+}
+
+
+function submitAll() {
+  const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName') || 'Anonymous';
+  const username = localStorage.getItem('username') || 'anonymous';
+
+  // Phase 1
+  const phase1 = {};
+  for (let i = 1; i <= 8; i++) {
+    const summary = sessionStorage.getItem(`summary${i}`) || localStorage.getItem(`summary${i}`) || '';
+    const comp = sessionStorage.getItem(`compSummary${i}`) || localStorage.getItem(`compSummary${i}`) || '';
+    phase1[`snippet${i}`] = { summary, comprehensibility: comp };
+  }
+
+  // Phase 2 & 3
+  const phase2 = JSON.parse(sessionStorage.getItem('phase3_ranking') || localStorage.getItem('phase3_ranking') || '{}');
+  const phase3 = JSON.parse(sessionStorage.getItem('phase3_reasoning') || localStorage.getItem('phase3_reasoning') || '{}');
+
+  // Round 2 responses
+  const round3Responses = {};
+  for (let i = 0; i <= 4; i++) {
+    const key = `round3_response_${i}`;
+    const val = localStorage.getItem(key) || sessionStorage.getItem(key);
+    if (val) {
+      try {
+        round3Responses[key] = JSON.parse(val);
+      } catch (e) {
+        round3Responses[key] = val; // fallback if value is not JSON
+      }
+    }
+  }
+
+  // Phase completion flags
+  const phaseCompletion = {};
+  for (let i = 1; i <= 5; i++) {
+    const key = `round3-phase${i}-complete`;
+    phaseCompletion[key] = sessionStorage.getItem(key) || localStorage.getItem(key) || 'false';
+  }
+
+  // General flags
+  const flags = {
+    codeTheme: localStorage.getItem('codeTheme') || 'light',
+    submitted: '1',
+    studyRound: '2'
+  };
+
+  const payload = {
+    username,
+    participantName: name,
+    phase1,
+    phase2,
+    phase3,
+    ...round3Responses,
+    ...phaseCompletion,
+    ...flags
+  };
+
+  console.log("🚀 Submitting FINAL payload via Beacon:", payload);
+
+  const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+  const success = navigator.sendBeacon('/submit_round3', blob);
+
+  if (success) {
+    showSubmissionModal('✅ Submission successful!\n\nWe will notify you about the possible next steps. \n\nYou can still resubmit your responses before the deadline if needed.');
+  } else {
+    showValidationMessage('❌ Submission failed. Beacon transmission failed.');
+  }
+}
+
+    renderPhase1();
+    renderPhase2();
+    renderPhase3();
+    renderround3Responses();
+    renderround3CompletionStatus();
+  </script>
+
+  <script>
+    window.onload = () => {
+      displayUserName();
+      
+    if (isComplete('round3-phase1-complete')) document.getElementById('link-phase2').classList.remove('disabled');
+    if (isComplete('round3-phase2-complete')) document.getElementById('link-phase3').classList.remove('disabled');
+    if (isComplete('round3-phase3-complete')) document.getElementById('link-phase4').classList.remove('disabled');
+    if (isComplete('round3-phase4-complete')) document.getElementById('link-phase5').classList.remove('disabled');
+    if (isComplete('round3-phase5-complete')) document.getElementById('link-review').classList.remove('disabled');
+
+    const current = window.location.pathname.split('/').pop();
+    if (current.includes('phase1')) document.getElementById('link-phase1').classList.add('active');
+    else if (current.includes('phase2')) document.getElementById('link-phase2').classList.add('active');
+    else if (current.includes('phase3')) document.getElementById('link-phase3').classList.add('active');
+    else if (current.includes('phase4')) document.getElementById('link-phase4').classList.add('active');
+    else if (current.includes('phase5')) document.getElementById('link-phase5').classList.add('active');
+    else if (current.includes('review')) document.getElementById('link-review').classList.add('active');
+      setInterval(() => {
+        try {
+          saveToServer();
+          console.log("[Auto-Save] Progress saved to server.");
+        } catch (e) {
+          console.warn("[Auto-Save] Failed to save:", e);
+        }
+      }, 120000); // every 2 minutes
+    };
+  </script>
+
+  <script>
+    function displayUserName() {
+      const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+      if (name) {
+        document.getElementById('user-info').textContent = `👤 ${name}`;
+      }
+    }
+  </script>
+
+  <script>
+    function isLoggedIn() {
+      const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+      const order = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+      return name && order;
+    }
+
+    function checkLogin() {
+      if (!isLoggedIn()) {
+        alert('You must be logged in to access this page. Redirecting to the homepage.');
+        window.location.href = '/';
+      }
+    }
+
+    function isPhaseComplete(phaseKey) {
+      const sessionVal = sessionStorage.getItem(phaseKey);
+      const cookieVal = localStorage.getItem(phaseKey);
+      return sessionVal === 'true' || cookieVal === 'true';
+    }
+
+    function checkPhase3Completion() {
+      if (!isPhaseComplete('round3-phase5-complete') || !isPhaseComplete('round3-phase4-complete') || !isPhaseComplete('round3-phase3-complete')) {
+        alert('Please complete Phase 3 before continuing.');
+        window.location.href = 'round3-phase3.html';
+      }
+    }
+
+    window.addEventListener('load', checkLogin);
+    window.addEventListener('load', checkPhase3Completion);
+  </script>
+
+
+  <script>
+    // Toggle logout menu visibility
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   const userInfo = document.getElementById('user-info');
+    //   const logoutMenu = document.getElementById('logout-menu');
+
+    //   userInfo.addEventListener('click', () => {
+    //     logoutMenu.style.display = logoutMenu.style.display === 'block' ? 'none' : 'block';
+    //   });
+
+    //   // Hide the menu if clicked outside
+    //   document.addEventListener('click', (event) => {
+    //     if (!event.target.closest('.user-dropdown')) {
+    //       logoutMenu.style.display = 'none';
+    //     }
+    //   });
+    // });
+
+    // Clear storage and redirect to login
+    function logout() {
+      sessionStorage.clear();
+      localStorage.clear();
+
+
+      // Clear all cookies
+      document.cookie.split(";").forEach(cookie => {
+        const name = cookie.split("=")[0].trim();
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      });
+
+      window.location.href = 'round3.html';
+    }
+  </script>
+
+  <script>
+async function saveToServer() {
+  const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName') || 'Anonymous';
+  const username = localStorage.getItem('username') || 'anonymous';
+
+  // Phase 1 data
+  const phase1 = {};
+  for (let i = 1; i <= 8; i++) {
+    const summary = sessionStorage.getItem(`summary${i}`) || localStorage.getItem(`summary${i}`) || '';
+    const comp = sessionStorage.getItem(`compSummary${i}`) || localStorage.getItem(`compSummary${i}`) || '';
+    phase1[`snippet${i}`] = { summary, comprehensibility: comp };
+  }
+
+  // Phase 2 & 3 data
+  let phase2 = {}, phase3 = {};
+  try {
+    phase2 = JSON.parse(sessionStorage.getItem('phase3_ranking') || localStorage.getItem('phase3_ranking') || '{}');
+    phase3 = JSON.parse(sessionStorage.getItem('phase3_reasoning') || localStorage.getItem('phase3_reasoning') || '{}');
+  } catch (e) {
+    console.warn("⚠️ Error parsing phase2 or phase3 data", e);
+  }
+
+  // Round 2 responses
+  const round3Responses = {};
+  for (let i = 0; i <= 4; i++) {
+    const key = `round3_response_${i}`;
+    const val = localStorage.getItem(key) || sessionStorage.getItem(key);
+    if (val) {
+      try {
+        round3Responses[key] = JSON.parse(val);
+      } catch (e) {
+        round3Responses[key] = val;
+      }
+    }
+  }
+
+  // Completion flags
+  const phaseCompletion = {};
+  for (let i = 1; i <= 5; i++) {
+    const key = `round3-phase${i}-complete`;
+    phaseCompletion[key] = sessionStorage.getItem(key) || localStorage.getItem(key) || 'false';
+  }
+
+  // Other flags
+  const flags = {
+    codeTheme: localStorage.getItem('codeTheme') || 'light',
+    submitted: '0',
+    studyRound: '2'
+  };
+
+  // Final payload
+  const payload = {
+    username,
+    participantName: name,
+    phase1,
+    phase2,
+    phase3,
+    ...round3Responses,
+    ...phaseCompletion,
+    ...flags
+  };
+
+  const payloadStr = JSON.stringify(payload);
+
+  // Hash function
+  async function hashString(str) {
+    const buffer = new TextEncoder().encode(str);
+    const digest = await crypto.subtle.digest('SHA-256', buffer);
+    return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  const currentHash = await hashString(payloadStr);
+  const previousHash = sessionStorage.getItem('lastPayloadHash_round3');
+
+  if (currentHash === previousHash) {
+    console.log('🟡 Payload unchanged, not sending to server.');
+    return;
+  }
+
+  sessionStorage.setItem('lastPayloadHash_round3', currentHash);
+
+  const blob = new Blob([payloadStr], { type: 'application/json' });
+  navigator.sendBeacon('/submit_round3', blob);
+
+  console.log('✅ Round 2 payload sent to server:', payload);
+}
+
+
+    window.addEventListener('beforeunload', function (e) {
+      saveToServer();
+    });
+
+  </script>
+
+<script>
+      function isComplete(key) {
+    return sessionStorage.getItem(key) === 'true' || localStorage.getItem(key) === 'true';
+  }
+</script>
+
+<script>
+  function getLocalStorage(name) {
+  const value = localStorage.getItem(name);
+  return value ? decodeURIComponent(value) : null;
+}
+</script>
+  <footer
+    style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 14px; color: #666;">
+    Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+  </footer>
+</body>
+
+</html>

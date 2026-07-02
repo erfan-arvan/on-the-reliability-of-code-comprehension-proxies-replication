@@ -1,0 +1,3533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <!-- no-flash: apply stored theme ASAP -->
+    <script>
+        (function () {
+            try {
+                var t = sessionStorage.getItem('codeTheme') || localStorage.getItem('codeTheme');
+                if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+            } catch (e) { }
+        })();
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Threaded Opinions — Modern Chat Layout</title>
+
+    <!-- ===== Updated appearance (theme + layout) ONLY ===== -->
+    <style>
+        /* ===== THEME TOKENS (Light default, Dark via data-theme or OS) ===== */
+        :root {
+            --bg: #f7f9fc;
+            --panel: #fff;
+            --panel2: #f6f8fb;
+            --text: #0b1220;
+            --muted: #667085;
+            --accent: #6e59f9;
+            --accent2: #4f46e5;
+            --ok: #16a34a;
+            --warn: #d97706;
+            --danger: #dc2626;
+            --border: #e5e7eb;
+            --chip: #f3f4f6;
+            --chip2: #eef2ff;
+            --shadow: 0 1px 2px rgba(16, 24, 40, .06);
+            --shadow-soft: 0 1px 1px rgba(16, 24, 40, .04);
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0b0c10;
+            --panel: #151821;
+            --panel2: #10131a;
+            --text: #e6e9ef;
+            --muted: #a3aab9;
+            --accent: #7c5cff;
+            --accent2: #a590ff;
+            --ok: #22c55e;
+            --warn: #f59e0b;
+            --danger: #ef4444;
+            --border: #232735;
+            --chip: #1e2230;
+            --chip2: #2a2f42;
+            --shadow: 0 1px 2px rgba(0, 0, 0, .35);
+            --shadow-soft: 0 1px 1px rgba(0, 0, 0, .25);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0b0c10;
+                --panel: #151821;
+                --panel2: #10131a;
+                --text: #e6e9ef;
+                --muted: #a3aab9;
+                --accent: #7c5cff;
+                --accent2: #a590ff;
+                --ok: #22c55e;
+                --warn: #f59e0b;
+                --danger: #ef4444;
+                --border: #232735;
+                --chip: #1e2230;
+                --chip2: #2a2f42;
+                --shadow: 0 1px 2px rgba(0, 0, 0, .35);
+                --shadow-soft: 0 1px 1px rgba(0, 0, 0, .25);
+            }
+        }
+
+        /* ===== BASE ===== */
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.5;
+        }
+
+        a {
+            color: var(--accent2);
+            text-underline-offset: 2px
+        }
+
+        /* Header (sticky) */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(6px);
+            background: linear-gradient(180deg,
+                    color-mix(in srgb, var(--panel) 92%, transparent),
+                    color-mix(in srgb, var(--panel) 78%, transparent));
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 700
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        button,
+        .btn {
+            background: var(--chip);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: var(--shadow-soft);
+        }
+
+        button:hover {
+            background: var(--chip2)
+        }
+
+        .pill {
+            font-size: 12px;
+            padding: 6px 10px
+        }
+
+        /* Two-column shell (left TOC + main) */
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 16px 60px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 18px
+        }
+
+        @media (max-width:900px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* Left pane (TOC) */
+        .toc {
+            position: sticky;
+            top: 64px;
+            align-self: start;
+            background: var(--panel2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .toc h3 {
+            margin: 6px 8px 12px;
+            font-size: 14px;
+            color: var(--muted)
+        }
+
+        .toc .chip {
+            display: block;
+            padding: 8px 10px;
+            margin: 4px 0;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid transparent;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .toc .chip:hover {
+            background: color-mix(in srgb, var(--accent2) 10%, transparent);
+            border-color: var(--border)
+        }
+
+        /* Cards */
+        .card,
+        .topic-card,
+        .list-card,
+        .home-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .topic-card {
+            padding: 16px
+        }
+
+        .list-card {
+            padding: 12px
+        }
+
+        .home-card {
+            padding: 12px;
+            cursor: pointer
+        }
+
+        .home-card:hover {
+            box-shadow: var(--shadow)
+        }
+
+        /* Keep your existing chat visuals, harmonized to tokens */
+        .post {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid transparent
+        }
+
+        .post:hover {
+            border-color: var(--border);
+            background: var(--panel2)
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--chip);
+            color: var(--text);
+            font-weight: 700
+        }
+
+        .post-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .name {
+            font-weight: 700
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            color: var(--muted)
+        }
+
+        .time {
+            color: var(--muted);
+            font-size: 13px;
+            margin-left: auto
+        }
+
+        .content {
+            margin-top: 6px;
+            font-size: 15.5px
+        }
+
+        .attachments {
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .pill {
+            font-size: 12px;
+            border: 1px dashed var(--border);
+            color: var(--muted);
+            padding: 6px 10px;
+            border-radius: 999px
+        }
+
+        .post-actions {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .btn.primary {
+            border-color: transparent;
+            background: linear-gradient(145deg, var(--accent), var(--accent2));
+            color: #fff
+        }
+
+        .btn.ghost {
+            opacity: .85
+        }
+
+        .btn[aria-pressed="true"] {
+            box-shadow: inset 0 0 0 2px currentColor
+        }
+
+        .score {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--muted);
+            margin-left: 2px
+        }
+
+        .score .up {
+            color: var(--ok)
+        }
+
+        .score .down {
+            color: var(--danger)
+        }
+
+        .replies {
+            margin-top: 10px;
+            padding-left: 18px;
+            border-left: 2px dashed var(--border);
+            display: grid;
+            gap: 8px
+        }
+
+        .composer {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 12px;
+            padding: 12px;
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            background: var(--panel2)
+        }
+
+        textarea.input {
+            width: 100%;
+            min-height: 64px;
+            resize: vertical;
+            background: var(--panel);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font: inherit
+        }
+
+        .composer-actions {
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: flex-end
+        }
+
+        .mention {
+            font-weight: 600;
+            color: var(--accent2);
+            background: color-mix(in srgb, var(--accent2) 12%, transparent);
+            border: 1px solid var(--border);
+            padding: 0 6px;
+            border-radius: 999px
+        }
+
+        .mention.me {
+            color: #fff;
+            background: linear-gradient(145deg, var(--accent), var(--accent2));
+            border-color: transparent
+        }
+
+        /* Home grid */
+        .home-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px
+        }
+
+        .home-card-title {
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 1.2
+        }
+
+        .home-card-meta {
+            color: var(--muted);
+            font-size: 13px;
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .card-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 8px;
+            min-width: 18px;
+            line-height: 1;
+            font-weight: 600;
+            border-radius: 999px;
+            color: #fff;
+            font-size: 12px;
+            background: linear-gradient(145deg, var(--accent), var(--accent2))
+        }
+
+        /* Unread badge (kept) */
+        .menu-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+            padding: 2px 8px;
+            min-width: 18px;
+            font-size: 12px;
+            line-height: 1;
+            font-weight: 600;
+            border-radius: 999px;
+            color: #fff;
+            background: linear-gradient(145deg, var(--accent), var(--accent2));
+        }
+
+        /* Desktop: hide top strip; Mobile: hide left sidebar */
+        @media (min-width:901px) {
+            #disagreements-bar {
+                display: none
+            }
+        }
+
+        @media (max-width:900px) {
+            #left-nav {
+                display: none
+            }
+        }
+
+        /* Print */
+        @media print {
+
+            header,
+            .controls,
+            #left-nav {
+                display: none !important
+            }
+
+            .wrap {
+                padding: 0
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* Make instructions-box follow theme (override inline) */
+        #instructions-box {
+            background: var(--panel) !important;
+            color: var(--text) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 16px !important;
+            box-shadow: var(--shadow) !important;
+        }
+
+        #instructions-box button {
+            background: var(--chip) !important;
+            color: var(--text) !important;
+            border: 1px solid var(--border) !important;
+        }
+
+        #instructions-box button:hover {
+            background: var(--chip2) !important;
+        }
+
+        .site-footer {
+            margin-top: 28px;
+            padding: 16px 12px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 14px;
+            text-align: center;
+            background: var(--panel);
+        }
+
+        .site-footer a {
+            color: var(--accent2);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+
+        /* Mention suggestions: pin to viewport to avoid clipping */
+        .mention-suggest {
+            position: fixed;
+            /* was absolute */
+            z-index: 4000;
+            /* above sticky header/sidebars */
+            background: var(--panel);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 4px;
+            min-width: 180px;
+        }
+
+        /*Live ranking*/
+        /* Layout-only variables for this panel */
+        :root {
+            --left-gap: 250px;
+            /* how much of the page stays visible on the left when fully open */
+            --panel-min: 400px;
+            /* minimum panel width */
+        }
+
+        /* Inherit your site fonts/colors; do not override page background */
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Sticky toggle bar on the right — themed */
+        #toggle-bar {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 1001;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            background: linear-gradient(145deg, var(--accent, #6e59f9), var(--accent2, #4f46e5));
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 12px 0 0 12px;
+            border: 1px solid transparent;
+            box-shadow: var(--shadow, 0 6px 20px rgba(0, 0, 0, .15));
+            cursor: pointer;
+            user-select: none;
+            font-weight: 700;
+            transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+        }
+
+        #toggle-bar:hover {
+            transform: translateY(calc(-50% - 1px));
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .22);
+            filter: brightness(1.02);
+        }
+
+        #toggle-bar:active {
+            transform: translateY(-50%);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .18);
+        }
+
+        #toggle-bar:focus-visible {
+            outline: 3px solid color-mix(in srgb, white 70%, var(--accent2, #4f46e5));
+            outline-offset: 2px;
+        }
+
+        /* Sliding panel anchored to the right — themed */
+        #panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100%;
+            width: calc(100% - var(--left-gap));
+            /* default open width leaves gap on left */
+            max-width: 100%;
+            min-width: var(--panel-min);
+
+            background: var(--panel, #fff);
+            color: var(--text, #0b1220);
+            box-shadow: -4px 0 14px rgba(0, 0, 0, 0.25);
+            border-left: 1px solid var(--border, #e5e7eb);
+
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.35s ease;
+            overflow: hidden;
+            /* keep content clipped to panel */
+        }
+
+        #panel.open {
+            right: 0;
+        }
+
+        /* Header */
+        #panel-header {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+
+            background: var(--panel2, #f6f8fb);
+            color: var(--text, #0b1220);
+            border-bottom: 1px solid var(--border, #e5e7eb);
+            font-weight: 700;
+        }
+
+        /* The iframe fills the remaining space */
+        #panel iframe {
+            flex: 1 1 auto;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            background: var(--panel, #fff);
+        }
+
+        /* Draggable left edge */
+        #resizer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* left edge of the panel */
+            width: 8px;
+            height: 100%;
+            cursor: col-resize;
+            background: transparent;
+        }
+
+        #resizer::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: color-mix(in srgb, var(--border, #e5e7eb) 70%, transparent);
+        }
+
+        #resizer:hover {
+            background: color-mix(in srgb, var(--accent2, #4f46e5) 6%, transparent);
+        }
+
+        /* While dragging, prevent text selection */
+        .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* (Optional) Close button style if you un-comment it later */
+        #close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text, #0b1220);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0 6px;
+            margin-left: auto;
+        }
+
+        #close-btn:hover {
+            color: var(--danger, #dc2626);
+        }
+
+        /* Respect printing */
+        @media print {
+
+            #toggle-bar,
+            #panel {
+                display: none !important;
+            }
+        }
+
+        /* Reuse the same visual style as #toggle-bar */
+        #update-bar {
+            position: fixed;
+            top: calc(50% + 56px);
+            /* sits just below the Ranking button */
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 1001;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            background: linear-gradient(145deg, var(--accent, #6e59f9), var(--accent2, #4f46e5));
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 12px 0 0 12px;
+            border: 1px solid transparent;
+            box-shadow: var(--shadow, 0 6px 20px rgba(0, 0, 0, .15));
+            cursor: pointer;
+            user-select: none;
+            font-weight: 700;
+            transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+        }
+
+        #update-bar:hover {
+            transform: translateY(calc(-50% - 1px));
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .22);
+            filter: brightness(1.02);
+        }
+
+        #update-bar:active {
+            transform: translateY(-50%);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .18);
+        }
+
+        #update-bar:focus-visible {
+            outline: 3px solid color-mix(in srgb, white 70%, var(--accent2, #4f46e5));
+            outline-offset: 2px;
+        }
+
+        /* tiny “busy” feedback */
+        #update-bar.busy {
+            filter: saturate(1.15) brightness(1.03);
+        }
+
+        /* Hide in print */
+        @media print {
+            #update-bar {
+                display: none !important;
+            }
+        }
+
+        /* Second sticky button mirrors #toggle-bar */
+        #update-bar {
+            position: fixed;
+            top: calc(50% + 80px);
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 1001;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            background: linear-gradient(145deg, var(--accent, #6e59f9), var(--accent2, #4f46e5));
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 12px 0 0 12px;
+            border: 1px solid transparent;
+            box-shadow: var(--shadow, 0 6px 20px rgba(0, 0, 0, .15));
+            cursor: pointer;
+            user-select: none;
+            font-weight: 700;
+            transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+        }
+
+        #update-bar:hover {
+            transform: translateY(calc(-50% - 1px));
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .22);
+            filter: brightness(1.02);
+        }
+
+        #update-bar:active {
+            transform: translateY(-50%);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .18);
+        }
+
+        #update-bar:focus-visible {
+            outline: 3px solid color-mix(in srgb, white 70%, var(--accent2, #4f46e5));
+            outline-offset: 2px;
+        }
+
+        @media print {
+            #update-bar {
+                display: none !important;
+            }
+        }
+
+        /* Second slide panel mirrors #panel */
+        #panel-update {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100%;
+            width: calc(100% - var(--left-gap));
+            max-width: 100%;
+            min-width: var(--panel-min);
+
+            background: var(--panel, #fff);
+            color: var(--text, #0b1220);
+            box-shadow: -4px 0 14px rgba(0, 0, 0, 0.25);
+            border-left: 1px solid var(--border, #e5e7eb);
+
+            z-index: 999;
+            /* sit just below the live panel so they don't fight for top */
+            display: flex;
+            flex-direction: column;
+            transition: right 0.35s ease;
+            overflow: hidden;
+        }
+
+        #panel-update.open {
+            right: 0;
+        }
+
+        #panel-update-header {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--panel2, #f6f8fb);
+            color: var(--text, #0b1220);
+            border-bottom: 1px solid var(--border, #e5e7eb);
+            font-weight: 700;
+        }
+
+        #panel-update iframe {
+            flex: 1 1 auto;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            background: var(--panel, #fff);
+        }
+
+        /* Resizer for the update panel */
+        #resizer-update {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            cursor: col-resize;
+            background: transparent;
+        }
+
+        #resizer-update::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: color-mix(in srgb, var(--border, #e5e7eb) 70%, transparent);
+        }
+
+        #resizer-update:hover {
+            background: color-mix(in srgb, var(--accent2, #4f46e5) 6%, transparent);
+        }
+
+        /* Header close button (right side of header bar) */
+        .panel-close {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid var(--border, #e5e7eb);
+            color: var(--text, #0b1220);
+            width: 28px;
+            height: 28px;
+            line-height: 1;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+        }
+
+        .panel-close:hover {
+            background: color-mix(in srgb, var(--accent2, #4f46e5) 8%, transparent);
+            border-color: color-mix(in srgb, var(--accent2, #4f46e5) 40%, var(--border, #e5e7eb));
+            color: var(--text, #0b1220);
+        }
+
+        /* Overlay close button that sits above the iframe */
+        #panel,
+        #panel-update {
+            position: fixed;
+        }
+
+        /* ensure positioned ancestor */
+        .frame-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+            /* above iframe */
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid var(--border, #e5e7eb);
+            background: var(--panel2, #f6f8fb);
+            color: var(--text, #0b1220);
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: var(--shadow, 0 6px 20px rgba(0, 0, 0, .15));
+        }
+
+        .frame-close-btn:hover {
+            background: color-mix(in srgb, var(--accent2, #4f46e5) 10%, var(--panel2, #f6f8fb));
+            border-color: color-mix(in srgb, var(--accent2, #4f46e5) 35%, var(--border, #e5e7eb));
+        }
+
+
+        .example-btn {
+            background: linear-gradient(145deg, var(--accent), var(--accent2));
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: background 0.2s, box-shadow 0.2s;
+            margin-top: 30px;
+        }
+
+        .done-toggle-btn {
+            background: linear-gradient(145deg, var(--accent), var(--accent2));
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: background 0.2s, box-shadow 0.2s;
+            margin-top: 30px;
+        }
+
+        .done-toggle-btn:hover {
+            background: linear-gradient(145deg, var(--accent2), var(--accent));
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .done-toggle-btn:active {
+            background: linear-gradient(145deg, var(--accent), var(--accent2));
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+
+
+
+        #chat-view {
+            scroll-margin-top: 70px;
+        }
+
+        code {
+            cursor: pointer;
+            background: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        code:hover {
+            background: #e0e0ff;
+        }
+
+        /* for snippet modal */
+        .light-mode #modal-code {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .code-container {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            background-color: inherit;
+            color: inherit;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            line-height: 1.5;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .line-numbers {
+            text-align: right;
+            padding-right: 10px;
+            user-select: none;
+            color: #888;
+        }
+
+        .code-content {
+            white-space: pre;
+        }
+
+        #code {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 20px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .light-mode #code {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        /* LIGHT MODE styles */
+        .keyword {
+            color: #0000ff;
+            font-weight: bold;
+        }
+
+        .type {
+            color: #007070;
+        }
+
+        .function {
+            color: #7928a1;
+            font-weight: bold;
+        }
+
+        .literal {
+            color: #009999;
+        }
+
+        .string {
+            color: #a31515;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .number {
+            color: #098658;
+        }
+
+        /* DARK MODE overrides */
+        .dark-mode .keyword {
+            color: #82aaff;
+        }
+
+        .dark-mode .type {
+            color: #89ddff;
+        }
+
+        .dark-mode .function {
+            color: #c792ea;
+        }
+
+        .dark-mode .literal {
+            color: #ffcb6b;
+        }
+
+        .dark-mode .string {
+            color: #c3e88d;
+        }
+
+        .dark-mode .comment {
+            color: #7f848e;
+        }
+
+        .dark-mode .number {
+            color: #f78c6c;
+        }
+
+        body.dark-mode .card {
+            background-color: #2a2a2a;
+            border-color: #555;
+            color: #ddd;
+        }
+
+        body.dark-mode .snippet-preview-box {
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+        }
+
+        body.dark-mode .code-box {
+            background-color: #2d2d2d;
+            color: #ddd;
+        }
+
+        #modal-code {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 20px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .light-mode #modal-code {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        /* Inline <code> that feels like a clickable chip and honors your theme tokens */
+        :not(pre)>code {
+            cursor: pointer;
+            font: 500 0.92em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            padding: 2px 6px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--chip);
+            color: var(--text);
+            box-shadow: var(--shadow-soft);
+            transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+        }
+
+        /* Hover/active states use your accent + chip tokens */
+        :not(pre)>code:hover {
+            background: color-mix(in srgb, var(--chip2) 70%, transparent);
+            border-color: color-mix(in srgb, var(--accent2) 35%, var(--border));
+            color: var(--accent2);
+            box-shadow: var(--shadow);
+        }
+
+        :not(pre)>code:active {
+            background: color-mix(in srgb, var(--accent2) 14%, var(--chip));
+            border-color: var(--accent2);
+            color: #fff;
+        }
+
+        /* Keyboard focus ring (accessible) */
+        :not(pre)>code:focus-visible {
+            outline: 3px solid color-mix(in srgb, white 70%, var(--accent2));
+            outline-offset: 2px;
+        }
+
+        /* If a <code> sits inside a link, let the link control text color/underline */
+        a>code {
+            color: inherit;
+            text-decoration: inherit;
+        }
+
+        /* Optional: only add “clickable” affordance when it maps to a known method */
+        :not(pre)>code.clickable-method {
+            cursor: pointer;
+        }
+
+        /* Reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            :not(pre)>code {
+                transition: none;
+            }
+        }
+
+        .topic-description {
+            margin-top: 30px;
+            font-weight: 400;
+            border: 1px solid #1e2230;
+            padding: 5px;
+        }
+
+
+        .topic-meta {
+            color: #888;
+        }
+
+        .sync-link {
+            margin-left: 8px;
+            font-size: 0.9em;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: underline;
+            /* optional */
+        }
+
+        .sync-link:hover {
+            text-decoration: none;
+            /* optional hover effect */
+            opacity: 0.8;
+            /* subtle feedback */
+        }
+
+        /* top sheet for ranking */
+        /* === Top sheet (themed) === */
+        .top-sheet {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 50vh;
+            /* default half page */
+            min-height: 240px;
+            max-height: 95vh;
+
+            background: var(--panel, #fff);
+            color: var(--text, #0b1220);
+            border-bottom: 1px solid var(--border, #e5e7eb);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+            z-index: 3000;
+
+            transform: translateY(-100%);
+            transition: transform .35s ease;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            overflow: hidden;
+        }
+
+        .top-sheet.open {
+            transform: translateY(0);
+        }
+
+        /* Header */
+        .top-sheet-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--panel2, #f6f8fb);
+            color: var(--text, #0b1220);
+            border-bottom: 1px solid var(--border, #e5e7eb);
+            font-weight: 700;
+        }
+
+        .panel-close {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid var(--border, #e5e7eb);
+            color: var(--text, #0b1220);
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .panel-close:hover {
+            background: color-mix(in srgb, var(--accent2, #4f46e5) 8%, transparent);
+            border-color: color-mix(in srgb, var(--accent2, #4f46e5) 40%, var(--border, #e5e7eb));
+        }
+
+        /* Iframe fills remaining space */
+        #summary-frame {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: var(--panel, #fff);
+            display: block;
+        }
+
+        /* Overlay close button on top-right of the sheet (above iframe) */
+        .frame-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid var(--border, #e5e7eb);
+            background: var(--panel2, #f6f8fb);
+            color: var(--text, #0b1220);
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: var(--shadow, 0 6px 20px rgba(0, 0, 0, .15));
+        }
+
+        .frame-close-btn:hover {
+            background: color-mix(in srgb, var(--accent2, #4f46e5) 10%, var(--panel2, #f6f8fb));
+            border-color: color-mix(in srgb, var(--accent2, #4f46e5) 35%, var(--border, #e5e7eb));
+        }
+
+        /* Drag handle at the bottom edge */
+        .top-sheet-resizer {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 10px;
+            cursor: ns-resize;
+            background: transparent;
+        }
+
+        .top-sheet-resizer::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 3px;
+            width: 60px;
+            height: 4px;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--border, #e5e7eb) 70%, transparent);
+        }
+
+        /* Hide when printing */
+        @media print {
+            .top-sheet {
+                display: none !important;
+            }
+        }
+
+        .done-clarify {
+            margin-top: 6px;
+            font-size: 0.9em;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+          .voters-tooltip {
+    position: fixed;
+    z-index: 4000;
+    max-width: 280px;
+    background: var(--panel, #fff);
+    color: var(--text, #0b1220);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    font-size: 13px;
+    line-height: 1.35;
+    pointer-events: none; /* let mouse pass through */
+  }
+  .voters-tooltip h4 {
+    margin: 0 0 6px 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted, #667085);
+    text-transform: uppercase;
+    letter-spacing: .02em;
+  }
+  .voters-tooltip ul {
+    margin: 0;
+    padding: 0 0 0 14px;
+  }
+  .voters-tooltip li {
+    margin: 2px 0;
+    word-break: break-word;
+  }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- Sticky toggle bar -->
+    <div id="toggle-bar" aria-controls="panel" aria-expanded="false">☰ Live<br>Ranking</div>
+    <div id="update-bar" aria-label="Refresh live ranking">↻ Update<br>Ranking</div>
+
+
+    <!-- Sliding panel with iframe -->
+    <!-- Live Ranking panel (existing) -->
+    <div id="panel" aria-hidden="true">
+        <div id="resizer" title="Drag to resize"></div>
+        <div id="panel-header">
+            <span>Live Ranking</span>
+            <button id="close-btn" class="panel-close" aria-label="Close Live Ranking">X</button>
+        </div>
+
+        <!-- NEW overlay close button that sits on top of the iframe -->
+        <button id="frame-close-ranking" class="frame-close-btn" aria-label="Close Live Ranking">X</button>
+
+        <iframe id="ranking-frame" src="live-ranking.html" title="Live ranking"></iframe>
+    </div>
+
+    <!-- Update Ranking panel (existing) -->
+    <div id="panel-update" aria-hidden="true">
+        <div id="resizer-update" title="Drag to resize"></div>
+        <div id="panel-update-header">
+            <span>Update Ranking</span>
+            <button id="close-btn-update" class="panel-close" aria-label="Close Update Ranking">X</button>
+        </div>
+
+        <!-- NEW overlay close button that sits on top of the iframe -->
+        <button id="frame-close-update" class="frame-close-btn" aria-label="Close Update Ranking">X</button>
+
+        <iframe id="update-frame" data-src="update-ranking.html" src="update-ranking.html"
+            title="Update ranking"></iframe>
+
+    </div>
+
+
+    <!-- New header (appearance only) -->
+    <header>
+        <div class="bar">
+            <div class="title">Threaded Opinions</div>
+            <div class="controls">
+                <button id="home-btn-top" class="pill" type="button"
+                    onclick="document.getElementById('home-btn')?.click()">🏠 Home</button>
+                <button id="btn-theme" class="pill" title="Theme mode">Theme: Auto 🌗</button>
+                <button class="pill" onclick="syncNow()">Sync</button>
+                <button class="pill" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Updated layout wrapper: keep your id + role; add appearance classes -->
+    <div class="shell wrap grid" role="application" aria-label="Threaded opinions" id="app">
+
+        <!-- New left sidebar (appearance only). We will move the existing #disagreements-menu into #left-nav-slot on desktop -->
+        <nav class="toc" id="left-nav" aria-label="Disagreements sidebar">
+            <h3>Forums</h3>
+            <div class="controls" style="padding:8px 8px 12px;">
+                <button id="home-btn-left" class="pill" type="button"
+                    onclick="document.getElementById('home-btn')?.click()">🏠 Home</button>
+                <button id="logout-btn-left" class="pill" type="button" onclick="logout()">🚪 Logout</button>
+            </div>
+            <div id="left-nav-slot"></div>
+        </nav>
+
+        <!-- Main column (your original content preserved) -->
+        <main id="main-col">
+
+            <div id="instructions-box"
+                style="background-color: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="margin: 0;">Final round: Read This First!</h2>
+                    <button onclick="toggleInstructions()"
+                        style="padding: 6px 12px; font-size: 14px; border-radius: 5px; background-color: #ffffff; border: none; cursor: pointer; color: #222; border: solid;">
+                        Hide
+                    </button>
+                </div>
+
+                <div id="instructions-content" style="margin-top: 15px;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li>You are here because some <strong>disagreements remain</strong> about the positions of
+                            certain snippets in the rankings.</li>
+
+                        <li>
+                            👉 <a href="round2-summary.html" target="_blank" rel="noopener noreferrer">View the round 2
+                                summaries</a>
+                            to quickly see how each expert ranked the snippets and explained their reasoning.
+                        </li>
+
+                        <li>
+                            (Optional) Take a look at <a href="round2-reflections.html" target="_blank"
+                                rel="noopener noreferrer">experts’ reflection answers</a>
+                            to better understand their thought process before this round.
+                        </li>
+
+                        <li>
+                        There are <strong>four discussion forums</strong> below. After finishing these instructions, click each forum, read the discussion point, and share your input.
+                        </li>
+
+
+                        <li>A mediator from the research team, <strong>facilitator</strong>, will also be in the chat to help
+                            clarify or resolve disagreements.</li>
+
+                        <li>You can always check the <strong style="font-size: 10px;" class="example-btn">☰ live
+                                rankings</strong> from all experts by using the button
+                            on the right-hand side of the screen.</li>
+
+                        <li>Use the <strong style="font-size: 10px;" class="example-btn">Update
+                                Ranking</strong> button on the right side of the screen to adjust
+                            your ranking at any time.</li>
+
+                        <li>If you need to compare snippets, click the <strong style="font-size: 10px;"
+                                class="example-btn">↻ Update Ranking</strong> button and select the view checkboxes
+                            to compare them.</li>
+
+
+                        <li>You’ll also receive <strong>email notifications</strong> about new chat activity, typically
+                            within a couple of hours.</li>
+
+
+                        <li>You can <strong>tag</strong> other experts in the chat by typing <code>@</code> and selecting their name.
+                            They will be notified immediately.</li>
+
+                        <li>You can 👍 <strong>like</strong> or 👎 <strong>dislike</strong> other experts’ posts in the forum to signal agreement or disagreement.</li>
+
+
+
+                        <li>Your goal is to <strong>discuss and seek consensus</strong> on snippet rankings if possible.
+                        </li>
+
+                        <li style="color: rgb(62, 0, 0); background-color: #ddd;">⚠️ <strong>Consensus is not
+                                required</strong>. This is the final round anyway, but thoughtful discussion can still
+                            help resolve disagreements.</li>
+
+
+                        <li>If you’re finished with a discussion, click the
+                            <strong class="example-btn" style="font-size: 10px;">“I'm done with this
+                                discussion”</strong> button at the bottom of that forum.
+                        </li>
+
+                        <li>
+                        <strong>Deadline:</strong> The discussion forums will remain open until
+                        <span style="text-decoration: line-through; color: #888;">
+                        11:59 PM Eastern on Friday, Jan 30, 2026
+                        </span>
+                        &nbsp;→&nbsp;
+                        <u>11:59 PM Eastern on Friday, Feb 9, 2026</u>
+                        The round may close earlier if all forums are marked as complete by all participants.
+                        This is a hard deadline.
+                        </li>
+
+
+                        <li><em>Thank you again for your valuable contributions — let’s make these final discussions
+                                count!</em> 🎉</li>
+                    </ul>
+
+                    <div style="
+  background-color: #f3f3f3;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.6;
+">
+  <div style="
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+  ">
+    Overall Agreement Summary
+  </div>
+
+  <p style="margin: 0;">
+    Overall, experts showed strong agreement on the broad structure of snippet difficulty.
+    Most experts viewed simple validation and configuration methods such as
+    <code>isValidProjectName</code> and <code>isRemote</code> as easier than more complex or
+    mathematically oriented snippets, even though their exact placement varied across rankings.
+    In contrast, mathematically or conceptually dense snippets like <code>lowestPositiveRoot</code>
+    and <code>atan2</code> were almost always placed toward the hardest end.
+    Experts also largely agreed on the relative ordering between these extremes, while differing on
+    finer distinctions among mid-range snippets such as <code>indexOfIgnoreCase</code>,
+    <code>deleteRecursively</code>, and <code>isMachineTypeDefined</code>.
+    The remaining disagreements are divided into four disagreement points, and for each of them we provide
+    a dedicated discussion forum. Click on the boxes below to discuss each of them.
+  </p>
+</div>
+
+
+                </div>
+            </div>
+
+            <!-- Home grid (default visible) -->
+            <section id="home-grid" class="list-card" aria-label="All disagreements">
+                <h3>Forums (Click to open)</h3>
+                <div id="home-cards" class="home-cards"></div>
+            </section>
+
+            <!-- Top sticky disagreements bar (kept; auto-hidden on desktop by CSS) -->
+            <nav id="disagreements-bar" aria-label="Disagreements switcher">
+                <div class="bar-inner">
+                    <button id="home-btn" class="chip home-chip" type="button" aria-pressed="true">🏠 Home</button>
+                    <button id="logout-btn" class="chip home-chip" type="button" onclick="logout()">🚪 Logout</button>
+                    <div id="disagreements-menu" class="disagreements-strip" role="tablist" aria-label="Disagreements">
+                        <!-- chips injected by JS -->
+                    </div>
+                </div>
+            </nav>
+
+            <div id="chat-view" hidden>
+                <!-- Topic/Header + Disagreement Switcher -->
+                <section class="topic-card" aria-labelledby="topic-title">
+                    <div class="topic-heading">
+                        <div class="topic-icon" aria-hidden="true">💬</div>
+                        <div>
+                            <h1 id="topic-title" class="topic-title">Loading disagreements…</h1>
+                            <div class="topic-meta" id="topic-meta">Single-subject thread • <span
+                                    id="opinion-count">0</span>
+                                opinions • Last sync <span id="last-sync">—</span></div>
+                        </div>
+                        <button id="desc-toggle" onclick="toggleDescription()" class="desc-btn">
+                            - Hide description
+                        </button>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0;">
+                        <button id="summary-open-btn" type="button" class="done-toggle-btn"
+                            aria-controls="summary-top-sheet" aria-expanded="false">
+                            See round 2 Rankings
+                        </button>
+                        <!-- <a href="round3-reflections.html" target="_blank" rel="noopener noreferrer"
+                            class="done-toggle-btn">
+                            📝 View experts’ full reflections
+                        </a> -->
+                    </div>
+
+                    <div id="topic-description" class="topic-description"></div>
+                    <h3 style="color: #f59e0b;">Propose a resolution to this disagreement, share your perspective, or respond to other experts below.</h3>
+                </section>
+
+                <!-- Opinions List (dynamic) -->
+                <section class="list-card" aria-live="polite">
+                    <div id="posts">There is no discussions yet. Be the first one to express your opinion.</div>
+                </section>
+
+                <!-- New Opinion Composer (root-level) -->
+                <section class="list-card" aria-label="Add new opinion">
+                    <div class="composer">
+                        <div class="avatar" aria-hidden="true" id="you-avatar">YOU</div>
+                        <div style="width:100%">
+                            <label class="sr-only" for="new-opinion">Share your opinion</label>
+                            <textarea id="new-opinion" class="input" placeholder="Share your opinion…"></textarea>
+                            <div class="composer-actions">
+                                <button class="btn" id="attach-btn" disabled>Attach</button>
+                                <span class="spacer"></span>
+                                <button class="btn primary" id="post-root">Post opinion</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== Your original scripts (kept as-is) ===== -->
+    <script src="js/disagreements.js"></script>
+    <script src="js/dataExpert.js"></script>
+
+    <script>
+        function firstChars(name, count = 20) {
+            if (!name) return "";
+            return name.slice(0, count);
+        }
+
+        /* ===== Auth helpers (provided) ===== */
+        function isLoggedIn() {
+            const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+            const order = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+            return name && order;
+        }
+        function checkLogin() {
+            if (!isLoggedIn()) {
+                alert('You must be logged in to access this page. Redirecting to the homepage.');
+                window.location.href = '/discussion-round.html';
+            }
+        }
+
+        /* ===== Config ===== */
+        const CONFIG = {
+            DISAGREEMENTS_URL: 'js/disagreements.json',
+            GET_LATEST_CHAT_URL: '/get_latest_chat',
+            SUBMIT_CHAT_URL: '/submit_chat',
+            DELETE_CHAT_URL: '/delete_chat',
+            POLL_MS: 120000,
+            UPDATE_FINISHED_URL: '/update_finished_chat',
+            GET_FINISHED_URL: '/get_finished_chats'
+        };
+
+        /* ===== App state ===== */
+        const state = {
+            user: {
+                name: sessionStorage.getItem('username') || localStorage.getItem('username') || 'You'
+            },
+            disagreements: [],
+            currentId: null,
+            chatsByDisagreement: {},
+            previousLatestAt: '',      // from server (do not mutate)
+            nowLatestAt: '',
+            oldestReturnedAt: '',
+            lastSeenByDis: {},         // ⬅️ per-disagreement baseline
+            view: 'home',
+            currentOpenedAt: '',       // ⬅️ baseline for currently open disagreement (set on switch)
+            currentBaseline: '',
+            usernames: [],
+            pollHandle: null
+        };
+
+        /* ===== Utility ===== */
+        const $ = (sel, root = document) => root.querySelector(sel);
+        const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+        function fmtTime(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            if (isNaN(d.getTime())) return '';
+            return new Intl.DateTimeFormat(undefined, {
+                year: 'numeric', month: 'short', day: '2-digit',
+                hour: '2-digit', minute: '2-digit',
+            }).format(d);
+        }
+
+        function currentHandle() {
+            const h = sessionStorage.getItem('username')
+                || localStorage.getItem('username')
+                || state.user.name
+                || '';
+            return (h || '').trim().toLowerCase();
+        }
+
+        function defaultBaselineISO(yearsAgo = 1) {
+            const d = new Date();
+            d.setFullYear(d.getFullYear() - yearsAgo);
+            return d.toISOString();
+        }
+
+        // Build a thread tree from flat messages
+        function buildThread(messages) {
+            const byId = new Map();
+            const roots = [];
+            messages.forEach(m => {
+                m.children = [];
+                byId.set(m.id, m);
+            });
+            messages.forEach(m => {
+                if (m.parentId) {
+                    const p = byId.get(m.parentId);
+                    if (p) p.children.push(m); else roots.push(m);
+                } else {
+                    roots.push(m);
+                }
+            });
+            const sortRec = nodes => {
+                nodes.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                nodes.forEach(n => sortRec(n.children));
+            };
+            sortRec(roots);
+            return roots;
+        }
+
+        // On boot, mark body so CSS adds top padding
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('has-sticky-bar');
+        });
+
+        function renderDisagreementsMenu() {
+            const menu = document.getElementById('disagreements-menu');
+            if (!menu) {
+                console.warn('🚫 renderDisagreementsMenu: #disagreements-menu not found');
+                return;
+            }
+            menu.innerHTML = '';
+
+            console.groupCollapsed('🧱 renderDisagreementsMenu');
+            const ids = [];
+            state.disagreements.forEach(d => {
+                const id = String(d.id);
+                ids.push(id);
+
+                const btn = document.createElement('button');
+                btn.className = 'chip';
+                btn.type = 'button';
+                btn.role = 'tab';
+                btn.dataset.id = id;
+                btn.setAttribute('aria-pressed', String(d.id === state.currentId));
+                btn.textContent = firstChars(d.title);
+                btn.onclick = () => openDisagreement(toId(d.id));
+                menu.appendChild(btn);
+            });
+            console.log('chips rendered:', ids);
+            console.log('chip elements count:', menu.querySelectorAll('.chip').length);
+            console.groupEnd();
+
+            updateDisagreementBadges();
+        }
+
+        function switchDisagreement(newId) {
+            const prevId = state.currentId;
+            const nowIso = new Date().toISOString();
+
+            console.groupCollapsed('🔁 switchDisagreement');
+            console.log('prevId:', prevId, '→ newId:', newId);
+
+            if (prevId != null) {
+                const stamp = new Date(Date.now() - 1000).toISOString();
+                state.lastSeenByDis[String(prevId)] = stamp;
+                console.log('marked previous as seen:', String(prevId), '→', stamp);
+                saveSeenToStorage();
+                pushSeenToServer();
+            }
+
+            state.currentId = toId(newId);
+            state.currentOpenedAt = nowIso;
+            console.log('currentOpenedAt set to:', nowIso);
+            console.log('lastSeenByDis snapshot:', JSON.parse(JSON.stringify(state.lastSeenByDis)));
+            console.groupEnd();
+
+            document.querySelectorAll('#disagreements-menu .chip')
+                .forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id == newId)));
+
+            const active = document.querySelector(`#disagreements-menu .chip[data-id="${newId}"]`);
+            active?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
+            const d = state.disagreements.find(x => String(x.id) === String(newId));
+            if (d) {
+                $('#topic-title').textContent = d.title;
+                $('#topic-description').innerHTML = d.htmltext || '';
+                $('#topic-meta').innerHTML = `Snippet ${d['snippet-id'] ?? d.snippet_id ?? '—'} • <span id="opinion-count">0</span> opinions • Last sync <span id="last-sync">—</span>`;
+            }
+
+            renderCurrentThread();
+            updateDisagreementBadges();
+        }
+
+        function checkEmptyPosts() {
+            const posts = document.getElementById("posts");
+            if (!posts) return; // no such div
+
+            // Trim innerHTML to ignore stray whitespace/comments
+            if (posts.innerHTML.trim() === "") {
+                posts.innerHTML = `
+      <div style="padding: 16px; text-align: center; color: var(--muted); font-style: italic;">
+        There are no discussions in this forum yet. <br>
+        Be the first one to express your opinion.
+      </div>
+    `;
+            }
+        }
+
+        function renderCurrentThread() {
+            if (state.view !== 'chat' || state.currentId == null) return;
+            const posts = $('#posts');
+            posts.innerHTML = '';
+            const msgs = state.chatsByDisagreement[state.currentId] || [];
+            const thread = buildThread(msgs);
+            $('#opinion-count').textContent = msgs.length;
+            $('#last-sync').textContent = new Date().toLocaleTimeString();
+            thread.forEach(node => posts.appendChild(renderMessage(node)));
+
+            if (isChatFinished(state.currentId)) {
+                disableChatInputs();
+            } else {
+                enableChatInputs();
+            }
+
+            mountDoneFooter();
+            queueMicrotask(() => refreshDoneToggleButton(state.currentId));
+            checkEmptyPosts();
+        }
+
+        function renderMessage(msg) {
+            const el = document.createElement('article');
+            el.className = 'post';
+            el.dataset.id = msg.id;
+
+            const isRoot = !msg.parentId;
+            const isNew = isNewForUserIn(state.currentId, msg);
+            const newBadge = isNew
+                ? `<span class="badge" style="border-color:transparent; background:linear-gradient(145deg,#ef4444,#dc2626); color:#fff;">NEW</span>`
+                : '';
+
+            el.innerHTML = `
+    <div class="avatar" aria-hidden="true">${(msg.username || '?').slice(0, 2).toUpperCase()}</div>
+    <div class="post-body">
+      <div class="post-head">
+        <span class="name">${msg.username || 'Unknown'}</span>
+        ${newBadge}
+        ${msg.role ? `<span class="badge">${msg.role}</span>` : ''}
+        <time class="time" datetime="${msg.createdAt || ''}">${fmtTime(msg.createdAt)}</time>
+      </div>
+        <div class="content">
+        ${msg.is_deleted ? '<em style="color:var(--muted)">[message deleted]</em>'
+                    : linkMentions(escapeHtml(msg.content || ''))}
+        </div>
+
+      <div class="post-actions">
+        <button class="btn" onclick="vote(this, 1)">👍</button>
+        <button class="btn" onclick="vote(this, -1)">👎</button>
+        <span class="score"><span class="up" data-up>${msg.up || 0}</span>/<span class="down" data-down>${msg.down || 0}</span></span>
+        <span class="spacer"></span>
+        ${(isRoot && !msg.is_deleted)
+                    ? `<button class="btn ghost" onclick="toggleReply(this)">↩︎ Reply</button>`
+                    : ``
+                }
+        ${(msg.username === state.user.name && !msg.is_deleted)
+                    ? `<button class="btn ghost hidden" onclick="requestDelete('${msg.id}')" style="display: none;">🗑 Delete</button>`
+                    : ``
+                }
+        <button class="btn ghost" style="display: none;">⋯</button>
+      </div>
+    </div>
+  `;
+
+// Gather voter names
+const votes = msg.votes || {}; // { username: +1|-1 }
+const upUsers = Object.keys(votes).filter(u => Number(votes[u]) === 1);
+const downUsers = Object.keys(votes).filter(u => Number(votes[u]) === -1);
+
+// Grab elements
+const upCount = el.querySelector('[data-up]');
+const downCount = el.querySelector('[data-down]');
+const actionBtns = el.querySelectorAll('.post-actions > button.btn');
+const likeBtn = actionBtns[0];
+const dislikeBtn = actionBtns[1];
+
+// Helper to attach hover
+function bindHover(elm, heading, users) {
+  if (!elm) return;
+  elm.addEventListener('mouseenter', () => showVotersTooltip(elm, heading, users));
+  elm.addEventListener('mouseleave', hideVotersTooltip);
+  elm.addEventListener('blur', hideVotersTooltip);
+  elm.addEventListener('focus', () => showVotersTooltip(elm, heading, users)); // keyboard
+}
+
+// Wire up like/dislike controls and counts
+bindHover(likeBtn, 'Liked by', upUsers);
+bindHover(upCount, 'Liked by', upUsers);
+bindHover(dislikeBtn, 'Disliked by', downUsers);
+bindHover(downCount, 'Disliked by', downUsers);
+
+            const repliesWrap = document.createElement('div');
+            repliesWrap.className = 'replies';
+            (msg.children || []).forEach(c => repliesWrap.appendChild(renderMessage(c)));
+            el.querySelector('.post-body').appendChild(repliesWrap);
+
+            if (isRoot && !msg.is_deleted) {
+                const composer = document.createElement('div');
+                composer.className = 'composer';
+                composer.hidden = false;
+                composer.innerHTML = `
+      <div class="avatar" aria-hidden="true">${(state.user.name || 'YO').slice(0, 3).toUpperCase()}</div>
+      <div>
+        <label class="sr-only">Write a reply</label>
+        <textarea class="input" placeholder="Write a reply…"></textarea>
+        <div class="composer-actions">
+          <button class="btn" onclick="cancelReply(this)">Cancel</button>
+          <button class="btn primary" onclick="submitReply(this, '${msg.id}')">Post reply</button>
+        </div>
+      </div>`;
+                el.querySelector('.post-body').appendChild(composer);
+                const ta = composer.querySelector('textarea.input');
+                if (ta) enableMentions(ta);
+            }
+
+            return el;
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' }[c]));
+        }
+
+        /* ===== Network ===== */
+        function loadDisagreements() {
+            const arr = window.DISAGREEMENTS || [];
+            state.disagreements = arr.map(d => ({
+                id: d.id,
+                title: d.title,
+                snippet_id: d["snippet-id"] ?? d.snippet_id,
+                htmltext: d.htmltext
+            }));
+            renderDisagreementsMenu();
+        }
+
+        async function fetchLatestChat() {
+
+            // if the user is typing, skip overwriting
+            if (isAnyTextboxActive()) {
+                console.log("Skipping update: user is typing");
+                return;
+            }
+            const res = await fetch(CONFIG.GET_LATEST_CHAT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentHandle() || state.user.name })
+            });
+            if (!res.ok) throw new Error('Failed to get latest chat');
+
+            const data = await res.json();
+
+            const normalized = {};
+            for (const [k, v] of Object.entries(data.chats || {})) normalized[String(k)] = v || [];
+            state.chatsByDisagreement = normalized;
+
+            state.previousLatestAt = data.previousLatestAt || '';
+            state.nowLatestAt = data.nowLatestAt || '';
+            state.oldestReturnedAt = data.oldestReturnedAt || '';
+
+            state.usernames = Array.isArray(data.usernames)
+                ? [...new Set(data.usernames.map(s => (s || '').toLowerCase()))]
+                : [];
+
+            state.lastSeenByDis ||= {};
+
+            if (data.lastSeenByDis) {
+                mergeServerSeen(data.lastSeenByDis);
+            }
+
+            const fallback = state.previousLatestAt || defaultBaselineISO(1);
+            for (const d of state.disagreements) {
+                const key = String(d.id);
+                if (!state.lastSeenByDis[key]) state.lastSeenByDis[key] = fallback;
+            }
+            saveSeenToStorage();
+
+            if (state.view === 'chat') renderCurrentThread();
+            updateDisagreementBadges();
+            if (state.view === 'home') renderHomeGrid();
+        }
+
+        async function sendMessage({ disagreementId, parentId = null, content }) {
+            const mentions = extractMentions(content, state.usernames);
+            const payload = { username: state.user.name, disagreementId, parentId, content, mentions };
+            const res = await fetch(CONFIG.SUBMIT_CHAT_URL, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+            });
+            if (!res.ok) { alert('Failed to send message'); return; }
+            const data = await res.json();
+            state.chatsByDisagreement = data.chats || state.chatsByDisagreement;
+            await fetchLatestChat().catch(() => { });
+            renderCurrentThread();
+        }
+
+        async function deleteMessage(id) {
+            const payload = { username: state.user.name, messageId: id };
+            const res = await fetch(CONFIG.DELETE_CHAT_URL, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+            });
+            if (!res.ok) { alert('Delete failed'); return; }
+            await fetchLatestChat();
+        }
+
+        window.vote = function (el, delta) {
+            const post = el.closest('.post');
+            const up = post.querySelector('[data-up]');
+            const down = post.querySelector('[data-down]');
+            const upN = parseInt(up?.textContent || '0', 10);
+            const downN = parseInt(down?.textContent || '0', 10);
+            if (delta > 0) up.textContent = upN + 1; else down.textContent = downN + 1;
+        }
+        window.toggleReply = function (btn) {
+            const post = btn.closest('.post');
+            const composer = post.querySelector('.composer');
+            if (composer) composer.hidden = !composer.hidden;
+        }
+        window.cancelReply = function (el) {
+            const card = el.closest('.composer');
+            const ta = card.querySelector('textarea');
+            ta.value = '';
+            card.hidden = true;
+        }
+        window.submitReply = function (btn, parentId) {
+            const composer = btn.closest('.composer');
+            const text = composer.querySelector('textarea').value.trim();
+            if (!text) return;
+            sendMessage({ disagreementId: state.currentId, parentId, content: text });
+        }
+        window.requestDelete = function (id) {
+            if (confirm('Delete your message? It will appear as [message deleted] but replies remain.')) deleteMessage(id);
+        }
+
+        function bindRootComposer() {
+            const ta = $('#new-opinion');
+            if (ta) enableMentions(ta);
+            $('#post-root').addEventListener('click', () => {
+                const text = ta.value.trim();
+                if (!text) return;
+                sendMessage({ disagreementId: state.currentId, parentId: null, content: text });
+                ta.value = '';
+            });
+        }
+
+        async function init() {
+            checkLogin();
+            document.body.classList.add('has-sticky-bar');
+            $('#you-avatar').textContent = (state.user.name || 'YOU').slice(0, 3).toUpperCase();
+
+            loadSeenFromStorage();
+            bindRootComposer();
+
+            await loadDisagreements();
+            renderDisagreementsMenu();
+
+            await fetchLatestChat().catch(console.error);
+
+            renderHomeGrid();
+            showView('home');
+
+            if (state.pollHandle) clearInterval(state.pollHandle);
+            state.pollHandle = setInterval(() => {
+                fetchLatestChat().then(() => {
+                    if (state.view === 'home') renderHomeGrid();
+                    if (state.view === 'chat') ensureDoneFooterVisible();
+                }).catch(console.error);
+            }, CONFIG.POLL_MS);
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+    <script>
+        async function vote(el, delta) {
+            const post = el.closest('.post');
+            const messageId = post?.dataset?.id;
+            if (!messageId) return;
+
+            try {
+                const res = await fetch('/vote_chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: state.user.name,
+                        messageId,
+                        delta
+                    })
+                });
+
+                if (!res.ok) throw new Error('Vote failed');
+
+                await fetchLatestChat();
+
+            } catch (e) {
+                console.error(e);
+                alert('Could not register your vote.');
+            }
+        }
+    </script>
+
+    <script>
+        window.toggleReply = function (btn) {
+            const post = btn.closest('.post');
+            if (!post) return;
+
+            document.querySelectorAll('.composer:not([hidden])').forEach(c => {
+                if (!post.contains(c)) c.hidden = true;
+            });
+
+            const composer = post.querySelector('.composer');
+            if (!composer) return;
+
+            composer.hidden = !composer.hidden;
+
+            if (!composer.hidden) {
+                const ta = composer.querySelector('textarea');
+                if (ta) {
+                    ta.focus();
+                    ta.selectionStart = ta.value.length;
+                    ta.selectionEnd = ta.value.length;
+                }
+            }
+        };
+
+        window.cancelReply = function (el) {
+            const composer = el.closest('.composer');
+            if (!composer) return;
+            const ta = composer.querySelector('textarea');
+            if (ta) ta.value = '';
+            composer.hidden = true;
+        };
+    </script>
+
+    <script>
+        function isNewForUser(iso) {
+            if (!iso || !state.previousLatestAt) return false;
+            const mt = new Date(iso).getTime();
+            const pt = new Date(state.previousLatestAt).getTime();
+            return !isNaN(mt) && !isNaN(pt) && mt > pt;
+        }
+
+        /** Update number badges on the disagreement menu */
+        function updateDisagreementBadges() {
+            const menu = document.getElementById('disagreements-menu');
+            if (!menu) return;
+
+            menu.querySelectorAll('.menu-badge').forEach(b => b.remove());
+
+            const chats = state.chatsByDisagreement || {};
+            const me = currentHandle();
+
+            for (const [id, list] of Object.entries(chats)) {
+                const idStr = String(id);
+                const btn = menu.querySelector(`.chip[data-id="${idStr}"]`);
+                if (!btn) continue;
+
+                const isActive = (state.view === 'chat' && idStr === String(state.currentId));
+                const baseline = isActive
+                    ? (state.currentBaseline || state.lastSeenByDis[idStr] || state.previousLatestAt || defaultBaselineISO(1))
+                    : (state.lastSeenByDis[idStr] || state.previousLatestAt || defaultBaselineISO(1));
+
+                let count = 0;
+                if (baseline) {
+                    const bt = new Date(baseline).getTime();
+                    for (const m of (list || [])) {
+                        if (!m || m.is_deleted) continue;
+                        const author = (m.username || '').trim().toLowerCase();
+                        if (author && author === me) continue;
+                        const mt = new Date(m.createdAt).getTime();
+                        if (!isNaN(mt) && mt > bt) count++;
+                    }
+                }
+
+                if (count > 0) {
+                    const badge = document.createElement('span');
+                    badge.className = 'menu-badge';
+                    badge.textContent = count > 99 ? '99+' : String(count);
+                    btn.appendChild(badge);
+                    btn.setAttribute('aria-label', `${btn.textContent.trim()} (${badge.textContent} new)`);
+                } else {
+                    btn.removeAttribute('aria-label');
+                }
+            }
+        }
+    </script>
+
+    <script>
+        function seenStorageKey() {
+            const u = (state.user.name || 'anon').trim().toLowerCase();
+            return `chat_seen_${u}`;
+        }
+        function loadSeenFromStorage() {
+            try {
+                const key = `chat_seen_${(state.user.name || 'anon').toLowerCase()}`;
+                const raw = localStorage.getItem(key);
+                if (raw) state.lastSeenByDis = JSON.parse(raw) || {};
+                console.log('📦 loaded lastSeenByDis from storage:', state.lastSeenByDis);
+            } catch (e) { console.warn('lastSeen load failed', e); }
+        }
+
+        function saveSeenToStorage() {
+            try {
+                localStorage.setItem(seenStorageKey(), JSON.stringify(state.lastSeenByDis || {}));
+            } catch { }
+        }
+    </script>
+
+    <script>
+        function isNewForUserIn(disagreementId, msg) {
+            if (!msg?.createdAt) return false;
+
+            const author = (msg.username || '').trim().toLowerCase();
+            if (author && author === currentHandle()) return false;
+
+            const idStr = String(disagreementId);
+            const baseline =
+                (state.view === 'chat' && idStr === String(state.currentId) && state.currentBaseline)
+                    ? state.currentBaseline
+                    : (state.lastSeenByDis[idStr] || state.previousLatestAt || defaultBaselineISO(1));
+
+            const mt = new Date(msg.createdAt).getTime();
+            const bt = new Date(baseline).getTime();
+            return !isNaN(mt) && !isNaN(bt) && mt > bt;
+        }
+    </script>
+
+    <script>
+        window.addEventListener('beforeunload', () => {
+            if (state.view === 'chat' && state.currentId != null) {
+                state.lastSeenByDis[String(state.currentId)] = new Date().toISOString();
+                saveSeenToStorage();
+                pushSeenToServer();
+            }
+        });
+    </script>
+
+    <script>
+        function showView(view) {
+            state.view = view;
+            const homeGrid = document.getElementById('home-grid');
+            const chatView = document.getElementById('chat-view');
+            const homeBtn = document.getElementById('home-btn');
+
+            const isHome = view === 'home';
+
+            homeGrid.hidden = !isHome;
+            chatView.hidden = isHome;
+
+            homeBtn?.setAttribute('aria-pressed', String(isHome));
+            document.body.classList.toggle('is-home', isHome);
+
+            if (isHome) renderHomeGrid();
+        }
+
+        document.getElementById('home-btn')?.addEventListener('click', () => {
+            if (state.view === 'chat' && state.currentId != null) {
+                state.lastSeenByDis[String(state.currentId)] = new Date().toISOString();
+                saveSeenToStorage();
+            }
+            showView('home');
+        });
+
+        function currentHandle() {
+            const h = sessionStorage.getItem('username')
+                || localStorage.getItem('username')
+                || state.user.name || '';
+            return (h || '').trim().toLowerCase();
+        }
+
+        function newCountForDisagreement(id) {
+            const list = state.chatsByDisagreement?.[String(id)] || [];
+            const me = currentHandle();
+
+            const useOpenBaseline = state.view === 'chat' && String(id) === String(state.currentId) && state.currentOpenedAt;
+            const baseline = useOpenBaseline
+                ? state.currentOpenedAt
+                : (state.lastSeenByDis[String(id)] || state.previousLatestAt || defaultBaselineISO(1));
+
+            if (!baseline) return 0;
+            const bt = new Date(baseline).getTime();
+
+            let count = 0;
+            for (const m of list) {
+                if (!m || m.is_deleted) continue;
+                const author = (m.username || '').trim().toLowerCase();
+                if (author && author === me) continue;
+                const mt = new Date(m.createdAt).getTime();
+                if (!isNaN(mt) && mt > bt) count++;
+            }
+            return count;
+        }
+
+        function renderHomeGrid() {
+            const wrap = document.getElementById('home-cards');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+
+            state.disagreements.forEach(d => {
+                const id = String(d.id);
+                const count = newCountForDisagreement(id);
+
+                const card = document.createElement('article');
+                card.className = 'home-card';
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.dataset.id = id;
+
+                card.innerHTML = `
+      <div class="home-card-title">${d.title}</div>
+      <div class="home-card-meta">
+        <span>Snippet ${d['snippet-id'] ?? d.snippet_id ?? '—'}</span>
+        ${count > 0 ? `<span class="card-badge">${count > 99 ? '99+' : count}</span>` : ''}
+      </div>
+    `;
+
+                card.addEventListener('click', () => openDisagreement(id));
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDisagreement(id); }
+                });
+                wrap.appendChild(card);
+            });
+        }
+
+        function openDisagreement(id) {
+            if (state.currentId != null) {
+                state.lastSeenByDis[String(state.currentId)] = new Date().toISOString();
+                saveSeenToStorage();
+                pushSeenToServer();
+            }
+
+            const idStr = String(id);
+            const baseline = state.lastSeenByDis[idStr] || state.previousLatestAt || defaultBaselineISO(1);
+
+            state.currentId = idStr;
+            state.currentOpenedAt = new Date().toISOString();
+            state.currentBaseline = baseline;
+
+            showView('chat');
+
+            const d = state.disagreements.find(x => String(x.id) === idStr);
+            if (d) {
+                $('#topic-title').textContent = d.title;
+                $('#topic-description').innerHTML = d.htmltext || '';
+                $('#topic-meta').innerHTML =
+                    `Snippet ${d['snippet-id'] ?? d.snippet_id ?? '—'} • <span id="opinion-count">0</span> opinions • Last sync <span id="last-sync">—</span>   <span id="sync-now" class="sync-link" onclick="syncNow()">Sync now</span>`;
+            }
+
+            document.querySelectorAll('#disagreements-menu .chip')
+                .forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id == idStr)));
+
+            renderCurrentThread();
+            refreshDoneToggleButton(String(id));
+            ensureDoneFooterVisible();
+            updateDisagreementBadges();
+
+            (() => {
+                const content = document.getElementById('instructions-content');
+                if (!content) return;
+                const isHidden = getComputedStyle(content).display === 'none';
+                if (!isHidden) {
+                    content.style.display = 'none';
+                    // update the button label if present
+                    const btn = document.querySelector('#instructions-box button');
+                    if (btn) btn.textContent = 'Show';
+                }
+            })();
+
+            document.getElementById('chat-view')
+                ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+
+
+        }
+    </script>
+
+    <script>
+        function toId(v) { return String(v); }
+    </script>
+
+    <script>
+        //for adding username taggings
+        function extractMentions(text, allowed = []) {
+            const re = /(^|\s)@([a-z0-9_]+)/gi;
+            const out = new Set();
+            let m;
+            while ((m = re.exec(text)) !== null) {
+                const handle = (m[2] || '').toLowerCase();
+                if (allowed.length === 0 || allowed.includes(handle)) out.add(handle);
+            }
+            return [...out];
+        }
+
+        function linkMentions(text) {
+            if (!text) return '';
+            const me = currentHandle();
+            return text.replace(/(^|\s)@([a-z0-9_]+)/gi, (full, lead, h) => {
+                const handle = h.toLowerCase();
+                const cls = (handle === me) ? 'mention me' : 'mention';
+                return `${lead}<span class="${cls}">@${h}</span>`;
+            });
+        }
+    </script>
+
+    <script>
+        //username tagging in messages
+        let mentionUI = { box: null, items: [], idx: -1, ta: null };
+
+        function ensureSuggestBox() {
+            if (mentionUI.box) return mentionUI.box;
+            const div = document.createElement('div');
+            div.className = 'mention-suggest';
+            div.hidden = true;
+            document.body.appendChild(div);
+            mentionUI.box = div;
+            return div;
+        }
+
+        function positionSuggestBox(ta) {
+            const r = ta.getBoundingClientRect();
+            // Since the box is FIXED, use viewport coords (no scroll offsets)
+            mentionUI.box.style.top = `${r.bottom + 4}px`;
+            mentionUI.box.style.left = `${r.left}px`;
+            mentionUI.box.style.minWidth = `${Math.min(r.width, 280)}px`;
+        }
+
+        function ensureSuggestBox() {
+            if (mentionUI.box) return mentionUI.box;
+            const div = document.createElement('div');
+            div.className = 'mention-suggest';
+            div.style.position = 'fixed'; // ensure fixed even if CSS loads late
+            div.hidden = true;
+            document.body.appendChild(div);
+            mentionUI.box = div;
+            return div;
+        }
+
+
+        function openMentionSuggest(ta, query) {
+            const opts = state.usernames
+                .filter(u => u.startsWith((query || '').toLowerCase()))
+                .slice(0, 8);
+            const box = ensureSuggestBox();
+            box.innerHTML = '';
+            mentionUI.items = [];
+            mentionUI.idx = -1;
+            mentionUI.ta = ta;
+
+            if (opts.length === 0) { box.hidden = true; return; }
+
+            opts.forEach((u, i) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = `@${u}`;
+                b.setAttribute('aria-selected', 'false');
+                b.addEventListener('click', () => applyMention(ta, u));
+                box.appendChild(b);
+                mentionUI.items.push(b);
+            });
+
+            positionSuggestBox(ta);
+            box.hidden = false;
+        }
+
+        function closeMentionSuggest() {
+            if (mentionUI.box) mentionUI.box.hidden = true;
+            mentionUI.items = [];
+            mentionUI.idx = -1;
+            mentionUI.ta = null;
+        }
+
+        function moveMentionSel(delta) {
+            if (!mentionUI.items.length) return;
+            mentionUI.idx = (mentionUI.idx + delta + mentionUI.items.length) % mentionUI.items.length;
+            mentionUI.items.forEach((b, i) => b.setAttribute('aria-selected', String(i === mentionUI.idx)));
+        }
+
+        function applyMention(ta, handle) {
+            const start = ta.selectionStart;
+            const before = ta.value.slice(0, start);
+            const after = ta.value.slice(start);
+
+            const m = before.match(/(^|\s)@([a-z0-9_]*)$/i);
+            if (!m) return closeMentionSuggest();
+
+            const replaceFrom = start - (m[2] || '').length - 1;
+            const lead = m[1] || '';
+            const newBefore = before.slice(0, replaceFrom) + lead + '@' + handle + ' ';
+            ta.value = newBefore + after;
+
+            const caret = newBefore.length;
+            ta.focus();
+            ta.setSelectionRange(caret, caret);
+
+            closeMentionSuggest();
+        }
+
+        function enableMentions(ta) {
+            if (!ta) return;
+            ta.addEventListener('input', () => {
+                const pos = ta.selectionStart;
+                const before = ta.value.slice(0, pos);
+                const m = before.match(/(^|\s)@([a-z0-9_]*)$/i);
+                if (m) {
+                    const q = m[2] || '';
+                    openMentionSuggest(ta, q);
+                } else {
+                    closeMentionSuggest();
+                }
+            });
+            ta.addEventListener('keydown', (e) => {
+                if (mentionUI.box && !mentionUI.box.hidden) {
+                    if (e.key === 'ArrowDown') { moveMentionSel(1); e.preventDefault(); }
+                    else if (e.key === 'ArrowUp') { moveMentionSel(-1); e.preventDefault(); }
+                    else if (e.key === 'Enter' || e.key === 'Tab') {
+                        if (mentionUI.idx >= 0 && mentionUI.items[mentionUI.idx]) {
+                            e.preventDefault();
+                            const label = mentionUI.items[mentionUI.idx].textContent || '';
+                            applyMention(ta, label.replace(/^@/, ''));
+                        } else {
+                            closeMentionSuggest();
+                        }
+                    } else if (e.key === 'Escape') {
+                        closeMentionSuggest();
+                    }
+                }
+            });
+            ta.addEventListener('blur', () => {
+                setTimeout(closeMentionSuggest, 150);
+            });
+        }
+    </script>
+
+    <script>
+        function logout() {
+            pushSeenToServer();
+            sessionStorage.clear();
+            localStorage.clear();
+
+            document.cookie.split(";").forEach(cookie => {
+                const name = cookie.split("=")[0].trim();
+                document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            });
+
+            window.location.href = 'discussion-round.html';
+        }
+
+
+        window.addEventListener('scroll', () => {
+            if (mentionUI.ta && mentionUI.box && !mentionUI.box.hidden) positionSuggestBox(mentionUI.ta);
+        }, { passive: true });
+
+        window.addEventListener('resize', () => {
+            if (mentionUI.ta && mentionUI.box && !mentionUI.box.hidden) positionSuggestBox(mentionUI.ta);
+        });
+
+    </script>
+
+    <script>
+        async function pushSeenToServer() {
+            const payload = {
+                username: currentHandle() || (state.user.name || '').toLowerCase(),
+                seen: state.lastSeenByDis || {}
+            };
+            try {
+                const res = await fetch('/set_last_seen_disagreement', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('pushSeenToServer failed');
+                const data = await res.json();
+                if (data && data.perDisagreement) {
+                    mergeServerSeen(data.perDisagreement);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function mergeServerSeen(serverMap) {
+            if (!serverMap || typeof serverMap !== 'object') return;
+
+            const local = state.lastSeenByDis || {};
+            const time = (iso) => {
+                const t = new Date(iso).getTime();
+                return Number.isFinite(t) ? t : 0;
+            };
+
+            let changed = false;
+            for (const [id, iso] of Object.entries(serverMap)) {
+                const sid = String(id);
+                const sIso = String(iso || '');
+                if (!sIso) continue;
+
+                const lt = time(local[sid]);
+                const rt = time(sIso);
+                if (rt > lt) {
+                    local[sid] = sIso;
+                    changed = true;
+                }
+            }
+
+            if (changed) {
+                state.lastSeenByDis = local;
+                saveSeenToStorage();
+                if (state.view === 'chat') renderCurrentThread();
+                updateDisagreementBadges();
+                if (state.view === 'home') renderHomeGrid();
+            }
+        }
+    </script>
+
+    <script>
+        function syncNow() {
+            location.reload();
+        }
+    </script>
+
+    <script>
+        function toggleInstructions() {
+            const content = document.getElementById("instructions-content");
+            const button = event.target;
+
+            if (content.style.display === "none") {
+                content.style.display = "block";
+                button.textContent = "Hide";
+            } else {
+                content.style.display = "none";
+                button.textContent = "Show";
+            }
+        }
+    </script>
+
+    <script>
+        function getFinishedArray() {
+            const raw = sessionStorage.getItem('finishedChatIds')
+                || localStorage.getItem('finishedChatIds')
+                || '[]';
+            try { return JSON.parse(raw) || []; } catch { return []; }
+        }
+
+        function getFinishedSet() {
+            const arr = getFinishedArray();
+            const set = {};
+            arr.forEach(id => { set[String(id)] = true; });
+            return set;
+        }
+
+        function saveFinished(arr) {
+            const unique = Array.from(new Set(arr.map(String)));
+            const json = JSON.stringify(unique);
+            sessionStorage.setItem('finishedChatIds', json);
+            localStorage.setItem('finishedChatIds', json);
+
+            const set = {};
+            unique.forEach(id => { set[id] = true; });
+            const setJson = JSON.stringify(set);
+            sessionStorage.setItem('finishedChatIdsSet', setJson);
+            localStorage.setItem('finishedChatIdsSet', setJson);
+        }
+
+        function isFinished(chatId) {
+            const raw = sessionStorage.getItem('finishedChatIdsSet')
+                || localStorage.getItem('finishedChatIdsSet')
+                || '{}';
+            try {
+                const set = JSON.parse(raw) || {};
+                return !!set[String(chatId)];
+            } catch {
+                return getFinishedArray().includes(String(chatId));
+            }
+        }
+
+        function setFinishedLocal(chatId, done) {
+            const id = String(chatId);
+            const arr = getFinishedArray();
+            const s = new Set(arr.map(String));
+            if (done) s.add(id); else s.delete(id);
+            saveFinished(Array.from(s));
+        }
+    </script>
+
+    <script>
+        async function updateFinishedOnServer({ username, chatId, done }) {
+            const payload = { username, chatId, done: !!done };
+            const res = await fetch(CONFIG.UPDATE_FINISHED_URL, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) throw new Error('update_finished_chat failed');
+            const data = await res.json();
+            if (data && Array.isArray(data.finishedIds)) saveFinished(data.finishedIds);
+            return data;
+        }
+
+        function renderDoneToggleRow(chatId) {
+            const wrap = document.createElement('div');
+            wrap.className = 'done-toggle-wrap';
+
+            const btn = document.createElement('button');
+            btn.id = 'done-toggle-btn';
+            btn.className = 'done-toggle-btn';
+            btn.type = 'button';
+            btn.addEventListener('click', () => toggleFinishedForCurrent(btn));
+
+            wrap.appendChild(btn);
+            refreshDoneToggleButton(chatId);
+            return wrap;
+        }
+
+        async function toggleFinishedForCurrent(btn) {
+            const chatId = String(state.currentId);
+            const username = currentHandle() || state.user.name;
+            if (!chatId || !username) return;
+
+            const wantDone = !isFinished(chatId);
+            btn.disabled = true;
+
+            setFinishedLocal(chatId, wantDone);
+            refreshDoneToggleButton(chatId);
+
+            try {
+                await updateFinishedOnServer({ username, chatId, done: wantDone });
+                refreshDoneToggleButton(chatId);
+            } catch (e) {
+                console.error(e);
+                setFinishedLocal(chatId, !wantDone);
+                refreshDoneToggleButton(chatId);
+                alert('Could not update finished state. Please try again.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+
+    <script>
+        function isCurrentFinished() {
+            return isFinished(state.currentId);
+        }
+
+        function disableChatInputs() {
+            const rootTa = document.getElementById('new-opinion');
+            if (rootTa) rootTa.disabled = true;
+            document.getElementById('post-root')?.setAttribute('disabled', 'true');
+
+            document.querySelectorAll('#posts .composer textarea').forEach(ta => ta.disabled = true);
+            document.querySelectorAll('#posts .composer .btn').forEach(btn => btn.setAttribute('disabled', 'true'));
+
+            document.querySelectorAll('#posts .btn.ghost').forEach(btn => {
+                if (btn.textContent.includes('Reply')) btn.style.display = 'none';
+            });
+        }
+
+        function enableChatInputs() {
+            const rootTa = document.getElementById('new-opinion');
+            if (rootTa) rootTa.disabled = false;
+            document.getElementById('post-root')?.removeAttribute('disabled');
+
+            document.querySelectorAll('#posts .composer textarea').forEach(ta => ta.disabled = false);
+            document.querySelectorAll('#posts .composer .btn').forEach(btn => btn.removeAttribute('disabled'));
+
+            document.querySelectorAll('#posts .btn.ghost').forEach(btn => {
+                if (btn.textContent.includes('Reply')) btn.style.display = '';
+            });
+        }
+
+        function markDone(id) {
+            const idx = state.completedIds.indexOf(id);
+            if (idx >= 0) {
+                state.completedIds.splice(idx, 1);
+            } else {
+                state.completedIds.push(id);
+            }
+            saveCompletedIds();
+            renderHomeGrid();
+            if (state.view === 'chat' && state.currentId === id) {
+                renderCurrentThread();
+            }
+        }
+
+        function isChatFinished(disId) {
+            return isFinished(disId);
+        }
+    </script>
+
+    <script>
+        function mountDoneFooter() {
+            document.getElementById('chat-done-footer')?.remove();
+
+            const composerSection = document.querySelector(
+                'section.list-card[aria-label="Add new opinion"]'
+            );
+            if (!composerSection) return null;
+
+            const footer = document.createElement('div');
+            footer.id = 'chat-done-footer';
+            footer.className = 'done-toggle-wrap';
+
+            const btn = document.createElement('button');
+            btn.id = 'done-toggle-btn';
+            btn.className = 'done-toggle-btn';
+            btn.type = 'button';
+            btn.addEventListener('click', () => toggleFinishedForCurrent(btn));
+            btn.textContent = "I'm done with this discussion";
+
+            footer.appendChild(btn);
+
+            // Clarifying note
+            const note = document.createElement('div');
+            note.className = 'done-clarify';
+            note.textContent =
+                "(When you click I'm done with this discussion, it means you believe the discussion has concluded, at least from your side. If all experts mark ‘done’ for all discussion forums, the study will conclude before the deadline. Once you mark done, you will no longer be able to post in this discussion—but you can undo this action if needed.)";
+            footer.appendChild(note);
+
+            composerSection.insertAdjacentElement('afterend', footer);
+
+            return footer;
+        }
+
+
+        function refreshDoneToggleButton(chatId = state.currentId) {
+            const btn = document.getElementById('done-toggle-btn');
+            if (!btn) return;
+            const done = isFinished(chatId);
+            btn.classList.toggle('done', done);
+            btn.innerHTML = done
+                ? '🔓 Re-open this discussion'
+                : '✅ I’m done with this discussion<br>(read the note below)';
+            btn.setAttribute('aria-pressed', String(done));
+            if (state.view === 'chat' && chatId != null) {
+                if (done) disableChatInputs(); else enableChatInputs();
+            }
+        }
+
+        function ensureDoneFooterVisible() {
+            if (!document.getElementById('chat-done-footer')) {
+                mountDoneFooter();
+            }
+            refreshDoneToggleButton();
+        }
+    </script>
+
+    <script>
+        function toggleDescription() {
+            const desc = document.getElementById("topic-description");
+            const btn = document.getElementById("desc-toggle");
+
+            if (!desc || !btn) return;
+
+            if (desc.style.display === "none") {
+                desc.style.display = "block";
+                btn.textContent = "Hide description";
+            } else {
+                desc.style.display = "none";
+                btn.textContent = "+ Show description";
+            }
+        }
+    </script>
+
+    <!-- ===== Appearance-only helpers below ===== -->
+
+    <!-- Move the existing #disagreements-menu into the left sidebar on desktop; back to top bar on mobile -->
+    <script>
+        (function () {
+            const mql = window.matchMedia('(min-width: 901px)');
+            function place() {
+                const menu = document.getElementById('disagreements-menu');
+                const barInner = document.querySelector('#disagreements-bar .bar-inner');
+                const leftSlot = document.getElementById('left-nav-slot');
+                if (!menu || !barInner || !leftSlot) return;
+                if (mql.matches) {
+                    if (menu.parentElement !== leftSlot) leftSlot.appendChild(menu);
+                } else {
+                    if (menu.parentElement !== barInner) barInner.appendChild(menu);
+                }
+            }
+            mql.addEventListener?.('change', place);
+            document.addEventListener('DOMContentLoaded', place);
+            place();
+        })();
+    </script>
+
+    <!-- Theme toggle using your existing 'codeTheme' key -->
+    <script>
+        (function () {
+            const KEY = 'codeTheme', btn = document.getElementById('btn-theme');
+            function read() {
+                try { let s = sessionStorage.getItem(KEY); if (s === 'dark' || s === 'light') return { v: s, store: 'session' }; } catch { }
+                try { let l = localStorage.getItem(KEY); if (l === 'dark' || l === 'light') return { v: l, store: 'local' }; } catch { }
+                return { v: 'auto' };
+            }
+            function write(mode, store) {
+                if (mode === 'auto') { try { sessionStorage.removeItem(KEY) } catch { }; try { localStorage.removeItem(KEY) } catch { }; return; }
+                try { (store === 'session' ? sessionStorage : localStorage).setItem(KEY, mode); } catch { try { localStorage.setItem(KEY, mode) } catch { } }
+            }
+            function apply(v) {
+                if (v === 'dark' || v === 'light') document.documentElement.setAttribute('data-theme', v);
+                else document.documentElement.removeAttribute('data-theme');
+                if (btn) { btn.textContent = 'Theme: ' + (v === 'dark' ? 'Dark 🌙' : v === 'light' ? 'Light 🌞' : 'Auto 🌗'); }
+            }
+            function cycle() { const cur = read(); const next = cur.v === 'auto' ? 'light' : (cur.v === 'light' ? 'dark' : 'auto'); write(next, cur.store); apply(next); }
+            apply(read().v);
+            const mql = window.matchMedia('(prefers-color-scheme: dark)');
+            mql.addEventListener?.('change', () => { if (read().v === 'auto') apply('auto'); });
+            btn?.addEventListener('click', cycle);
+        })();
+    </script>
+
+    <footer class="site-footer">
+        Please contact us if you have any questions or issues:
+        <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+    </footer>
+
+
+    <script>
+        const panel = document.getElementById('panel');
+        const resizer = document.getElementById('resizer');
+        const toggleBar = document.getElementById('toggle-bar');
+        const iframe = document.getElementById('ranking-frame');
+
+        // Toggle open/close with the sticky button
+        function setOpen(isOpen) {
+            if (isOpen) {
+                panel.classList.add('open');
+                panel.setAttribute('aria-hidden', 'false');
+                toggleBar.textContent = '✖';
+                toggleBar.setAttribute('aria-expanded', 'true');
+
+                // reload the iframe once when opening (cache-busted)
+                const base = iframe.getAttribute('data-src') || iframe.src.split('?')[0];
+                iframe.src = base + '?t=' + Date.now();
+            } else {
+                panel.classList.remove('open');
+                panel.setAttribute('aria-hidden', 'true');
+                toggleBar.innerHTML = '☰ Live<br>Ranking';
+                toggleBar.setAttribute('aria-expanded', 'false');
+            }
+        }
+        toggleBar.addEventListener('click', () => {
+            setOpen(!panel.classList.contains('open'));
+        });
+
+        // Close panel (if you enable the button)
+        // closeBtn?.addEventListener("click", () => setOpen(false));
+
+        // Auto refresh iframe every 30s (cache-busted)
+        function refreshFrame() {
+            const base = iframe.src.split('?')[0];
+            iframe.src = base + '?t=' + Date.now();
+        }
+        setInterval(refreshFrame, 30000);
+
+        // --- Drag-to-resize logic for left edge ---
+        let dragging = false;
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function startDrag(e) {
+            if (!panel.classList.contains('open')) return;
+            dragging = true;
+            document.body.classList.add('no-select');
+            // Prevent iframe from eating mouse events while dragging
+            iframe.style.pointerEvents = 'none';
+            e.preventDefault();
+        }
+
+        function onDrag(e) {
+            if (!dragging) return;
+
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const viewportWidth = window.innerWidth;
+            const desiredWidth = viewportWidth - clientX;
+
+            const cs = getComputedStyle(panel);
+            const minWidth = parseInt(cs.minWidth, 10) || 400;
+            const maxWidth = viewportWidth;
+
+            let newWidth = clamp(desiredWidth, minWidth, maxWidth);
+
+            // If you want to enforce a constant left gap, uncomment:
+            // const leftGap = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--left-gap'), 10) || 0;
+            // newWidth = Math.min(newWidth, viewportWidth - leftGap);
+
+            panel.style.width = newWidth + 'px';
+        }
+
+        function endDrag() {
+            if (!dragging) return;
+            dragging = false;
+            document.body.classList.remove('no-select');
+            iframe.style.pointerEvents = '';
+        }
+
+        // Mouse events
+        resizer.addEventListener('mousedown', startDrag);
+        window.addEventListener('mousemove', onDrag);
+        window.addEventListener('mouseup', endDrag);
+
+        // Touch events
+        resizer.addEventListener('touchstart', startDrag, { passive: false });
+        window.addEventListener('touchmove', onDrag, { passive: false });
+        window.addEventListener('touchend', endDrag);
+
+        // Keep panel width reasonable on viewport resize
+        window.addEventListener('resize', () => {
+            if (!panel.classList.contains('open')) return;
+            const vw = window.innerWidth;
+            const cs = getComputedStyle(panel);
+            const minWidth = parseInt(cs.minWidth, 10) || 400;
+            const current = panel.getBoundingClientRect().width;
+            panel.style.width = clamp(current, minWidth, vw) + 'px';
+        });
+
+
+
+
+        // Elements
+        /* ===== Update panel (safe wiring) ===== */
+        (function () {
+            const updateBar = document.getElementById('update-bar');
+            const panelUpdate = document.getElementById('panel-update');
+            const resizerUpdate = document.getElementById('resizer-update');
+            const iframeUpdate = document.getElementById('update-frame');
+
+            if (!updateBar || !panelUpdate) {
+                console.warn('[update-panel] Missing #update-bar or #panel-update — skipping init.');
+                return;
+            }
+
+            // Open/close the Update Ranking slide-over
+            function setOpenUpdate(isOpen) {
+                if (isOpen) {
+                    panelUpdate.classList.add('open');
+                    panelUpdate.setAttribute('aria-hidden', 'false');
+                    updateBar.textContent = '✖';
+                    updateBar.setAttribute('aria-expanded', 'true');
+
+                    // force a fresh load of the Update Ranking iframe
+                    const base = iframeUpdate.getAttribute('data-src') || iframeUpdate.src.split('?')[0];
+                    // use a cache-buster to bypass any caches (browser, SW, proxy, CDN)
+                    const nonce = (crypto && crypto.getRandomValues)
+                        ? Array.from(crypto.getRandomValues(new Uint32Array(1)))[0]
+                        : Date.now();
+                    iframeUpdate.src = `${base}?v=${nonce}`;
+
+                    // Close the live panel if either API name exists
+                    if (typeof window.setOpenRanking === 'function') window.setOpenRanking(false);
+                    else if (typeof window.setOpen === 'function') window.setOpen(false);
+                } else {
+                    panelUpdate.classList.remove('open');
+                    panelUpdate.setAttribute('aria-hidden', 'true');
+                    updateBar.innerHTML = '↻ Update<br>Ranking';
+                    updateBar.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            // expose
+            window.setOpenUpdate = setOpenUpdate;
+
+            // Toggle handler (click + keyboard)
+            function onUpdateToggle(e) {
+                if (e) e.preventDefault();
+                setOpenUpdate(!panelUpdate.classList.contains('open'));
+            }
+
+            if (updateBar._clickHandler) updateBar.removeEventListener('click', updateBar._clickHandler);
+            updateBar.addEventListener('click', onUpdateToggle);
+            updateBar._clickHandler = onUpdateToggle;
+
+            updateBar.setAttribute('role', 'button');
+            updateBar.setAttribute('tabindex', '0');
+            updateBar.setAttribute('aria-controls', 'panel-update');
+            updateBar.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onUpdateToggle(e); }
+            });
+
+            // Optional: auto-refresh just the update iframe every 30s
+            // if (iframeUpdate) {
+            //     function refreshUpdateFrame() {
+            //         const base = iframeUpdate.src.split('?')[0];
+            //         iframeUpdate.src = base + '?t=' + Date.now();
+            //     }
+            //     setInterval(refreshUpdateFrame, 300000);
+            // }
+
+            // --- Drag-to-resize for UPDATE panel (guarded) ---
+            if (resizerUpdate && iframeUpdate) {
+                let draggingUpdate = false;
+
+                const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+
+                function startDragUpdate(e) {
+                    if (!panelUpdate.classList.contains('open')) return;
+                    draggingUpdate = true;
+                    document.body.classList.add('no-select');
+                    iframeUpdate.style.pointerEvents = 'none';
+                    e.preventDefault();
+                }
+
+                function onDragUpdate(e) {
+                    if (!draggingUpdate) return;
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const vw = window.innerWidth;
+                    const desired = vw - clientX;
+                    const min = parseInt(getComputedStyle(panelUpdate).minWidth, 10) || 400;
+                    panelUpdate.style.width = clamp(desired, min, vw) + 'px';
+                }
+
+                function endDragUpdate() {
+                    if (!draggingUpdate) return;
+                    draggingUpdate = false;
+                    document.body.classList.remove('no-select');
+                    iframeUpdate.style.pointerEvents = '';
+                }
+
+                resizerUpdate.addEventListener('mousedown', startDragUpdate);
+                window.addEventListener('mousemove', onDragUpdate);
+                window.addEventListener('mouseup', endDragUpdate);
+
+                resizerUpdate.addEventListener('touchstart', startDragUpdate, { passive: false });
+                window.addEventListener('touchmove', onDragUpdate, { passive: false });
+                window.addEventListener('touchend', endDragUpdate);
+
+                window.addEventListener('resize', () => {
+                    if (!panelUpdate.classList.contains('open')) return;
+                    const vw = window.innerWidth;
+                    const min = parseInt(getComputedStyle(panelUpdate).minWidth, 10) || 400;
+                    const cur = panelUpdate.getBoundingClientRect().width;
+                    panelUpdate.style.width = clamp(cur, min, vw) + 'px';
+                });
+            }
+
+            // Wire the "X" buttons (header + overlay), if present
+            document.getElementById('close-btn-update')?.addEventListener('click', () => setOpenUpdate(false));
+            document.getElementById('frame-close-update')?.addEventListener('click', () => setOpenUpdate(false));
+        })();
+
+
+
+
+    </script>
+
+
+    <script>
+        function getMethodId(methodName) {
+            const methodMap = {
+                isValidProjectName: 1,
+                isRemote: 2,
+                isMachineTypeDefined: 3,
+                indexOfIgnoreCase: 4,
+                deleteRecursively: 5,
+                encodedLength: 6,
+                lowestPositiveRoot: 7,
+                atan2: 8
+            };
+
+            return methodMap[methodName] || null; // returns null if not found
+        }
+
+        // Example usage:
+        console.log(getMethodId("isRemote")); // 2
+        console.log(getMethodId("atan2"));    // 8
+        console.log(getMethodId("foo"));      // null
+
+        function show_snippet(id) {
+            const snippet = snippets.find(s => s.id === id);
+            if (!snippet) return;
+
+            document.getElementById('modal-snippet-title').innerText = snippet.methodName;
+
+            const codeLines = snippet.code.trim().split('\n');
+
+            // Render styled spans
+            document.getElementById('modal-code-content').innerHTML = codeLines.join('\n');
+
+            // Line numbers
+            document.getElementById('modal-line-numbers').innerHTML = codeLines.map((_, i) => i + 1).join('<br>');
+
+            document.getElementById('snippet-modal').style.display = 'block';
+            applyModalTheme();
+        }
+
+        function toggleModalTheme() {
+            const body = document.body;
+            const isLight = body.classList.contains("light-mode");
+
+            if (isLight) {
+                body.classList.remove("light-mode");
+                body.classList.add("dark-mode");
+                localStorage.setItem("codeTheme", "dark");
+                document.getElementById('modal-theme-toggle').textContent = "Switch to Light Mode";
+            } else {
+                body.classList.remove("dark-mode");
+                body.classList.add("light-mode");
+                localStorage.setItem("codeTheme", "light");
+                document.getElementById('modal-theme-toggle').textContent = "Switch to Dark Mode";
+            }
+        }
+
+        function applyModalTheme() {
+            const theme = localStorage.getItem('codeTheme') || 'light';
+            document.body.classList.remove('light-mode', 'dark-mode');
+            document.body.classList.add(theme + '-mode');
+            const btn = document.getElementById('modal-theme-toggle');
+            if (btn) {
+                btn.textContent = theme === 'light' ? "Switch to Dark Mode" : "Switch to Light Mode";
+            }
+        }
+
+        function compare(leftIds, rightIds) {
+            const leftContainer = document.getElementById('compare-left');
+            const rightContainer = document.getElementById('compare-right');
+            if (!leftContainer || !rightContainer) return;
+
+            leftContainer.innerHTML = '';
+            rightContainer.innerHTML = '';
+
+            const getSnippet = id => snippets.find(s => s.id === id);
+
+            // Left side: stacked
+            leftIds.forEach(id => {
+                const snippet = getSnippet(id);
+                if (snippet) {
+                    const box = document.createElement('div');
+                    box.className = 'snippet-box';
+                    box.innerHTML = `<h4>${snippet.methodName}</h4><pre class="code-content">${snippet.code}</pre>`;
+                    leftContainer.appendChild(box);
+                }
+            });
+
+            // Right side: stacked
+            rightIds.forEach(id => {
+                const snippet = getSnippet(id);
+                if (snippet) {
+                    const box = document.createElement('div');
+                    box.className = 'snippet-box';
+                    box.innerHTML = `<h4>${snippet.methodName}</h4><pre class="code-content">${snippet.code}</pre>`;
+                    rightContainer.appendChild(box);
+                }
+            });
+
+            const modal = document.getElementById('compare-modal');
+            if (modal) modal.style.display = 'block';
+        }
+
+    </script>
+
+    <div id="snippet-modal" style="display:none; position:fixed; top:10%;
+left:50%; transform:translateX(-50%); width:80%; max-height:80%;
+overflow-y:auto; background:#fff; border:1px solid #ccc; padding:0px 20px;
+border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:1002;">
+        <div
+            style="position: sticky; top: 0; background: #fff; z-index: 10; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+            <h3 id="modal-snippet-title" style="margin:0;">Snippet</h3>
+            <div>
+                <button onclick="toggleModalTheme()" id="modal-theme-toggle"
+                    style="margin-right: 10px; padding: 6px 12px; border-radius: 5px; border: none; background-color: #333; color: white; cursor: pointer;">Switch
+                    to Light Mode</button>
+                <span onclick="document.getElementById('snippet-modal').style.display='none'"
+                    style="cursor:pointer; font-size:20px; font-weight:bold;">&times;</span>
+            </div>
+        </div>
+
+        <div class="code-container" id="modal-code">
+            <div class="line-numbers" id="modal-line-numbers"></div>
+            <div class="code-content" id="modal-code-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Normalize the text inside <code> (e.g., strip trailing "()")
+        function _normalizeMethod(text) {
+            return (text || "")
+                .trim()
+                .replace(/\(\s*\)$/, ""); // turn "isRemote()" -> "isRemote"
+        }
+
+        // One global delegated click handler for all <code> tags
+        document.addEventListener("click", (e) => {
+            const el = e.target.closest("code");
+            if (!el) return;
+
+            const name = _normalizeMethod(el.textContent);
+            const id = getMethodId(name);
+            if (id) {
+                // Optional: stop link clicks if <code> is inside an <a>
+                e.preventDefault();
+                show_snippet(id);
+            } else {
+                console.warn("No snippet ID for:", name);
+            }
+        });
+    </script>
+
+    <script>
+
+        // Wire BOTH close buttons to close the panel
+        const closeBtnHeader = document.getElementById('close-btn');
+        const closeBtnOverlay = document.getElementById('frame-close-ranking');
+
+        [closeBtnHeader, closeBtnOverlay].forEach(btn => {
+            btn?.addEventListener('click', () => setOpen(false));
+        });
+    </script>
+
+    <!-- Top sheet: slides from the top, half-screen by default -->
+    <div id="summary-top-sheet" class="top-sheet" aria-hidden="true">
+        <div class="top-sheet-header">
+            <span>round 2 Summary</span>
+            <button id="summary-sheet-close" class="panel-close" aria-label="Close">X</button>
+        </div>
+
+        <!-- “X” overlay on the iframe itself (handy when scrolled) -->
+        <button id="summary-frame-close" class="frame-close-btn" aria-label="Close">X</button>
+
+        <iframe id="summary-frame" src="about:blank" title="round 2 Summary"></iframe>
+
+        <!-- Drag handle to resize vertically -->
+        <div id="summary-resizer" class="top-sheet-resizer" title="Drag to resize"></div>
+    </div>
+
+    <script>
+        (function () {
+            const openBtn = document.getElementById('summary-open-btn');
+            const sheet = document.getElementById('summary-top-sheet');
+            const closeHdr = document.getElementById('summary-sheet-close');
+            const closeFab = document.getElementById('summary-frame-close');
+            const resizer = document.getElementById('summary-resizer');
+            const frame = document.getElementById('summary-frame');
+
+            if (!openBtn || !sheet || !frame) return;
+
+            function setOpenSummary(isOpen) {
+                if (isOpen) {
+                    // load the page (cache-busted) only when opening
+                    const base = 'round2-summary.html';
+                    frame.src = base + '?t=' + Date.now();
+
+                    sheet.classList.add('open');
+                    sheet.setAttribute('aria-hidden', 'false');
+                    openBtn.setAttribute('aria-expanded', 'true');
+                } else {
+                    sheet.classList.remove('open');
+                    sheet.setAttribute('aria-hidden', 'true');
+                    openBtn.setAttribute('aria-expanded', 'false');
+                    // optional: clear src to stop timers in the iframe
+                    // frame.src = 'about:blank';
+                }
+            }
+            // Expose if you want to control it elsewhere
+            window.setOpenSummary = setOpenSummary;
+
+            // Open button
+            openBtn.addEventListener('click', () => setOpenSummary(true));
+            openBtn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpenSummary(true); }
+            });
+
+            // Close buttons
+            closeHdr?.addEventListener('click', () => setOpenSummary(false));
+            closeFab?.addEventListener('click', () => setOpenSummary(false));
+
+            // Escape to close
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && sheet.classList.contains('open')) setOpenSummary(false);
+            });
+
+            // Vertical resize (drag bottom edge)
+            if (resizer) {
+                let dragging = false;
+                function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+
+                function start(e) {
+                    if (!sheet.classList.contains('open')) return;
+                    dragging = true;
+                    document.body.classList.add('no-select');
+                    // prevent iframe from stealing events while dragging
+                    frame.style.pointerEvents = 'none';
+                    e.preventDefault();
+                }
+                function move(e) {
+                    if (!dragging) return;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    const vh = window.innerHeight;
+                    const min = 240;
+                    const max = Math.round(vh * 0.95);
+                    const newH = clamp(clientY, min, max); // distance from top to cursor
+                    sheet.style.height = newH + 'px';
+                }
+                function end() {
+                    if (!dragging) return;
+                    dragging = false;
+                    document.body.classList.remove('no-select');
+                    frame.style.pointerEvents = '';
+                }
+
+                resizer.addEventListener('mousedown', start);
+                window.addEventListener('mousemove', move);
+                window.addEventListener('mouseup', end);
+
+                resizer.addEventListener('touchstart', start, { passive: false });
+                window.addEventListener('touchmove', move, { passive: false });
+                window.addEventListener('touchend', end);
+            }
+
+            // Keep height reasonable on viewport resize
+            window.addEventListener('resize', () => {
+                if (!sheet.classList.contains('open')) return;
+                const h = sheet.getBoundingClientRect().height;
+                const max = Math.round(window.innerHeight * 0.95);
+                sheet.style.height = Math.min(h, max) + 'px';
+            });
+        })();
+
+    </script>
+
+    <script>
+        /**
+ * Check if any textareas on the page contain text.
+ * Returns true if at least one textarea has non-empty value.
+ */
+        function isAnyTextboxActive() {
+            const textareas = document.querySelectorAll("textarea");
+            for (const ta of textareas) {
+                if (ta.value.trim().length > 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    </script>
+
+<script>
+  // Singleton tooltip element
+  (function ensureTooltipSingleton(){
+    if (document.getElementById('voters-tooltip')) return;
+    const tip = document.createElement('div');
+    tip.id = 'voters-tooltip';
+    tip.className = 'voters-tooltip';
+    tip.hidden = true;
+    document.body.appendChild(tip);
+  })();
+
+  function hideVotersTooltip() {
+    const tip = document.getElementById('voters-tooltip');
+    if (tip) tip.hidden = true;
+  }
+
+  // Optional: hide on scroll/resize
+  ['scroll','resize'].forEach(ev => window.addEventListener(ev, hideVotersTooltip, {passive:true}));
+</script>
+
+<script>
+  // Singleton tooltip element
+  (function ensureTooltipSingleton(){
+    if (document.getElementById('voters-tooltip')) return;
+    const tip = document.createElement('div');
+    tip.id = 'voters-tooltip';
+    tip.className = 'voters-tooltip';
+    tip.hidden = true;
+    document.body.appendChild(tip);
+  })();
+
+function showVotersTooltip(targetEl, heading, users) {
+  const tip = document.getElementById('voters-tooltip');
+  if (!tip) return;
+
+  const safe = (s) => String(s).replace(/[&<>"']/g, c => (
+    {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]
+  ));
+  const list = users && users.length
+    ? `<ul>${users.map(u=>`<li>${safe(u)}</li>`).join('')}</ul>`
+    : '<div>No one yet</div>';
+  tip.innerHTML = `<h4>${safe(heading)}</h4>${list}`;
+
+  // Make it renderable so we can measure width/height
+  tip.style.visibility = 'hidden';
+  tip.hidden = false;
+
+  const r = targetEl.getBoundingClientRect();
+  const pad = 10; // try changing this; it will now actually move
+
+  // Since .voters-tooltip is position: fixed, DO NOT add window.scrollY/X.
+  // Try centering under the target; clamp to viewport.
+  const vw = document.documentElement.clientWidth;
+  const vh = document.documentElement.clientHeight;
+
+  let top = r.bottom + pad; // place BELOW the icon
+  let left = r.left + (r.width - tip.offsetWidth) / 2; // center horizontally
+
+  // Clamp inside viewport with a tiny margin
+  const margin = 6;
+  left = Math.max(margin, Math.min(left, vw - tip.offsetWidth - margin));
+  // If it would go off the bottom, flip above
+  if (top + tip.offsetHeight + margin > vh) {
+    top = Math.max(margin, r.top - tip.offsetHeight - pad);
+  }
+
+  tip.style.top = `${top}px`;
+  tip.style.left = `${left}px`;
+  tip.style.visibility = 'visible';
+}
+
+
+  function hideVotersTooltip() {
+    const tip = document.getElementById('voters-tooltip');
+    if (tip) tip.hidden = true;
+  }
+
+  // Optional: hide on scroll/resize
+  ['scroll','resize'].forEach(ev => window.addEventListener(ev, hideVotersTooltip, {passive:true}));
+</script>
+
+</body>
+
+</html>

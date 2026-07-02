@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eligibility Check</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .instructions,
+    .email-box,
+    .survey-box,
+    .slots-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .day-card {
+      background-color: #eaeaea;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .time-slot {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background-color: #ccc;
+      cursor: pointer;
+    }
+
+    .time-slot.selected {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: center;
+      overflow-y: scroll;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      background-color: #fff;
+      color: #333;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 10px;
+      margin-bottom: 16px;
+      background-color: #fff;
+      color: #333;
+      box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+    }
+
+    .full-width-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .full-width-btn:hover {
+      background-color: #45a049;
+    }
+
+    .modal.hidden {
+      display: none !important;
+    }
+
+    .success-message {
+      position: relative;
+      background-color: #e6f9ec;
+      color: #2e7d32;
+      border: 1px solid #2e7d32;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .success-message .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: none;
+      border: none;
+      color: #2e7d32;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+      margin: 0;
+    }
+
+    .success-message .close-btn:hover {
+      color: #1b5e20;
+    }
+
+    .confirm-box,
+    .final-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .confirm-box a {
+      color: #4CAF50;
+      margin-left: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .confirm-box a:hover {
+      text-decoration: underline;
+    }
+
+    .final-box button {
+      margin-top: 10px;
+    }
+
+    input.input-error {
+      border: 2px solid red;
+      background-color: #ffe6e6;
+    }
+
+    #warning-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #warning-modal .modal-content {
+      background-color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 10px #4CAF50;
+      }
+
+      100% {
+        box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+      }
+    }
+
+    #email {
+      animation: glowPulse 1.5s infinite alternate;
+    }
+
+    button:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        margin: 16px;
+      }
+
+      .instructions,
+      .email-box,
+      .survey-box,
+      .slots-box {
+        padding: 16px;
+      }
+
+      .modal-content {
+        max-width: 90%;
+        padding: 20px;
+      }
+    }
+
+    #gotoconsent {
+      animation: glowPulse 1.5s infinite alternate;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      /* allows them to stack when needed */
+      gap: 20px;
+      /* space between boxes */
+    }
+
+    .email-box {
+      flex: 1;
+      /* each box takes equal width */
+      min-width: 280px;
+      /* prevents shrinking too small */
+      box-sizing: border-box;
+    }
+
+    /* Responsive rule: stack on smaller screens */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+
+    /* Overlay: allow page locking + internal scrolling if needed */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, .5);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      /* avoid vertical overflow when tall */
+      overflow: auto;
+      /* overlay scrolls if content too tall */
+      padding: 16px;
+      /* breathing room around the box */
+      z-index: 9999;
+    }
+
+    /* Cap modal box height to viewport and let its content scroll */
+    .modal-content {
+      background: #fff;
+      padding: 24px;
+      border-radius: 10px;
+      width: min(600px, 92vw);
+      max-height: calc(100dvh - 32px);
+      /* safe on mobile browsers */
+      overflow: auto;
+      /* the box itself scrolls */
+    }
+
+    /* Optional: keep the iframe from forcing expansion */
+    .modal-content .referrals-section {
+      max-height: 60vh;
+      overflow: auto;
+    }
+
+    /* Hide when needed */
+    .modal.hidden {
+      display: none !important;
+    }
+
+    /* Lock background scroll when a modal is open */
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    /* Small screens tweaks */
+    @media (max-width: 600px) {
+      .modal-content {
+        padding: 20px;
+      }
+    }
+
+    .shrinked-iframe {
+      transform: scale(0.90);
+      /* shrink to 85% */
+      transform-origin: top center;
+      /* keep it aligned at top */
+      width: 118%;
+      /* counteract the shrink so it still fills */
+      height: 500px;
+      /* fixed or flexible height */
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="instructions">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2>Ranking Code Snippets by Comprehension Difficulty</h2>
+      <button
+        style="padding: 6px 12px; font-size: 14px; border-radius: 5px; background-color: #ddd; border: none;color: darkslategrey; cursor: pointer;"
+        onclick="toggleInfo(this)">Hide</button>
+    </div>
+    <div id="study-info">
+
+      <p>👋 Welcome! We are conducting a research study to understand how senior software engineers (<em>aka</em>
+        experts) evaluate the comprehensibility of Java code snippets. Comprehensibility is defined as the difficulty of
+        understanding a code snippet. You have been invited to serve as one of five experts. Your expertise will help us
+        conduct foundational research to develop methods to make code easier for developers to understand.</p>
+
+      <h3>Study Overview</h3>
+
+
+      <p><strong>🎯 Goal:</strong> To establish a ranking of 8 Java code snippets according to how difficulty they are
+        for experts to understand. This ranking will later serve as ground-truth data in follow-up studies.</p>
+
+      <p><strong>🧠 What You'll Do:</strong> You'll review <strong>8 Java code snippets</strong> across <strong>3
+          rounds</strong>. You’ll answer a few questions, rank the snippets, reflect on others’ perspectives, and in the
+        final round, join an online discussion to resolve disagreements.</p>
+
+      <p><strong>⏳ Duration:</strong> Round 1 is expected to take about <strong>75 minutes</strong>, Round 2 <strong>45
+          minutes</strong>, and Round 3 (discussion phase) about <strong>40 minutes</strong>. You’ll have up to
+        <strong>one week</strong> to complete each round on your own schedule before the deadline.
+      </p>
+
+      <p><strong>💻 Format:</strong> The study is conducted entirely <strong>online</strong> and
+        <strong>asynchronous</strong>. You'll complete all tasks through our web platform without any live meetings or
+        direct contact with other participants.
+      </p>
+
+      <p><strong>🔁 Process:</strong> After each round, we’ll share the rankings and anonymized feedback from other
+        experts to help guide consensus on a final ranking. The study concludes once consensus is reached, or after
+        Round 3. (This process is based on the <a href="https://en.wikipedia.org/wiki/Delphi_method"
+          target="_blank">Delphi method</a>)</p>
+
+      <p><strong>🎁 Compensation:</strong> You will receive a <strong>$50 Amazon gift card</strong> after the study
+        concludes.</p>
+
+      <p><strong>🔒 Confidentiality:</strong> Your responses will be kept confidential and anonymized in all
+        communications and publications. Only the research team will have access to your identifiable information.</p>
+
+      <p><strong>🗓️ Start Time:</strong> The study’s start date and time are <strong>TBD</strong>. You’ll be notified
+        by email once finalized.</p>
+
+
+      <p><a href="#"
+          onclick="document.getElementById('detailed-info').style.display='block'; this.style.display='none'; return false;">📘
+          Learn more about what to expect</a></p>
+
+      <div id="detailed-info" style="display: none;">
+        <p>Here's what will be involved:</p>
+        <ul>
+          <li>This study will involve five experts like yourself.</li>
+          <li>Our goal is to establish an expert-determined ranking of the comprehensibility of 8 Java code snippets.
+          </li>
+          <li class="summary-text">After agreeing to participate, you will receive an email containing your username,
+            password, and a link to complete Round 1.</li>
+
+          <!-- Round 1 -->
+          <li class="detailed-only"><strong>Round 1 (approx. 75 minutes):</strong>
+            <ul>
+              <li><strong>Phase 1:</strong> Review each code snippet and write a short summary. Also provide your
+                assessment of how easy or difficult it is to understand.</li>
+              <li><strong>Phase 2:</strong> Rank all 8 snippets from easiest to hardest to understand. You may group
+                snippets together if you feel they are similarly understandable.</li>
+              <li><strong>Phase 3:</strong> Explain your reasoning behind your ranking and any groupings you formed.
+              </li>
+            </ul>
+          </li>
+
+          <!-- Round 2 -->
+          <li class="detailed-only"><strong>Round 2 (approx. 45 minutes):</strong>
+            <ul>
+              <li><strong>Phase 1:</strong> Review your own and other experts’ anonymized summaries and assessments from
+                the previous round.</li>
+              <li><strong>Phase 2:</strong> Review your own and other experts’ rankings and the reasoning behind them.
+              </li>
+              <li><strong>Phase 3:</strong> Reflect on major disagreements between experts, as identified by the
+                research team. You’ll be asked a few questions to share your thoughts.</li>
+              <li><strong>Phase 4:</strong> Update your ranking of the code snippets, if desired.</li>
+              <li><strong>Phase 5:</strong> Explain your reasoning behind any changes you made to your ranking or
+                groupings.</li>
+            </ul>
+          </li>
+
+          <!-- Round 3 -->
+          <li class="detailed-only"><strong>Round 3 (approx. 40 minutes, Discussion Phase):</strong>
+            <p>This final round will be conducted because some disagreements may remain among experts. You will:</p>
+            <ul>
+              <li>Review prior feedback and reasoning from earlier rounds.</li>
+              <li>Participate in focused, anonymized discussions with other experts.</li>
+              <li>Update your ranking, if you wish, based on the discussion.</li>
+            </ul>
+            <p>These phases in each round are interconnected. While they are shown separately for clarity, you may move
+              between them freely — they are not strictly sequential.</p>
+          </li>
+
+          <li class="summary-text">After Round 3, if consensus is still not reached, a statistical aggregation method
+            will be applied to determine the final expert-informed ranking.</li>
+        </ul>
+
+        <p>We appreciate your interest — your participation helps advance research in software engineering!</p>
+
+        <button
+          style="padding: 10px 20px; font-size: 15px; border: none; border-radius: 6px; background-color: #4CAF50; color: white; cursor: pointer; margin: 5px;"
+          onmouseover="this.style.backgroundColor='#45a049'" onmouseout="this.style.backgroundColor='#4CAF50'"
+          onclick="document.getElementById('email-box').scrollIntoView({ behavior: 'smooth' });">
+          ✅ Check if you are eligible
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="container">
+    <div class="email-box" id="email-box">
+      <h2>I want to participate</h2>
+      <p>To see if you qualify for this study, please enter your email address below and answer a few quick questions.
+      </p>
+      <input type="email" id="email" placeholder="Enter your email" class="input-field" autocomplete="email">
+      <button onclick="startSurvey()" class="full-width-btn">Check My Eligibility</button>
+    </div>
+
+    <div class="email-box" id="referrals-box">
+      <h2>I don't want to participate</h2>
+      <div class="referrals-section">
+        <iframe class="referrals-widget" src="/referrals2.html"></iframe>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="survey-box hidden" id="survey-box">
+    <h3>Eligibility Questions</h3>
+    <div id="question-container"></div>
+    <div style="margin-top: 20px;">
+      <button onclick="prevQuestion()" id="prevBtn" disabled>Previous</button>
+      <button onclick="nextQuestion()" id="nextBtn">Next</button>
+    </div>
+  </div>
+
+
+  <div class="slots-box hidden" id="consent-form">
+
+  </div>
+
+
+  <div class="slots-box hidden" id="slots-box">
+    <div id="eligibility-success" class="success-message">
+      🎉 You're eligible to participate in the study!
+    </div>
+    <strong>Please finalize your participation by reading and signing the informed consent form:</strong>
+    <br><br>
+    <button id="gotoconsent" onclick="window.location='/consent-experts.html'">Final Step: Review Consent Form</button>
+  </div>
+
+  <!-- Confirmation Section -->
+  <div class="confirm-box hidden" id="confirm-box">
+    <p><strong>You selected:</strong> <span id="selected-slot-info"></span>
+      <a href="#" onclick="changeSlot()">Change date</a>
+    </p>
+    <label style="display: block; margin: 15px 0;">
+      <input type="checkbox" id="notify-checkbox" checked>
+      I want to receive notifications about this session through my email "<span id="notify-email"></span>"
+    </label>
+    <button onclick="finalizeRegistration()">Finalize My Registration</button>
+  </div>
+
+  <!-- Final Success Section -->
+  <div class="final-box hidden" id="final-box">
+    <h3>✅ Registration Received!</h3>
+    <p>Thank you! We'll reach out to you soon to confirm the final session time and share the exact room location. It
+      will be in one of the rooms at <strong>GITC, NJIT</strong>.</p>
+    <p><strong>Selected availability:</strong> <span id="confirmed-session"></span></p>
+    <!-- <p>You can add a placeholder to your Google Calendar for now:</p>
+    <button onclick="addToGoogleCalendar()">📅 Add to Google Calendar</button> -->
+  </div>
+
+
+  <div class="final-box hidden" id="final-box-custom">
+    <h3>✅ Submitted!</h3>
+    <p>Thank you! Your submission has been received. <strong>We’ll contact you soon to schedule a time.</strong></p>
+    <p>The exact room location will be shared in a separate follow-up—it will be in one of the rooms at <strong>GITC,
+        NJIT</strong>.</p>
+  </div>
+
+  <div class="slots-box hidden" id="final-confirmation-panel" style="display: none;">
+    <p id="final-summary"></p>
+    <a href="#" onclick="changeSlotCustom()">Change date</a>
+    <button onclick="submitPendingRegistration()">Submit</button>
+  </div>
+
+  <div class="modal hidden" id="problem-modal">
+    <div class="modal-content">
+      <h3>Sorry</h3>
+      <p>Unfortunately, the eligibility form is currently being updated.</p>
+
+      <!-- <div class="referrals-section">
+      <iframe class="referrals-widget shrinked-iframe" src="/referrals.html"></iframe>
+    </div> -->
+    </div>
+  </div>
+
+
+  <div class="modal hidden" id="ineligible-modal">
+    <div class="modal-content">
+      <h3>Thank you!</h3>
+      <p>We have received your responses. Our team
+        will review your information and may contact you by email regarding the next steps.</p>
+
+      <div class="referrals-section">
+        <iframe class="referrals-widget shrinked-iframe" src="/referrals.html"></iframe>
+      </div>
+
+      <button onclick="document.getElementById('ineligible-modal').classList.add('hidden')">Close</button>
+    </div>
+  </div>
+
+
+  <div class="modal hidden" id="warning-modal">
+    <div class="modal-content">
+      <p id="warning-message">Placeholder warning text.</p>
+      <button onclick="closeWarningModal()">Close</button>
+    </div>
+  </div>
+
+
+  <script>
+
+    const jobTitles = [
+      // Executive / Leadership
+      "CTO",
+      "CIO / Chief Digital Officer / Chief Innovation Officer",
+      "VP of Product Management / Head of Product",
+      "VP of Marketing",
+      "VP of Engineering",
+      "VP of HR",
+      "Chief Architect",
+      "Chief Human Resource Officer",
+
+      // Product & Project
+      "Product Manager",
+      "Engineering Project Manager",
+      "Engineering Manager",
+      "Technical Project Manager",
+      "Project Manager",
+      "Business Account Manager",
+      "Senior Manager IT",
+      "IT Infrastructure Manager",
+      "Procurement Manager",
+
+      // Learning & Development
+      "Learning and Development Manager",
+      "Learning and Development Coordinator",
+
+      // HR / Recruitment
+      "HR Coordinator",
+      "Payroll Coordinator",
+      "Recruiting Coordinator",
+      "HR Specialist",
+      "HR Generalist",
+      "Recruiter",
+      "Human Resource Information Specialist",
+      "HR Manager",
+      "Recruiting Manager",
+      "HR Business Partner",
+      "HR Director",
+      "Recruiting Director",
+      "Career Consultant",
+      "Career Advisor",
+      "Assignment Coordinator",
+      "Placement Coordinator",
+      "Career Development Strategist",
+      "Personnel Agent",
+      "Human Resources Officer",
+
+      // Marketing / SEO / Digital
+      "SEO Manager",
+      "SEO Engineer",
+      "SEO Consultant",
+      "Digital Marketing Manager",
+      "Digital Marketing Analyst",
+      "Social Media Marketing Manager",
+      "Social Media Marketing Analyst",
+      "Marketing Technologist",
+      "Web Analytics Developer",
+      "Social Media Manager",
+      "Growth Hacker",
+      "Content Manager",
+      "Content Strategist",
+
+      // Engineering & IT
+      ".NET Developer",
+      "Android Developer",
+      "Artificial Intelligence / Machine Learning Engineer",
+      "Big Data Engineer",
+      "Build and Release Engineer",
+      "Cloud Architect",
+      "Cloud Engineer",
+      "Computer Hardware Engineer",
+      "Computer Network Architect",
+      "Computer Programmer",
+      "Computer Systems Analyst",
+      "Data Analyst",
+      "Data Architect",
+      "Data Engineer",
+      "Data Scientist",
+      "Database Administrator",
+      "DevOps Engineer",
+      "Full Stack Developer",
+      "Front-End Developer",
+      "Back-End Developer",
+      "Software Developer",
+      "Software Engineer",
+      "Senior Software Engineer",
+      "Site Reliability Engineer",
+      "Systems Engineer",
+      "Systems Administrator",
+      "Network Engineer",
+      "Security Engineer",
+      "QA Engineer",
+      "UI Designer",
+      "UX Designer",
+      "Web Developer",
+      "Mobile App Developer",
+      "Game Developer",
+      "Robotics Engineer",
+      "Technical Lead",
+      "Technical Account Manager",
+      "Technical Sales Engineer",
+      "IT Manager",
+      "IT Support Specialist",
+      "DevSecOps Engineer",
+      "AI Researcher",
+      "Machine Learning Architect",
+      "Research Scientist",
+      "Software Architect",
+      "Principal Engineer",
+      "Junior Developer",
+      "Intern Developer",
+      "Entry Level Software Engineer"
+    ];
+
+   const questions = [
+     {
+       text: "What is your age?",
+       options: [
+         { label: "Under 18", ineligible: true },
+         { label: "18–24" },
+         { label: "25–34" },
+         { label: "35–44" },
+         { label: "45–54" },
+         { label: "55–64" },
+         { label: "65 or older" }
+       ]
+     },
+     {
+       text: "How many years of professional development experience do you have (in any language)?",
+       options: [
+         { label: "No experience" },
+         { label: "<1 year" },
+         { label: "1–2 years" },
+         { label: "3–5 years" },
+         { label: "6–9 years" },
+         { label: "10–14 years" },
+         { label: "15–19 years" },
+         { label: "20+ years" }
+       ]
+     },
+     {
+       text: "How many years of professional development experience do you have with <strong>Java</strong>?",
+       options: [
+         { label: "No experience", ineligible: true },
+         { label: "<1 year" },
+         { label: "1–2 years" },
+         { label: "3–5 years", eligible: true },
+         { label: "6–9 years", eligible: true },
+         { label: "10–14 years", eligible: true },
+         { label: "15–19 years", eligible: true },
+         { label: "20+ years", eligible: true }
+       ]
+     },
+     {
+       text: "Have you ever been promoted within a software engineering role to a more senior level—for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+       options: [
+         { label: "Yes, I have received a promotion like that.", eligible: true },
+         { label: "No, I have not received a promotion like that." }
+       ]
+     },
+     {
+       text: "Have you ever mentored one or more junior software engineers in a professional setting?",
+       options: [
+         { label: "Yes", eligible: true },
+         { label: "No" }
+       ]
+     },
+     {
+       text: "Briefly describe the largest or most complex software system you’ve worked on (e.g., its purpose, scale, users, and development team).",
+       type: "text",
+       placeholder: "For example: a distributed microservice system for e-commerce, composed of hundreds of modules, developed by dozens of developers, and used by millions of users worldwide.",
+       multiline: true
+     },
+     {
+       text: "What is your current job title? (You can select from the list or type your own)",
+       type: "combobox",
+       options: jobTitles.map(t => ({ label: t })),
+       placeholder: "Start typing your job title…"
+     },
+     {
+       text: "What company or organization do you currently work for (if any)?",
+       type: "text",
+       placeholder: "Enter the name of your employer, or write 'None' if not currently employed",
+       multiline: false
+     },
+     {
+       text: "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+       type: "checkbox",
+       multiple: true,
+       options: [
+         { label: "Proprietary or commercial" },
+         { label: "Open-source" },
+         { label: "Other (please specify)", freeText: true }
+       ]
+     }
+     ,
+     {
+       text: "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+       type: "checkbox",
+       multiple: true,
+       options: [
+         { label: "Operating systems" },
+         { label: "Web applications" },
+         { label: "Mobile applications" },
+         { label: "Desktop applications" },
+         { label: "Middleware" },
+         { label: "AI-intensive systems" },
+         { label: "Development tools (compilers, programming languages, etc.)" },
+         { label: "Libraries/frameworks" },
+         { label: "Other (please specify)", freeText: true }
+       ]
+     },
+     {
+       text: "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, …).",
+       type: "text",
+       placeholder: "List domains (comma-separated)",
+       multiline: true
+     }
+   ];
+
+
+
+    const QUESTIONS_VERSION = "2025-10-20.1";
+    let currentQuestion = 0;
+    let answers = [];
+
+    function startSurvey() {
+
+      clearOldSessionData();
+      const emailInput = document.getElementById('email');
+      const email = emailInput.value.trim().toLowerCase();
+
+
+      // Remove any prior error indication
+      emailInput.classList.remove("input-error");
+
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!isValidEmail) {
+        emailInput.classList.add("input-error");
+        showWarningModal("Please enter a valid email address.");
+        emailInput.focus();
+        return;
+      }
+
+      //   if (!email.endsWith("@njit.edu")) {
+      //     emailInput.classList.add("input-error");
+      //     showWarningModal("Please use your NJIT email address (e.g., yourname@njit.edu).");
+      //     emailInput.focus();
+      //     return;
+      //   }
+
+      localStorage.setItem("expert_email", email);
+      document.getElementById('email-box').classList.add('hidden');
+      document.getElementById('survey-box').classList.remove('hidden');
+      hideStudyInfoIfVisible();
+
+      const referralsBox = document.getElementById('referrals-box');
+      if (referralsBox) referralsBox.classList.add('hidden');
+
+      showQuestion();
+    }
+
+
+
+    /*******************************
+     * 1) QUESTION DEFINITION NOTE *
+     *******************************
+     * Add this question (or ensure it exists) in your `questions` array:
+     * 
+     * {
+     *   text: "What is your current job title?",
+     *   type: "combobox",
+     *   options: jobTitles.map(t => ({ label: t })),
+     *   placeholder: "Start typing your job title…"
+     * }
+     * 
+     * For any question with an “Other (please specify)” choice, include:
+     *    { label: "Other (please specify)", freeText: true }
+     */
+
+
+    /*********************************
+     * 2) RENDERER: showQuestion()   *
+     *********************************/
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      const container = document.getElementById('question-container');
+
+      const qType = q.type || "radio";
+      const nameBase = `q${currentQuestion}`;
+      const prev = answers[currentQuestion]; // number | string | number[] | objects (see below)
+      const esc = (s) => (s ?? "").toString().replace(/"/g, "&quot;");
+
+      let html = `<p><strong>${q.text}</strong></p>`;
+
+      // ---- RADIO (default) ----
+      if (qType === "radio") {
+        (q.options || []).forEach((opt, i) => {
+          const checked = (typeof prev === "number" && prev === i) ? "checked" : "";
+          html += `
+        <label>
+          <input type="radio" name="${nameBase}" value="${i}" ${checked}>
+          ${opt.label}
+        </label><br>
+      `;
+        });
+
+        // Optional free-text box for "Other (please specify)"
+        const freeIdx = (q.options || []).findIndex(o => o.freeText);
+        if (freeIdx >= 0) {
+          const show = prev === freeIdx;
+          html += `
+        <div id="${nameBase}-free" style="margin-top:6px; ${show ? "" : "display:none;"}">
+          <input id="${nameBase}-free-input" type="text" placeholder="Please specify" 
+                 value="${esc(sessionStorage.getItem(`${nameBase}-free`) || "")}" style="width:100%;">
+        </div>
+      `;
+        }
+      }
+
+      // ---- CHECKBOX ----
+      if (qType === "checkbox") {
+        (q.options || []).forEach((opt, i) => {
+          const checked = Array.isArray(prev) && prev.includes(i) ? "checked" : "";
+          html += `
+        <label>
+          <input type="checkbox" name="${nameBase}[]" value="${i}" ${checked}>
+          ${opt.label}
+        </label><br>
+      `;
+        });
+
+        // Optional free-text box for "Other (please specify)"
+        const freeIdx = (q.options || []).findIndex(o => o.freeText);
+        if (freeIdx >= 0) {
+          const show = Array.isArray(prev) && prev.includes(freeIdx);
+          html += `
+        <div id="${nameBase}-free" style="margin-top:6px; ${show ? "" : "display:none;"}">
+          <input id="${nameBase}-free-input" type="text" placeholder="Please specify" 
+                 value="${esc(sessionStorage.getItem(`${nameBase}-free`) || "")}" style="width:100%;">
+        </div>
+      `;
+        }
+      }
+
+      // ---- TEXT ----
+      if (qType === "text") {
+        html += `
+      <textarea id="${nameBase}-text" rows="${q.multiline ? 4 : 2}" placeholder="${esc(q.placeholder || "")}" style="width:100%;">${esc(typeof prev === "string" ? prev : "")}</textarea>
+    `;
+      }
+
+      // ---- SELECT (with optional 'Other') ----
+      if (qType === "select") {
+        const selected = prev && typeof prev === "object" ? prev.select : "";
+        html += `
+      <select id="${nameBase}-select" style="width:100%;">
+        <option value="">${esc(q.placeholder || "Select...")}</option>
+        ${(q.options || []).map(opt => `<option value="${esc(opt.label)}"${selected === opt.label ? " selected" : ""}>${esc(opt.label)}</option>`).join("")}
+        ${q.hasOther ? `<option value="__other__"${selected === "__other__" ? " selected" : ""}>Other</option>` : ""}
+      </select>
+    `;
+        if (q.hasOther) {
+          const showOther = selected === "__other__";
+          html += `
+        <div id="${nameBase}-other-wrap" style="margin-top:6px; ${showOther ? "" : "display:none;"}">
+          <input id="${nameBase}-other" type="text" placeholder="Enter your answer" 
+                 value="${esc(prev?.other || "")}" style="width:100%;">
+        </div>
+      `;
+        }
+      }
+
+      // ---- COMBOBOX (type-ahead textbox with top-5 matches or free text) ----
+      if (qType === "combobox") {
+        const typed = (prev && typeof prev === "object" && "combobox" in prev) ? prev.combobox : "";
+        html += `
+      <div class="cb-wrap" style="position:relative;max-width:600px;">
+        <input id="${nameBase}-combo" type="text"
+               placeholder="${esc(q.placeholder || "Start typing...")}"
+               value="${esc(typed)}"
+               autocomplete="off"
+               style="width:100%;">
+        <ul id="${nameBase}-list"
+            class="cb-list"
+            style="position:absolute;left:0;right:0;top:100%;z-index:10;margin:4px 0 0 0;padding:0;list-style:none;display:none;border:1px solid #ccc;background:#fff;max-height:220px;overflow:auto;">
+        </ul>
+      </div>
+      <div class="hint" style="font-size:12px;color:#666;margin-top:6px;">Type to search; choose a suggestion or keep your own text.</div>
+    `;
+      }
+
+      container.innerHTML = html;
+
+      // Wire up dynamic behaviors:
+
+      // Radio "Other"
+      if (qType === "radio" && q.options?.some(o => o.freeText)) {
+        const freeIdx = q.options.findIndex(o => o.freeText);
+        const radios = [...document.querySelectorAll(`input[name="${nameBase}"]`)];
+        const freeDiv = document.getElementById(`${nameBase}-free`);
+        radios.forEach(r => {
+          r.addEventListener("change", () => {
+            freeDiv.style.display = (parseInt(r.value, 10) === freeIdx && r.checked) ? "block" : "none";
+          });
+        });
+      }
+
+      // Checkbox "Other"
+      if (qType === "checkbox" && q.options?.some(o => o.freeText)) {
+        const freeIdx = q.options.findIndex(o => o.freeText);
+        const boxes = [...document.querySelectorAll(`input[name="${nameBase}[]"]`)];
+        const freeDiv = document.getElementById(`${nameBase}-free`);
+        const update = () => {
+          const on = boxes.some(x => x.checked && parseInt(x.value, 10) === freeIdx);
+          freeDiv.style.display = on ? "block" : "none";
+        };
+        boxes.forEach(cb => cb.addEventListener("change", update));
+      }
+
+      // Select "Other"
+      if (qType === "select" && q.hasOther) {
+        const sel = document.getElementById(`${nameBase}-select`);
+        const wrap = document.getElementById(`${nameBase}-other-wrap`);
+        sel.addEventListener("change", () => {
+          wrap.style.display = sel.value === "__other__" ? "block" : "none";
+        });
+      }
+
+      // Combobox attach
+      if (qType === "combobox") {
+        const source = (q.options || []).map(o => o.label);
+        attachCombobox(nameBase, source);
+      }
+
+      document.getElementById('prevBtn').disabled = currentQuestion === 0;
+      document.getElementById('nextBtn').innerText =
+        currentQuestion === questions.length - 1 ? 'Check Eligibility' : 'Next';
+    }
+
+
+    /*********************************
+     * 3) NAVIGATION: next / prev    *
+     *********************************/
+    function nextQuestion() {
+      const q = questions[currentQuestion];
+      const qType = q.type || "radio";
+      const nameBase = `q${currentQuestion}`;
+
+      let value = null;
+      // Shapes by type:
+      // radio -> number
+      // checkbox -> number[]
+      // text -> string
+      // select -> {select: string, other?: string}
+      // combobox -> {combobox: string}
+
+      if (qType === "radio") {
+        const selected = document.querySelector(`input[name="${nameBase}"]:checked`);
+        if (!selected) return alert("Please select an option.");
+        value = parseInt(selected.value, 10);
+
+        // Persist free text if present
+        const freeInput = document.getElementById(`${nameBase}-free-input`);
+        if (freeInput) sessionStorage.setItem(`${nameBase}-free`, freeInput.value.trim());
+      }
+
+      if (qType === "checkbox") {
+        const nodes = [...document.querySelectorAll(`input[name="${nameBase}[]"]:checked`)];
+        if (nodes.length === 0) return alert("Please select at least one option.");
+        value = nodes.map(n => parseInt(n.value, 10));
+
+        const freeInput = document.getElementById(`${nameBase}-free-input`);
+        if (freeInput) sessionStorage.setItem(`${nameBase}-free`, freeInput.value.trim());
+      }
+
+      if (qType === "text") {
+        const t = (document.getElementById(`${nameBase}-text`)?.value || "").trim();
+        if (!t) return alert("Please enter a response.");
+        value = t;
+      }
+
+      if (qType === "select") {
+        const sel = document.getElementById(`${nameBase}-select`);
+        const v = sel?.value || "";
+        if (!v) return alert("Please select an option.");
+        if (v === "__other__") {
+          const other = (document.getElementById(`${nameBase}-other`)?.value || "").trim();
+          if (!other) return alert("Please enter your answer.");
+          value = { select: "__other__", other };
+        } else {
+          value = { select: v };
+        }
+      }
+
+      if (qType === "combobox") {
+        const input = document.getElementById(`${nameBase}-combo`);
+        const v = (input?.value || "").trim();
+        if (!v) return alert("Please enter or select your job title.");
+        value = { combobox: v }; // keep exactly what user typed or picked
+      }
+
+      // Store value
+      answers[currentQuestion] = value;
+      // Also store readable string in sessionStorage (like your existing pattern)
+      sessionStorage.setItem(`eligibility_q${currentQuestion}`, humanReadableAnswer(q, value, currentQuestion));
+
+      if (currentQuestion === questions.length - 1) {
+        checkEligibility();
+      } else {
+        currentQuestion++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) currentQuestion--;
+      showQuestion();
+    }
+
+
+    /*****************************************
+     * 4) ANSWER STRINGIFIER (for storage)   *
+     *****************************************/
+    function humanReadableAnswer(q, value, idx) {
+      const qType = q.type || "radio";
+
+      if (qType === "checkbox" && Array.isArray(value)) {
+        const labels = value.map(i => q.options[i]?.label).filter(Boolean);
+        const freeStr = sessionStorage.getItem(`q${idx}-free`);
+        return [labels.join(", "), freeStr].filter(Boolean).join(" — ") || "No answer";
+      }
+
+      if (qType === "text" && typeof value === "string") {
+        return value || "No answer";
+      }
+
+      if (qType === "select" && typeof value === "object") {
+        return value.select === "__other__" ? (value.other || "Other") : value.select || "No answer";
+      }
+
+      if (qType === "combobox" && typeof value === "object") {
+        return value.combobox || "No answer";
+      }
+
+      if (typeof value === "number") {
+        const label = q.options[value]?.label || "No answer";
+        const freeStr = sessionStorage.getItem(`q${idx}-free`);
+        return freeStr ? `${label} — ${freeStr}` : label;
+      }
+
+      return "No answer";
+    }
+
+
+    /*********************************
+     * 5) ELIGIBILITY: same logic    *
+     *********************************/
+    // function checkEligibility() {
+    //   for (let i = 0; i < answers.length; i++) {
+    //     const q = questions[i];
+    //     const a = answers[i];
+
+    //     // checkbox: any ineligible checked?
+    //     if ((q.type || "radio") === "checkbox" && Array.isArray(a)) {
+    //       for (const idx of a) {
+    //         const opt = q.options[idx];
+    //         if (opt?.ineligible) {
+    //           document.getElementById('survey-box').classList.add('hidden');
+    //           document.getElementById('ineligible-modal').classList.remove('hidden');
+    //           submitIneligible(i, opt);
+    //           return;
+    //         }
+    //       }
+    //     }
+
+    //     // radio: ineligible?
+    //     if (typeof a === "number") {
+    //       const opt = q.options[a];
+    //       if (opt?.ineligible) {
+    //         document.getElementById('survey-box').classList.add('hidden');
+    //         document.getElementById('ineligible-modal').classList.remove('hidden');
+    //         submitIneligible(i, opt);
+    //         return;
+    //       }
+    //     }
+    //     // text / select / combobox: no ineligible flags by design
+    //   }
+
+    //   document.getElementById('survey-box').classList.add('hidden');
+    //   document.getElementById('eligibility-success').classList.remove('hidden');
+    //   document.getElementById('slots-box').classList.remove('hidden');
+    // }
+    async function checkEligibility() {
+      const result = evaluateGlobalEligibility(questions, answers);
+
+      if (result.ok) {
+        // ✅ Log the eligible participant *before* showing consent or slots
+        try {
+          await submitEligibleBeforeConsent();
+        } catch (err) {
+          console.warn("⚠️ Could not log eligibleBeforeConsent:", err);
+        }
+
+        // Now safely proceed to the consent or scheduling UI
+        document.getElementById('survey-box').classList.add('hidden');
+        document.getElementById('eligibility-success').classList.remove('hidden');
+        document.getElementById('slots-box').classList.remove('hidden');
+        return;
+      }
+
+      // ❌ Ineligible: show modal + log
+      document.getElementById('survey-box').classList.add('hidden');
+      document.getElementById('ineligible-modal').classList.remove('hidden');
+
+      const idx = typeof result.index === "number" ? result.index : 0;
+      submitIneligible(idx, result.option, result.reason);
+    }
+
+
+
+    /********************************************************
+     * 6) SUBMISSION: stringify all types consistently      *
+     ********************************************************/
+    function submitRegistrationData() {
+      console.log('answers array before submit:', answers);
+      const email = localStorage.getItem("expert_email") || "unknown";
+      const notify = localStorage.getItem("notify_opt_in") === "true";
+      const selectedSlot = localStorage.getItem("selected_slot") || "unspecified";
+
+      const eligibilityResponses = questions.map((q, index) => {
+        const a = answers[index];
+        let selectedOption = "No answer";
+        const t = q.type || "radio";
+
+        if (t === "checkbox" && Array.isArray(a)) {
+          const labels = a.map(i => q.options[i]?.label).filter(Boolean);
+          const free = sessionStorage.getItem(`q${index}-free`);
+          selectedOption = [labels.join(", "), free].filter(Boolean).join(" — ") || "No answer";
+        } else if (t === "text" && typeof a === "string") {
+          selectedOption = a || "No answer";
+        } else if (t === "select" && typeof a === "object") {
+          selectedOption = a.select === "__other__" ? (a.other || "Other") : (a.select || "No answer");
+        } else if (t === "combobox" && a && typeof a === "object") {
+          selectedOption = a.combobox || "No answer";
+        } else if (typeof a === "number") { // radio
+          const label = q.options[a]?.label || "No answer";
+          const free = sessionStorage.getItem(`q${index}-free`);
+          selectedOption = free ? `${label} — ${free}` : label;
+        }
+
+        // Fallback: if still "No answer", try the sessionStorage human-readable value
+        if (selectedOption === "No answer") {
+          const ss = sessionStorage.getItem(`eligibility_q${index}`);
+          if (ss && ss.trim()) selectedOption = ss.trim();
+        }
+
+        return { question: q.text, selectedOption };
+      });
+
+
+      const payload = {
+        email,
+        notify,
+        selectedSlot,
+        eligibilityResponses,
+        submitted: true,
+        event: "availability"
+      };
+
+      return fetch("/register_student", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.ok)
+        .catch(err => {
+          console.error("❌ Network error:", err);
+          return false;
+        });
+    }
+
+
+    /****************************************************************
+     * 7) COMBOBOX ENGINE (substring match + ranking, top 5, keys)  *
+     ****************************************************************/
+    function attachCombobox(nameBase, items) {
+      const input = document.getElementById(`${nameBase}-combo`);
+      const list = document.getElementById(`${nameBase}-list`);
+      let activeIndex = -1;    // which <li> is highlighted
+      let currentItems = [];   // rendered suggestions (strings)
+
+      const render = (suggestions) => {
+        currentItems = suggestions.slice(0, 5);
+        if (currentItems.length === 0) {
+          list.style.display = "none";
+          list.innerHTML = "";
+          activeIndex = -1;
+          return;
+        }
+        list.innerHTML = currentItems.map((t, i) =>
+          `<li data-i="${i}" style="padding:8px 10px;cursor:pointer;">${escapeHtml(t)}</li>`
+        ).join("");
+        list.style.display = "block";
+        activeIndex = -1;
+      };
+
+      const update = () => {
+        const q = (input.value || "").trim();
+        if (!q) {
+          list.style.display = "none";
+          list.innerHTML = "";
+          activeIndex = -1;
+          return;
+        }
+        render(rankAndFilter(items, q));
+      };
+
+      input.addEventListener("input", update);
+
+      input.addEventListener("keydown", (e) => {
+        const visible = list.style.display !== "none";
+        if (!visible && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+          update();
+          return;
+        }
+        if (!visible) return;
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          activeIndex = (activeIndex + 1) % currentItems.length;
+          highlight(activeIndex);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          activeIndex = (activeIndex - 1 + currentItems.length) % currentItems.length;
+          highlight(activeIndex);
+        } else if (e.key === "Enter") {
+          if (activeIndex >= 0 && activeIndex < currentItems.length) {
+            e.preventDefault();
+            input.value = currentItems[activeIndex];
+          }
+          list.style.display = "none";
+        } else if (e.key === "Escape") {
+          list.style.display = "none";
+        }
+      });
+
+      list.addEventListener("mousedown", (e) => {
+        // use mousedown so we can set the value before blur
+        const li = e.target.closest("li");
+        if (!li) return;
+        const i = parseInt(li.getAttribute("data-i"), 10);
+        if (!isNaN(i) && currentItems[i]) {
+          input.value = currentItems[i];
+          list.style.display = "none";
+        }
+      });
+
+      input.addEventListener("blur", () => {
+        // close after a tick to allow click selection
+        setTimeout(() => list.style.display = "none", 100);
+      });
+
+      function highlight(i) {
+        [...list.querySelectorAll("li")].forEach((el, idx) => {
+          el.style.background = idx === i ? "#eef5ff" : "";
+        });
+        // ensure active item stays in view
+        const el = list.querySelector(`li[data-i="${i}"]`);
+        if (el) {
+          const r = el.getBoundingClientRect();
+          const Lr = list.getBoundingClientRect();
+          if (r.top < Lr.top) list.scrollTop -= (Lr.top - r.top + 4);
+          if (r.bottom > Lr.bottom) list.scrollTop += (r.bottom - Lr.bottom + 4);
+        }
+      }
+    }
+
+    // Ranking: substring match (case-insensitive)
+    // Tier 0: startsWith; Tier 1: word-start; Tier 2: anywhere
+    // Then shorter length; then alphabetical
+    function rankAndFilter(items, query) {
+      const q = normalize(query);
+      if (!q) return [];
+      const scored = [];
+      for (const it of items) {
+        const n = normalize(it);
+        const idx = n.indexOf(q);
+        if (idx === -1) continue;
+
+        let tier = 2;
+        if (idx === 0) tier = 0;
+        else if (/\b/.test(n[idx - 1] || " ")) tier = 1;
+
+        const score = [tier, n.length, n]; // tuple: lower is better
+        scored.push({ it, score });
+      }
+      scored.sort((a, b) => {
+        for (let i = 0; i < a.score.length; i++) {
+          if (a.score[i] < b.score[i]) return -1;
+          if (a.score[i] > b.score[i]) return 1;
+        }
+        return 0;
+      });
+      return scored.map(s => s.it).slice(0, 5);
+    }
+
+    function normalize(s) { return (s || "").toLowerCase().trim(); }
+    function escapeHtml(s) {
+      return (s ?? "").toString().replace(/[&<>"']/g, m => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]
+      ));
+    }
+
+
+
+
+
+
+    function prevQuestion() {
+      if (currentQuestion > 0) currentQuestion--;
+      showQuestion();
+    }
+
+
+
+
+    // function selectSlot(el) {
+    //   el.classList.toggle('selected');
+
+    //   // Gather all selected slots
+    //   const selectedEls = document.querySelectorAll('.slots-box .time-slot.selected');
+    //   if (selectedEls.length === 0) return;
+
+    //   const selectedSlots = Array.from(selectedEls).map(el => {
+    //     const dayText = el.closest('.day-card').querySelector('h4').innerText;
+    //     return `${dayText} at ${el.innerText}`;
+    //   });
+
+    //   localStorage.setItem("selected_slot", selectedSlots.join(", "));
+
+    //   // Update confirmation UI
+    //   document.getElementById('eligibility-success').classList.add('hidden');
+    //   document.getElementById('slots-box').classList.add('hidden');
+    //   document.getElementById('selected-slot-info').innerText = selectedSlots.join(", ");
+    //   document.getElementById('notify-email').innerText = localStorage.getItem("expert_email");
+    //   document.getElementById('confirm-box').classList.remove('hidden');
+    // }
+
+
+    function finalizeRegistration() {
+      const notify = document.getElementById('notify-checkbox').checked;
+      localStorage.setItem("notify_opt_in", notify);
+
+      // Call registration submit before showing final confirmation
+      submitRegistrationData().then(success => {
+        if (success) {
+          document.getElementById('confirm-box').classList.add('hidden');
+          document.getElementById('final-box').classList.remove('hidden');
+          const selectedSlot = localStorage.getItem("selected_slot");
+          const sessionText = `${selectedSlot}`;
+          document.getElementById("confirmed-session").innerText = sessionText;
+        } else {
+          alert("❌ Something went wrong while registering. Please try again or contact the research team.");
+        }
+      });
+    }
+
+
+    function addToGoogleCalendar() {
+      const selected = localStorage.getItem("selected_slot"); // e.g., "Monday, June 10 at 10:00 AM"
+      if (!selected) return alert("No time slot selected.");
+
+      const [dayText, timeText] = selected.split(" at ");
+      const dateMap = {
+        "Monday, June 10": "20250610",
+        "Tuesday, June 11": "20250611"
+      };
+      const baseDate = dateMap[dayText.trim()];
+      if (!baseDate) return alert("Invalid date.");
+
+      // Parse time (e.g., "1:00 PM")
+      const [hourPart, minutePartWithSuffix] = timeText.trim().split(":");
+      const minutes = minutePartWithSuffix.slice(0, 2);
+      const suffix = minutePartWithSuffix.trim().slice(-2); // AM or PM
+      let hour = parseInt(hourPart);
+
+      if (suffix === "PM" && hour !== 12) hour += 12;
+      if (suffix === "AM" && hour === 12) hour = 0;
+
+      const startHourStr = hour.toString().padStart(2, '0');
+      const startMinuteStr = minutes.padStart(2, '0');
+      const startTime = `${baseDate}T${startHourStr}${startMinuteStr}00`;
+
+      // Add 90 minutes for end time
+      const startDate = new Date(`${baseDate.slice(0, 4)}-${baseDate.slice(4, 6)}-${baseDate.slice(6)}T${startHourStr}:${startMinuteStr}:00`);
+      const endDate = new Date(startDate.getTime() + 90 * 60 * 1000); // 90 min in ms
+      const endTime = `${endDate.getFullYear()}${(endDate.getMonth() + 1).toString().padStart(2, '0')}${endDate.getDate().toString().padStart(2, '0')}T${endDate.getHours().toString().padStart(2, '0')}${endDate.getMinutes().toString().padStart(2, '0')}00`;
+
+      // Build Google Calendar URL
+      const title = encodeURIComponent("Code Comprehension Session");
+      const location = encodeURIComponent("To be declared");
+      const details = encodeURIComponent("You registered for a code comprehension session. We'll contact you with the exact room. It will be in GITC at NJIT.");
+      const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startTime}/${endTime}&details=${details}&location=${location}`;
+
+      window.open(calendarUrl, "_blank");
+    }
+
+
+    function toggleInfo(btn) {
+      const info = document.getElementById('study-info');
+      if (info.classList.contains('hidden')) {
+        info.classList.remove('hidden');
+        btn.innerText = "Hide";
+      } else {
+        info.classList.add('hidden');
+        btn.innerText = "Show";
+      }
+    }
+
+    function toggleStudyInfo() {
+      const info = document.getElementById('study-info');
+      const button = document.getElementById('toggleInfoButton');
+
+      if (info.classList.contains('hidden')) {
+        info.classList.remove('hidden');
+        button.innerText = "Hide";
+      } else {
+        info.classList.add('hidden');
+        button.innerText = "Show";
+      }
+    }
+
+    function hideStudyInfoIfVisible() {
+      const info = document.getElementById('study-info');
+      const button = document.getElementById('toggleInfoButton');
+
+      if (!info.classList.contains('hidden')) {
+        info.classList.add('hidden');
+        if (button) button.innerText = "Show";
+      }
+    }
+
+
+    function showWarningModal(message) {
+      document.getElementById("warning-message").textContent = message;
+      document.getElementById("warning-modal").classList.remove("hidden");
+    }
+
+    function closeWarningModal() {
+      document.getElementById("warning-modal").classList.add("hidden");
+    }
+
+    document.getElementById('email').addEventListener('input', function () {
+      const value = this.value.trim().toLowerCase();
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+      // If the input is now a valid email OR ends with '@njit.edu', remove error styling
+      if (isValidEmail) {
+        this.classList.remove('input-error');
+      }
+    });
+
+
+    function changeSlot() {
+      // Hide confirmation section and show time slot selection again
+      document.getElementById('confirm-box').classList.add('hidden');
+      document.getElementById('slots-box').classList.remove('hidden');
+      document.getElementById('final-confirmation-panel').style.display = 'none';
+
+    }
+
+    function changeSlotCustom() {
+      // Hide confirmation section and show time slot selection again
+      document.getElementById('confirm-box').classList.add('hidden');
+      document.getElementById('slots-box').classList.remove('hidden');
+      document.getElementById('final-confirmation-panel').style.display = 'none';
+      toggleCustomTimeBox();
+
+    }
+
+  </script>
+
+  <script>
+    function toggleCustomTimeBox() {
+      const box = document.getElementById('custom-time-box');
+      box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+    }
+
+    function reviewCustomTime() {
+      const selected = Array.from(document.querySelectorAll('#custom-time-box .time-slot.selected'))
+        .map(el => {
+          const day = el.closest('.day-card').querySelector('h4').innerText;
+          return `${day} at ${el.innerText}`;
+        });
+
+      if (selected.length === 0) {
+        alert("Please select at least one time slot.");
+        return;
+      }
+
+      window.customEventData = {
+        event: "pending",
+        availabilityNote: selected
+      };
+
+      document.getElementById('eligibility-success').classList.add('hidden');
+
+      goToFinalStepWithPendingEvent();
+    }
+
+
+    function goToFinalStepWithPendingEvent() {
+      const selectedTimes = Array.from(document.querySelectorAll('#custom-time-box .time-slot.selected'))
+        .map(slot => {
+          const day = slot.closest('.day-card').querySelector('h4').innerText;
+          return `${day} at ${slot.innerText.trim()}`;
+        });
+
+      if (selectedTimes.length === 0) {
+        alert("Please select at least one available time.");
+        return;
+      }
+
+      window.customEventData = {
+        event: "pending",
+        availabilityNote: selectedTimes
+      };
+
+      const formatted = selectedTimes.map(t => `<li>${t}</li>`).join("");
+
+      document.getElementById('final-summary').innerHTML = `
+    <p><strong>🕒 Please review your selected availability before submitting:</strong></p>
+    <ul>${formatted}</ul>
+    <p>Click “Submit” below and we’ll follow up to schedule your session based on your availability.</p>
+  `;
+
+      document.getElementById('slots-box').classList.add('hidden');
+      document.getElementById('custom-time-box').style.display = 'none';
+      document.getElementById('final-confirmation-panel').style.display = 'block';
+    }
+
+
+
+    function submitPendingRegistration() {
+      const email = document.getElementById('email').value;
+      const payload = {
+        email: email,
+        event: "pending",
+        customAvailability: window.customEventData.availabilityNote.join(", "),
+        submitted: true
+      };
+
+      fetch("/register_student", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(response => {
+        if (response.ok) {
+          document.getElementById('final-confirmation-panel').style.display = 'none';
+          document.getElementById('final-box-custom').classList.remove('hidden');
+
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+      });
+    }
+
+    function toggleCustomSlot(el) {
+      el.classList.toggle('selected');
+    }
+
+
+    function finalizeMultiSlotSelection() {
+      const selectedEls = document.querySelectorAll('.slots-box .time-slot.selected');
+      if (selectedEls.length === 0) {
+        alert("Please select at least one time slot.");
+        return;
+      }
+
+      const selectedSlots = Array.from(selectedEls).map(el => {
+        const dayText = el.closest('.day-card').querySelector('h4').innerText;
+        return `${dayText} at ${el.innerText}`;
+      });
+
+      localStorage.setItem("selected_slot", selectedSlots.join(", "));
+
+      // Go to confirmation step
+      document.getElementById('slots-box').classList.add('hidden');
+      document.getElementById('eligibility-success').classList.add('hidden');
+      document.getElementById('selected-slot-info').innerText = selectedSlots.join(", ");
+      document.getElementById('notify-email').innerText = localStorage.getItem("expert_email");
+      document.getElementById('confirm-box').classList.remove('hidden');
+    }
+
+
+    function selectSlot(el) {
+      el.classList.toggle('selected');
+    }
+  </script>
+
+  <script>
+    // Find all widgets
+    const widgets = Array.from(document.querySelectorAll('iframe.referrals-widget'));
+
+    // Initialize each iframe
+    widgets.forEach((frame, idx) => {
+      // Set basic styles
+      frame.style.width = '100%';
+      frame.style.border = '0';
+      frame.style.display = 'block';
+      frame.style.overflow = 'hidden';
+      frame.style.height = '240px'; // safe initial height
+
+      // Decide the referrer email per iframe
+      const perFrameEmail = frame.dataset.referrer || localStorage.getItem('expert_email') || '';
+      // Append it to the iframe src
+      const url = new URL(frame.getAttribute('src'), location.origin);
+      if (perFrameEmail) url.searchParams.set('referrer', perFrameEmail);
+      frame.src = url.toString();
+    });
+
+    // Listen for height / submitted messages from ANY referral iframe
+    window.addEventListener('message', (e) => {
+      const data = e.data || {};
+      if (!data.type) return;
+
+      // Find which iframe sent the message
+      const sender = widgets.find(f => f.contentWindow === e.source);
+      if (!sender) return;
+
+      if (data.type === 'referral-iframe-height' && typeof data.height === 'number') {
+        sender.style.height = Math.max(220, data.height) + 'px';
+      }
+
+      if (data.type === 'referral-submitted') {
+        // Optional: show a toast or mark that specific section as done
+        // Example:
+        sender.closest('.referrals-section')?.classList.add('submitted');
+        console.log('Referral widget submitted from this iframe:', data.count, 'rows');
+      }
+    });
+  </script>
+
+  <script>
+    // --- Replace your existing helper with this robust version ---
+    function buildEligibilityResponsesFromAnswers(answers) {
+      return questions.map((q, index) => {
+        const a = answers[index];
+        const t = q.type || "radio";
+        let selectedOption = "No answer";
+
+        if (t === "checkbox" && Array.isArray(a)) {
+          const labels = a.map(i => q.options[i]?.label).filter(Boolean);
+          const free = sessionStorage.getItem(`q${index}-free`);
+          selectedOption = [labels.join(", "), free].filter(Boolean).join(" — ") || "No answer";
+        } else if (t === "text" && typeof a === "string") {
+          selectedOption = a || "No answer";
+        } else if (t === "select" && typeof a === "object") {
+          selectedOption = a.select === "__other__" ? (a.other || "Other") : (a.select || "No answer");
+        } else if (t === "combobox" && a && typeof a === "object") {
+          selectedOption = a.combobox || "No answer";
+        } else if (typeof a === "number") { // radio
+          const label = q.options[a]?.label || "No answer";
+          const free = sessionStorage.getItem(`q${index}-free`);
+          selectedOption = free ? `${label} — ${free}` : label;
+        }
+
+        // Fallback to the human-readable value cached in sessionStorage
+        if (selectedOption === "No answer") {
+          const ss = sessionStorage.getItem(`eligibility_q${index}`);
+          if (ss && ss.trim()) selectedOption = ss.trim();
+        }
+
+        return { question: q.text, selectedOption };
+      });
+    }
+
+
+    async function submitIneligible(ineligibleIndex, ineligibleOption, failureReason) {
+      const email = localStorage.getItem("expert_email") || "unknown";
+      const notify = localStorage.getItem("notify_opt_in") === "true";
+      const selectedSlot = localStorage.getItem("selected_slot") || "unspecified";
+
+      const payload = {
+        email,
+        notify,
+        selectedSlot,
+        eligibilityResponses: buildEligibilityResponsesFromAnswers(answers), // robust version
+        ineligible: true,
+        ineligibleAt: ineligibleIndex,
+        ineligibleQuestion: questions[ineligibleIndex]?.text || "",
+        ineligibleOption: ineligibleOption?.label || "",
+        failureReason: failureReason || "",
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString(),
+        submitted: true,
+        event: "ineligible"
+      };
+
+      try {
+        const res = await fetch("/register_expert", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+          console.warn("⚠️ Failed to log ineligible:", await res.text());
+        }
+      } catch (e) {
+        console.error("❌ Network error logging ineligible", e);
+      }
+    }
+
+
+
+    function norm(s) { return (s || "").toLowerCase().trim(); }
+
+    function optByLabel(q, label) {
+      if (!q?.options) return null;
+      const L = norm(label);
+      return q.options.find(o => norm(o.label) === L) || null;
+    }
+
+    function isAnswerIneligibleForQuestion(q, answer) {
+      const t = q.type || "radio";
+
+      if (typeof answer === "number") { // radio
+        const opt = q.options?.[answer];
+        return !!opt?.ineligible;
+      }
+
+      if (t === "checkbox" && Array.isArray(answer)) {
+        return answer.some(i => !!q.options?.[i]?.ineligible);
+      }
+
+      if (t === "select" && answer && typeof answer === "object") {
+        if (answer.select === "__other__") return false; // free text isn't flagged
+        const opt = optByLabel(q, answer.select);
+        return !!opt?.ineligible;
+      }
+
+      if (t === "combobox" && answer && typeof answer === "object") {
+        // exact match to a predefined option makes it ineligible if that option is ineligible
+        const opt = optByLabel(q, answer.combobox || "");
+        return !!opt?.ineligible;
+      }
+
+      // text/other types: not flagged
+      return false;
+    }
+
+    function isAnswerEligibleForQuestion(q, answer) {
+      const t = q.type || "radio";
+
+      if (typeof answer === "number") { // radio
+        const opt = q.options?.[answer];
+        return !!opt?.eligible;
+      }
+
+      if (t === "checkbox" && Array.isArray(answer)) {
+        return answer.some(i => !!q.options?.[i]?.eligible);
+      }
+
+      if (t === "select" && answer && typeof answer === "object") {
+        if (answer.select === "__other__") return false; // free text not flagged eligible
+        const opt = optByLabel(q, answer.select);
+        return !!opt?.eligible;
+      }
+
+      if (t === "combobox" && answer && typeof answer === "object") {
+        // exact match to eligible option
+        const opt = optByLabel(q, answer.combobox || "");
+        return !!opt?.eligible;
+      }
+
+      return false;
+    }
+
+    /**
+     * Evaluate whole screener:
+     * - if ANY ineligible -> fail (captures where it happened)
+     * - else if ANY eligible -> pass
+     * - else -> fail (no eligible answers)
+     */
+    function evaluateGlobalEligibility(questions, answers) {
+      let firstIneligible = null; // {index, option}
+      let hasEligible = false;
+
+      for (let i = 0; i < answers.length; i++) {
+        const q = questions[i];
+        const a = answers[i];
+
+        // capture first ineligible
+        if (isAnswerIneligibleForQuestion(q, a)) {
+          // find the concrete failing option for logging
+          let failOpt = null;
+          const t = q.type || "radio";
+          if (typeof a === "number") {
+            failOpt = q.options?.[a] || null;
+          } else if (t === "checkbox" && Array.isArray(a)) {
+            const idx = a.find(j => q.options?.[j]?.ineligible);
+            if (typeof idx === "number") failOpt = q.options[idx];
+          } else if (t === "select" && a && typeof a === "object" && a.select !== "__other__") {
+            failOpt = optByLabel(q, a.select);
+          } else if (t === "combobox" && a && typeof a === "object") {
+            failOpt = optByLabel(q, a.combobox || "");
+          }
+          firstIneligible = { index: i, option: failOpt };
+          break;
+        }
+
+        // track eligible
+        if (isAnswerEligibleForQuestion(q, a)) {
+          hasEligible = true;
+        }
+      }
+
+      if (firstIneligible) {
+        return { ok: false, reason: "has_ineligible_selection", ...firstIneligible };
+      }
+      if (hasEligible) {
+        return { ok: true };
+      }
+      return { ok: false, reason: "no_eligible_answers", index: 0, option: null };
+    }
+
+
+    async function submitEligibleBeforeConsent() {
+      const email = localStorage.getItem("expert_email") || "unknown";
+      const notify = localStorage.getItem("notify_opt_in") === "true";
+      const selectedSlot = localStorage.getItem("selected_slot") || "unspecified";
+
+      const payload = {
+        email,
+        notify,
+        selectedSlot,
+        eligibilityResponses: buildEligibilityResponsesFromAnswers(answers),
+        eligible: true,
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString(),
+        submitted: true,
+        event: "eligibleBeforeConsent"
+      };
+
+      try {
+        const res = await fetch("/register_expert", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+          console.warn("⚠️ Failed to log eligibleBeforeConsent:", await res.text());
+        } else {
+          console.log("✅ Logged eligible participant before consent");
+        }
+      } catch (e) {
+        console.error("❌ Network error logging eligibleBeforeConsent", e);
+      }
+    }
+
+  </script>
+
+  <script>
+    function clearOldSessionData() {
+      const storedVersion = sessionStorage.getItem("eligibility_version");
+      if (storedVersion !== QUESTIONS_VERSION) {
+        console.log("🔄 Clearing old eligibility data...");
+        Object.keys(sessionStorage).forEach(key => {
+          if (key.startsWith("eligibility_") || key.startsWith("q")) {
+            sessionStorage.removeItem(key);
+          }
+        });
+        sessionStorage.setItem("eligibility_version", QUESTIONS_VERSION);
+      }
+    }
+  </script>
+
+  <footer
+    style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 14px; color: #666;">
+    Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+  </footer>
+</body>
+
+</html>

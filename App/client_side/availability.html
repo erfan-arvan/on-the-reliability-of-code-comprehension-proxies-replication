@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Select Availability</title>
+  <style>
+    body{font-family:'Segoe UI',Tahoma,sans-serif;background:#F4C41C;margin:40px;color:#333}
+    .slots-box{background:#fff;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    .day-card{background:#f3f3f3;padding:15px;margin-bottom:20px;border-radius:8px}
+    .time-slot{display:inline-block;margin:5px;padding:10px 16px;border-radius:6px;background:#ccc;cursor:pointer}
+    .time-slot.selected{background:#4CAF50;color:#fff;font-weight:700}
+    button{margin-top:20px;padding:12px 20px;border:none;border-radius:6px;background:#4CAF50;color:#fff;font-size:16px;cursor:pointer}
+    button:hover{background:#45a049}
+    a#selectedvsall{display:inline-block;margin-top:8px}
+    #sms-input-wrap{margin-top:10px}
+    input[type="tel"]{width:100%;padding:10px;font-size:15px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box}
+    input[type="tel"]:focus{border-color:#4CAF50;outline:none;box-shadow:0 0 4px rgba(76,175,80,0.4)}
+    label{display:block;margin-top:12px}
+  </style>
+</head>
+<body>
+
+  <div class="slots-box">
+    <h2>📅 Select Your Available Times</h2>
+    <p>
+      First, pick <strong>one</strong> recommended slot below.
+      If none work, switch to the full availability picker and choose <strong>all</strong> that work for you.
+    </p>
+
+    <!-- Recommended (single-select) -->
+    <div id="selectedOnes">
+      <h3>Recommended slots</h3>
+
+<!-- <div class="day-card" data-date="2025-11-10">
+  <h4>Monday 10 Nov</h4>
+  <div><div class="time-slot" onclick="selectRecommendedSlot(this)">2:30 PM – 4:00 PM</div></div>
+</div>
+
+<div class="day-card" data-date="2025-11-11">
+  <h4>Tuesday 11 Nov</h4>
+  <div><div class="time-slot" onclick="selectRecommendedSlot(this)">2:30 PM – 4:00 PM</div></div>
+</div> -->
+
+<div class="day-card" data-date="2025-11-14">
+  <h4>Friday 14 Nov</h4>
+  <div><div class="time-slot" onclick="selectRecommendedSlot(this)">4:00 PM – 5:30 PM</div></div>
+</div>
+
+<div class="day-card" data-date="2025-11-17">
+  <h4>Monday 17 Nov</h4>
+  <div><div class="time-slot" onclick="selectRecommendedSlot(this)">9:00 AM – 10:30 AM</div></div>
+</div>
+
+<div class="day-card" data-date="2025-11-18">
+  <h4>Tuesday 18 Nov</h4>
+  <div><div class="time-slot" onclick="selectRecommendedSlot(this)">2:30 PM – 4:00 PM</div></div>
+</div>
+
+<div class="day-card" data-date="2025-11-19">
+  <h4>Wednesday 19 Nov</h4>
+  <div><div class="time-slot" onclick="selectRecommendedSlot(this)">4:00 PM – 5:30 PM</div></div>
+</div>
+
+      <!-- <div class="day-card" data-date="2025-11-06">
+        <h4>Thursday 6 Nov</h4>
+        <div>
+          <div class="time-slot" onclick="selectRecommendedSlot(this)">5:30 PM – 7:00 PM</div>
+        </div>
+      </div> -->
+
+      <!-- <div class="day-card" data-date="2025-11-07">
+        <h4>Friday 7 Nov</h4>
+        <div><div class="time-slot" onclick="selectRecommendedSlot(this)">1:00 PM – 2:30 PM</div></div>
+      </div> -->
+
+      <!-- <div class="day-card" data-date="2025-11-14">
+        <h4>Friday 14 Nov</h4>
+        <div><div class="time-slot" onclick="selectRecommendedSlot(this)">4:00 PM – 5:30 PM</div></div>
+      </div> -->
+
+      <!-- <div class="day-card" data-date="2025-11-18">
+        <h4>Tuesday 18 Nov</h4>
+        <div><div class="time-slot" onclick="selectRecommendedSlot(this)">2:30 PM – 4:00 PM</div></div>
+      </div> -->
+
+      <!-- <div class="day-card" data-date="2025-11-19">
+        <h4>Wednesday 19 Nov</h4>
+        <div><div class="time-slot" onclick="selectRecommendedSlot(this)">4:00 PM – 5:30 PM</div></div>
+      </div> -->
+    </div>
+
+    <p style="margin:8px 0 16px;">
+      <a id="selectedvsall" href="#" onclick="toggleSelectedVsAll(); return false;">None of these work for you?</a>
+    </p>
+
+    <!-- Full availability (multi-select) -->
+    <div id="allTimes" style="display:none;">
+      <h3>Full availability (next two weeks, weekdays)</h3>
+      <div id="dynamic-cards"></div>
+    </div>
+
+    <!-- SMS Opt-in -->
+    <label><input type="checkbox" id="sms-checkbox" checked onchange="toggleSmsInput()"> 
+      I’d also like to receive text message reminders (recommended)
+    </label>
+    <div id="sms-input-wrap">
+      <input type="tel" id="phone-input" placeholder="Mobile number (e.g. +1 973 555 0123)" />
+      <small style="color:#666;">We'll only use this number for study-related notifications.</small>
+    </div>
+
+    <button onclick="submitAvailability()">Submit</button>
+  </div>
+
+  <script>
+    // --- Email from URL (kept from before) ---
+    const params = new URLSearchParams(window.location.search);
+    const userEmail = decodeURIComponent(params.get("email") || "");
+
+    // --- Helper: check phone plausibility ---
+    function isPlausiblePhone(s) {
+      if (!s) return false;
+      const trimmed = s.trim();
+      const e164 = /^\+\d{7,15}$/;
+      const loose = /^[\d\-\s().+]{7,20}$/;
+      return e164.test(trimmed) || loose.test(trimmed);
+    }
+
+    function toggleSmsInput() {
+      const wrap = document.getElementById('sms-input-wrap');
+      const checked = document.getElementById('sms-checkbox').checked;
+      wrap.style.display = checked ? 'block' : 'none';
+    }
+
+    // --- Build the full availability grid ---
+    function createDayCardsNext14Weekdays(containerId = 'dynamic-cards') {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      const timeSlots = [
+        '9:00 AM – 10:30 AM',
+        '10:30 AM – 12:00 PM',
+        '1:00 PM – 2:30 PM',
+        '2:30 PM – 4:00 PM',
+        '4:00 PM – 5:30 PM',
+        '5:30 PM – 7:00 PM'
+      ];
+
+      const fmtWeekday = new Intl.DateTimeFormat(undefined, { weekday: 'long' });
+      const fmtDay     = new Intl.DateTimeFormat(undefined, { day: 'numeric' });
+      const fmtMonth   = new Intl.DateTimeFormat(undefined, { month: 'short' });
+
+      const today = new Date();
+      let generated = 0;
+      let offset = 3;
+
+      while (generated < 14) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + offset);
+        offset++;
+
+        const dow = d.getDay();
+        if (dow === 0 || dow === 6) continue;
+
+        const card = document.createElement('div');
+        card.className = 'day-card';
+        card.setAttribute('data-date', d.toISOString().slice(0,10));
+
+        const h4 = document.createElement('h4');
+        h4.textContent = `${fmtWeekday.format(d)} ${fmtDay.format(d)} ${fmtMonth.format(d)}`;
+        card.appendChild(h4);
+
+        const slotWrap = document.createElement('div');
+        timeSlots.forEach(t => {
+          const slot = document.createElement('div');
+          slot.className = 'time-slot';
+          slot.textContent = t;
+          slot.onclick = () => slot.classList.toggle('selected');
+          slotWrap.appendChild(slot);
+        });
+
+        card.appendChild(slotWrap);
+        container.appendChild(card);
+        generated++;
+      }
+    }
+
+    // --- Toggle between recommended and allTimes ---
+    function toggleSelectedVsAll() {
+      const allTimes = document.getElementById('allTimes');
+      const selected = document.getElementById('selectedOnes');
+      const link = document.getElementById('selectedvsall');
+      const showAll = getComputedStyle(allTimes).display === 'none';
+
+      allTimes.style.display = showAll ? 'block' : 'none';
+      selected.style.display = showAll ? 'none' : 'block';
+      link.textContent = showAll ? 'go back to the recommended slots' : 'None of these work for you?';
+    }
+
+    // --- Single-select for recommended list ---
+    function selectRecommendedSlot(el) {
+      const container = document.getElementById('selectedOnes');
+      container.querySelectorAll('.time-slot.selected').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    // --- Submit availability (single or multi + phone) ---
+    async function submitAvailability() {
+      const allTimesVisible = getComputedStyle(document.getElementById('allTimes')).display !== 'none';
+      const smsOptIn = document.getElementById('sms-checkbox').checked;
+      const phone = document.getElementById('phone-input').value.trim();
+
+      if (smsOptIn && !isPlausiblePhone(phone)) {
+        alert("Please enter a valid phone number (e.g. +1 973 555 0123).");
+        return;
+      }
+
+      let selectedSlots = [];
+
+      if (allTimesVisible) {
+        const selectedEls = document.querySelectorAll('#allTimes .time-slot.selected');
+        if (selectedEls.length === 0) {
+          alert("Please select at least one time slot in the full availability view.");
+          return;
+        }
+        selectedSlots = Array.from(selectedEls).map(el => {
+          const day = el.closest('.day-card').querySelector('h4').innerText;
+          return `${day} at ${el.innerText.trim()}`;
+        });
+      } else {
+        const chosen = document.querySelector('#selectedOnes .time-slot.selected');
+        if (!chosen) {
+          alert("Please select a recommended slot, or switch to full availability.");
+          return;
+        }
+        const day = chosen.closest('.day-card').querySelector('h4').innerText;
+        selectedSlots = [`${day} at ${chosen.innerText.trim()}`];
+      }
+
+      const payload = {
+        email: userEmail || "unknown",
+        event: "availability",
+        selectedSlot: selectedSlots.join(", "),
+        smsOptIn: smsOptIn,
+        smsPhone: phone,
+        submitted: true
+      };
+
+      try {
+        const res = await fetch("/register_student", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          alert("✅ Your availability has been submitted successfully!");
+        } else {
+          alert("❌ Something went wrong. Please try again or contact ea442@njit.edu.");
+        }
+      } catch (err) {
+        console.error("Network error:", err);
+        alert("⚠️ Could not connect to the server. Please try again later.");
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      createDayCardsNext14Weekdays();
+      toggleSmsInput(); // initialize visibility
+    });
+  </script>
+</body>
+</html>

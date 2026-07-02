@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Round 2 – Reflections</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0 auto;
+      /* max-width: 80%; */
+      padding: 20px;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+    .status-bar {
+      background: #333;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .disagreement-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .content-wrapper {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+
+    .disagreement-box, .question-box {
+      flex: 1;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    .question-box .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+    .content-wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.disagreement-box, .right-panel {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.question-box textarea {
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+}
+
+.right-panel .navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+    /*For snippet cards*/
+    #cards {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0;
+      flex-wrap: nowrap;
+    }
+
+    .card {
+    background-color: #ffffff;
+    border-color: #ccc;
+    color: #333;
+  }
+
+  body.dark-mode .card {
+    background-color: #2a2a2a;
+    border-color: #555;
+    color: #ddd;
+  }
+
+  .instructions {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .ranking-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+    .ranking-row-numbers {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 0;
+    }
+    .ranking-slot {
+      flex: 1 1 100px;
+      background: #e8f5e9;
+      border: 2px dashed #4CAF50;
+      border-radius: 6px;
+      padding: 10px;
+      min-height: 80px;
+      text-align: center;
+    }
+
+    .ranking-number {
+      flex: 1; 
+      text-align: center;
+      color: #009999;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 8px;
+      margin: 5px;
+      cursor: grab;
+    }
+    .card.dragging {
+      opacity: 0.5;
+    }
+    .preview-area {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .snippet-preview-box {
+      flex: 1 1 45%;
+      min-width: 300px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+    }
+    .snippet-header {
+      background-color: #f5f5f5;
+      padding: 10px 15px;
+      font-weight: bold;
+      font-size: 16px;
+      border-bottom: 1px solid #ccc;
+    }
+    .code-box {
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      padding: 15px;
+      font-size: 14px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    #theme-toggle {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #continueBtn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: 0 0 10px #4CAF50;
+      }
+
+      #continueBtn:hover {
+      background-color: #45a049;
+      animation: glowPulse 1.5s infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 10px #4CAF50;
+      }
+      100% {
+        box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <script src="js/data.js?v=1.0.0"></script>
+  <script>
+
+
+  function getStoredSnippetOrder() {
+    const stored = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length === 8) return parsed;
+      } catch {}
+    }
+    return null;
+  }
+
+  // Apply the stored snippet order
+  const order = getStoredSnippetOrder();
+  const snippets = [];
+
+  if (order) {
+    order.forEach((index, newId) => {
+      const snippet = { ...snippetsOriginal[index - 1] }; 
+      snippet.id = newId + 1;
+      snippet.title = `Snippet ${newId + 1}`;
+      snippets.push(snippet);
+    });
+  } else {
+    alert("⚠️ Missing snippet order. Please login again.");
+    window.location.href = '/';
+  }
+
+  console.log("Applied snippet order:", snippets.map(s => s.title));
+
+  </script>
+
+<div class="ranking-row-numbers" id="rankingRow">
+  <p class="ranking-number">Position 1 <span style="color: green;">(easiest)</span></p>
+  <p class="ranking-number">Position 2</p>
+  <p class="ranking-number">Position 3</p>
+  <p class="ranking-number">Position 4</p>
+  <p class="ranking-number">Position 5</p>
+  <p class="ranking-number">Position 6</p>
+  <p class="ranking-number">Position 7</p>
+  <p class="ranking-number">Position 8 <span style="color: red;">(hardest)</span></p> 
+</div>
+<div class="ranking-row" id="rankingRow">
+  <!-- 8 drop zones -->
+  <div class="ranking-slot" data-rank="1"></div>
+  <div class="ranking-slot" data-rank="2"></div>
+  <div class="ranking-slot" data-rank="3"></div>
+  <div class="ranking-slot" data-rank="4"></div>
+  <div class="ranking-slot" data-rank="5"></div>
+  <div class="ranking-slot" data-rank="6"></div>
+  <div class="ranking-slot" data-rank="7"></div>
+  <div class="ranking-slot" data-rank="8"></div>
+</div>
+
+
+  <div id="cards" style="margin-bottom: 20px;"></div>
+
+  <div class="status-bar">Round 2: Reflect on Expert Disagreements</div>
+
+  <div class="content-wrapper">
+    <div id="disagreement-box" class="disagreement-box">
+      <!-- Disagreement content here -->
+    </div>
+  
+    <div class="right-panel">
+      <div id="question-box" class="question-box">
+        <!-- JS will populate this -->
+      </div>
+  
+      <div class="navigation">
+        <button onclick="prev()" id="prevBtn" style="display: none;">⬅️ Previous</button>
+        <button onclick="next()" id="nextBtn">Next ➡️</button>
+      </div>
+    </div>
+  </div>
+  
+
+
+  <script>
+    const disagreements = [
+      {
+        snippet: 3,
+        text: `Snippet 3 (isMachineTypeDefined) appears to be a point of disagreement among the experts.
+* Oscar ranked it as one of the easiest (Position 1), describing it as having straightforward logic. He noted that the presence of nested if statements or loops did not make it harder to understand. However, in his detailed comments, he did mention that it was unclear what a "synthetic field" is, and that the snippet might be harder to understand for someone unfamiliar with the constants used.
+* Nadeeshan placed it in Position 4, stating that it was relatively hard to understand due to unfamiliarity with CoffMachineType. He emphasized that the snippet needs more context to be understood, and highlighted an unusual use of a getter with an argument — specifically pointing to a line where null is passed, which he found unnecessary and confusing.
+* Martin, who placed it in Position 6, noted that the method required bottom-up reasoning, meaning it was necessary to carefully examine each line to figure out what the method was doing. He pointed to the use of Java’s reflective features and the unclear nature of the type variable (possibly representing a non-standard enumeration) as contributing factors to its complexity. He also remarked that the overall purpose of the method was not easily discernible from the code alone.`
+      },
+      {
+        snippet: 2,
+        text: `Snippet 2 (isRemote) appears to be a point of partial disagreement among the experts.
+* Nadeeshan considers it easy to understand and places it in the easiest position, alongside Snippet 1. He believes it has a meaningful method name, clear internal method invocations, and a straightforward switch statement.
+* Oscar also finds the snippet relatively easy, but slightly more difficult than Snippet 1 (isValidProjectName). He expressed uncertainty about the meaning of isFilesystemPath and the use of the URI scheme, stating:
+“I am not familiar with a URI's scheme and why implementing that logic (in Snippet 2) is enough to check if it is remote.”
+* Martin also places Snippet 2 in Position 1 (easiest) and describes it as generally clear. He notes:
+“There are some subtleties here (how do we know that 'jar' and 'file' are the only URI schemes that are not remote? I think that's domain knowledge...), but overall the purpose is clear and easy to understand from the code's structure.” However, unlike Nadeeshan and Oscar, Martin ranked Snippet 1 slightly lower, placing it in Position 2, indicating that he finds Snippet 2 just a bit easier due to its shorter and simpler set of rules.`
+      },
+      {
+        snippet: 7,
+        text: `Snippet 7 (lowestPositiveRoot) also caused disagreement among the experts.
+* Martin considers it moderately difficult and placed it in the middle (Position 4), grouped with Snippet 4. He explained:
+“These two snippets are moderately complex string and float algorithms, respectively. I don't differentiate between them, since both are tricky to get right but are doing something pretty well understood.”
+He also noted that Snippet 7 “calls back to grade school math pretty aggressively (e.g., through naming its parameters a, b, and c), and that makes it easier to understand the overall purpose by recognizing the quadratic formula. The swap block (lines 10–14) is also an easily recognizable pattern to swap via a temporary variable. Overall, then, this is relatively straightforward.”
+* Oscar placed this snippet slightly earlier (Position 3) and commented:
+“Easy after remembering the formula; logic is clear with basic math review.”
+* Nadeeshan, however, ranked Snippet 7 as the most difficult (Position 8). He found the method name misleading and the logic unclear, even after testing it with dummy values. He wrote:
+“Snippet 7’s logic is in contradiction with the method name. I thought it returns the lowest positive root from three numbers, but line 2 is unclear.”`
+      },
+      {
+        snippet: 5,
+        text: `Snippet 5 (deleteRecursively) is another point of disagreement among the experts.
+* Oscar placed it in the easiest position (Position 1). He stated that he is “familiar with the visitor pattern” and that “identifiers help clarify”. He described the snippet as having straightforward logic and noted that it was hard for him to distinguish between Snippets 1, 3, and 5 in terms of comprehensibility, as all seemed similarly clear to him.
+* Nadeeshan, who placed it in Position 6, described it as:
+“Harder due to unclear postVisitDirectory. Assumes dir is a Path object passed from FileVisitor.”
+However, he also acknowledged that “Snippet 5 has clear logic.”
+This suggests that while the overall intent was understandable, specific implementation details (e.g., method assumptions and API context) made it more difficult for him.
+* Martin placed Snippet 5 in Position 5 and offered a nuanced perspective:
+“This was easy for me to understand, but it required domain-specific knowledge of how Java handles file system operations that I do have: I immediately recognized the structure of the walkFileTree call with the anonymous visitor, and knew that I only needed to look at the names of the overridden methods and their bodies (i.e., lines 8 and 13) to figure out what the method does.”
+He also grouped this snippet with Snippets 4 and 7, noting:
+“These three snippets are actually pretty similar: all are implementations of some kind of simple specification that's a bit tricky to get right in practice.”`
+      },
+      {
+        snippet: 8,
+        text: `There is a small disagreement among the experts regarding the ranking of Snippet 8 (atan2).
+* Nadeeshan, unlike the others who placed this snippet in Position 8 (hardest), ranked it in Position 5. He considered it to be easier to understand than Snippets 6 (encodedLength) and 7 (lowestPositiveRoot).
+However, he also acknowledged its difficulty, describing it as:
+“Difficult due to math background required and unclear method purpose.”
+This suggests that while he found it conceptually challenging, he still viewed it as more comprehensible than snippets that involved domain-specific programming knowledge or misleading logic.
+* Oscar and Martin both ranked Snippet 8 as the most difficult (Position 8). Oscar noted:
+“For obvious reasons, atan2 is harder to understand: I don't remember how atan works, the code contains cryptic instructions, and I don't know what atanUnchecked is doing — also, the identifiers here don't help.”
+* Martin shared a similar view, stating that the snippet requires two kinds of domain-specific knowledge — numerical methods and trigonometry — as opposed to just one in Snippet 6, which focuses on encoding.`
+      }
+    ];
+
+    const username = localStorage.getItem("username") || "anonymous";
+    const snippetOrder = JSON.parse(sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder') || '[]');
+
+    let index = 0;
+
+    function personalizeText(text, originalSnippetNumber) {
+      const dynamicSnippetNum = snippetOrder ? snippetOrder.indexOf(originalSnippetNumber) + 1 : originalSnippetNumber;
+      return text
+        .replaceAll(`Snippet ${originalSnippetNumber}`, `Snippet ${dynamicSnippetNum}`)
+        .replace(/\b(Oscar|Martin|Nadeeshan)\b/g, name => name.toLowerCase() === username.toLowerCase() ? 'you' : name);
+    }
+
+
+    const round2Responses = disagreements.map((_, i) => {
+    const key = `round2_response_${i}`;
+    const raw = sessionStorage.getItem(key) || localStorage.getItem(key);
+    try {
+        return raw ? JSON.parse(raw) : {};
+    } catch {
+        return {};
+    }
+    });
+
+
+
+    function personalize(text, username, snippetMap) {
+    const nameMap = {
+        'Oscar': 'Oscar',
+        'Martin': 'Martin',
+        'Nadeeshan': 'Nadeeshan'
+    };
+
+    // Replace name with "you" if username matches
+    Object.keys(nameMap).forEach(name => {
+        const regex = new RegExp(`\\b${name}\\b`, 'g');
+        if (username.toLowerCase() === name.toLowerCase()) {
+        text = text.replace(regex, 'you');
+        }
+    });
+
+    // Replace "Snippet X" with local snippet number
+    for (let originalId = 1; originalId <= 8; originalId++) {
+        const localId = snippetMap[originalId];
+        const regex = new RegExp(`Snippet ${originalId}\\b`, 'g');
+        text = text.replace(regex, `Snippet ${localId}`);
+    }
+
+    return text;
+    }
+
+
+    function getLocalSnippetMapping() {
+        const stored = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+        if (!stored) return null;
+
+        try {
+            const parsed = JSON.parse(stored); // e.g., [3,1,4,7,8,2,6,5]
+            const mapping = {};
+            parsed.forEach((originalId, localIndex) => {
+            mapping[originalId] = localIndex + 1; // original ID -> local snippet number
+            });
+            return mapping;
+        } catch (e) {
+            console.error("Failed to parse snippetOrder:", e);
+            return null;
+        }
+    }
+
+
+    function getRound2Response(i) {
+        const key = `round2_response_${i}`;
+        const raw = sessionStorage.getItem(key) || localStorage.getItem(key);
+        try {
+            return raw ? JSON.parse(raw) : {};
+        } catch {
+            return {};
+        }
+    }
+
+
+    function render() {
+        const container = document.getElementById('disagreement-box');
+        const entry = disagreements[index];
+        const localSnippets = getLocalSnippetMapping();
+        const username = sessionStorage.getItem('participantName') || localStorage.getItem('participantName') || 'anonymous';
+
+        container.innerHTML = `
+            <div class="disagreement-text" style="margin-bottom: 20px;">
+            ${personalize(entry.text, username, localSnippets)}
+            </div>
+        `;
+
+        const questionsContainer = document.getElementById('question-box');
+
+        questionsContainer.innerHTML = `
+          <div>
+            <label><strong>1. Do any of your fellow experts' concerns resonate with you?</strong></label><br>
+            <textarea id="q1" placeholder="Your response..."></textarea>
+          </div>
+
+          <div>
+            <label><strong>2. Has their feedback changed or clarified your understanding of the snippet?</strong></label><br>
+            <textarea id="q2" placeholder="Your response..."></textarea>
+          </div>
+
+          <div>
+            <label><strong>3. Would you consider changing your ranking for this snippet after reviewing all the feedback?</strong></label><br>
+            <textarea id="q3" placeholder="Your response..."></textarea>
+          </div>
+        `;
+
+
+        // Restore saved answers
+        const saved = getRound2Response(index);
+        document.getElementById('q1').value = saved.q1 || '';
+        document.getElementById('q2').value = saved.q2 || '';
+        document.getElementById('q3').value = saved.q3 || '';
+
+        // ✅ Show/hide previous button
+        document.getElementById('prevBtn').style.display = index === 0 ? 'none' : 'inline-block';
+        }
+
+
+
+
+    function next() {
+        const q1 = document.getElementById('q1').value.trim();
+        const q2 = document.getElementById('q2').value.trim();
+        const q3 = document.getElementById('q3').value.trim();
+
+        if (!q1 || !q2 || !q3) {
+            showValidationMessage("⚠️ Please answer all three questions before continuing.");
+            return;
+        }
+
+        saveRound2Response(index, { q1, q2, q3 });
+
+        if (index < disagreements.length - 1) {
+            index++;
+            render();
+        } else {
+            window.location.href = 'phase2.html';
+        }
+    }
+
+
+    function prev() {
+        const q1 = document.getElementById('q1').value.trim();
+        const q2 = document.getElementById('q2').value.trim();
+        const q3 = document.getElementById('q3').value.trim();
+
+        // Save current responses before moving back
+        saveRound2Response(index, { q1, q2, q3 });
+
+        if (index > 0) {
+            index--;
+            render();
+        }
+    }
+
+
+
+  window.onload = () => {
+    render();
+    loadCards();
+    loadState();
+  };
+  </script>
+  <script>
+    function saveRound2Response(stepIndex, responseObj) {
+        const key = `round2_response_${stepIndex}`;
+        const json = JSON.stringify(responseObj);
+
+        sessionStorage.setItem(key, json);
+        document.cookie = `${key}=${encodeURIComponent(json)}; path=/; max-age=${60 * 60 * 24 * 30}`;
+    }
+  </script>
+
+<script>
+    function showValidationMessage(msg) {
+      alert(msg); // You can replace this with a styled modal if you prefer
+    }
+</script>
+  
+<script>
+      function loadCards() {
+      const container = document.getElementById('cards');
+      snippets.forEach(snippet => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.draggable = true;
+        card.id = `snippet-${snippet.id}`;
+        card.innerHTML = `
+          <strong>${snippet.title}</strong>
+          <br><label><input type="checkbox" onchange="togglePreview(${snippet.id}, this)"> View</label>
+        `;
+        card.addEventListener('dragstart', () => card.classList.add('dragging'));
+        card.addEventListener('dragend', () => card.classList.remove('dragging'));
+        container.appendChild(card);
+      });
+
+      document.querySelectorAll('.ranking-slot').forEach(slot => {
+        slot.addEventListener('dragover', e => {
+          e.preventDefault();
+          const dragging = document.querySelector('.dragging');
+          if (dragging) slot.appendChild(dragging);
+          saveState();
+        });
+      });
+    }
+
+    function loadState() {
+      let saved = sessionStorage.getItem('phase3_ranking');
+
+      if (!saved) {
+        const cookieMatch = document.cookie.match(/(?:^|; )phase3_ranking=([^;]*)/);
+        if (cookieMatch) {
+          saved = decodeURIComponent(cookieMatch[1]);  // ✅ decode before parsing
+          sessionStorage.setItem('phase3_ranking', saved);
+        }
+      }
+
+      if (!saved) return;
+
+      try {
+        const parsed = JSON.parse(saved);  // now valid JSON
+        Object.entries(parsed).forEach(([rank, ids]) => {
+          const slot = document.querySelector(`.ranking-slot[data-rank='${rank}']`);
+          ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && slot) slot.appendChild(el);
+          });
+        });
+      } catch (e) {
+        console.error('Failed to parse phase3_ranking JSON:', e);
+      }
+    } 
+</script>
+
+<script>
+      function saveState() {
+      const positions = {};
+      document.querySelectorAll('.ranking-slot').forEach((slot, index) => {
+        positions[index + 1] = Array.from(slot.children).map(el => el.id);
+      });
+      const json = JSON.stringify(positions);
+      sessionStorage.setItem('phase3_ranking', json);
+      document.cookie = `phase3_ranking=${encodeURIComponent(json)}; path=/; max-age=${60 * 60 * 24 * 30}`;
+
+      /* Check if the phase is completed */
+      if (areAllCardsRanked()) {
+        document.getElementById('continueBtn').style.display = 'inline-block';
+        document.getElementById('continueBtn').style.backgroundColor = '#4CAF50';
+        document.getElementById('continueBtn').style.animation = 'glowPulse 1.5s infinite alternate';
+        sessionStorage.setItem('phase2Complete', 'true');
+        document.cookie = `phase2Complete=true; path=/; max-age=${60 * 60 * 24 * 30}`;
+
+        // ✅ Also update the status bar
+        const phase3Link = document.getElementById('link-phase3');
+        if (phase3Link) {
+          phase3Link.classList.remove('disabled');
+        }
+      } else {
+        sessionStorage.removeItem('phase2Complete');
+        document.cookie = `phase2Complete=; path=/; max-age=0`;
+        document.getElementById('continueBtn').style.display = 'none';
+        const phase3Link = document.getElementById('link-phase3');
+        if (phase3Link) {
+          phase3Link.classList.add('disabled');
+        }
+      }
+
+    }
+</script>
+
+<script>
+      function show_snippet(id) {
+    const snippet = snippets.find(s => s.id === id);
+    if (!snippet) return;
+
+    document.getElementById('modal-snippet-title').innerText = snippet.title;
+
+    const codeLines = snippet.code.trim().split('\n');
+
+    // ✅ Use innerHTML here to render styled spans correctly
+    document.getElementById('modal-code-content').innerHTML = codeLines.join('\n');
+
+    // ✅ Line numbers are just plain numbers
+    document.getElementById('modal-line-numbers').innerHTML = codeLines.map((_, i) => i + 1).join('<br>');
+
+    document.getElementById('snippet-modal').style.display = 'block';
+
+    applyModalTheme(); // Keep the theme consistent
+    }
+
+    
+    function toggleModalTheme() {
+      const body = document.body;
+      const isLight = body.classList.contains("light-mode");
+    
+      if (isLight) {
+        body.classList.remove("light-mode");
+        body.classList.add("dark-mode");
+        localStorage.setItem("codeTheme", "dark");
+        document.getElementById('modal-theme-toggle').textContent = "Switch to Light Mode";
+      } else {
+        body.classList.remove("dark-mode");
+        body.classList.add("light-mode");
+        localStorage.setItem("codeTheme", "light");
+        document.getElementById('modal-theme-toggle').textContent = "Switch to Dark Mode";
+      }
+    }
+    
+    function applyModalTheme() {
+      const theme = localStorage.getItem('codeTheme') || 'light';
+      document.body.classList.remove('light-mode', 'dark-mode');
+      document.body.classList.add(theme + '-mode');
+      document.getElementById('modal-theme-toggle').textContent =
+        theme === 'light' ? "Switch to Dark Mode" : "Switch to Light Mode";
+    }
+</script>
+</body>
+</html>

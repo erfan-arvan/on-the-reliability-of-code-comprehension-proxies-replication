@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NJIT Java Code Comprehension Study — Flyer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --njit-red: #cc0000;
+      --dark: #1f2937;
+      --muted: #6b7280;
+      --bg: #fffbe6;     /* soft yellow background */
+      --card: #fffdf3;
+    }
+
+    @page {
+      size: 5.5in 8.5in;   /* Half-Letter flyer size */
+      margin: 0.4in;
+    }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fffbe6 !important; }
+      .flyer { box-shadow: none !important; }
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--dark);
+      background: var(--bg);
+    }
+
+    .flyer {
+      width: 5.5in;
+      min-height: 8.5in;
+      margin: 0 auto;
+      padding: 0.5in 0.45in;
+      background: var(--bg);
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      border-radius: 10px;
+    }
+
+    /* ---------- HEADER ---------- */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .brand {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--njit-red);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+      color: var(--njit-red);
+    }
+    .sub {
+      margin: 2px 0 0 0;
+      color: var(--dark);
+      font-size: 13px;
+    }
+    .hr {
+      height: 2px;
+      background: var(--njit-red);
+      width: 100%;
+      margin: 10px 0 14px;
+      border-radius: 2px;
+    }
+
+    /* ---------- CONTENT ---------- */
+    .section {
+      background: var(--card);
+      border: 1px solid #f0d47c;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .section h2 {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      color: var(--dark);
+    }
+    .item {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 8px;
+      margin: 4px 0;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .bullet { text-align: center; font-size: 16px; }
+    .strong { font-weight: 700; }
+
+    /* ---------- QR / CTA ---------- */
+    .qr-wrap {
+      display: grid;
+      place-items: center;
+      background: #fffef4;
+      border: 2px solid var(--njit-red);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .qr-wrap h3 {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      color: var(--njit-red);
+    }
+    #qrcode {
+      width: 100%;
+      max-width: 160px;
+      margin: 6px auto;
+    }
+    .url {
+      font-size: 13px;
+      font-family: ui-monospace, monospace;
+      word-break: break-all;
+      margin-top: 4px;
+    }
+    .note {
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ---------- STUDY TEAM ---------- */
+    .section.minor {
+      background: #fffdf5;
+      border: 1px dashed #f3d87a;
+      padding: 8px 10px;
+    }
+    .section.minor h2 {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .roles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ---------- PRINT NOTE ---------- */
+    .no-print {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      background: #111827;
+      color: white;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="flyer">
+    <div class="header">
+      <div class="brand">NJIT</div>
+      <div>
+        <h1>Java Code Comprehension Study</h1>
+        <p class="sub">Help improve how programmers understand code</p>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="section">
+      <h2>What you’ll do</h2>
+      <div class="item"><div class="bullet">💻</div><div>Review <span class="strong">8 short Java snippets</span> and answer comprehension questions using your own laptop.</div></div>
+    </div>
+
+    <div class="section">
+      <h2>When & where</h2>
+      <div class="item"><div class="bullet">🕒</div><div>Takes about <span class="strong">90 minutes</span>; sessions scheduled in <span class="strong">2-hour slots</span> for setup and consent.</div></div>
+      <div class="item"><div class="bullet">📍</div><div>Held <strong>in-person</strong> at <span class="strong">GITC, NJIT</span> (room TBD).</div></div>
+      <div class="item"><div class="bullet">📅</div><div>Times arranged based on your availability.</div></div>
+    </div>
+
+    <div class="section">
+      <h2>What you’ll receive</h2>
+      <div class="item"><div class="bullet">🥨</div><div><span class="strong">Snacks</span> after completion.</div></div>
+      <div class="item"><div class="bullet">🎁</div><div>Entry in a <span class="strong">$50 Amazon gift-card</span> drawing.</div></div>
+    </div>
+
+    <div class="section qr-wrap">
+      <h3>Check eligibility & register</h3>
+      <div id="qrcode"><img src="img/njit.jpeg" alt="QR placeholder" style="max-width:100%;height:auto;"></div>
+      <div class="url">https://codecomprehensibility.site/eligibility.html</div>
+      <div class="note">Scan or visit to register in under 2 minutes.</div>
+    </div>
+
+    <div class="section minor">
+      <h2>Study team</h2>
+      <div class="roles">
+        <div><span class="strong">Erfan Arvan</span><br/>Ph.D. Candidate, CS @ NJIT</div>
+        <div><span class="strong">Martin Kellogg</span><br/>Assistant Professor, CS @ NJIT</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Approved as IRB-exempt • Participation is voluntary
+    </div>
+  </div>
+
+  <div class="no-print">
+    Print-ready half-letter flyer (5.5 × 8.5 in)
+  </div>
+</body>
+</html>

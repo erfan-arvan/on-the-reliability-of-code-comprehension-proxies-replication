@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Background Questionnaire</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .survey-box, .final-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .full-width-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .full-width-btn:hover {
+      background-color: #45a049;
+    }
+    button:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+    }
+    .hidden {
+      display: none;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .instructions, .email-box, .survey-box, .slots-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    button {
+        padding: 10px 20px;
+            margin-right: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .day-card {
+      background-color: #eaeaea;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .time-slot {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background-color: #ccc;
+      cursor: pointer;
+    }
+
+    .time-slot.selected {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box;
+        margin-top: 8px;
+        margin-bottom: 16px;
+        background-color: #fff;
+        color: #333;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-field:focus {
+        border-color: #4CAF50;
+        outline: none;
+        box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-top: 10px;
+            margin-bottom: 16px;
+            background-color: #fff;
+            color: #333;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            }
+
+            .input-field:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+            }
+
+            .full-width-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            }
+
+            .full-width-btn:hover {
+            background-color: #45a049;
+            }
+
+            .modal.hidden {
+                display: none !important;
+            }
+
+            .success-message {
+                position: relative;
+                background-color: #e6f9ec;
+                color: #2e7d32;
+                border: 1px solid #2e7d32;
+                padding: 15px 20px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                font-size: 16px;
+                font-weight: 500;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                }
+
+                .success-message .close-btn {
+                position: absolute;
+                top: 8px;
+                right: 12px;
+                background: none;
+                border: none;
+                color: #2e7d32;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                line-height: 1;
+                margin: 0;
+                }
+
+                .success-message .close-btn:hover {
+                color: #1b5e20;
+                }
+
+                .confirm-box, .final-box {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.confirm-box a {
+  color: #4CAF50;
+  margin-left: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.confirm-box a:hover {
+  text-decoration: underline;
+}
+
+.final-box button {
+  margin-top: 10px;
+}
+
+input.input-error {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}
+
+#warning-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#warning-modal .modal-content {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+@keyframes glowPulse {
+        0% {
+          box-shadow: 0 0 10px #4CAF50;
+        }
+        100% {
+          box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+        }
+      }
+
+      #email {        animation: glowPulse 1.5s infinite alternate;
+      }
+
+      button:active {
+        transform: scale(0.97);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+        }
+
+        .status-bar {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+#timer-wrapper button {
+  background-color: transparent;
+  border: 2px solid #4CAF50;
+  color: #4CAF50;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#timer-wrapper button:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+  </style>
+</head>
+<body>
+
+<div class="status-bar">
+    <div class="user-dropdown" style="position: relative;">
+        <div id="timer-wrapper" style="display: flex; align-items: center; gap: 10px;">
+            <div id="timer" style="font-weight: bold;">⏱️ 00:00</div>
+            
+            <button id="pause-btn" onclick="pauseStudy()" title="Pause Timer" style="font-size: 16px; padding: 2px 6px;">⏸️</button>
+            <button id="resume-btn" onclick="resumeStudy()" title="Resume Timer" style="font-size: 16px; padding: 2px 6px; display: none;">▶️</button>
+            
+            <button onclick="toggleTimer()" title="Show/Hide Timer" style="font-size: 16px; padding: 2px 6px;">Hide Timer</button>
+            <button onclick="resetTimer()" title="Reset Timer" style="font-size: 16px; padding: 2px 6px; display: none;">🔁</button>
+        </div>
+
+    </div>
+</div>
+
+<div class="survey-box" id="survey-box">
+  <h3>Participant Background Questionnaire</h3>
+  <p>The following questions help us understand your background.</p>
+  <div id="question-container"></div>
+  <div style="margin-top: 20px;">
+    <button onclick="prevQuestion()" id="prevBtn" disabled>Previous</button>
+    <button onclick="nextQuestion()" id="nextBtn">Next</button>
+  </div>
+</div>
+
+<div class="final-box hidden" id="final-box-submit">
+  <h3>✅ Submission Received!</h3>
+  <p>Thank you! Your responses have been submitted successfully.</p>
+</div>
+
+
+<div id="review-modal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); width:80%; max-height:80%; overflow-y:auto; background:#fff; border:1px solid #ccc; padding:20px 20px 10px 20px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:1002; font-family:'Segoe UI', sans-serif;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <h3 style="margin:0;">Review Your Summaries</h3>
+      <span onclick="document.getElementById('review-modal').style.display='none'" style="cursor:pointer; font-size:20px; font-weight:bold;">&times;</span>
+    </div>
+  
+    <div id="review-content" style="white-space:pre-wrap; margin-bottom:20px; font-size:14px; color:#333;"></div>
+  
+    <button onclick="submitAndCloseModal()">Submit Now</button>
+    <button onclick="document.getElementById('review-modal').style.display='none'" style="margin-left:10px;">Cancel</button>
+  </div>
+  
+  <div id="validation-modal" style="
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff0f0;
+    color: #660000;
+    border: 1px solid #ff9999;
+    padding: 20px;
+    border-radius: 10px;
+    width: 440px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 1002;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+  ">
+    <p id="validation-message" style="font-weight: bold;"></p>
+    <button onclick="document.getElementById('validation-modal').style.display = 'none';" style="
+      margin-top: 15px;
+      padding: 8px 14px;
+      background-color: #ff9999;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">OK</button>
+  </div>
+  
+<!-- Start Modal -->
+<div id="start-modal" style="
+  display: none;  /* or 'none' by default, set to 'block' on load */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: none;  /* important: toggle this from JS */
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2>Ready to Begin?</h2>
+    <p>Click the button below to start the study. A timer will begin.</p>
+    <button onclick="startStudy()">Start</button>
+  </div>
+</div>
+
+  
+<!-- Pause Modal -->
+<div id="pause-modal" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2>Study Paused</h2>
+    <p>The timer is paused. Click below to resume.</p>
+    <button onclick="resumeStudy()">Resume</button>
+  </div>
+</div>
+
+
+<script>
+const questions = [
+  {
+    text: "What is your age?",
+    code: "demographics.age",
+    options: [
+      { label: "Under 18",},
+      { label: "18–24" },
+      { label: "25–34" },
+      { label: "35–44" },
+      { label: "45–54" },
+      { label: "55–64" },
+      { label: "65 or older" }
+    ]
+  },
+  {
+    text: "What is your gender?",
+    code: "demographics.gender",
+    options: [
+      { label: "Male" },
+      { label: "Female" },
+      { label: "Non-binary / Third gender" },
+      { label: "Prefer to self-describe:", input: true },
+    ]
+  },
+  {
+    text: "What is your class standing?",
+    code: "demographics.classStanding",
+    options: [
+      { label: "First-year undergraduate (Freshman)" },
+      { label: "Second-year undergraduate (Sophomore)" },
+      { label: "Third-year undergraduate (Junior)" },
+      { label: "Fourth-year undergraduate (Senior)" },
+    ]
+  }
+];
+
+
+let currentQuestion = 0;
+let answers = [];
+
+function showQuestion() {
+    console.log("🧪 Showing question:", currentQuestion, questions[currentQuestion], answers[currentQuestion]);
+  const q = questions[currentQuestion];
+  const container = document.getElementById('question-container');
+  let html = `<p><strong>${q.text}</strong></p>`;
+  q.options.forEach((opt, i) => {
+    const checked = answers[currentQuestion]?.index === i ? 'checked' : '';
+    const value = answers[currentQuestion]?.input || '';
+    html += `<label><input type="radio" name="q${currentQuestion}" value="${i}" ${checked}> ${opt.label}</label>`;
+    if (opt.input) {
+      html += `<input type="text" id="input-q${currentQuestion}-${i}" value="${value}">`;
+    }
+    html += `<br>`;
+  });
+  container.innerHTML = html;
+  document.getElementById('prevBtn').disabled = currentQuestion === 0;
+  document.getElementById('nextBtn').innerText = currentQuestion === questions.length - 1 ? 'Submit' : 'Next';
+}
+
+function nextQuestion() {
+  const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+  if (!selected) return showValidationMessage("Please select an option.");
+  const index = parseInt(selected.value);
+  const inputField = document.getElementById(`input-q${currentQuestion}-${index}`);
+  const input = inputField ? inputField.value.trim() : null;
+  answers[currentQuestion] = { index, input };
+
+  const opt = questions[currentQuestion].options[index];
+  if (opt.ineligible) {
+    showValidationMessage("Unfortunately, you are not eligible to participate in this study.");
+    return;
+  }
+
+  if (currentQuestion === questions.length - 1) {
+    submitQuestionnaireAnswers();
+  } else {
+    currentQuestion++;
+    showQuestion();
+  }
+}
+
+function prevQuestion() {
+  if (currentQuestion > 0) currentQuestion--;
+  showQuestion();
+}
+
+function submitQuestionnaireAnswers() {
+  const responses = {};
+
+  questions.forEach((q, i) => {
+    const ans = answers[i];
+    const opt = q.options[ans.index];
+    let value = opt.label;
+    if (opt.input && ans.input) {
+      value += `: ${ans.input}`;
+    }
+    responses[q.code || `q${i}`] = value;
+  });
+
+  // Save in localStorage to send later from another page
+  localStorage.setItem("backgroundQuestionnaire", JSON.stringify(responses));
+
+  // UI feedback
+//   document.getElementById('survey-box').classList.add('hidden');
+//   document.getElementById('final-box-submit').classList.remove('hidden');
+  localStorage.setItem('FromPrevPage', 'true');
+  window.location.href = "javaExperience.html";
+
+}
+
+
+
+
+</script>
+
+
+<script>
+
+
+function toggleTimer() {
+  const timerEl = document.getElementById('timer');
+  const btn = event.target;
+
+  const isHidden = timerEl.style.display === 'none';
+
+  if (isHidden) {
+    timerEl.style.display = 'inline';
+    btn.innerHTML = 'Hide Timer'; // Show "eye" icon again
+    localStorage.setItem('timerHidden', 'false');
+  } else {
+    timerEl.style.display = 'none';
+    btn.innerHTML = 'Show Timer'; // Hidden eye icon
+    localStorage.setItem('timerHidden', 'true');
+  }
+}
+
+
+function startTimer() {
+  const timerEl = document.getElementById('timer');
+
+  if (!startTime || isNaN(startTime) || startTime <= 0) {
+    const stored = localStorage.getItem('startTime');
+    startTime = stored ? parseInt(stored) : Date.now();
+    localStorage.setItem('startTime', startTime);
+  }
+
+  if (timerInterval) clearInterval(timerInterval);
+
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime - totalPausedTime) / 1000);
+    const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const secs = String(elapsed % 60).padStart(2, '0');
+    timerEl.textContent = `⏱️ ${mins}:${secs}`;
+  }, 1000);
+}
+
+
+
+function generateAndStoreUsername() {
+    const randomNumber = Math.floor(Math.random() * 1_000_000_000);
+    const username = 'WMstudent' + randomNumber.toString().padStart(9, '0');
+
+    // Save to localStorage
+    localStorage.setItem('usernameS', username);
+
+    // Save to cookies (expires in 30 days)
+    const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = `usernameS=${username}; expires=${expires}; path=/`;
+
+    console.log("Generated and stored username:", username);
+    return username;
+}
+
+
+function startStudy() {
+  startTime = Date.now();
+  localStorage.setItem('studyStarted', 'true');
+  localStorage.setItem('startTime', startTime);
+  localStorage.setItem('lastResumeTime', startTime);
+  localStorage.setItem('pausedTotal', '0');
+  totalPausedTime = 0;
+
+  generateAndStoreUsername();
+  document.getElementById('start-modal').style.display = 'none';
+  startTimer();
+  document.getElementById('survey-box').classList.remove('hidden');
+
+  showQuestion();
+}
+
+function pauseStudy() {
+  //recordQuestionTime(currentSnippet, currentQuestionIndex);
+  localStorage.setItem('pausedAt', Date.now());
+  updateTimerDisplay(); // ensure last moment is rendered before freezing
+  pauseTimer();         // clears the interval
+  pausedAt = Date.now();
+  localStorage.setItem('pausedAt', pausedAt);
+  document.getElementById('pause-modal').style.display = 'flex';
+
+  // 👇 Add this to toggle buttons
+  document.getElementById('pause-btn').style.display = 'none';
+  document.getElementById('resume-btn').style.display = 'inline';
+}
+
+function resumeStudy() {
+  document.getElementById('pause-modal').style.display = 'none';
+
+  const pausedAtStored = parseInt(localStorage.getItem('pausedAt') || '0', 10);
+  if (pausedAtStored && !isNaN(pausedAtStored)) {
+    const resumeDelta = Date.now() - pausedAtStored;
+    totalPausedTime += resumeDelta;
+    localStorage.setItem('pausedTotal', totalPausedTime);
+    localStorage.removeItem('pausedAt');
+    pausedAt = null;
+  }
+
+  localStorage.setItem('lastResumeTime', Date.now());
+
+  updateTimerDisplay();
+  startTimer();
+
+  document.getElementById('pause-btn').style.display = 'inline';
+  document.getElementById('resume-btn').style.display = 'none';
+
+  showQuestion();
+}
+
+
+
+
+window.onload = function () {
+  console.log("📦 Unload was triggered at:", new Date(parseInt(localStorage.getItem('lastUnloadTriggeredAt') || 0)).toLocaleTimeString());
+  console.log("🚀 Page load");
+  console.log("Loaded startTime:", localStorage.getItem('startTime'));
+  console.log("Loaded pausedTotal:", localStorage.getItem('pausedTotal'));
+  console.log("Loaded pausedAt:", localStorage.getItem('pausedAt'));
+  console.log("Loaded lastResumeTime:", localStorage.getItem('lastResumeTime'));
+
+  const hidden = localStorage.getItem('timerHidden') === 'true';
+  if (hidden) {
+    document.getElementById('timer').style.display = 'none';
+    document.querySelector('#timer-wrapper button').textContent = 'Show Timer';
+  }
+
+  const started = localStorage.getItem('studyStarted') === 'true';
+  if (!started) {
+    document.getElementById('start-modal').style.display = 'flex';
+  } else {
+    startTime = parseInt(localStorage.getItem('startTime') || `${Date.now()}`, 10);
+    totalPausedTime = parseInt(localStorage.getItem('pausedTotal') || '0', 10);
+    pausedAt = parseInt(localStorage.getItem('pausedAt') || '0', 10);
+
+    if (!isNaN(pausedAt) && pausedAt > 0) {
+      const lastResume = parseInt(localStorage.getItem('lastResumeTime') || startTime, 10);
+
+      if (pausedAt > lastResume) {
+        // Legit paused state
+        const resumeDelta = Date.now() - pausedAt;
+        totalPausedTime += resumeDelta;
+
+        localStorage.setItem('pausedTotal', totalPausedTime);
+        localStorage.removeItem('pausedAt');
+        localStorage.setItem('lastResumeTime', Date.now());
+        pausedAt = null;
+      } else {
+        // Probably a stale pausedAt — ignore it
+        pausedAt = null;
+        localStorage.removeItem('pausedAt');
+      }
+
+    }
+
+const Ispaused = localStorage.getItem('pausedUnload') === 'true';
+  if(Ispaused){
+    setTimeout(pauseStudy, 100);
+    localStorage.setItem('pausedUnload', 'false');
+  } else{startTimer();}
+
+
+    document.getElementById('pause-btn').style.display = 'inline';
+    document.getElementById('resume-btn').style.display = 'none';
+  }
+
+};
+
+
+function resetTimer() {
+  if (confirm("Are you sure you want to reset the timer?")) {
+    clearInterval(timerInterval);
+    const now = Date.now();
+    startTime = now;
+    pausedAt = null;
+    totalPausedTime = 0;
+
+    localStorage.setItem('startTime', startTime);
+    localStorage.setItem('pausedTotal', '0');
+    localStorage.removeItem('pausedAt');
+
+    updateTimerDisplay();
+    startTimer(); // restart interval
+    clearAllStoredData();
+    localStorage.setItem('isReset','true');
+    location.reload();
+  }
+}
+
+
+let timerInterval = null;
+let startTime = null;
+let pausedAt = null;
+let totalPausedTime = 0;
+let questionStartTime = null;
+let questionTimers = {}; // key: `q-{snippetId}-{questionIndex}`, value: seconds
+
+
+function formatTime(seconds) {
+  const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+  const secs = String(seconds % 60).padStart(2, '0');
+  return `${mins}:${secs}`;
+}
+
+function updateTimerDisplay() {
+  const timerEl = document.getElementById('timer');
+  localStorage.setItem('pausedTotal', totalPausedTime);
+  if (!startTime) return;
+  const now = Date.now();
+  const elapsed = Math.floor((now - startTime - totalPausedTime) / 1000);
+  timerEl.textContent = `⏱️ ${formatTime(elapsed)}`;
+}
+
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+}
+
+
+
+
+function resetTimer() {
+  if (confirm("Are you sure you want to reset the timer?")) {
+    clearInterval(timerInterval);
+    const now = Date.now();
+    startTime = now;
+    pausedAt = null;
+    totalPausedTime = 0;
+
+    localStorage.setItem('startTime', startTime);
+    localStorage.setItem('pausedTotal', '0');
+    localStorage.removeItem('pausedAt');
+
+    updateTimerDisplay();
+    startTimer(); // restart interval
+    clearAllStoredData();
+    localStorage.setItem('isReset','true');
+    location.reload();
+  }
+}
+
+window.addEventListener('beforeunload', () => {
+  try {
+    const isReset = localStorage.getItem('isReset') === 'true';
+    if (isReset) {
+      localStorage.removeItem('isReset');
+      //recordQuestionTime(currentSnippet, currentQuestionIndex);
+    } 
+  } catch (e) {
+    console.warn("recordQuestionTime failed", e);
+  }
+  localStorage.setItem('pausedUnload', 'true');
+  //pauseStudy();
+});
+
+</script>
+
+<script>
+    function clearAllStoredData() {
+  // 🧹 Clear all cookies
+  document.cookie.split(";").forEach(cookie => {
+    const eqPos = cookie.indexOf("=");
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name.trim() + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+  });
+
+  // 🧹 Clear localStorage
+  localStorage.clear();
+
+  // 🧹 Clear localStorage
+  localStorage.clear();
+
+  console.log("✅ All cookies, localStorage, and localStorage have been cleared.");
+}
+</script>
+
+<script>
+function showValidationMessage(message) {
+    document.getElementById('validation-message').innerText = message;
+    document.getElementById('validation-modal').style.display = 'block';
+}
+</script>
+</body>
+</html>

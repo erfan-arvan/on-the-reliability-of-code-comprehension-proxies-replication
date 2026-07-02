@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phase 4: Update Your Ranking (If Desired)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0 40px 40px 40px;
+      /* top right bottom left */
+      background-color: #f4f4f4;
+      color: #333;
+    }
+  
+    .instructions {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  
+    .ranking-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+  
+    .ranking-row-numbers {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 0;
+    }
+  
+    .ranking-slot {
+      flex: 1 1 100px;
+      background: #e8f5e9;
+      border: 2px dashed #4CAF50;
+      border-radius: 6px;
+      padding: 5px;
+      min-height: 80px;
+      text-align: center;
+    }
+  
+    .ranking-number {
+      flex: 1;
+      text-align: center;
+      color: #009999;
+    }
+  
+    .card {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 8px;
+      margin: 5px;
+      cursor: grab;
+    }
+  
+    .card.dragging {
+      opacity: 0.5;
+    }
+  
+    .preview-area {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+  
+    .snippet-preview-box {
+      flex: 1 1 45%;
+      min-width: 300px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+    }
+  
+    .snippet-header {
+      background-color: #f5f5f5;
+      padding: 10px 15px;
+      font-weight: bold;
+      font-size: 16px;
+      border-bottom: 1px solid #ccc;
+    }
+  
+    .code-box {
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      padding: 15px;
+      font-size: 14px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+  
+    #theme-toggle {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+  
+    #continueBtn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #4CAF50;
+    }
+  
+    #continueBtn:hover {
+      background-color: #45a049;
+      animation: glowPulse 1.5s infinite alternate;
+    }
+  
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 10px #4CAF50;
+      }
+  
+      100% {
+        box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+      }
+    }
+  
+    /*.status-bar {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 0;
+        position: static; 
+      }*/
+  
+    .status-bar {
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+  
+    .phase-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+  
+    .phase-link:hover:not(.disabled) {
+      background-color: #4CAF50;
+    }
+  
+    .phase-link.active {
+      background-color: #4CAF50;
+    }
+  
+    .phase-link.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  
+    /*For snippet cards*/
+    #cards {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0;
+      flex-wrap: nowrap;
+    }
+  
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+  
+    button:hover {
+      background-color: #45a049;
+    }
+  
+    button[disabled] {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+  
+    /*dark/light mode*/
+    /* Light mode preview styles */
+    /* === Default (light mode) === */
+    .card {
+      background-color: #ffffff;
+      border-color: #ccc;
+      color: #333;
+    }
+  
+    .snippet-preview-box {
+      background-color: #fefefe;
+      border: 1px solid #bbb;
+    }
+  
+    .code-box {
+      background-color: #f9f9f9;
+      color: #222;
+    }
+  
+    /* === Dark mode overrides === */
+    body.dark-mode .card {
+      background-color: #2a2a2a;
+      border-color: #555;
+      color: #ddd;
+    }
+  
+    body.dark-mode .snippet-preview-box {
+      background-color: #1e1e1e;
+      border: 1px solid #444;
+    }
+  
+    body.dark-mode .code-box {
+      background-color: #2d2d2d;
+      color: #ddd;
+    }
+  
+  
+    /*code box*/
+    /* Basic syntax highlighting classes */
+    .keyword {
+      color: #0000ff;
+      font-weight: bold;
+    }
+  
+    .type {
+      color: #007070;
+    }
+  
+    .function {
+      color: #7928a1;
+      font-weight: bold;
+    }
+  
+    .literal {
+      color: #009999;
+    }
+  
+    .string {
+      color: #a31515;
+    }
+  
+    .comment {
+      color: #6a9955;
+      font-style: italic;
+    }
+  
+    .number {
+      color: #098658;
+    }
+  
+    /* Dark mode overrides */
+    .dark-mode .keyword {
+      color: #82aaff;
+    }
+  
+    .dark-mode .type {
+      color: #89ddff;
+    }
+  
+    .dark-mode .function {
+      color: #c792ea;
+    }
+  
+    .dark-mode .literal {
+      color: #ffcb6b;
+    }
+  
+    .dark-mode .string {
+      color: #c3e88d;
+    }
+  
+    .dark-mode .comment {
+      color: #7f848e;
+    }
+  
+    .dark-mode .number {
+      color: #f78c6c;
+    }
+  
+    html {
+      scroll-behavior: smooth;
+    }
+  
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+  
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="status-bar" style="display: none;">
+  <div class="user-dropdown" style="position: relative;">
+    <div style="padding: 8px 12px; color: gainsboro; font-weight: bold;"><span id="user-info"></span> (<button
+        onclick="logout()"
+        style="color: white; background: none; border: none; cursor: pointer; margin: 0;padding: 0;">🚪 Logout</button>)
+    </div>
+  </div>
+  <a href="round4.html" class="phase-link" id="link-home">🏠 Home</a>
+  <a href="round4-phase1.html" class="phase-link" id="link-phase1">Phase 1</a>
+  <a href="round4-phase2.html" class="phase-link disabled" id="link-phase2">Phase 2</a>
+  <a href="round4-phase3.html" class="phase-link disabled" id="link-phase3">Phase 3</a>
+  <a href="round4-phase4.html" class="phase-link" id="link-phase4">Phase 4</a>
+  <a href="round4-phase5.html" class="phase-link disabled" id="link-phase5">Phase 5</a>
+  <a href="round4-review.html" class="phase-link disabled"
+     id="link-review">Review & Submit</a>
+</div>
+
+<div id="instructions-box"
+  style="background-color: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 15px;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2 style="margin: 0;">Update Your Ranking (If Desired)</h2>
+    <button onclick="toggleInstructions()"
+      style="padding: 6px 12px; font-size: 14px; border-radius: 5px; background-color: #ffffff; border: none; cursor: pointer; color: #222; border: solid;">Hide</button>
+  </div>
+
+  <div id="instructions-content" style="margin-top: 15px;">
+    <p>In this page, you can modify your ranking of the 8 code snippets based on how easy or difficult they are to understand.</p>
+    <ol>
+      <li><strong>Rank the snippets:</strong> Drag and drop each snippet (white) card into the 8 green boxes, which
+        represent ranking positions.</li>
+      <li><strong>Understand the scale:</strong>
+        <ul>
+          <li><strong>Position 1</strong> (leftmost): it should contain the snippets that are easiest to understand.
+          </li>
+          <li><strong>Position 8</strong> (rightmost): it should contain the snippets that are easiest to understand.
+          </li>
+        </ul>
+      </li>
+      <li><strong>Equal ranking:</strong> You may place multiple snippets in the same position if they are similarly
+        easy/difficult to understand.</li>
+      <li><strong>Empty positions:</strong> it is possible to have empty positions (e.g., when grouping multiple
+        snippets in one position).</li>
+      <li><strong>Comparing snippets:</strong> You can compare the code of multiple snippets by clicking their "View"
+        checkboxes, which display the snippets' code.</li>
+    </ol>
+    <!-- <p><strong>Important:</strong> Please fill the ranking positions from left to right. If you leave any positions empty (e.g., due to grouping multiple snippets in one position), leave the rightmost positions empty.</p> -->
+
+  <p><span style="color:red;"><strong>Your changes will be saved automatically. You don’t need to submit anything or provide reasoning as in previous rounds.</strong></span></p>
+  </div>
+</div>
+
+
+<div class="ranking-row-numbers" id="rankingRow">
+  <p class="ranking-number">Position 1 <span style="color: green;">(easiest)</span></p>
+  <p class="ranking-number">Position 2</p>
+  <p class="ranking-number">Position 3</p>
+  <p class="ranking-number">Position 4</p>
+  <p class="ranking-number">Position 5</p>
+  <p class="ranking-number">Position 6</p>
+  <p class="ranking-number">Position 7</p>
+  <p class="ranking-number">Position 8 <span style="color: red;">(hardest)</span></p>
+</div>
+<div class="ranking-row" id="rankingRow">
+  <!-- 8 drop zones -->
+  <div class="ranking-slot" data-rank="1"></div>
+  <div class="ranking-slot" data-rank="2"></div>
+  <div class="ranking-slot" data-rank="3"></div>
+  <div class="ranking-slot" data-rank="4"></div>
+  <div class="ranking-slot" data-rank="5"></div>
+  <div class="ranking-slot" data-rank="6"></div>
+  <div class="ranking-slot" data-rank="7"></div>
+  <div class="ranking-slot" data-rank="8"></div>
+</div>
+
+<div id="cards" style="margin-bottom: 20px;"></div>
+
+<div id="snippet-bar"
+  style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background-color: #f5f5f5; border-radius: 6px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+  <h3 style="margin: 0; font-size: 16px; color: #333;">
+    🔍 Snippet Preview & Compare <span style="font-weight: normal;">(click on view checkboxes to preview or compare
+      snippets)</span>
+  </h3>
+  <button id="theme-toggle" onclick="toggleTheme()"
+    style="padding: 6px 12px; font-size: 14px; border-radius: 5px; background-color: #333; color: white; border: none; cursor: pointer;">
+    Switch to Dark Mode
+  </button>
+</div>
+
+
+<div class="preview-area" id="previewArea"></div>
+
+<div style="margin-top: 30px; display: none;">
+  <button id="continueBtn" onclick="goToPhase5()"
+    style="padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; background-color: gray; color: white; cursor: pointer;">Continue
+    to Phase 5 ➡️</button>
+</div>
+
+<div id="validation-modal" style="
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff0f0;
+  color: #660000;
+  border: 1px solid #ff9999;
+  padding: 20px;
+  border-radius: 10px;
+  width: 440px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 1002;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  ">
+  <p id="validation-message" style="font-weight: bold;"></p>
+  <button onclick="document.getElementById('validation-modal').style.display = 'none';" style="
+      margin-top: 15px;
+      padding: 8px 14px;
+      background-color: #ff9999;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">OK</button>
+</div>
+
+<script>
+  function showValidationMessage(msg) {
+    document.getElementById('validation-message').innerText = msg;
+    document.getElementById('validation-modal').style.display = 'block';
+  }
+</script>
+
+<script>
+  const originalSnippets = [
+    {
+      id: 1,
+      title: "Snippet 1",
+      methodName:"isValidProjectName",
+      code: `
+<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">isValidProjectName</span>(<span class="type">String</span> name) {
+    <span class="keyword">if</span> (name == <span class="literal">null</span>) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">if</span> (name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#startsWith-java.lang.String-')">startsWith</a>(<span class="string">"."</span>)) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">if</span> ((name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#length--')">length</a>() < <span class="number">1</span>) || (name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#length--')">length</a>() > MAX_NAME_LENGTH)) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i < name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#length--')">length</a>(); i++) {
+        <span class="type">char</span> c = name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#charAt-int-')">charAt</a>(i);
+        <span class="keyword">if</span> (!Character.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html#isLetterOrDigit-char-')">isLetterOrDigit</a>(c) && !VALID_NAME_SET.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/util/Set.html#contains-java.lang.Object-')">contains</a>(c)) {
+            <span class="keyword">return</span> <span class="literal">false</span>;
+        }
+    }
+    <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`
+          },
+          {
+            id: 2,
+            title: "Snippet 2",
+            methodName:"isRemote",
+            code: `
+<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">isRemote</span>(<span class="type">URI</span> uri) {
+    <span class="keyword">if</span> (<span class="function">isFilesystemPath</span>(uri)) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="type">String</span> scheme = uri.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/net/URI.html#getScheme--')">getScheme</a>();
+    <span class="keyword">if</span> (scheme == <span class="literal">null</span>) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">switch</span> (scheme) {
+        <span class="keyword">case</span> <span class="string">"file"</span>:
+        <span class="keyword">case</span> <span class="string">"jar"</span>:
+            <span class="keyword">return</span> <span class="literal">false</span>;
+        <span class="keyword">default</span>:
+            <span class="keyword">break</span>;
+    }
+    <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`            
+          },
+          {
+            id: 3,
+            title: "Snippet 3",
+            methodName:"isMachineTypeDefined",
+            code: `
+<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">isMachineTypeDefined</span>(<span class="type">short</span> type) {
+    <span class="keyword">if</span> (type == IMAGE_FILE_MACHINE_UNKNOWN) {
+        <span class="comment">// Unsupported machine type</span>
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">for</span> (<span class="type">Field</span> field : CoffMachineType.<span class="function">class</span>.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredFields--')">getDeclaredFields</a>()) {
+        <span class="keyword">if</span> (!field.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#isSynthetic--')">isSynthetic</a>()) {
+            <span class="type">int</span> modifiers = field.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getModifiers--')">getModifiers</a>();
+            <span class="keyword">if</span> (<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Modifier.html#isFinal-int-')">Modifier.isFinal</a>(modifiers) && <a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Modifier.html#isStatic-int-')">Modifier.isStatic</a>(modifiers)) {
+                <span class="keyword">try</span> {
+                    <span class="keyword">if</span> (field.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getShort-java.lang.Object-')">getShort</a>(<span class="literal">null</span>) == type) {
+                        <span class="keyword">return</span> <span class="literal">true</span>;
+                    }
+                } <span class="keyword">catch</span> (<span class="type">IllegalAccessException</span> e) {
+                    <span class="keyword">continue</span>;
+                }
+            }
+        }
+    }
+    <span class="keyword">return</span> <span class="literal">false</span>;
+}
+`            
+          },
+          {
+            id: 4,
+            title: "Snippet 4",
+            methodName:"indexOfIgnoreCase",
+code: `<span class="keyword">public static</span> <span class="type">int</span> <span class="function">indexOfIgnoreCase</span>(<span class="type">CharSequence</span> str, <span class="type">CharSequence</span> searchStr, <span class="type">int</span> startPos) {
+    <span class="keyword">if</span> (str == <span class="literal">null</span> || searchStr == <span class="literal">null</span>) {
+        <span class="keyword">return</span> INDEX_NOT_FOUND;
+    }
+    <span class="keyword">if</span> (startPos < <span class="number">0</span>) {
+        startPos = <span class="number">0</span>;
+    }
+    <span class="type">int</span> searchStrLen = searchStr.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#length--')">length</a>();
+    <span class="type">int</span> endLimit = str.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#length--')">length</a>() - searchStrLen + <span class="number">1</span>;
+    <span class="keyword">if</span> (startPos > endLimit) {
+        <span class="keyword">return</span> INDEX_NOT_FOUND;
+    }
+    <span class="keyword">if</span> (searchStrLen == <span class="number">0</span>) {
+        <span class="keyword">return</span> startPos;
+    }
+    <span class="keyword">for</span> (<span class="type">int</span> i = startPos; i < endLimit; i++) {
+        <span class="keyword">if</span> (<span class="function">regionMatches</span>(str, <span class="literal">true</span>, i, searchStr, <span class="number">0</span>, searchStrLen)) {
+            <span class="keyword">return</span> i;
+        }
+    }
+    <span class="keyword">return</span> INDEX_NOT_FOUND;
+}`
+          },              
+          {
+            id: 5,
+            title: "Snippet 5",
+            methodName:"deleteRecursively",
+            code: `
+<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">deleteRecursively</span>(@Nullable <span class="type">Path</span> root) <span class="keyword">throws</span> <span class="type">IOException</span> {
+    <span class="keyword">if</span> (root == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;
+    <span class="keyword">if</span> (!<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#exists-java.nio.file.Path-java.nio.file.LinkOption...-')">Files.exists</a>(root)) <span class="keyword">return</span> <span class="literal">false</span>;
+
+    <a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#walkFileTree-java.nio.file.Path-java.nio.file.FileVisitor-')">Files.walkFileTree</a>(root, <span class="keyword">new</span> <span class="type">SimpleFileVisitor</span>&lt;&gt;() {
+        @Override
+        <span class="keyword">public</span> <span class="type">FileVisitResult</span> <span class="function">visitFile</span>(<span class="type">Path</span> file, <span class="type">BasicFileAttributes</span> attrs) <span class="keyword">throws</span> <span class="type">IOException</span> {
+            <a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#delete-java.nio.file.Path-')">Files.delete</a>(file);
+            <span class="keyword">return</span> FileVisitResult.CONTINUE;
+        }
+        @Override
+        <span class="keyword">public</span> <span class="type">FileVisitResult</span> <span class="function">postVisitDirectory</span>(<span class="type">Path</span> dir, <span class="type">IOException</span> exc) <span class="keyword">throws</span> <span class="type">IOException</span> {
+            <a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#delete-java.nio.file.Path-')">Files.delete</a>(dir);
+            <span class="keyword">return</span> FileVisitResult.CONTINUE;
+        }
+    });
+
+    <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`            
+      },
+      {
+        id: 6,
+        title: "Snippet 6",
+        methodName:"CharSequence",
+        code: `
+<span class="keyword">public static</span> <span class="type">int</span> <span class="function">encodedLength</span>(<span class="type">CharSequence</span> sequence) {
+    <span class="comment">// Optimized implementation</span>
+    <span class="type">int</span> utf16Length = sequence.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#length--')">length</a>();
+    <span class="type">int</span> utf8Length = utf16Length;
+    <span class="type">int</span> i = <span class="number">0</span>;
+
+    <span class="keyword">while</span> (i < utf16Length && sequence.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#charAt-int-')">charAt</a>(i) < <span class="literal">0x80</span>) {
+        i++;
+    }
+
+    <span class="keyword">for</span> (; i < utf16Length; i++) {
+        <span class="type">char</span> c = sequence.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#charAt-int-')">charAt</a>(i);
+        <span class="keyword">if</span> (c < <span class="literal">0x800</span>) {
+            utf8Length += ((<span class="literal">0x7f</span> - c) >>> <span class="number">31</span>);
+        } <span class="keyword">else</span> {
+            utf8Length += <span class="function">encodedLengthGeneral</span>(sequence, i);
+            <span class="keyword">break</span>;
+        }
+    }
+
+    <span class="keyword">if</span> (utf8Length < utf16Length) {
+        <span class="keyword">throw new</span> <span class="type">IllegalArgumentException</span>(
+            <span class="string">"UTF-8 length does not fit in int: "</span> + (utf8Length + (<span class="literal">1L</span> << <span class="number">32</span>)));
+    }
+
+    <span class="keyword">return</span> utf8Length;
+}
+`        
+      },
+      {
+        id: 7,
+        title: "Snippet 7",
+        methodName:"lowestPositiveRoot",
+        code: `
+<span class="keyword">public static</span> <span class="type">float</span> <span class="function">lowestPositiveRoot</span>(<span class="type">float</span> a, <span class="type">float</span> b, <span class="type">float</span> c) {
+    <span class="type">float</span> det = b * b - <span class="number">4</span> * a * c;
+    <span class="keyword">if</span> (det < <span class="number">0</span>) <span class="keyword">return</span> <span class="type">Float</span>.NaN;
+
+    <span class="type">float</span> sqrtD = (<span class="type">float</span>)<span class="type">Math</span>.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html#sqrt-double-')">sqrt</a>(det);
+    <span class="type">float</span> invA = <span class="number">1</span> / (<span class="number">2</span> * a);
+    <span class="type">float</span> r1 = (-b - sqrtD) * invA;
+    <span class="type">float</span> r2 = (-b + sqrtD) * invA;
+
+    <span class="keyword">if</span> (r1 > r2) {
+        <span class="type">float</span> tmp = r2;
+        r2 = r1;
+        r1 = tmp;
+    }
+
+    <span class="keyword">if</span> (r1 > <span class="number">0</span>) <span class="keyword">return</span> r1;
+    <span class="keyword">if</span> (r2 > <span class="number">0</span>) <span class="keyword">return</span> r2;
+    <span class="keyword">return</span> <span class="type">Float</span>.NaN;
+}
+`        
+      },
+      {
+        id: 8,
+        title: "Snippet 8",
+        methodName:"atan2",
+        code: `
+<span class="keyword">public static</span> <span class="type">float</span> <span class="function">atan2</span>(<span class="type">float</span> y, <span class="type">float</span> x) {
+    <span class="type">float</span> n = y / x;
+
+    <span class="keyword">if</span> (n != n)
+        n = (y == x ? <span class="number">1f</span> : <span class="number">-1f</span>);
+    <span class="keyword">else if</span> (n - n != n - n)
+        x = <span class="number">0f</span>;
+
+    <span class="keyword">if</span> (x > <span class="number">0</span>)
+        <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n);
+    <span class="keyword">else if</span> (x < <span class="number">0</span>) {
+        <span class="keyword">if</span> (y >= <span class="number">0</span>) <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n) + PI;
+        <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n) - PI;
+    } <span class="keyword">else if</span> (y > <span class="number">0</span>)
+        <span class="keyword">return</span> x + HALF_PI;
+    <span class="keyword">else if</span> (y < <span class="number">0</span>)
+        <span class="keyword">return</span> x - HALF_PI;
+
+    <span class="keyword">return</span> x + y;
+}
+`        
+      }
+    ];
+  
+
+  function getStoredSnippetOrder() {
+    const stored = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length === 8) return parsed;
+      } catch {}
+    }
+    return null;
+  }
+
+  // Apply the stored snippet order
+  const order = getStoredSnippetOrder();
+  const snippets = [];
+
+  if (order) {
+    order.forEach((index, newId) => {
+      snippet = { ...originalSnippets[index - 1] }; 
+      snippet.id = newId + 1;
+      snippet.title = `Snippet ${newId + 1}`;
+      snippets.push(snippet);
+    });
+  } else {
+    alert("⚠️ Missing snippet order. Please login again.");
+    window.location.href = '/';
+  }
+
+  console.log("Applied snippet order:", snippets.map(s => s.title));
+
+</script>
+<script>
+  window.onload = () => {
+    sessionStorage.setItem("round4-phase1-complete","true");
+    localStorage.setItem("round4-phase1-complete","true");
+    sessionStorage.setItem("round4-phase2-complete","true");
+    localStorage.setItem("round4-phase2-complete","true");
+    sessionStorage.setItem("round4-phase3-complete","true");
+    localStorage.setItem("round4-phase3-complete","true");
+    sessionStorage.setItem("round4-phase4-complete","true");
+    localStorage.setItem("round4-phase4-complete","true");
+
+    loadCards();
+    loadState();
+    applyTheme();
+    displayUserName();
+
+    // ✅ Restore Continue button if round4-phase4-complete is already set
+    const continueBtn = document.getElementById('continueBtn');
+    if (sessionStorage.getItem('round4-phase4-complete') === 'true' || localStorage.getItem('round4-phase4-complete') === 'true') {
+      if (continueBtn) {
+        continueBtn.style.display = 'inline-block';
+        continueBtn.style.backgroundColor = '#4CAF50';
+        continueBtn.style.animation = 'glowPulse 1.5s infinite alternate';
+      }
+    }
+
+    // Unlock and highlight status bar
+    if (isComplete('round4-phase1-complete')) document.getElementById('link-phase2').classList.remove('disabled');
+    if (isComplete('round4-phase2-complete')) document.getElementById('link-phase3').classList.remove('disabled');
+    if (isComplete('round4-phase3-complete')) document.getElementById('link-phase4').classList.remove('disabled');
+    if (isComplete('round4-phase4-complete')) document.getElementById('link-phase5').classList.remove('disabled');
+    if (isComplete('round4-phase5-complete')) document.getElementById('link-review').classList.remove('disabled');
+
+    const current = window.location.pathname.split('/').pop();
+    if (current.includes('phase1')) document.getElementById('link-phase1').classList.add('active');
+    else if (current.includes('phase2')) document.getElementById('link-phase2').classList.add('active');
+    else if (current.includes('phase3')) document.getElementById('link-phase3').classList.add('active');
+    else if (current.includes('phase4')) document.getElementById('link-phase4').classList.add('active');
+    else if (current.includes('phase5')) document.getElementById('link-phase5').classList.add('active');
+    else if (current.includes('review')) document.getElementById('link-review').classList.add('active');
+
+
+    if (sessionStorage.getItem('round4-phase4-complete') === 'true' || localStorage.getItem('round4-phase4-complete') === 'true') {
+      document.getElementById('continueBtn').style.display = 'inline-block';
+      document.getElementById('continueBtn').style.backgroundColor = '#4CAF50';
+      document.getElementById('continueBtn').style.animation = 'glowPulse 1.5s infinite alternate';
+    }
+
+    setInterval(() => {
+      try {
+        saveToServer();
+        console.log("[Auto-Save] Progress saved to server.");
+      } catch (e) {
+        console.warn("[Auto-Save] Failed to save:", e);
+      }
+    }, 120000); // every 2 minutes
+  };
+
+  function firstChars(name, count = 5) {
+  if (!name) return "";
+  return name.slice(0, count);
+}
+
+  function loadCards() {
+    const container = document.getElementById('cards');
+    snippets.forEach(snippet => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.draggable = true;
+      card.id = `snippet-${snippet.id}`;
+      card.innerHTML = `
+          <strong>${firstChars(snippet.methodName, 7)}..</strong>
+          <br><label><input type="checkbox" onchange="togglePreview(${snippet.id}, this)"> View</label>
+        `;
+      card.addEventListener('dragstart', () => card.classList.add('dragging'));
+      card.addEventListener('dragend', () => card.classList.remove('dragging'));
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.ranking-slot').forEach(slot => {
+      slot.addEventListener('dragover', e => {
+        e.preventDefault();
+        const dragging = document.querySelector('.dragging');
+        if (dragging) slot.appendChild(dragging);
+        saveState();
+      });
+    });
+  }
+
+  function togglePreview(id, checkbox) {
+    const previewArea = document.getElementById('previewArea');
+    const snippet = snippets.find(s => s.id === id);
+    const existing = document.getElementById(`preview-${id}`);
+
+    if (checkbox.checked && !existing) {
+      const wrapper = document.createElement('div');
+      wrapper.id = `preview-${id}`;
+      wrapper.className = 'snippet-preview-box';
+
+      const header = document.createElement('div');
+      header.className = 'snippet-header';
+      header.textContent = snippet.title;
+
+      const codeBox = document.createElement('div');
+      codeBox.className = 'code-box';
+      codeBox.innerHTML = snippet.code;
+
+      wrapper.appendChild(header);
+      wrapper.appendChild(codeBox);
+      previewArea.appendChild(wrapper);
+    } else if (!checkbox.checked && existing) {
+      previewArea.removeChild(existing);
+    }
+
+const el = document.querySelector('.ranking-row-numbers');
+if (el) {
+  const top = el.getBoundingClientRect().top + window.scrollY + 70;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
+  }
+
+  function saveState() {
+    const positions = {};
+    document.querySelectorAll('.ranking-slot').forEach((slot, index) => {
+      positions[index + 1] = Array.from(slot.children).map(el => el.id);
+    });
+    const json = JSON.stringify(positions);
+    sessionStorage.setItem('phase3_ranking', json);
+    localStorage.setItem('phase3_ranking', json);
+
+    document.cookie = `phase3_ranking=${encodeURIComponent(json)}; path=/; max-age=${60 * 60 * 24 * 30}`;
+
+    /* Check if the phase is completed */
+    if (areAllCardsRanked()) {
+      document.getElementById('continueBtn').style.display = 'inline-block';
+      document.getElementById('continueBtn').style.backgroundColor = '#4CAF50';
+      document.getElementById('continueBtn').style.animation = 'glowPulse 1.5s infinite alternate';
+      sessionStorage.setItem('round4-phase4-complete', 'true');
+      localStorage.setItem('round4-phase4-complete', 'true');
+
+      // document.cookie = `round4-phase4-complete=true; path=/; max-age=${60 * 60 * 24 * 30}`;
+
+      // ✅ Also update the status bar
+      const phase3Link = document.getElementById('link-phase3');
+      if (phase3Link) {
+        phase3Link.classList.remove('disabled');
+      }
+    } else {
+      sessionStorage.removeItem('round4-phase4-complete');
+      localStorage.removeItem('round4-phase4-complete');
+      document.cookie = `round4-phase4-complete=; path=/; max-age=0`;
+      document.getElementById('continueBtn').style.display = 'none';
+      const phase3Link = document.getElementById('link-phase3');
+      if (phase3Link) {
+        phase3Link.classList.add('disabled');
+      }
+    }
+
+  }
+
+  function loadState() {
+    let saved = sessionStorage.getItem('phase3_ranking') || localStorage.getItem('phase3_ranking');
+
+
+    if (!saved) return;
+
+    try {
+      const parsed = JSON.parse(saved);  // now valid JSON
+      Object.entries(parsed).forEach(([rank, ids]) => {
+        const slot = document.querySelector(`.ranking-slot[data-rank='${rank}']`);
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && slot) slot.appendChild(el);
+        });
+      });
+    } catch (e) {
+      console.error('Failed to parse phase3_ranking JSON:', e);
+    }
+  }
+
+
+  function toggleTheme() {
+    const body = document.body;
+    const isDark = body.classList.contains('dark-mode');
+
+    if (isDark) {
+      body.classList.remove('dark-mode');
+      localStorage.setItem('codeTheme', 'light');
+      document.getElementById('theme-toggle').textContent = 'Switch to Dark Mode';
+    } else {
+      body.classList.add('dark-mode');
+      localStorage.setItem('codeTheme', 'dark');
+      document.getElementById('theme-toggle').textContent = 'Switch to Light Mode';
+    }
+  }
+
+  function applyTheme() {
+    const theme = localStorage.getItem('codeTheme') || 'light';
+    const btn = document.getElementById('theme-toggle');
+
+    if (theme === 'dark') {
+      document.body.classList.add('dark-mode');
+      if (btn) btn.textContent = 'Switch to Light Mode';
+    } else {
+      document.body.classList.remove('dark-mode');
+      if (btn) btn.textContent = 'Switch to Dark Mode';
+    }
+  }
+
+  function goToPhase5() {
+    if (areAllCardsRanked()) {
+      location.href = '/round4-phase5.html';
+    } else { showValidationMessage("⚠️ Please rank all snippets") };
+  }
+
+  /*For the instructions section*/
+  function toggleInstructions() {
+    const content = document.getElementById("instructions-content");
+    const button = event.target;
+
+    if (content.style.display === "none") {
+      content.style.display = "block";
+      button.textContent = "Hide";
+    } else {
+      content.style.display = "none";
+      button.textContent = "Show";
+    }
+  }
+
+  function getLocalStorage(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+  }
+
+  function isComplete(key) {
+    return sessionStorage.getItem(key) === 'true' || localStorage.getItem(key) === 'true';
+  }
+
+  function areAllCardsRanked() {
+    const allCards = document.querySelectorAll('.card');
+    const assignedCardIds = new Set();
+
+    document.querySelectorAll('.ranking-slot').forEach(slot => {
+      slot.querySelectorAll('.card').forEach(card => {
+        assignedCardIds.add(card.id);
+      });
+    });
+
+    return allCards.length === assignedCardIds.size;
+  }
+
+
+</script>
+
+<script>
+  function displayUserName() {
+    const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+    if (name) {
+      document.getElementById('user-info').textContent = `👤 ${name}`;
+    }
+  }
+</script>
+
+<script>
+  function isLoggedIn() {
+    const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+    const order = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+    return name && order;
+  }
+
+  function checkLogin() {
+    if (!isLoggedIn()) {
+      alert('You must be logged in to access this page. Redirecting to the homepage.');
+      window.location.href = '/';
+    }
+  }
+
+  function checkPhase1Completion() {
+    if (!isPhaseComplete('round4-phase1-complete')) {
+      alert('Please complete Phase 1 before continuing.');
+      window.location.href = 'round4-phase1.html';
+    }
+  }
+
+  function isPhaseComplete(phaseKey) {
+    const sessionVal = sessionStorage.getItem(phaseKey);
+    const cookieVal = localStorage.getItem(phaseKey);
+    return sessionVal === 'true' || cookieVal === 'true';
+  }
+
+  window.addEventListener('load', checkLogin);
+  window.addEventListener('load', checkPhase1Completion);
+</script>
+
+
+<script>
+  // Toggle logout menu visibility
+  // document.addEventListener('DOMContentLoaded', () => {
+  //   const userInfo = document.getElementById('user-info');
+  //   const logoutMenu = document.getElementById('logout-menu');
+
+  //   userInfo.addEventListener('click', () => {
+  //     logoutMenu.style.display = logoutMenu.style.display === 'block' ? 'none' : 'block';
+  //   });
+
+  //   // Hide the menu if clicked outside
+  //   document.addEventListener('click', (event) => {
+  //     if (!event.target.closest('.user-dropdown')) {
+  //       logoutMenu.style.display = 'none';
+  //     }
+  //   });
+  // });
+
+  // Clear storage and redirect to login
+  function logout() {
+    sessionStorage.clear();
+    localStorage.clear();
+
+
+    // Clear all cookies
+    document.cookie.split(";").forEach(cookie => {
+      const name = cookie.split("=")[0].trim();
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    });
+
+    window.location.href = 'round4.html';
+  }
+</script>
+
+<script>
+async function saveToServer() {
+  const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName') || 'Anonymous';
+  const username = localStorage.getItem('username') || 'anonymous';
+
+  // Phase 1 data
+  const phase1 = {};
+  for (let i = 1; i <= 8; i++) {
+    const summary = sessionStorage.getItem(`summary${i}`) || localStorage.getItem(`summary${i}`) || '';
+    const comp = sessionStorage.getItem(`compSummary${i}`) || localStorage.getItem(`compSummary${i}`) || '';
+    phase1[`snippet${i}`] = { summary, comprehensibility: comp };
+  }
+
+  // Phase 2 & 3 data
+  let phase2 = {}, phase3 = {};
+  try {
+    phase2 = JSON.parse(sessionStorage.getItem('phase3_ranking') || localStorage.getItem('phase3_ranking') || '{}');
+    phase3 = JSON.parse(sessionStorage.getItem('phase3_reasoning') || localStorage.getItem('phase3_reasoning') || '{}');
+  } catch (e) {
+    console.warn("⚠️ Error parsing phase2 or phase3 data", e);
+  }
+
+  // Round 2 responses
+  const round4Responses = {};
+  for (let i = 0; i <= 4; i++) {
+    const key = `round4_response_${i}`;
+    const val = localStorage.getItem(key) || sessionStorage.getItem(key);
+    if (val) {
+      try {
+        round4Responses[key] = JSON.parse(val);
+      } catch (e) {
+        round4Responses[key] = val;
+      }
+    }
+  }
+
+  // Completion flags
+  const phaseCompletion = {};
+  for (let i = 1; i <= 5; i++) {
+    const key = `round4-phase${i}-complete`;
+    phaseCompletion[key] = sessionStorage.getItem(key) || localStorage.getItem(key) || 'false';
+  }
+
+  // Other flags
+  const flags = {
+    codeTheme: localStorage.getItem('codeTheme') || 'light',
+    submitted: '1',
+    studyRound: '2'
+  };
+
+  // Final payload
+  const payload = {
+    username,
+    participantName: name,
+    phase1,
+    phase2,
+    phase3,
+    ...round4Responses,
+    ...phaseCompletion,
+    ...flags
+  };
+
+  const payloadStr = JSON.stringify(payload);
+
+  // Hash function
+  async function hashString(str) {
+    const buffer = new TextEncoder().encode(str);
+    const digest = await crypto.subtle.digest('SHA-256', buffer);
+    return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  const currentHash = await hashString(payloadStr);
+  const previousHash = sessionStorage.getItem('lastPayloadHash_round4');
+
+  if (currentHash === previousHash) {
+    console.log('🟡 Payload unchanged, not sending to server.');
+    return;
+  }
+
+  sessionStorage.setItem('lastPayloadHash_round4', currentHash);
+
+  const blob = new Blob([payloadStr], { type: 'application/json' });
+  navigator.sendBeacon('/submit_round4', blob);
+
+  console.log('✅ Round 2 payload sent to server:', payload);
+}
+
+
+  window.addEventListener('beforeunload', function (e) {
+    saveToServer();
+  });
+
+
+</script>
+
+<script>
+  function openJavadocModal(url) {
+    const iframe = document.getElementById("javadocFrame");
+    iframe.src = url;
+    document.getElementById("javadocModal").style.display = "block";
+  }
+
+  function closeJavadocModal() {
+    document.getElementById("javadocModal").style.display = "none";
+    document.getElementById("javadocFrame").src = "";
+  }
+
+  function javadocFrameReload() {
+    const iframe = document.getElementById("javadocFrame");
+    iframe.src = iframe.src;
+  }
+
+
+</script>
+
+
+<footer
+  style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 14px; color: #666;">
+  Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+</footer>
+
+
+<script>
+  const saveToServerDebounced = (() => {
+    let t;
+    return () => {
+      clearTimeout(t);
+      t = setTimeout(() => saveToServer(), 300); // 300ms buffer
+    };
+  })();
+
+  document.querySelectorAll('.ranking-slot').forEach(slot => {
+    slot.addEventListener('dragover', e => {
+      e.preventDefault(); // needed so drop works
+    });
+
+    slot.addEventListener('drop', e => {
+      e.preventDefault();
+      const dragging = document.querySelector('.dragging');
+      if (dragging) {
+        slot.appendChild(dragging);
+        saveState();              // local/session storage update
+        saveToServerDebounced();  // schedule server submit after drag
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

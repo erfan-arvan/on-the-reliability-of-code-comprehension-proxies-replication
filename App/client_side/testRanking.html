@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Live Ranking Slide Panel</title>
+  <style>
+    :root {
+      --left-gap: 250px;   /* how much of the page stays visible on the left when fully open */
+      --panel-min: 400px;  /* minimum panel width */
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Sticky toggle bar on the right */
+    #toggle-bar {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      background: #333;
+      color: #fff;
+      padding: 10px 12px;
+      cursor: pointer;
+      z-index: 1001;
+      border-radius: 8px 0 0 8px;
+      user-select: none;
+      transition: background 0.25s ease;
+      font-weight: 600;
+    }
+    #toggle-bar:hover { background: #444; }
+
+    /* Sliding panel anchored to the right */
+    #panel {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      height: 100%;
+      width: calc(100% - var(--left-gap)); /* default open width leaves gap on left */
+      max-width: 100%;
+      min-width: var(--panel-min);
+      background: #fff;
+      box-shadow: -4px 0 14px rgba(0,0,0,0.25);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.35s ease;
+      overflow: hidden; /* keep content clipped to panel */
+    }
+    #panel.open { right: 0; }
+
+    /* Header (optional) */
+    #panel-header {
+      flex-shrink: 0;
+      background: #222;
+      color: #fff;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+    }
+
+    /* The iframe fills the remaining space */
+    #panel iframe {
+      flex: 1 1 auto;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    /* The draggable left edge (true resize handle) */
+    #resizer {
+      position: absolute;
+      top: 0;
+      left: 0;              /* left edge of the panel */
+      width: 8px;           /* visual width of handle */
+      height: 100%;
+      cursor: col-resize;   /* proper column-resize cursor */
+      background: transparent; /* keep it invisible by default */
+
+      /* Slightly easier to grab on hover */
+    }
+    #resizer::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: rgba(0,0,0,0.08); /* a subtle guideline */
+    }
+    #resizer:hover { background: rgba(0,0,0,0.03); }
+
+    /* While dragging, prevent text selection */
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    #close-btn {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0 6px;
+    }
+    #close-btn:hover { color: #f66; }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky toggle bar -->
+  <div id="toggle-bar">☰ Ranking</div>
+
+  <!-- Sliding panel with iframe -->
+  <div id="panel" aria-hidden="true">
+    <div id="resizer" title="Drag to resize"></div>
+    <div id="panel-header">
+      <span>Live Ranking</span>
+      <!-- <button id="close-btn">✖</button> -->
+    </div>
+    <iframe id="ranking-frame" src="live-ranking.html"></iframe>
+  </div>
+
+  <script>
+    const panel = document.getElementById('panel');
+    const resizer = document.getElementById('resizer');
+    const toggleBar = document.getElementById('toggle-bar');
+    const iframe = document.getElementById('ranking-frame');
+    const closeBtn = document.getElementById("close-btn");
+
+    // Close panel
+    // closeBtn.addEventListener("click", () => {
+    //   panel.classList.remove("open");
+    // });
+
+    // Toggle open/close with same sticky button
+    function setOpen(isOpen) {
+      if (isOpen) {
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        toggleBar.textContent = '✖ Close';
+      } else {
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        toggleBar.textContent = '☰ Ranking';
+      }
+    }
+    toggleBar.addEventListener('click', () => {
+      setOpen(!panel.classList.contains('open'));
+    });
+
+    // Auto refresh iframe every 30s (cache-busted)
+    function refreshFrame() {
+      const base = iframe.src.split('?')[0];
+      iframe.src = base + '?t=' + Date.now();
+    }
+    setInterval(refreshFrame, 30000);
+
+    // --- Drag-to-resize logic for left edge ---
+    let dragging = false;
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function startDrag(e) {
+      if (!panel.classList.contains('open')) return;
+      dragging = true;
+      document.body.classList.add('no-select');
+      // Prevent iframe from eating mouse events while dragging
+      iframe.style.pointerEvents = 'none';
+      e.preventDefault();
+    }
+
+    function onDrag(e) {
+      if (!dragging) return;
+
+      // Current mouse X (supports touch)
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+
+      // We anchor the panel to the RIGHT edge. New width is the distance from mouse X to the right edge.
+      const viewportWidth = window.innerWidth;
+      const desiredWidth = viewportWidth - clientX;
+
+      // Respect min and "max" (full viewport)
+      const minWidth = parseInt(getComputedStyle(panel).minWidth, 10) || 400;
+      // Keep at least --left-gap of the page visible if you want
+      const leftGap = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--left-gap'), 10) || 0;
+      const maxWidth = viewportWidth; // hard cap at full width
+      const effectiveMax = Math.min(maxWidth, viewportWidth - 0); // adjust if you want a hard left gap
+
+      let newWidth = clamp(desiredWidth, minWidth, effectiveMax);
+
+      // If you want to ENFORCE the left gap at all times, uncomment:
+      // newWidth = Math.min(newWidth, viewportWidth - leftGap);
+
+      panel.style.width = newWidth + 'px';
+    }
+
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      document.body.classList.remove('no-select');
+      iframe.style.pointerEvents = '';
+    }
+
+    // Mouse events
+    resizer.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('mouseup', endDrag);
+
+    // Touch events
+    resizer.addEventListener('touchstart', startDrag, { passive: false });
+    window.addEventListener('touchmove', onDrag, { passive: false });
+    window.addEventListener('touchend', endDrag);
+
+    // Optional: keep panel width reasonable on resize
+    window.addEventListener('resize', () => {
+      if (!panel.classList.contains('open')) return;
+      const vw = window.innerWidth;
+      const leftGap = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--left-gap'), 10) || 0;
+      const minWidth = parseInt(getComputedStyle(panel).minWidth, 10) || 400;
+      // Clamp to viewport width and desired left gap if enforcing it
+      const current = panel.getBoundingClientRect().width;
+      const maxAllow = vw; // or (vw - leftGap) if enforcing constant gap
+      panel.style.width = clamp(current, minWidth, maxAllow) + 'px';
+    });
+  </script>
+</body>
+</html>

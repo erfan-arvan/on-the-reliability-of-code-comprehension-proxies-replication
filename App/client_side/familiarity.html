@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS Knowledge Survey</title>
+  <style>
+    body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background-color: #f4f4f4; color: #333;}
+    .card {background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;}
+    button {padding: 10px 16px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer;}
+    button.primary {background-color: #4CAF50; color: #fff;}
+    button.primary:hover {background-color: #45a049;}
+    button[disabled] {opacity: .6; cursor: not-allowed;}
+    label {display: block; margin: 8px 0;}
+    .progress {height: 6px; background: #eee; border-radius: 4px; overflow: hidden; margin-bottom: 8px;}
+    .progress span {display: block; height: 100%; background: #4CAF50; width: 0%; transition: width .3s;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>CS Knowledge Survey</h2>
+    <div class="progress"><span id="bar"></span></div>
+    <div id="qtext"></div>
+    <div id="opts"></div>
+    <div style="margin-top: 20px; display:flex; justify-content: space-between;">
+      <button id="prev">Previous</button>
+      <button class="primary" id="next">Next</button>
+    </div>
+  </div>
+  <script>
+    const topics = [
+  {
+    "id": "uri_scheme",
+    "tag": "URIs",
+    "familiarity": {
+      "q": "Are you familiar with the concept of Uniform Resource Identifier (URI) schemes?"
+    },
+    "mcq": {
+      "q": "Which part of “http://example.com/page.html” is the URI scheme?",
+      "options": ["example.com", "http", "/page.html", "://"],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "file_vs_network_uri",
+    "tag": "URIs",
+    "familiarity": {
+      "q": "Do you know the difference between filesystem URIs and remote/network URIs?"
+    },
+    "mcq": {
+      "q": "What is the main difference between a file:// URI and http:// or ftp:// URIs?",
+      "options": [
+        "file:// URIs are always encrypted, while http:// and ftp:// are not",
+        "file:// URIs can only be used on Linux, while http:// and ftp:// work everywhere",
+        "file:// URIs automatically delete files, while http:// and ftp:// only read them",
+        "file:// URIs refer to local filesystem resources, while http:// and ftp:// URIs refer to network resources"
+      ],
+      "correctIndex": 3
+    }
+  },
+  {
+    "id": "reflection",
+    "tag": "Java",
+    "familiarity": {
+      "q": "Are you familiar with the Java Reflection API?"
+    },
+    "mcq": {
+      "q": "Which of the following is an example of reflection?",
+      "options": [
+        "Checking if a variable is null",
+        "Writing a loop to iterate over numbers",
+        "Converting an integer to a string",
+        "Listing all methods of an object at runtime"
+      ],
+      "correctIndex": 3
+    }
+  },
+  {
+    "id": "visitor_walkFileTree",
+    "tag": "Java",
+    "familiarity": {
+      "q": "Are you familiar with the Visitor design pattern, particularly as used in Java’s Files.walkFileTree API?"
+    },
+    "mcq": {
+      "q": "What is the main purpose of using the Visitor pattern in Files.walkFileTree?",
+      "options": [
+        "It lets you define what happens at each file or directory visit while the API handles the traversal logic.",
+        "It automatically performs recursive deletion of directories.",
+        "It provides faster traversal by avoiding recursion.",
+        "It stores metadata about files and directories for later access."
+      ],
+      "correctIndex": 0
+    }
+  },
+  {
+    "id": "utf8_utf16",
+    "tag": "Unicode",
+    "familiarity": {
+      "q": "Do you know the difference between UTF-8 and UTF-16 Unicode encodings?"
+    },
+    "mcq": {
+      "q": "Which statement best describes the main difference between UTF-8 and UTF-16?",
+      "options": [
+        "UTF-8 is fixed-length, while UTF-16 is variable-length.",
+        "UTF-16 is backward compatible with ASCII, while UTF-8 is not.",
+        "UTF-8 and UTF-16 both use exactly 2 bytes for every character.",
+        "UTF-8 uses 1 to 4 bytes per character, while UTF-16 uses 2 or 4 bytes per character."
+      ],
+      "correctIndex": 3
+    }
+  },
+  {
+    "id": "bitwise_ops",
+    "tag": "Bits",
+    "familiarity": {
+      "q": "Do you know what bitwise operators (e.g., &, |, ^, >>, >>>) do in programming?"
+    },
+    "mcq": {
+      "q": "In Java, what does the operator >>> do?",
+      "options": [
+        "Signed right shift (preserves the sign bit)",
+        "Unsigned right shift (fills left bits with zeros)",
+        "Left shift (fills right bits with zeros)",
+        "Bitwise OR"
+      ],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "hex_to_dec",
+    "tag": "Number Systems",
+    "familiarity": {
+      "q": "Do you know how to convert between hexadecimal and decimal numbers without using a calculator?"
+    },
+    "mcq": {
+      "q": "What is the decimal value of the hexadecimal constant 0x7F?",
+      "options": ["80", "127", "128", "255"],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "quadratic",
+    "tag": "Math",
+    "familiarity": {
+      "q": "Are you familiar with the quadratic formula?"
+    },
+    "mcq": {
+      "q": "The quadratic formula gives the roots of ax² + bx + c = 0 as:",
+      "options": [
+        "(–b ± √(b² – 4ac)) / (2a)",
+        "(–a ± √(a² – 4bc)) / (2b)",
+        "(–c ± √(c² – 4ab)) / (2a)",
+        "(–b ± √(a² + b² + c²)) / (2)"
+      ],
+      "correctIndex": 0
+    }
+  },
+  {
+    "id": "atan",
+    "tag": "Math",
+    "familiarity": {
+      "q": "Are you familiar with the arctangent (atan) function?"
+    },
+    "mcq": {
+      "q": "The function Math.atan(x) is used to:",
+      "options": [
+        "Compute the magnitude of a vector",
+        "Compute the angle of a vector in the correct quadrant",
+        "Convert radians to degrees",
+        "Calculate sine and cosine simultaneously"
+      ],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "nan",
+    "tag": "Floating Point",
+    "familiarity": {
+      "q": "Are you familiar with the concept of NaN (Not a Number) and its behavior in Java?"
+    },
+    "mcq": {
+      "q": "In Java, when x is a floating-point variable, which of the following expressions evaluates to true if and only if x is NaN?",
+      "options": ["x == NaN", "x != x", "x++ > x", "It is not possible to check for NaN in Java"],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "fp_singularities",
+    "tag": "Floating Point",
+    "familiarity": {
+      "q": "Are you familiar with Java’s handling of floating-point singularities (such as division by zero)?"
+    },
+    "mcq": {
+      "q": "What is the result of evaluating 1.0 / 0.0 in Java?",
+      "options": ["NaN", "Infinity", "0.0", "Throws an exception"],
+      "correctIndex": 1
+    }
+  }
+]
+
+  </script>
+
+  <script>
+  // state: per-topic answers, step = 'fam' or 'mcq'
+  let state = { i: 0, step: 'fam', answers: {} };
+
+  const qtext = document.getElementById('qtext');
+  const opts  = document.getElementById('opts');
+  const bar   = document.getElementById('bar');
+  const prev  = document.getElementById('prev');
+  const next  = document.getElementById('next');
+
+  function render() {
+    const t = topics[state.i];
+    bar.style.width = `${(state.i / topics.length) * 100}%`;
+    opts.innerHTML = '';
+
+    const rec = state.answers[t.id] || {};
+
+    if (state.step === 'fam') {
+      // use t.familiarity.q (NOT t.fam)
+      qtext.textContent = t.familiarity.q;
+
+      // lock if an MCQ was already answered or shown
+      const locked = rec.mcq !== undefined;
+
+      const yes = document.createElement('label');
+      yes.innerHTML =
+        `<input type="radio" name="f" value="yes" ${rec.fam === 'yes' ? 'checked' : ''} ${locked ? 'disabled' : ''}> Yes`;
+      const no  = document.createElement('label');
+      no.innerHTML =
+        `<input type="radio" name="f" value="no" ${rec.fam === 'no' ? 'checked' : ''} ${locked ? 'disabled' : ''}> No`;
+      opts.append(yes, no);
+
+      next.disabled = !rec.fam; // must pick yes/no
+    } else {
+      // MCQ: use t.mcq.options (NOT t.mcq.opts)
+      qtext.textContent = t.mcq.q;
+      t.mcq.options.forEach((o, i) => {
+        const l = document.createElement('label');
+        const checked = (rec.mcq === i) ? 'checked' : '';
+        l.innerHTML = `<input type="radio" name="m" value="${i}" ${checked}> ${String.fromCharCode(65 + i)}) ${o}`;
+        opts.append(l);
+      });
+      next.disabled = (rec.mcq === undefined);
+    }
+  }
+
+  opts.addEventListener('change', (e) => {
+    const t = topics[state.i];
+    const rec = state.answers[t.id] || {};
+    if (state.step === 'fam') {
+      if (e.target && e.target.name === 'f') {
+        // record yes/no
+        rec.fam = e.target.value;
+        // if switched to 'no', clear any mcq answer
+        if (rec.fam === 'no') delete rec.mcq;
+      }
+    } else {
+      if (e.target && e.target.name === 'm') {
+        rec.mcq = parseInt(e.target.value, 10);
+      }
+    }
+    state.answers[t.id] = rec;
+    next.disabled = false; // enabled once a choice is made
+  });
+
+  next.onclick = () => {
+    const t = topics[state.i];
+    const rec = state.answers[t.id] || {};
+
+    if (state.step === 'fam') {
+      if (!rec.fam) return; // guard
+      if (rec.fam === 'yes') {
+        // go to this topic's MCQ
+        state.step = 'mcq';
+      } else {
+        // fam = no → move to next topic's fam
+        state.i++;
+        state.step = 'fam';
+      }
+    } else {
+      // leaving MCQ → next topic fam
+      state.i++;
+      state.step = 'fam';
+    }
+
+    if (state.i >= topics.length) {
+      qtext.textContent = 'Done!';
+      opts.innerHTML = '';
+      next.disabled = true;
+      prev.disabled = true;
+      bar.style.width = '100%';
+      return;
+    }
+    render();
+  };
+
+  prev.onclick = () => {
+    // Go back one logical step:
+    if (state.step === 'mcq') {
+      // back from MCQ → its familiarity (locked)
+      state.step = 'fam';
+    } else {
+      // back from a fam step → previous topic
+      if (state.i > 0) {
+        state.i--;
+        const prevTopic = topics[state.i];
+        const rec = state.answers[prevTopic.id] || {};
+        // if prev topic had fam === yes, prefer showing its MCQ; otherwise its fam
+        state.step = (rec.fam === 'yes') ? 'mcq' : 'fam';
+      }
+    }
+    render();
+  };
+
+  render();
+</script>
+
+</body>
+</html>

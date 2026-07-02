@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Background Questionnaire</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .survey-box, .final-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .full-width-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .full-width-btn:hover {
+      background-color: #45a049;
+    }
+    button:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+    }
+    .hidden {
+      display: none;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .instructions, .email-box, .survey-box, .slots-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    button {
+        padding: 10px 20px;
+            margin-right: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .day-card {
+      background-color: #eaeaea;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .time-slot {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background-color: #ccc;
+      cursor: pointer;
+    }
+
+    .time-slot.selected {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box;
+        margin-top: 8px;
+        margin-bottom: 16px;
+        background-color: #fff;
+        color: #333;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-field:focus {
+        border-color: #4CAF50;
+        outline: none;
+        box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-top: 10px;
+            margin-bottom: 16px;
+            background-color: #fff;
+            color: #333;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            }
+
+            .input-field:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+            }
+
+            .full-width-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            }
+
+            .full-width-btn:hover {
+            background-color: #45a049;
+            }
+
+            .modal.hidden {
+                display: none !important;
+            }
+
+            .success-message {
+                position: relative;
+                background-color: #e6f9ec;
+                color: #2e7d32;
+                border: 1px solid #2e7d32;
+                padding: 15px 20px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                font-size: 16px;
+                font-weight: 500;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                }
+
+                .success-message .close-btn {
+                position: absolute;
+                top: 8px;
+                right: 12px;
+                background: none;
+                border: none;
+                color: #2e7d32;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                line-height: 1;
+                margin: 0;
+                }
+
+                .success-message .close-btn:hover {
+                color: #1b5e20;
+                }
+
+                .confirm-box, .final-box {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.confirm-box a {
+  color: #4CAF50;
+  margin-left: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.confirm-box a:hover {
+  text-decoration: underline;
+}
+
+.final-box button {
+  margin-top: 10px;
+}
+
+input.input-error {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}
+
+#warning-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#warning-modal .modal-content {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+@keyframes glowPulse {
+        0% {
+          box-shadow: 0 0 10px #4CAF50;
+        }
+        100% {
+          box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+        }
+      }
+
+      #email {        animation: glowPulse 1.5s infinite alternate;
+      }
+
+      button:active {
+        transform: scale(0.97);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+        }
+
+        .status-bar {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+#timer-wrapper button {
+  background-color: transparent;
+  border: 2px solid #4CAF50;
+  color: #4CAF50;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#timer-wrapper button:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+    body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background-color: #f4f4f4; color: #333;}
+    .card {background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;}
+    button {padding: 10px 16px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer;}
+    button.primary {background-color: #4CAF50; color: #fff;}
+    button.primary:hover {background-color: #45a049;}
+    button[disabled] {opacity: .6; cursor: not-allowed;}
+    label {display: block; margin: 8px 0;}
+    .progress {height: 6px; background: #eee; border-radius: 4px; overflow: hidden; margin-bottom: 8px;}
+    .progress span {display: block; height: 100%; background: #4CAF50; width: 0%; transition: width .3s;}
+  </style>
+</head>
+<body>
+
+<div class="status-bar">
+    <div class="user-dropdown" style="position: relative;">
+        <div id="timer-wrapper" style="display: flex; align-items: center; gap: 10px;">
+            <div id="timer" style="font-weight: bold;">⏱️ 00:00</div>
+            
+            <button id="pause-btn" onclick="pauseStudy()" title="Pause Timer" style="font-size: 16px; padding: 2px 6px;">⏸️</button>
+            <button id="resume-btn" onclick="resumeStudy()" title="Resume Timer" style="font-size: 16px; padding: 2px 6px; display: none;">▶️</button>
+            
+            <button onclick="toggleTimer()" title="Show/Hide Timer" style="font-size: 16px; padding: 2px 6px;">Hide Timer</button>
+            <button class="hidden" onclick="resetTimer()" title="Reset Timer" style="font-size: 16px; padding: 2px 6px; display: none;">🔁</button>
+        </div>
+
+    </div>
+</div>
+
+  <div class="card">
+    <h2>CS Knowledge Survey</h2>
+    <div class="progress"><span id="bar"></span></div>
+    <div id="qtext"></div>
+    <div id="opts"></div>
+    <div style="margin-top: 20px; align-items: left; display:flex; justify-content: space-between;">
+      <button id="prev" class="hidden">Previous</button>
+      <button class="primary" id="next">Next</button>
+    </div>
+  </div>
+
+<div class="survey-box hidden" id="survey-box">
+  <h3>Programming Experience Self-Assessment  </h3>
+  <!-- <p>These questions help us understand your background and perform.</p> -->
+  <div id="question-container"></div>
+  <div style="margin-top: 20px;">
+    <button onclick="prevQuestion()" id="prevBtn" disabled>Previous</button>
+    <button onclick="nextQuestion()" id="nextBtn">Next</button>
+  </div>
+</div>
+
+<div class="final-box hidden" id="final-box-submit">
+  <h3>✅ Submission Received!</h3>
+  <p>Thank you! Your responses have been submitted successfully.</p>
+</div>
+
+
+<div id="review-modal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); width:80%; max-height:80%; overflow-y:auto; background:#fff; border:1px solid #ccc; padding:20px 20px 10px 20px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:1002; font-family:'Segoe UI', sans-serif;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <h3 style="margin:0;">Review Your Summaries</h3>
+      <span onclick="document.getElementById('review-modal').style.display='none'" style="cursor:pointer; font-size:20px; font-weight:bold;">&times;</span>
+    </div>
+  
+    <div id="review-content" style="white-space:pre-wrap; margin-bottom:20px; font-size:14px; color:#333;"></div>
+  
+    <button onclick="submitAndCloseModal()">Submit Now</button>
+    <button onclick="document.getElementById('review-modal').style.display='none'" style="margin-left:10px;">Cancel</button>
+  </div>
+  
+  <div id="validation-modal" style="
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff0f0;
+    color: #660000;
+    border: 1px solid #ff9999;
+    padding: 20px;
+    border-radius: 10px;
+    width: 440px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 1002;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+  ">
+    <p id="validation-message" style="font-weight: bold;"></p>
+    <button onclick="document.getElementById('validation-modal').style.display = 'none';" style="
+      margin-top: 15px;
+      padding: 8px 14px;
+      background-color: #ff9999;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">OK</button>
+  </div>
+  
+<!-- Start Modal -->
+<div id="start-modal" style="
+  display: none;  /* or 'none' by default, set to 'block' on load */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: none;  /* important: toggle this from JS */
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2>Ready to Begin?</h2>
+    <p>Click the button below to start the study. A timer will begin.</p>
+    <button onclick="startStudy()">Start</button>
+  </div>
+</div>
+
+  
+<!-- Pause Modal -->
+<div id="pause-modal" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2>Study Paused</h2>
+    <p>The timer is paused. Click below to resume.</p>
+    <button onclick="resumeStudy()">Resume</button>
+  </div>
+</div>
+
+<div id="goto-modal" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.965);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2>Submitting ...</h2>
+    <img src="img/submitting.gif" alt="Relax..." style="max-width: 100%; height: auto;">
+    <br>
+    <button onclick="window.location.href='thankyou.html';">Close this page</button>
+  </div>
+</div>
+
+<script src="js/data.js?v=1.0.0"></script>
+
+<script>
+   function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? decodeURIComponent(match[2]) : null;
+  }
+  
+  // Returns existing or creates a new randomized order of indices
+  function getOrCreateSnippetOrder(length) {
+  const key = 'snippetOrder';
+
+  // Try to load from localStorage or cookie
+  let stored = localStorage.getItem(key);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length === length) return parsed;
+    } catch {}
+  }
+
+  // Generate new shuffled 1-based order: [1, 2, ..., length]
+  const order = Array.from({ length }, (_, i) => i + 1);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+
+  // Store in localStorage and cookie
+  const serialized = JSON.stringify(order);
+  localStorage.setItem(key, serialized);
+  document.cookie = `${key}=${encodeURIComponent(serialized)}; path=/; max-age=2592000`; // 30 days
+
+  return order;
+}
+
+  
+// Create randomized snippets based on snippetsOriginal
+const snippetOrder = getOrCreateSnippetOrder(snippetsOriginal.length);
+console.log("🔀 New randomized snippet order (1-based):", snippetOrder);
+console.log("snippetsOriginal:", snippetsOriginal);
+
+
+// Create shuffled snippets using 1-based indices
+const snippets = snippetOrder.map((i, idx) => {
+  const s = { ...snippetsOriginal[i - 1] }; // Clone
+  s.id = idx + 1;                           // New display ID
+  s.title = `Snippet ${idx + 1}`;          // Updated title
+  s.originalId = i;                        // 🔥 Save original ID
+  return s;
+});
+
+
+
+// Assign new display ids and titles
+snippets.forEach((snippet, idx) => {
+  snippet.id = idx + 1;
+  snippet.title = `Snippet ${idx + 1}`;
+});
+
+// Debug
+console.log("Final snippet order (titles):", snippets.map(s => s.title));
+console.log("Final snippet order (ids):", snippets.map(s => s.id));
+console.log("Mapping from original (1-based):", snippetOrder.map(i => `Original Snippet ${i}`))
+
+</script>
+<script>
+function getOrCreateQuestionOrder(snippetId, numQuestions) {
+  const key = `qOrder-${snippetId}`;
+  const stored = localStorage.getItem(key);
+
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length === numQuestions) return parsed;
+    } catch {}
+  }
+
+  const order = Array.from({ length: numQuestions }, (_, i) => i+1);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+
+  const serialized = JSON.stringify(order);
+  localStorage.setItem(key, serialized);
+  document.cookie = `${key}=${encodeURIComponent(serialized)}; path=/; max-age=2592000`;
+  return order;
+}
+
+const questionsPerSnippet = {};
+
+console.log("🧪 questionsPerSnippetOriginal =", questionsPerSnippetOriginal);
+
+// `snippets` is already randomized, and each has `.originalId`
+snippets.forEach((snippet, newIndex) => {
+  const newSnippetId = newIndex + 1; // 1-based for current session
+  const originalId = snippet.originalId; 
+
+  const originalQs = questionsPerSnippetOriginal[String(originalId)];
+  console.log("💥 originalId =", originalId);
+  console.log("💥 questionsPerSnippetOriginal =", questionsPerSnippetOriginal);
+  console.log("💥 originalQs =", questionsPerSnippetOriginal?.[String(originalId)]);
+
+  const order = getOrCreateQuestionOrder(newSnippetId, originalQs.length);
+  questionsPerSnippet[newSnippetId] = order.map(i => structuredClone(originalQs[i - 1]));
+});
+
+</script>
+<script>
+const questions = [
+  {
+    text: "Were the instructions and question formats clear and easy to follow?",
+    code: "s.InstructionClarity",
+    options: [
+      { label: "Yes" },
+      { label: "Somewhat" },
+      { label: "No" }
+    ]
+  },
+  {
+    text: "Did you encounter any technical issues using the website?",
+    code: "s.TechnicalIssues",
+    options: [
+      { label: "Yes (please specify below)" },
+      { label: "No" }
+    ],
+    followup: {
+      type: "text", // Indicates an optional text box for elaboration
+      placeholder: "If yes, please describe the issue (optional)"
+    }
+  },
+  {
+    text: "Do you have any feedback or suggestions about the study or the tasks?",
+    code: "s.GeneralFeedback",
+    type: "text", // Indicates an open-ended text box
+    placeholder: "Your comments (optional)"
+  }
+];
+
+
+let currentQuestion = 0;
+let answers = [];
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const container = document.getElementById('question-container');
+  let html = `<p><strong>${q.text}</strong></p>`;
+
+  if (q.type === "text") {
+    const value = answers[currentQuestion]?.text || "";
+    html += `<textarea id="input-q${currentQuestion}" class="input-field" placeholder="${q.placeholder || ''}" rows="4">${value}</textarea>`;
+  } else {
+    q.options.forEach((opt, i) => {
+      const checked = answers[currentQuestion]?.index === i ? 'checked' : '';
+      html += `<label><input type="radio" name="q${currentQuestion}" value="${i}" ${checked}> ${opt.label}</label><br>`;
+    });
+
+    if (q.followup && q.followup.type === "text") {
+      const value = answers[currentQuestion]?.input || '';
+      html += `<textarea id="followup-q${currentQuestion}" class="input-field" placeholder="${q.followup.placeholder || ''}" rows="3">${value}</textarea>`;
+    }
+  }
+
+  container.innerHTML = html;
+  document.getElementById('prevBtn').disabled = currentQuestion === 0;
+  document.getElementById('nextBtn').innerText = currentQuestion === questions.length - 1 ? 'Submit' : 'Next';
+}
+
+
+function nextQuestion() {
+  const q = questions[currentQuestion];
+
+  if (q.type === "text") {
+    const input = document.getElementById(`input-q${currentQuestion}`).value.trim();
+    answers[currentQuestion] = { text: input };
+    if (currentQuestion === questions.length - 1) {
+      submitQuestionnaireAnswers();
+      submitFinalAnswersToServer();
+      document.getElementById('goto-modal').style.display = 'flex';
+    } else {
+      currentQuestion++;
+      showQuestion();
+    }
+    return;
+  }
+
+  const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+  if (!selected) return showValidationMessage("Please select an option.");
+
+  const index = parseInt(selected.value);
+  const inputField = document.getElementById(`followup-q${currentQuestion}`);
+  const input = inputField ? inputField.value.trim() : null;
+
+  answers[currentQuestion] = { index, input };
+
+  if (q.options[index].ineligible) {
+    showValidationMessage("Unfortunately, you are not eligible to participate in this study.");
+    return;
+  }
+
+  if (currentQuestion === questions.length - 1) {
+    submitQuestionnaireAnswers();
+  } else {
+    currentQuestion++;
+    showQuestion();
+  }
+}
+
+
+function prevQuestion() {
+  if (currentQuestion > 0) currentQuestion--;
+  showQuestion();
+}
+
+function submitQuestionnaireAnswers() {
+  const responses = {};
+
+  questions.forEach((q, i) => {
+  const ans = answers[i];
+
+  if (q.type === "text") {
+      responses[q.code || `q${i}`] = ans.text || '';
+    } else {
+      const opt = q.options[ans.index];
+      let value = opt.label;
+      if (q.followup && ans.input) {
+        value += `: ${ans.input}`;
+      }
+      responses[q.code || `q${i}`] = value;
+    }
+  });
+
+
+  // Save in localStorage to send later from another page
+  localStorage.setItem("postSurvey", JSON.stringify(responses));
+
+  // UI feedback
+  // document.getElementById('survey-box').classList.add('hidden');
+  // document.getElementById('final-box-submit').classList.remove('hidden');
+  localStorage.setItem('FromPrevPage', 'true');
+  // window.location.href = "students2.html";
+
+}
+
+
+
+
+</script>
+
+
+<script>
+
+
+function toggleTimer() {
+  const timerEl = document.getElementById('timer');
+  const btn = event.target;
+
+  const isHidden = timerEl.style.display === 'none';
+
+  if (isHidden) {
+    timerEl.style.display = 'inline';
+    btn.innerHTML = 'Hide Timer'; // Show "eye" icon again
+    localStorage.setItem('timerHidden', 'false');
+  } else {
+    timerEl.style.display = 'none';
+    btn.innerHTML = 'Show Timer'; // Hidden eye icon
+    localStorage.setItem('timerHidden', 'true');
+  }
+}
+
+
+function startTimer() {
+  const timerEl = document.getElementById('timer');
+
+  if (!startTime || isNaN(startTime) || startTime <= 0) {
+    const stored = localStorage.getItem('startTime');
+    startTime = stored ? parseInt(stored) : Date.now();
+    localStorage.setItem('startTime', startTime);
+  }
+
+  if (timerInterval) clearInterval(timerInterval);
+
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime - totalPausedTime) / 1000);
+    const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const secs = String(elapsed % 60).padStart(2, '0');
+    timerEl.textContent = `⏱️ ${mins}:${secs}`;
+  }, 1000);
+}
+
+
+
+function generateAndStoreUsername() {
+    const randomNumber = Math.floor(Math.random() * 1_000_000_000);
+    const username = 'student' + randomNumber.toString().padStart(9, '0');
+
+    // Save to localStorage
+    localStorage.setItem('usernameS', username);
+
+    // Save to cookies (expires in 30 days)
+    const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = `usernameS=${username}; expires=${expires}; path=/`;
+
+    console.log("Generated and stored username:", username);
+    return username;
+}
+
+
+function startStudy() {
+  startTime = Date.now();
+  localStorage.setItem('studyStarted', 'true');
+  localStorage.setItem('startTime', startTime);
+  localStorage.setItem('lastResumeTime', startTime);
+  localStorage.setItem('pausedTotal', '0');
+  totalPausedTime = 0;
+
+  generateAndStoreUsername();
+  document.getElementById('start-modal').style.display = 'none';
+  startTimer();
+  document.getElementById('survey-box').classList.remove('hidden');
+
+  // showQuestion();
+  render();
+}
+
+function pauseStudy() {
+  //recordQuestionTime(currentSnippet, currentQuestionIndex);
+  localStorage.setItem('pausedAt', Date.now());
+  updateTimerDisplay(); // ensure last moment is rendered before freezing
+  pauseTimer();         // clears the interval
+  pausedAt = Date.now();
+  localStorage.setItem('pausedAt', pausedAt);
+  document.getElementById('pause-modal').style.display = 'flex';
+
+  // 👇 Add this to toggle buttons
+  document.getElementById('pause-btn').style.display = 'none';
+  document.getElementById('resume-btn').style.display = 'inline';
+}
+
+function resumeStudy() {
+  document.getElementById('pause-modal').style.display = 'none';
+
+  const pausedAtStored = parseInt(localStorage.getItem('pausedAt') || '0', 10);
+  if (pausedAtStored && !isNaN(pausedAtStored)) {
+    const resumeDelta = Date.now() - pausedAtStored;
+    totalPausedTime += resumeDelta;
+    localStorage.setItem('pausedTotal', totalPausedTime);
+    localStorage.removeItem('pausedAt');
+    pausedAt = null;
+  }
+
+  localStorage.setItem('lastResumeTime', Date.now());
+
+  updateTimerDisplay();
+  startTimer();
+
+  document.getElementById('pause-btn').style.display = 'inline';
+  document.getElementById('resume-btn').style.display = 'none';
+
+  // showQuestion();
+  render();
+}
+
+
+
+
+window.onload = function () {
+  console.log("📦 Unload was triggered at:", new Date(parseInt(localStorage.getItem('lastUnloadTriggeredAt') || 0)).toLocaleTimeString());
+  console.log("🚀 Page load");
+  console.log("Loaded startTime:", localStorage.getItem('startTime'));
+  console.log("Loaded pausedTotal:", localStorage.getItem('pausedTotal'));
+  console.log("Loaded pausedAt:", localStorage.getItem('pausedAt'));
+  console.log("Loaded lastResumeTime:", localStorage.getItem('lastResumeTime'));
+
+  const hidden = localStorage.getItem('timerHidden') === 'true';
+  if (hidden) {
+    document.getElementById('timer').style.display = 'none';
+    document.querySelector('#timer-wrapper button').textContent = 'Show Timer';
+  }
+
+  const started = localStorage.getItem('studyStarted') === 'true';
+  if (!started) {
+    document.getElementById('start-modal').style.display = 'flex';
+  } else {
+    startTime = parseInt(localStorage.getItem('startTime') || `${Date.now()}`, 10);
+    totalPausedTime = parseInt(localStorage.getItem('pausedTotal') || '0', 10);
+    pausedAt = parseInt(localStorage.getItem('pausedAt') || '0', 10);
+
+    if (!isNaN(pausedAt) && pausedAt > 0) {
+      const lastResume = parseInt(localStorage.getItem('lastResumeTime') || startTime, 10);
+
+      if (pausedAt > lastResume) {
+        // Legit paused state
+        const resumeDelta = Date.now() - pausedAt;
+        totalPausedTime += resumeDelta;
+
+        localStorage.setItem('pausedTotal', totalPausedTime);
+        localStorage.removeItem('pausedAt');
+        localStorage.setItem('lastResumeTime', Date.now());
+        pausedAt = null;
+      } else {
+        // Probably a stale pausedAt — ignore it
+        pausedAt = null;
+        localStorage.removeItem('pausedAt');
+      }
+
+    }
+
+const Ispaused = localStorage.getItem('pausedUnload') === 'true';
+  if(Ispaused){
+    setTimeout(() => {
+    pauseStudy();
+    isFromPrevPage=localStorage.getItem('FromPrevPage') === 'true';
+    if(isFromPrevPage){
+      resumeStudy();
+      localStorage.setItem('FromPrevPage','false');
+    }
+    }, 100);
+
+    localStorage.setItem('pausedUnload', 'false');
+  } else{startTimer();}
+
+
+    document.getElementById('pause-btn').style.display = 'inline';
+    document.getElementById('resume-btn').style.display = 'none';
+  }
+
+};
+
+
+function resetTimer() {
+  if (confirm("Are you sure you want to reset the timer?")) {
+    clearInterval(timerInterval);
+    const now = Date.now();
+    startTime = now;
+    pausedAt = null;
+    totalPausedTime = 0;
+
+    localStorage.setItem('startTime', startTime);
+    localStorage.setItem('pausedTotal', '0');
+    localStorage.removeItem('pausedAt');
+
+    updateTimerDisplay();
+    startTimer(); // restart interval
+    clearAllStoredData();
+    localStorage.setItem('isReset','true');
+    location.reload();
+  }
+}
+
+
+let timerInterval = null;
+let startTime = null;
+let pausedAt = null;
+let totalPausedTime = 0;
+let questionStartTime = null;
+let questionTimers = {}; // key: `q-{snippetId}-{questionIndex}`, value: seconds
+
+
+function formatTime(seconds) {
+  const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+  const secs = String(seconds % 60).padStart(2, '0');
+  return `${mins}:${secs}`;
+}
+
+function updateTimerDisplay() {
+  const timerEl = document.getElementById('timer');
+  localStorage.setItem('pausedTotal', totalPausedTime);
+  if (!startTime) return;
+  const now = Date.now();
+  const elapsed = Math.floor((now - startTime - totalPausedTime) / 1000);
+  timerEl.textContent = `⏱️ ${formatTime(elapsed)}`;
+}
+
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+}
+
+
+
+
+function resetTimer() {
+  if (confirm("Are you sure you want to reset the timer?")) {
+    clearInterval(timerInterval);
+    const now = Date.now();
+    startTime = now;
+    pausedAt = null;
+    totalPausedTime = 0;
+
+    localStorage.setItem('startTime', startTime);
+    localStorage.setItem('pausedTotal', '0');
+    localStorage.removeItem('pausedAt');
+
+    updateTimerDisplay();
+    startTimer(); // restart interval
+    clearAllStoredData();
+    localStorage.setItem('isReset','true');
+    location.reload();
+  }
+}
+
+window.addEventListener('beforeunload', () => {
+  try {
+    const isReset = localStorage.getItem('isReset') === 'true';
+    if (isReset) {
+      localStorage.removeItem('isReset');
+      //recordQuestionTime(currentSnippet, currentQuestionIndex);
+    } 
+  } catch (e) {
+    console.warn("recordQuestionTime failed", e);
+  }
+  localStorage.setItem('pausedUnload', 'true');
+  //pauseStudy();
+});
+
+</script>
+
+<script>
+    function clearAllStoredData() {
+  // 🧹 Clear all cookies
+  document.cookie.split(";").forEach(cookie => {
+    const eqPos = cookie.indexOf("=");
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name.trim() + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+  });
+
+  // 🧹 Clear localStorage
+  localStorage.clear();
+
+  // 🧹 Clear localStorage
+  localStorage.clear();
+
+  console.log("✅ All cookies, localStorage, and localStorage have been cleared.");
+}
+</script>
+
+<script>
+function showValidationMessage(message) {
+    document.getElementById('validation-message').innerText = message;
+    document.getElementById('validation-modal').style.display = 'block';
+}
+</script>
+
+
+<script>
+async function submitFinalAnswersToServer() {
+  const username = getStoredUsername();
+
+  // Parse snippetOrder if it's a JSON array string; otherwise keep as-is
+  let snippetOrderRaw = localStorage.getItem("snippetOrder");
+  let snippetOrder = snippetOrderRaw;
+  try {
+    const parsed = JSON.parse(snippetOrderRaw || "null");
+    if (Array.isArray(parsed)) snippetOrder = parsed;
+  } catch (_) { /* leave as string */ }
+
+  const payload = {
+    username,
+    submitted: "1",
+    snippetOrder,
+    answers: {},
+    metadata: {
+      // client/env hints (optional but handy)
+      submittedAtIso: new Date().toISOString(),
+      userAgent: navigator.userAgent
+    }
+  };
+
+  // Include other materials already in localStorage
+  try {
+    const javaExp     = JSON.parse(localStorage.getItem("javaExperience") || "{}");
+    const backgroundQ = JSON.parse(localStorage.getItem("backgroundQuestionnaire") || "{}");
+    const postSurvey  = JSON.parse(localStorage.getItem("postSurvey") || "{}");
+
+    payload.metadata.javaExperience = javaExp;
+    payload.metadata.backgroundQuestionnaire = backgroundQ;
+    payload.metadata.postSurvey = postSurvey;
+  } catch (err) {
+    console.warn("⚠️ Failed to parse one or more survey fields:", err);
+  }
+
+  // ✅ Include CS Knowledge Survey answers from localStorage
+  try {
+    const csAnswers = JSON.parse(localStorage.getItem("csKnowledgeSurveyAnswers") || "{}");
+    payload.metadata.csKnowledgeSurvey = {
+      answers: csAnswers,
+      // Optional quick summary for server-side inspection
+      summary: (() => {
+        const topicIds = Object.keys(csAnswers || {});
+        const totalTopics = topicIds.length;
+        let famYes = 0, mcqAnswered = 0;
+        topicIds.forEach(id => {
+          const r = csAnswers[id] || {};
+          if (r.fam === "yes") famYes++;
+          if (typeof r.mcq === "number") mcqAnswered++;
+        });
+        return { totalTopics, famYes, mcqAnswered };
+      })()
+    };
+  } catch (err) {
+    console.warn("⚠️ Failed to parse csKnowledgeSurveyAnswers:", err);
+  }
+
+  // Per-snippet answers (your current logic)
+  for (let snippet = 1; snippet <= 8; snippet++) {
+    const snippetKey = `snippet-${snippet}`;
+    payload.answers[snippetKey] = {
+      readTime: parseInt(localStorage.getItem(`time-q-${snippet}-1`) || "0", 10),
+      questions: []
+    };
+
+    const questions = (window.questionsPerSnippet && questionsPerSnippet[snippet]) || [];
+    questions.forEach((q, i) => {
+      const answer = localStorage.getItem(`answer-${snippet}-${q.id}`) || "[No answer]";
+      const time = parseInt(localStorage.getItem(`time-q-${snippet}-${i + 2}`) || "0", 10);
+      const entry = {
+        id: q.id,
+        prompt: q.prompt || "[Missing prompt]",
+        answer,
+        timeSec: time
+      };
+      if (q.id2 && q.question2) {
+        const secondAnswer = localStorage.getItem(`answer-${snippet}-${q.id2}`) || "[No answer]";
+        entry.followUp = {
+          id: q.id2,
+          prompt: q.question2,
+          answer: secondAnswer
+        };
+      }
+      payload.answers[snippetKey].questions.push(entry);
+    });
+  }
+
+  // Ship it
+  try {
+    const response = await fetch("/submit_students_part", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      window.location.href = "thankyou.html";
+    } else {
+      const error = await response.text();
+      alert("❌ Submission failed:\n" + error);
+    }
+  } catch (err) {
+    console.error("Submission error:", err);
+    alert("❌ Submission error: " + err.message);
+  }
+}
+
+</script>
+
+<script>
+    function getStoredUsername() {
+    // 1. Try localStorage
+    let username = localStorage.getItem('usernameS');
+    if (username) return username;
+
+    // 2. Try cookies
+    const cookieMatch = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('usernameS='));
+    
+    if (cookieMatch) {
+        username = cookieMatch.split('=')[1];
+        // Optional: sync back to localStorage if only found in cookies
+        localStorage.setItem('usernameS', username);
+        return username;
+    }
+
+    // Not found
+    return null;
+}
+</script>
+
+
+  <script>
+    const topics = [
+  {
+    "id": "uri_scheme",
+    "tag": "URIs",
+    "familiarity": {
+      "q": "Are you familiar with the concept of Uniform Resource Identifier (URI) schemes?"
+    },
+    "mcq": {
+      "q": "Which part of “http://example.com/page.html” is the URI scheme?",
+      "options": ["example.com", "http", "/page.html", "://"],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "file_vs_network_uri",
+    "tag": "URIs",
+    "familiarity": {
+      "q": "Do you know the difference between filesystem URIs and remote/network URIs?"
+    },
+    "mcq": {
+      "q": "What is the main difference between a file:// URI and http:// or ftp:// URIs?",
+      "options": [
+        "file:// URIs are always encrypted, while http:// and ftp:// are not",
+        "file:// URIs can only be used on Linux, while http:// and ftp:// work everywhere",
+        "file:// URIs automatically delete files, while http:// and ftp:// only read them",
+        "file:// URIs refer to local filesystem resources, while http:// and ftp:// URIs refer to network resources"
+      ],
+      "correctIndex": 3
+    }
+  },
+  {
+    "id": "reflection",
+    "tag": "Java",
+    "familiarity": {
+      "q": "Are you familiar with the Java Reflection API?"
+    },
+    "mcq": {
+      "q": "Which of the following is an example of reflection?",
+      "options": [
+        "Checking if a variable is null",
+        "Writing a loop to iterate over numbers",
+        "Converting an integer to a string",
+        "Listing all methods of an object at runtime"
+      ],
+      "correctIndex": 3
+    }
+  },
+  {
+    "id": "visitor_walkFileTree",
+    "tag": "Java",
+    "familiarity": {
+      "q": "Are you familiar with the Visitor design pattern, particularly as used in Java’s Files.walkFileTree API?"
+    },
+    "mcq": {
+      "q": "What is the main purpose of using the Visitor pattern in Files.walkFileTree?",
+      "options": [
+        "It lets you define what happens at each file or directory visit while the API handles the traversal logic.",
+        "It automatically performs recursive deletion of directories.",
+        "It provides faster traversal by avoiding recursion.",
+        "It stores metadata about files and directories for later access."
+      ],
+      "correctIndex": 0
+    }
+  },
+  {
+    "id": "utf8_utf16",
+    "tag": "Unicode",
+    "familiarity": {
+      "q": "Do you know the difference between UTF-8 and UTF-16 Unicode encodings?"
+    },
+    "mcq": {
+      "q": "Which statement best describes the main difference between UTF-8 and UTF-16?",
+      "options": [
+        "UTF-8 is fixed-length, while UTF-16 is variable-length.",
+        "UTF-16 is backward compatible with ASCII, while UTF-8 is not.",
+        "UTF-8 and UTF-16 both use exactly 2 bytes for every character.",
+        "UTF-8 uses 1 to 4 bytes per character, while UTF-16 uses 2 or 4 bytes per character."
+      ],
+      "correctIndex": 3
+    }
+  },
+  {
+    "id": "bitwise_ops",
+    "tag": "Bits",
+    "familiarity": {
+      "q": "Do you know what bitwise operators (e.g., &, |, ^, >>, >>>) do in programming?"
+    },
+    "mcq": {
+      "q": "In Java, what does the operator >>> do?",
+      "options": [
+        "Signed right shift (preserves the sign bit)",
+        "Unsigned right shift (fills left bits with zeros)",
+        "Left shift (fills right bits with zeros)",
+        "Bitwise OR"
+      ],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "hex_to_dec",
+    "tag": "Number Systems",
+    "familiarity": {
+      "q": "Do you know how to convert between hexadecimal and decimal numbers without using a calculator?"
+    },
+    "mcq": {
+      "q": "What is the decimal value of the hexadecimal constant 0x7F?",
+      "options": ["80", "127", "128", "255"],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "quadratic",
+    "tag": "Math",
+    "familiarity": {
+      "q": "Are you familiar with the quadratic formula?"
+    },
+    "mcq": {
+      "q": "The quadratic formula gives the roots of ax² + bx + c = 0 as:",
+      "options": [
+        "(–b ± √(b² – 4ac)) / (2a)",
+        "(–a ± √(a² – 4bc)) / (2b)",
+        "(–c ± √(c² – 4ab)) / (2a)",
+        "(–b ± √(a² + b² + c²)) / (2)"
+      ],
+      "correctIndex": 0
+    }
+  },
+  {
+    "id": "atan",
+    "tag": "Math",
+    "familiarity": {
+      "q": "Are you familiar with the arctangent (atan) function?"
+    },
+    "mcq": {
+      "q": "The function Math.atan(x) is used to:",
+      "options": [
+        "Compute the magnitude of a vector",
+        "Compute the angle of a vector in the correct quadrant",
+        "Convert radians to degrees",
+        "Calculate sine and cosine simultaneously"
+      ],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "nan",
+    "tag": "Floating Point",
+    "familiarity": {
+      "q": "Are you familiar with the concept of NaN (Not a Number) and its behavior in Java?"
+    },
+    "mcq": {
+      "q": "In Java, when x is a floating-point variable, which of the following expressions evaluates to true if and only if x is NaN?",
+      "options": ["x == NaN", "x != x", "x++ > x", "It is not possible to check for NaN in Java"],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "fp_singularities",
+    "tag": "Floating Point",
+    "familiarity": {
+      "q": "Are you familiar with Java’s handling of floating-point singularities (such as division by zero)?"
+    },
+    "mcq": {
+      "q": "What is the result of evaluating 1.0 / 0.0 in Java?",
+      "options": ["NaN", "Infinity", "0.0", "Throws an exception"],
+      "correctIndex": 1
+    }
+  }
+]
+
+  </script>
+
+  <script>
+  // state: per-topic answers, step = 'fam' or 'mcq'
+  let state = { i: 0, step: 'fam', answers: {} };
+
+  const qtext = document.getElementById('qtext');
+  const opts  = document.getElementById('opts');
+  const bar   = document.getElementById('bar');
+  const prev  = document.getElementById('prev');
+  const next  = document.getElementById('next');
+
+  function render() {
+    const t = topics[state.i];
+    bar.style.width = `${(state.i / topics.length) * 100}%`;
+    opts.innerHTML = '';
+
+    const rec = state.answers[t.id] || {};
+
+    if (state.step === 'fam') {
+      // use t.familiarity.q (NOT t.fam)
+      qtext.textContent = t.familiarity.q;
+
+      // lock if an MCQ was already answered or shown
+      const locked = rec.mcq !== undefined;
+
+      const yes = document.createElement('label');
+      yes.innerHTML =
+        `<input type="radio" name="f" value="yes" ${rec.fam === 'yes' ? 'checked' : ''} ${locked ? 'disabled' : ''}> Yes`;
+      const no  = document.createElement('label');
+      no.innerHTML =
+        `<input type="radio" name="f" value="no" ${rec.fam === 'no' ? 'checked' : ''} ${locked ? 'disabled' : ''}> No`;
+      opts.append(yes, no);
+
+      next.disabled = !rec.fam; // must pick yes/no
+    } else {
+      // MCQ: use t.mcq.options (NOT t.mcq.opts)
+      qtext.textContent = t.mcq.q;
+      t.mcq.options.forEach((o, i) => {
+        const l = document.createElement('label');
+        const checked = (rec.mcq === i) ? 'checked' : '';
+        l.innerHTML = `<input type="radio" name="m" value="${i}" ${checked}> ${String.fromCharCode(65 + i)}) ${o}`;
+        opts.append(l);
+      });
+      next.disabled = (rec.mcq === undefined);
+    }
+  }
+
+  opts.addEventListener('change', (e) => {
+    const t = topics[state.i];
+    const rec = state.answers[t.id] || {};
+    if (state.step === 'fam') {
+      if (e.target && e.target.name === 'f') {
+        // record yes/no
+        rec.fam = e.target.value;
+        // if switched to 'no', clear any mcq answer
+        if (rec.fam === 'no') delete rec.mcq;
+      }
+    } else {
+      if (e.target && e.target.name === 'm') {
+        rec.mcq = parseInt(e.target.value, 10);
+      }
+    }
+    state.answers[t.id] = rec;
+    saveState();
+    next.disabled = false; // enabled once a choice is made
+  });
+
+  next.onclick = () => {
+    const t = topics[state.i];
+    const rec = state.answers[t.id] || {};
+
+    if (state.step === 'fam') {
+      if (!rec.fam) return; // guard
+      if (rec.fam === 'yes') {
+        // go to this topic's MCQ
+        state.step = 'mcq';
+      } else {
+        // fam = no → move to next topic's fam
+        state.i++;
+        state.step = 'fam';
+      }
+    } else {
+      // leaving MCQ → next topic fam
+      state.i++;
+      state.step = 'fam';
+    }
+    saveState();
+    if (state.i >= topics.length) {
+      qtext.textContent = 'Done!';
+      // submitFinalAnswersToServer();
+      opts.innerHTML = '';
+      next.textContent = "Go to Last Survey";
+      localStorage.setItem('FromPrevPage', 'true');
+      next.onclick = () => {
+        window.location.href = "postStudySurvey.html";
+      };
+
+      // next.disabled = true;
+      // prev.disabled = true;
+      bar.style.width = '100%';
+      window.location.href = 'postStudySurvey.html';
+      return;
+    }
+    render();
+  };
+
+  prev.onclick = () => {
+    // Go back one logical step:
+    if (state.step === 'mcq') {
+      // back from MCQ → its familiarity (locked)
+      state.step = 'fam';
+    } else {
+      // back from a fam step → previous topic
+      if (state.i > 0) {
+        state.i--;
+        const prevTopic = topics[state.i];
+        const rec = state.answers[prevTopic.id] || {};
+        // if prev topic had fam === yes, prefer showing its MCQ; otherwise its fam
+        state.step = (rec.fam === 'yes') ? 'mcq' : 'fam';
+      }
+    }
+    render();
+  };
+
+  // render();
+</script>
+
+<script>
+  function saveState() {
+  localStorage.setItem("csKnowledgeSurveyAnswers", JSON.stringify(state.answers));
+}
+
+function loadState() {
+  const saved = localStorage.getItem("csKnowledgeSurveyAnswers");
+  if (saved) {
+    state.answers = JSON.parse(saved);
+  }
+}
+
+</script>
+
+</body>
+</html>

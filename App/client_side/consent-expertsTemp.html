@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Informed Consent Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .instructions,
+        .email-box,
+        .survey-box,
+        .slots-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .day-card {
+            background-color: #eaeaea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .time-slot {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 16px;
+            border-radius: 6px;
+            background-color: #ccc;
+            cursor: pointer;
+        }
+
+        .time-slot.selected {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Allow the overlay itself to scroll if content is tall */
+        .modal {
+            position: fixed;
+            inset: 0;
+            /* shorthand for top/left/right/bottom: 0 */
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            /* you can use rgba(0,0,0,.4) if you want a dim backdrop */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            /* <— key */
+            padding: 24px;
+            /* breathing room so content isn’t flush to edges */
+        }
+
+        /* Constrain modal content height so it can scroll inside if needed */
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            /* was 400px; a bit wider for the referral rows */
+            width: 100%;
+            max-height: 90vh;
+            /* <— key */
+            overflow-y: auto;
+            /* <— key */
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            text-align: left;
+            /* optional: left-align body text */
+        }
+
+        /* Keep the hidden behavior strong */
+        .modal.hidden {
+            display: none !important;
+        }
+
+
+        .input-field {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            margin-top: 8px;
+            margin-bottom: 16px;
+            background-color: #fff;
+            color: #333;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-top: 10px;
+            margin-bottom: 16px;
+            background-color: #fff;
+            color: #333;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+        }
+
+        .full-width-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .full-width-btn:hover {
+            background-color: #45a049;
+        }
+
+        .modal.hidden {
+            display: none !important;
+        }
+
+        .success-message {
+            position: relative;
+            background-color: #e6f9ec;
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .success-message .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #2e7d32;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            margin: 0;
+        }
+
+        .success-message .close-btn:hover {
+            color: #1b5e20;
+        }
+
+        .confirm-box,
+        .final-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .confirm-box a {
+            color: #4CAF50;
+            margin-left: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .confirm-box a:hover {
+            text-decoration: underline;
+        }
+
+        .final-box button {
+            margin-top: 10px;
+        }
+
+        input.input-error {
+            border: 2px solid red;
+            background-color: #ffe6e6;
+        }
+
+        #warning-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #warning-modal .modal-content {
+            background-color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 0 10px #4CAF50;
+            }
+
+            100% {
+                box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+            }
+        }
+
+        #email {
+            animation: glowPulse 1.5s infinite alternate;
+        }
+
+        button:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+        }
+
+        .consent-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+            background: #fff;
+            overflow-y: auto;
+            max-height: 80vh;
+            position: relative;
+        }
+
+        .consent-section {
+            margin-bottom: 20px;
+        }
+
+        .consent-section h3 {
+            margin-top: 30px;
+        }
+
+        .signature-section {
+            margin-top: 30px;
+            padding-top: 20px;
+        }
+
+        .signature-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .signature-section input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .signature-section .readonly {
+            background: #f9f9f9;
+            cursor: not-allowed;
+        }
+
+        .consent-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+            background: #fff;
+            overflow-y: auto;
+            max-height: 80vh;
+            position: relative;
+        }
+
+        .consent-section {
+            margin-bottom: 20px;
+        }
+
+        .consent-section h3 {
+            margin-top: 30px;
+        }
+
+        .signature-section {
+            margin-top: 30px;
+            padding-top: 20px;
+        }
+
+        .signature-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .signature-section input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .signature-section .readonly {
+            background: #f9f9f9;
+            cursor: not-allowed;
+        }
+
+
+        /* for the checkbox */
+        .custom-checkbox {
+            position: relative;
+            padding-left: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            user-select: none;
+            display: inline-block;
+        }
+
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            left: 0;
+            top: 1px;
+            height: 20px;
+            width: 20px;
+            background-color: #fff9c4;
+            /* yellow highlight like input */
+            border: 2px solid #aaa;
+            border-radius: 4px;
+        }
+
+        .custom-checkbox input:checked~.checkmark {
+            background-color: #fdd835;
+            /* slightly darker yellow when checked */
+            border-color: #4CAF50;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .custom-checkbox input:checked~.checkmark:after {
+            display: block;
+        }
+
+        .custom-checkbox .checkmark:after {
+            left: 6px;
+            top: 1px;
+            width: 6px;
+            height: 12px;
+            border: solid #333;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        /* For the submit button */
+        #submitBtn {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transition: background-color 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #submitBtn:enabled {
+            cursor: pointer;
+            opacity: 1;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+
+        #submitBtn:enabled:hover {
+            background-color: #45a049;
+        }
+
+        #submitBtn:enabled:active {
+            background-color: #3e8e41;
+            box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4) inset;
+        }
+
+        .sticky-submit-wrapper {
+            position: sticky;
+            bottom: 0;
+            padding: 16px;
+            text-align: right;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+
+        #submitBtn {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transition: background-color 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #submitBtn:enabled {
+            cursor: pointer;
+            opacity: 1;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+
+        #submitBtn:enabled:hover {
+            background-color: #45a049;
+        }
+
+        #submitBtn:enabled:active {
+            background-color: #3e8e41;
+            box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4) inset;
+        }
+
+        .submit-note {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #d32f2f;
+            /* red-ish warning */
+            display: block;
+            transition: opacity 0.3s;
+        }
+
+        #submitBtn:enabled+.submit-note {
+            display: none;
+        }
+
+        /* for the banner */
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 10px #42a5f5;
+            }
+
+            100% {
+                box-shadow: 0 0 20px #42a5f5, 0 0 30px #42a5f5;
+            }
+        }
+
+        .slots-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .day-card {
+            background-color: #eaeaea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .time-slot {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 16px;
+            border-radius: 6px;
+            background-color: #ccc;
+            cursor: pointer;
+        }
+
+        .time-slot.selected {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Mobile-specific tweaks */
+        @media (max-width: 480px) {
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .modal-content {
+                width: 90%;
+                padding: 15px;
+                font-size: 0.95rem;
+            }
+
+            .modal-content button {
+                width: 100%;
+                font-size: 1rem;
+            }
+        }
+
+        /* Referral Box Container */
+        .referrals-box {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        /* Headings inside the referral box */
+        .referrals-box h4 {
+            margin-top: 0;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        /* Each row of inputs */
+        .referral-field {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Text + email inputs */
+        .referral-field input[type="text"],
+        .referral-field input[type="email"] {
+            flex: 1 1 45%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.95em;
+            box-sizing: border-box;
+        }
+
+        /* Inputs focus state */
+        .referral-field input:focus {
+            outline: none;
+            border-color: #007acc;
+            box-shadow: 0 0 4px rgba(0, 122, 204, 0.4);
+        }
+
+        /* Buttons inside the referral box */
+        .referrals-box button {
+            padding: 6px 12px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #007acc;
+            color: white;
+            transition: background 0.2s ease-in-out;
+        }
+
+        .referrals-box button:hover {
+            background-color: #005a99;
+        }
+
+        /* Small note text */
+        .referrals-box small {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .referral-field {
+            display: flex;
+            align-items: center;
+            /* so the minus button aligns with inputs */
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .referral-remove {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            background: #eee;
+            color: #333;
+            font-weight: 700;
+            line-height: 26px;
+            /* centers the minus vertically */
+            text-align: center;
+            cursor: pointer;
+            padding: 0 !important;
+            margin: 0 !important;
+
+        }
+
+        .referral-remove:hover {
+            background: #e2e2e2;
+            border-color: #aaa;
+        }
+
+        /* Force referral inputs to share one line */
+        .referrals-box .referral-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: nowrap;
+            /* keep on one line by default */
+        }
+
+        .referrals-box .referral-remove {
+            flex: 0 0 28px;
+        }
+
+        .referrals-box .referral-field input[type="text"],
+        .referrals-box .referral-field input[type="email"] {
+            /* override inline width/margins */
+            width: auto !important;
+            margin: 0 !important;
+
+            /* make them split remaining space evenly */
+            flex: 1 1 0;
+            min-width: 0;
+            /* allow shrinking instead of wrapping */
+            box-sizing: border-box;
+        }
+
+        /* On small screens, allow wrapping to avoid squish */
+        @media (max-width: 520px) {
+            .referrals-box .referral-field {
+                flex-wrap: wrap;
+            }
+
+            .referrals-box .referral-field input[type="text"],
+            .referrals-box .referral-field input[type="email"] {
+                flex: 1 1 100%;
+            }
+
+            .modal {
+                padding: 5px;
+            }
+
+        }
+    </style>
+
+    <script>
+        /**
+         * Read ?email=... (or ?e=...) from the URL, validate/sanitize it,
+         * and store it for the rest of the page to use.
+         */
+        (function () {
+            const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+            function pickEmailFromQuery() {
+                const qp = new URLSearchParams(location.search);
+                let v = qp.get("email") || qp.get("e");
+                if (!v) return null;
+
+                // Try raw first
+                v = decodeURIComponent(v.trim());
+                if (EMAIL_RE.test(v)) return v;
+
+                // Optionally support base64-encoded email in the URL (safer for logging)
+                try {
+                    const decoded = atob(v);
+                    if (EMAIL_RE.test(decoded)) return decoded;
+                } catch (_) { }
+
+                return null;
+            }
+
+            const fromQuery = pickEmailFromQuery();
+            if (fromQuery) {
+                localStorage.setItem("expert_email", fromQuery);
+                sessionStorage.setItem("expert_email", fromQuery);
+            }
+
+            // Provide a single source of truth for the rest of the page
+            window.getExpertEmail = function () {
+                return (
+                    localStorage.getItem("expert_email") ||
+                    sessionStorage.getItem("expert_email") ||
+                    ""
+                );
+            };
+        })();
+    </script>
+
+</head>
+
+<body>
+
+    <div class="consent-container">
+        <div class="consent-section">
+            <h2 style="text-align: center;">NEW JERSEY INSTITUTE OF TECHNOLOGY</h2>
+            <p style="text-align: center;">323 MARTIN LUTHER KING BLVD.<br>NEWARK, NJ 07102</p>
+            <h4 style="text-align: center;">CONSENT TO PARTICIPATE IN THE RESEARCH STUDY:</h3>
+                <h3 style="text-align: center;">RANKING CODE SNIPPETS BY COMPREHENSION DIFFICULTY
+            </h4>
+
+            <p>
+                I, <span contenteditable="true" id="consentName" style="
+    display: inline-block;
+    min-width: 200px;
+    border-bottom: 1px solid #000;
+    padding: 2px 4px;
+    outline: none;
+    background-color: #fff9c4; /* light yellow highlight */
+    transition: background-color 0.3s;
+  " onfocus="this.style.backgroundColor='#fff176'" onblur="this.style.backgroundColor='#fff9c4'">
+                </span>, have been asked to participate in a research study under the direction of Dr. Martin Kellogg
+                from the New Jersey Institute OF Technology (NJIT) and Dr. Oscar Chaparro from the College of William &
+                Mary (W&M).
+            </p>
+
+
+            <h4>PURPOSE</h4>
+            <p>The overarching goal of our research is to investigate the effectiveness of existing code comprehension
+                measures in
+                assessing the difficulty in understanding Java code snippets (i.e., code comprehensibility).
+                Specifically, this research aims to determine whether these measures can reliably predict
+                expert-determined rankings of code comprehensibility, contributing to improved methods for studying code
+                comprehension.</p>
+
+            <p>The specific goal of this study is to establish an expert-determined ranking of 8 Java code snippets
+                according to how difficulty they are for experts to understand.</p>
+
+            <h4>DURATION</h4>
+            <p>My participation in this study will consist of three rounds. Round 1 is expected to take about 75
+                minutes, Round 2 about 45 minutes, and Round 3 (a chat discussion phase) about 40 minutes. I will have
+                up to one week to complete each round on my own schedule before the deadline.</p>
+
+
+            <h4>BENEFITS FOR SOCIETY AND THE SUBJECT</h4>
+            <p>I have been told that the benefits of this research include advancing knowledge on how code is understood
+                by developers, which can advance teaching and research in software engineering. As a participant, I will
+                have the opportunity to contribute my experience and knowledge to code comprehension research and
+                receive a $50 Amazon gift card as compensation for participating in the study. In the event of early
+                withdrawal, I will receive partial compensation proportional to the extent of my participation.</p>
+
+            <h4>PROCEDURES</h4>
+            <p>I have been told that, during this study, the following will occur:</p>
+            <ul>
+                <li>I will participate as one of five expert Java developers in the study. My participation will take
+                    place through a secure web-based application (<a href="https://codecomprehensibility.site"
+                        target="_blank">https://codecomprehensibility.site</a>).</li>
+
+                <li>I will take part in three rounds, following a Delphi-style method designed to collect and compare
+                    expert judgments about the comprehensibility of Java code snippets.</li>
+
+                <li>In Round 1, I will log in using a dedicated username and password. For each of eight Java code
+                    snippets, I will (1) provide a short description of its functionality, (2) assess how understandable
+                    I find it, and (3) rank all eight snippets from easiest to hardest to understand using a
+                    drag-and-drop interface. I will also explain my reasoning.</li>
+
+                <li>I may revise my responses until I submit them, and I will have up to one week to complete each round
+                    before the deadline.</li>
+
+                <li>After each round, the research team will share de-identified feedback and reasoning from other
+                    experts. In Round 2, I will review this feedback, reflect on points of disagreement, and, if I wish,
+                    update my rankings and explanations.</li>
+
+                <li>Round 3 will be a chat-based discussion phase, where I can review prior feedback, participate in
+                    focused discussions with other experts, and, if I wish, update my ranking.</li>
+
+                <li>If no agreement is reached by the end of Round 3, a statistical aggregation method will be applied
+                    to produce the final expert-informed ranking.</li>
+            </ul>
+
+            <h4>PARTICIPANTS</h4>
+            <p>I will be one of about five participants in this study.</p>
+
+            <h4>EXCLUSIONS</h4>
+            <p>I will inform the researcher if any of the following apply:</p>
+            <ul>
+                <li>I am under 18 years of age.</li>
+                <li>I have been diagnosed with a reading or learning disability, or another condition that affects my
+                    ability to read or understand code or instructions.</li>
+                <li>I am not comfortable reading English text.</li>
+                <li>I have not received a significant promotion in a software engineering role (e.g., from entry level
+                    to a more independent role such as Apple ICT3, Facebook E4, Uber L4, Microsoft 61, Amazon L5, or
+                    Walmart L3).</li>
+                <li>I have no professional experience with Java.</li>
+                <li>I have not mentored at least one junior software engineer in a professional setting.</li>
+            </ul>
+
+
+            <h4>RISKS/DISCOMFORTS</h4>
+            <p>This study may involve mild discomfort or fatigue from focusing for extended periods. To mitigate this,
+                breaks will be
+                instructed during the study. There may be unknown risks. I understand that I am not covered by our
+                institutions' insurance policy for
+                any injury or loss during participation.</p>
+
+            <h4>CONFIDENTIALITY</h4>
+            <p>I understand that my participation is confidential but not anonymous. My responses will be linked to my
+                name and email so the research team can contact me. Responses may be shared (after de-identification)
+                with other experts but not linked to my identity. All data will be stored securely on AWS during the
+                study and then transferred to our local servers and deleted from AWS. Only the research team will access
+                identifying information.</p>
+
+            <h4>PAYMENT FOR PARTICIPATION</h4>
+            <p>I will receive a $50 Amazon gift card and a certificate of participation from NJIT and William &amp; Mary
+                after completing the study.</p>
+
+            <h4>RIGHT TO REFUSE OR WITHDRAW</h4>
+            <p>Participation is voluntary. I may withdraw at any time without consequence. The investigator may also
+                withdraw me at any time.</p>
+
+            <h4>INDIVIDUAL TO CONTACT</h4>
+            <p>
+                For questions about treatment or procedures:<br> </br>
+                <strong>Martin Kellogg, Ph.D.</strong><br>
+                Assistant Professor of Computer Science<br>
+                NJIT, 323 Dr Martin Luther King Jr Blvd, Newark, NJ 07102<br>
+                (973) 596-3381<br>
+                <a href="mailto:martin.kellogg@njit.edu">martin.kellogg@njit.edu</a> (preferred)
+                </br>
+                </br>
+                <strong>Oscar Chaparro, Ph.D.</strong><br>
+                Associate Professor of Computer Science<br>
+                W&M, McGlothlin-Street Hall 311, 251 Jamestown Rd., Williamsburg, VA 23185<br>
+                <a href="mailto:oscarch@wm.edu">oscarch@wm.edu</a>
+            </p>
+
+            <p>
+                For questions about research rights: </br> </br>
+                <strong>NJIT's Office of Research</strong><br>
+                NJIT, 323 Martin Luther King Boulevard, Newark, NJ 07102<br>
+                (973) 642-4877<br>
+                <a href="mailto:irb@njit.edu">irb@njit.edu</a> (preferred)
+                </br>
+                </br>
+                <strong>W&M's Institutional Review Board, Research Compliance Office</strong><br>
+                757-221-7650<br>
+                <a href="mailto:researchcompliance@wm.edu">researchcompliance@wm.edu</a>
+                </br>
+                </br>
+            </p>
+
+            <h4 style=" border-top: 1px solid #ccc;             margin-top: 30px;
+            padding-top: 20px;">SIGNATURE OF PARTICIPANT</h4>
+
+            <div style="
+  margin-top: 20px;
+  padding: 12px;
+  border: 2px solid #ffeeba;
+  border-radius: 6px;
+  background-color: #fff9c423;
+  transition: border-color 0.3s, background-color 0.3s;
+" onmouseenter="this.style.borderColor='#fdd835'; this.style.backgroundColor='#fff59d'"
+                onmouseleave="this.style.borderColor='#ffeeba'; this.style.backgroundColor='#fff9c423'">
+                <label class="custom-checkbox">
+                    <strong> I have read this form and understand it fully. My questions have been answered to my
+                        satisfaction. I agree to participate in this research study.</strong>
+                    <input type="checkbox" id="consentCheckbox" required>
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+
+
+
+            <div
+                style="margin-top: 20px; padding: 12px; background-color: #f9f9f923; border: 1px solid #cccccc59; border-radius: 6px; font-size: 15px; color: #363636;">
+                <p style="margin: 0;">
+                    <strong>Or</strong><br>
+                    I am not fully informed by this consent form and the information provided on the study summary page.
+                    I will contact the research team to get answers to my questions before deciding whether to
+                    participate.
+                    <!-- <a href="javascript:void(0);"
+                        onclick="document.getElementById('slots-box').classList.remove('hidden');"
+                        style="color: #0d6efd; text-decoration: underline;">
+                        I want to schedule a meeting with the research team to get answers to my questions.
+                    </a> -->
+
+                </p>
+            </div>
+
+            <div class="slots-box hidden" id="slots-box">
+                <h3>Please email us at <a href="mailto:ea442@njit.edu">ea442@njit.edu</a> to schedule a live meeting at
+                    your preferred time.</h3>
+                <div style="display: none;">
+                    <h3>Select All Your Available Time Slots</h3>
+                    <div class="day-card">
+                        <h4>Monday, June 10</h4>
+                        <div>
+                            <div class="time-slot" onclick="selectSlot(this)">10:00 AM</div>
+                            <div class="time-slot" onclick="selectSlot(this)">1:00 PM</div>
+                            <div class="time-slot" onclick="selectSlot(this)">4:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-card">
+                        <h4>Tuesday, June 11</h4>
+                        <div>
+                            <div class="time-slot" onclick="selectSlot(this)">9:00 AM</div>
+                            <div class="time-slot" onclick="selectSlot(this)">12:00 PM</div>
+                            <div class="time-slot" onclick="selectSlot(this)">3:00 PM</div>
+                        </div>
+                    </div>
+
+                    <button onclick="finalizeMultiSlotSelection()">Submit Your Request</button>
+                </div>
+
+            </div>
+
+            <!-- Final Box Modal: Appointment Acknowledgement -->
+            <div id="final-box" class="modal hidden">
+                <div class="modal-content">
+                    <h3>✅ Your Request Has Been Received!</h3>
+                    <p>Thank you! We'll reach out to you via email soon to schedule a meeting based on your specified
+                        availability.</p>
+                    <p><strong>Selected availability:</strong> <span id="confirmed-session"></span></p>
+                    <!-- <button onclick="closeModal('final-box')">Close</button> -->
+                    <br>
+                    <div class="referrals-section">
+                        <iframe class="referrals-widget" src="/referrals.html" scrolling="no"></iframe>
+                    </div>
+                    <br>
+                    <p>You can now close the tab!</p>
+                </div>
+            </div>
+
+            <!-- Final Box Modal: Consent Confirmation -->
+            <div id="final-box-consent" class="modal hidden">
+                <div class="modal-content">
+                    <h3>✅ Your registration in this study has been completed!</h3>
+                    <p>Thank you! We'll reach out to you via email soon to coordinate the next steps.</p>
+                    <a href="#" onclick="generateAndDownloadConsentPDF()">📄 Click to download a copy of your signed
+                        consent form
+                        (PDF)</a>
+                    <br>
+                    <p>A confirmation email has been sent to <strong id="emailHolder"></strong>.</p>
+                    <br>
+                    <div class="referrals-section">
+                        <iframe class="referrals-widget" src="/referrals.html" scrolling="no"></iframe>
+                    </div>
+
+                    <br>
+
+                    <!-- <button onclick="closeModal('final-box-consent')">Close</button> -->
+                    <p>You can now close the tab!</p>
+                </div>
+            </div>
+
+
+
+            <div class="signature-section">
+                <label>Participant Name:</label>
+                <span contenteditable="true" id="participantName" style="
+    display: inline-block;
+    min-width: 200px;
+    border-bottom: 1px solid #000;
+    padding: 6px 8px;
+    background-color: #fff9c4;
+    transition: background-color 0.3s;
+    outline: none;
+  " onfocus="this.style.backgroundColor='#fff176'" onblur="this.style.backgroundColor='#fff9c4'"></span>
+
+                <label>Signature (please type your full name):</label>
+                <span contenteditable="true" id="signatureConfirm" style="
+  display: inline-block;
+  min-width: 200px;
+  border-bottom: 1px solid #000;
+  padding: 6px 8px;
+  background-color: #fff9c4;
+  transition: background-color 0.3s;
+  outline: none;
+  font-family: 'Segoe Script', 'Lucida Handwriting', cursive;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+">
+                </span>
+
+
+                <label>Date:</label>
+                <span contenteditable="true" id="signatureDate" style="
+    display: inline-block;
+    min-width: 200px;
+    border-bottom: 1px solid #000;
+    padding: 6px 8px;
+    background-color: #fff9c4;
+    transition: background-color 0.3s;
+    outline: none;
+  " onfocus="this.style.backgroundColor='#fff176'" onblur="this.style.backgroundColor='#fff9c4'"></span>
+
+
+            </div>
+
+
+
+            <button id="submitBtn" style="display: block;" onclick="submitConsent()">Submit</button>
+            <div id="submitNote" class="submit-note">Please complete all highlighted parts before submitting.</div>
+
+
+        </div>
+
+
+    </div>
+
+    <!-- <div class="sticky-submit-wrapper">
+  <button id="submitBtn" disabled>Submit</button>
+</div> -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateEl = document.getElementById('signatureDate');
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date().toLocaleDateString(undefined, options);
+            dateEl.innerText = today;
+        });
+    </script>
+
+    <script>
+        function syncEditableNames(sourceId, targetId) {
+            const source = document.getElementById(sourceId);
+            const target = document.getElementById(targetId);
+
+            source.addEventListener('input', () => {
+                if (document.activeElement === source) {
+                    target.innerText = source.innerText;
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            syncEditableNames('participantName', 'consentName');
+            syncEditableNames('consentName', 'participantName');
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const nameInput = document.getElementById('participantName');
+            const signatureInput = document.getElementById('signatureConfirm');
+            const dateInput = document.getElementById('signatureDate');
+            const consentCheckbox = document.getElementById('consentCheckbox');
+            const submitBtn = document.getElementById('submitBtn');
+
+            function checkFormCompletion() {
+                const participantNameInput = document.getElementById('participantName');
+                const consentNameSpan = document.getElementById('consentName');
+                const signatureConfirmSpan = document.getElementById('signatureConfirm');
+                const signatureDateInput = document.getElementById('signatureDate');
+                const consentCheckbox = document.getElementById('consentCheckbox');
+                const submitNote = document.getElementById('submitNote');
+
+                const name1 = participantNameInput ? participantNameInput.textContent.trim() : '';
+                const name2 = consentNameSpan ? consentNameSpan.textContent.trim() : '';
+                const signature = signatureConfirmSpan ? signatureConfirmSpan.textContent.trim() : '';
+                const date = signatureDateInput ? signatureDateInput.textContent.trim() : '';
+                const checked = consentCheckbox ? consentCheckbox.checked : false;
+
+                const allFilled = name1 && name2 && signature && date && checked;
+                document.getElementById('submitBtn').disabled = !allFilled;
+                if (submitNote) {
+                    submitNote.style.display = allFilled ? 'none' : 'block';
+                }
+            }
+
+
+
+            nameInput.addEventListener('input', checkFormCompletion);
+            signatureInput.addEventListener('input', checkFormCompletion);
+            dateInput.addEventListener('input', checkFormCompletion);
+            consentCheckbox.addEventListener('change', checkFormCompletion);
+        });
+    </script>
+
+    <!-- Sticky Notification Banner -->
+    <div id="guide" class="">
+        <div id="consentReminder" style="
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #e3f2fd;
+  border: 2px solid #90caf9;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 999;
+  font-size: 15px;
+  max-width: 90%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: pulseGlow 1.5s infinite alternate;
+" class="">
+            <span class="">📌 Please scroll down to read the informed consent form. If you agree to participate,
+                complete the
+                highlighted fields and click the Submit button at the end.</span>
+
+            <!-- <button onclick="document.getElementById('consentReminder').style.display='none'" style="background-color: #90caf9; color: #000;">X Close!</button> -->
+            <p></p>
+            <button onclick="document.getElementById('consentReminder').style.display='none'" style="
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #333;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0 8px;
+    margin-left: auto;
+    margin-top: 0!important;
+  " aria-label="Close Reminder">X</button>
+        </div>
+    </div>
+
+    <!-- <button id="submitConsentBtn" onclick="submitConsent()">Submit</button> -->
+
+
+    <script>
+        function selectSlot(el) {
+            el.classList.toggle('selected');
+        }
+    </script>
+
+    <script>
+    const jobTitles = [
+      // Executive / Leadership
+      "CTO",
+      "CIO / Chief Digital Officer / Chief Innovation Officer",
+      "VP of Product Management / Head of Product",
+      "VP of Marketing",
+      "VP of Engineering",
+      "VP of HR",
+      "Chief Architect",
+      "Chief Human Resource Officer",
+
+      // Product & Project
+      "Product Manager",
+      "Engineering Project Manager",
+      "Engineering Manager",
+      "Technical Project Manager",
+      "Project Manager",
+      "Business Account Manager",
+      "Senior Manager IT",
+      "IT Infrastructure Manager",
+      "Procurement Manager",
+
+      // Learning & Development
+      "Learning and Development Manager",
+      "Learning and Development Coordinator",
+
+      // HR / Recruitment
+      "HR Coordinator",
+      "Payroll Coordinator",
+      "Recruiting Coordinator",
+      "HR Specialist",
+      "HR Generalist",
+      "Recruiter",
+      "Human Resource Information Specialist",
+      "HR Manager",
+      "Recruiting Manager",
+      "HR Business Partner",
+      "HR Director",
+      "Recruiting Director",
+      "Career Consultant",
+      "Career Advisor",
+      "Assignment Coordinator",
+      "Placement Coordinator",
+      "Career Development Strategist",
+      "Personnel Agent",
+      "Human Resources Officer",
+
+      // Marketing / SEO / Digital
+      "SEO Manager",
+      "SEO Engineer",
+      "SEO Consultant",
+      "Digital Marketing Manager",
+      "Digital Marketing Analyst",
+      "Social Media Marketing Manager",
+      "Social Media Marketing Analyst",
+      "Marketing Technologist",
+      "Web Analytics Developer",
+      "Social Media Manager",
+      "Growth Hacker",
+      "Content Manager",
+      "Content Strategist",
+
+      // Engineering & IT
+      ".NET Developer",
+      "Android Developer",
+      "Artificial Intelligence / Machine Learning Engineer",
+      "Big Data Engineer",
+      "Build and Release Engineer",
+      "Cloud Architect",
+      "Cloud Engineer",
+      "Computer Hardware Engineer",
+      "Computer Network Architect",
+      "Computer Programmer",
+      "Computer Systems Analyst",
+      "Data Analyst",
+      "Data Architect",
+      "Data Engineer",
+      "Data Scientist",
+      "Database Administrator",
+      "DevOps Engineer",
+      "Full Stack Developer",
+      "Front-End Developer",
+      "Back-End Developer",
+      "Software Developer",
+      "Software Engineer",
+      "Senior Software Engineer",
+      "Site Reliability Engineer",
+      "Systems Engineer",
+      "Systems Administrator",
+      "Network Engineer",
+      "Security Engineer",
+      "QA Engineer",
+      "UI Designer",
+      "UX Designer",
+      "Web Developer",
+      "Mobile App Developer",
+      "Game Developer",
+      "Robotics Engineer",
+      "Technical Lead",
+      "Technical Account Manager",
+      "Technical Sales Engineer",
+      "IT Manager",
+      "IT Support Specialist",
+      "DevSecOps Engineer",
+      "AI Researcher",
+      "Machine Learning Architect",
+      "Research Scientist",
+      "Software Architect",
+      "Principal Engineer",
+      "Junior Developer",
+      "Intern Developer",
+      "Entry Level Software Engineer"
+    ];
+
+   const questions = [
+     {
+       text: "What is your age?",
+       options: [
+         { label: "Under 18", ineligible: true },
+         { label: "18–24" },
+         { label: "25–34" },
+         { label: "35–44" },
+         { label: "45–54" },
+         { label: "55–64" },
+         { label: "65 or older" }
+       ]
+     },
+     {
+       text: "How many years of professional development experience do you have (in any language)?",
+       options: [
+         { label: "No experience" },
+         { label: "<1 year" },
+         { label: "1–2 years" },
+         { label: "3–5 years" },
+         { label: "6–9 years" },
+         { label: "10–14 years" },
+         { label: "15–19 years" },
+         { label: "20+ years" }
+       ]
+     },
+     {
+       text: "How many years of professional development experience do you have with <strong>Java</strong>?",
+       options: [
+         { label: "No experience", ineligible: true },
+         { label: "<1 year" },
+         { label: "1–2 years" },
+         { label: "3–5 years", eligible: true },
+         { label: "6–9 years", eligible: true },
+         { label: "10–14 years", eligible: true },
+         { label: "15–19 years", eligible: true },
+         { label: "20+ years", eligible: true }
+       ]
+     },
+     {
+       text: "Have you ever been promoted within a software engineering role to a more senior level—for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+       options: [
+         { label: "Yes, I have received a promotion like that.", eligible: true },
+         { label: "No, I have not received a promotion like that." }
+       ]
+     },
+     {
+       text: "Have you ever mentored one or more junior software engineers in a professional setting?",
+       options: [
+         { label: "Yes", eligible: true },
+         { label: "No" }
+       ]
+     },
+     {
+       text: "Briefly describe the largest or most complex software system you’ve worked on (e.g., its purpose, scale, users, and development team).",
+       type: "text",
+       placeholder: "For example: a distributed microservice system for e-commerce, composed of hundreds of modules, developed by dozens of developers, and used by millions of users worldwide.",
+       multiline: true
+     },
+     {
+       text: "What is your current job title? (You can select from the list or type your own)",
+       type: "combobox",
+       options: jobTitles.map(t => ({ label: t })),
+       placeholder: "Start typing your job title…"
+     },
+     {
+       text: "What company or organization do you currently work for (if any)?",
+       type: "text",
+       placeholder: "Enter the name of your employer, or write 'None' if not currently employed",
+       multiline: false
+     },
+     {
+       text: "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+       type: "checkbox",
+       multiple: true,
+       options: [
+         { label: "Proprietary or commercial" },
+         { label: "Open-source" },
+         { label: "Other (please specify)", freeText: true }
+       ]
+     }
+     ,
+     {
+       text: "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+       type: "checkbox",
+       multiple: true,
+       options: [
+         { label: "Operating systems" },
+         { label: "Web applications" },
+         { label: "Mobile applications" },
+         { label: "Desktop applications" },
+         { label: "Middleware" },
+         { label: "AI-intensive systems" },
+         { label: "Development tools (compilers, programming languages, etc.)" },
+         { label: "Libraries/frameworks" },
+         { label: "Other (please specify)", freeText: true }
+       ]
+     },
+     {
+       text: "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, …).",
+       type: "text",
+       placeholder: "List domains (comma-separated)",
+       multiline: true
+     }
+   ];
+    </script>
+    <script>
+        function submitAppointmentRequest() {
+            const email = localStorage.getItem("expert_email");
+            if (!email) {
+                alert("Email is missing. Please start the eligibility process from the beginning:\n\n/eligibility-experts.html");
+                // Optionally redirect the user:
+                window.location.href = "/eligibility-experts.html";
+                return;
+            }
+            const notify = localStorage.getItem("notify_opt_in") === "true";
+            const selectedSlot = localStorage.getItem("selected_slot") || "unspecified";
+
+            const eligibilityResponses = questions.map((q, index) => {
+                const key = `eligibility_q${index}`;
+                const storedAnswer = sessionStorage.getItem(key);
+                return {
+                    question: q.text,
+                    selectedOption: storedAnswer || "No answer"
+                };
+            });
+
+
+            const payload = {
+                email: email,
+                notify: notify,
+                selectedSlot: selectedSlot,
+                eligibilityResponses: eligibilityResponses,
+                submitted: true,
+                event: "appointment" // or "cancel" or "modify"
+            };
+
+
+            return fetch("/register_expert", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(res => res.ok)
+                .catch(err => {
+                    console.error("❌ Network error:", err);
+                    return false;
+                });
+        }
+
+        function submitConsent() {
+            const email = localStorage.getItem("expert_email") || "unknown";
+            const notify = localStorage.getItem("notify_opt_in") === "true";
+            const selectedSlot = localStorage.getItem("selected_slot") || "unspecified";
+
+            const eligibilityResponses =
+            JSON.parse(sessionStorage.getItem('eligibilityResponsesJSON') || 'null')
+            ?? questions.map((q, index) => {
+                const key = `eligibility_q${index}`;
+                const storedAnswer = sessionStorage.getItem(key);
+                return { question: q.text, selectedOption: storedAnswer || "No answer" };
+            });
+
+            // Grab consent values from the DOM
+            const participantNameInput = document.getElementById('participantName');
+            const consentNameSpan = document.getElementById('consentName');
+            const signatureConfirmSpan = document.getElementById('signatureConfirm');
+            const signatureDateInput = document.getElementById('signatureDate');
+            const consentCheckbox = document.getElementById('consentCheckbox');
+
+            const participantName = participantNameInput?.innerText.trim() || '';
+            const signatureName = signatureConfirmSpan?.innerText.trim() || '';
+
+            if (participantName) {
+                localStorage.setItem("referrerName", participantName);
+            }
+
+            // Validation: check if names match
+            // Validation: check if names match (ignore case)
+            if (participantName.trim().toLowerCase() !== signatureName.trim().toLowerCase()) {
+                alert("The name entered in the signature does not match the participant's name.");
+                return; // Stop submission
+            }
+
+
+            const consentForm = {
+                fullName: participantNameInput?.innerText.trim() || '',
+                consentName: consentNameSpan?.innerText.trim() || '',
+                signature: signatureConfirmSpan?.innerText.trim() || '',
+                dateSigned: signatureDateInput?.innerText.trim() || '',
+                consentGiven: consentCheckbox?.checked || false,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            };
+
+            const payload = {
+                email: email,
+                notify: notify,
+                selectedSlot: selectedSlot,
+                eligibilityResponses: eligibilityResponses,
+                consentForm: consentForm,
+                submitted: true,
+                event: "consent" // or "cancel" or "modify"
+            };
+
+            return fetch("/register_expert", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(res => {
+                    if (res.ok) {
+                        showConsentConfirmation(consentForm);
+                        return true;
+                    } else {
+                        alert("❌ Submission failed. Please try again.");
+                        return false;
+                    }
+                })
+                .catch(err => {
+                    console.error("❌ Network error:", err);
+                    alert("❌ Network error. Please check your connection and try again.");
+                    return false;
+                });
+        }
+
+    </script>
+    <script>
+        function finalizeMultiSlotSelection() {
+            const selectedEls = document.querySelectorAll('.slots-box .time-slot.selected');
+            if (selectedEls.length === 0) {
+                alert("Please select at least one time slot.");
+                return;
+            }
+
+            const selectedSlots = Array.from(selectedEls).map(el => {
+                const dayText = el.closest('.day-card').querySelector('h4').innerText;
+                return `${dayText} at ${el.innerText}`;
+            });
+            localStorage.setItem("selected_slot", selectedSlots.join(", "));
+
+
+            //   const notify = document.getElementById('notify-checkbox').checked;
+            //   localStorage.setItem("notify_opt_in", notify);
+
+            // Call registration submit before showing final confirmation
+            submitAppointmentRequest().then(success => {
+                if (success) {
+                    document.getElementById('slots-box').classList.add('hidden');
+                    document.getElementById('final-box').classList.remove('hidden');
+                    const selectedSlot = localStorage.getItem("selected_slot");
+                    const sessionText = `${selectedSlot}`;
+                    document.getElementById("confirmed-session").innerText = sessionText;
+
+                    const submitBtn = document.getElementById("submitBtn");
+                    if (submitBtn) {
+                        submitBtn.style.display = "none";   // completely hide
+                        // OR: submitBtn.disabled = true;   // just disable
+                    }
+                    document.getElementById("guide").classList.add("hidden");
+                } else {
+                    alert("❌ Something went wrong while registering. Please try again or contact the research team.");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function finalizeConsent() {
+            const selectedEls = document.querySelectorAll('.slots-box .time-slot.selected');
+            if (selectedEls.length === 0) {
+                alert("Please select at least one time slot.");
+                return;
+            }
+
+            const selectedSlots = Array.from(selectedEls).map(el => {
+                const dayText = el.closest('.day-card').querySelector('h4').innerText;
+                return `${dayText} at ${el.innerText}`;
+            });
+            localStorage.setItem("selected_slot", selectedSlots.join(", "));
+
+
+            //   const notify = document.getElementById('notify-checkbox').checked;
+            //   localStorage.setItem("notify_opt_in", notify);
+
+            // Call registration submit before showing final confirmation
+            submitAppointmentRequest().then(success => {
+                if (success) {
+                    document.getElementById('slots-box').classList.add('hidden');
+                    document.getElementById('final-box').classList.remove('hidden');
+                    const selectedSlot = localStorage.getItem("selected_slot");
+                    const sessionText = `${selectedSlot}`;
+                    document.getElementById("confirmed-session").innerText = sessionText;
+                } else {
+                    alert("❌ Something went wrong while registering. Please try again or contact the research team.");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function () {
+            const email = localStorage.getItem('expert_email');
+            const participantNameInput = document.getElementById('participantName');
+            const consentNameSpan = document.getElementById('consentName');
+            const signatureConfirmSpan = document.getElementById('signatureConfirm');
+            const signatureDateInput = document.getElementById('signatureDate');
+            const consentCheckbox = document.getElementById('consentCheckbox');
+
+            const consentData = {
+                fullName: participantNameInput?.innerText.trim() || '',
+                consentName: consentNameSpan?.innerText.trim() || '',
+                signature: signatureConfirmSpan?.innerText.trim() || '',
+                dateSigned: signatureDateInput?.innerText.trim() || '',
+                consentGiven: consentCheckbox?.checked || false,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            };
+
+            console.log('Consent JSON:', JSON.stringify(consentData, null, 2));
+
+            // Example of sending it to the server via fetch:
+            /*
+            fetch('/submit_consent', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(consentData)
+            }).then(res => {
+              if (res.ok) alert('Consent submitted successfully.');
+              else alert('Failed to submit.');
+            });
+            */
+        });
+    </script>
+
+    <script>
+        function showConsentConfirmation(consentForm) {
+            const email = localStorage.getItem("expert_email") || "your email";
+            document.getElementById("emailHolder").innerText = email;
+            document.getElementById("final-box-consent").classList.remove("hidden");
+            document.getElementById("guide").classList.add("hidden");
+        }
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+    <script>
+        function generateConsentPDF(data) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(14);
+            doc.text("Signed Consent Form", 20, 20);
+
+            doc.setFontSize(12);
+            doc.text(`Participant Name: ${data.participantName}`, 20, 40);
+            doc.text(`Consent Name: ${data.consentName}`, 20, 50);
+            doc.text(`Signature: ${data.signatureConfirm}`, 20, 60);
+            doc.text(`Date: ${data.signatureDate}`, 20, 70);
+            doc.text(`Agreed to participate: ${data.consentCheckbox ? "Yes" : "No"}`, 20, 80);
+
+            doc.save("Signed_Consent_Form.pdf");
+        }
+
+    </script>
+
+
+    <script>
+        async function generateAndDownloadConsentPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const participantName = document.getElementById('participantName')?.innerText.trim() || '';
+            const consentName = document.getElementById('consentName')?.innerText.trim() || '';
+            const signature = document.getElementById('signatureConfirm')?.innerText.trim() || '';
+            const date = document.getElementById('signatureDate')?.innerText.trim() || '';
+
+            const fullText = `
+NEW JERSEY INSTITUTE OF TECHNOLOGY
+323 MARTIN LUTHER KING BLVD.
+NEWARK, NJ 07102
+
+CONSENT TO PARTICIPATE IN THE RESEARCH STUDY:
+RANKING CODE SNIPPETS BY COMPREHENSION DIFFICULTY
+
+I, ${document.getElementById('consentName')?.innerText.trim() || ''}, have been asked to participate in a research study under the direction of Dr. Martin Kellogg from the New Jersey Institute OF Technology (NJIT) and Dr. Oscar Chaparro from the College of William & Mary (W&M).
+
+PURPOSE
+The overarching goal of our research is to investigate the effectiveness of existing code comprehension measures in assessing the difficulty in understanding Java code snippets (i.e., code comprehensibility). Specifically, this research aims to determine whether these measures can reliably predict expert-determined rankings of code comprehensibility, contributing to improved methods for studying code comprehension.
+The specific goal of this study is to establish an expert-determined ranking of 8 Java code snippets according to how difficulty they are for experts to understand.
+
+DURATION
+My participation in this study will consist of three rounds. Round 1 is expected to take about 75 minutes, Round 2 about 45 minutes, and Round 3 (a chat discussion phase) about 40 minutes. I will have up to one week to complete each round on my own schedule before the deadline.
+
+BENEFITS FOR SOCIETY AND THE SUBJECT
+I have been told that the benefits of this research include advancing knowledge on how code is understood by developers, which can advance teaching and research in software engineering. As a participant, I will have the opportunity to contribute my experience and knowledge to code comprehension research and receive a $50 Amazon gift card as compensation for participating in the study. In the event of early withdrawal, I will receive partial compensation proportional to the extent of my participation.
+
+PROCEDURES
+I have been told that, during this study, the following will occur:
+• I will participate as one of five expert Java developers in the study. My participation will take place through a secure web-based application (https://codecomprehensibility.site).
+• I will take part in three rounds, following a Delphi-style method designed to collect and compare expert judgments about the comprehensibility of Java code snippets.
+• In Round 1, I will log in using a dedicated username and password. For each of eight Java code snippets, I will (1) provide a short description of its functionality, (2) assess how understandable I find it, and (3) rank all eight snippets from easiest to hardest to understand using a drag-and-drop interface. I will also explain my reasoning.
+• I may revise my responses until I submit them, and I will have up to one week to complete each round before the deadline.
+• After each round, the research team will share de-identified feedback and reasoning from other experts. In Round 2, I will review this feedback, reflect on points of disagreement, and, if I wish, update my rankings and explanations.
+• Round 3 will be a chat-based discussion phase, where I can review prior feedback, participate in focused discussions with other experts, and, if I wish, update my ranking.
+• If no agreement is reached by the end of Round 3, a statistical aggregation method will be applied to produce the final expert-informed ranking.
+
+PARTICIPANTS
+I will be one of about five participants in this study.
+
+EXCLUSIONS
+I will inform the researcher if any of the following apply:
+• I am under 18 years of age.
+• I have been diagnosed with a reading or learning disability, or another condition that affects my ability to read or understand code or instructions.
+• I am not comfortable reading English text.
+• I have not received a significant promotion in a software engineering role (e.g., from entry level to a more independent role such as Apple ICT3, Facebook E4, Uber L4, Microsoft 61, Amazon L5, or Walmart L3).
+• I have no professional experience with Java.
+• I have not mentored at least one junior software engineer in a professional setting.
+
+RISKS/DISCOMFORTS
+This study may involve mild discomfort or fatigue from focusing for extended periods. To mitigate this, breaks will be instructed during the study. There may be unknown risks. I understand that I am not covered by our institutions' insurance policy for any injury or loss during participation.
+
+CONFIDENTIALITY
+I understand that my participation is confidential but not anonymous. My responses will be linked to my name and email so the research team can contact me. Responses may be shared (after de-identification) with other experts but not linked to my identity. All data will be stored securely on AWS during the study and then transferred to our local servers and deleted from AWS. Only the research team will access identifying information.
+
+PAYMENT FOR PARTICIPATION
+I will receive a $50 Amazon gift card and a certificate of participation from NJIT and William & Mary after completing the study.
+
+RIGHT TO REFUSE OR WITHDRAW
+Participation is voluntary. I may withdraw at any time without consequence. The investigator may also withdraw me at any time.
+
+INDIVIDUAL TO CONTACT
+For questions about treatment or procedures:
+
+Martin Kellogg, Ph.D.
+Assistant Professor of Computer Science
+NJIT, 323 Dr Martin Luther King Jr Blvd, Newark, NJ 07102
+(973) 596-3381
+martin.kellogg@njit.edu (preferred)
+
+Oscar Chaparro, Ph.D.
+Associate Professor of Computer Science
+W&M, McGlothlin-Street Hall 311, 251 Jamestown Rd., Williamsburg, VA 23185
+oscarch@wm.edu
+
+For questions about research rights:
+
+NJIT's Office of Research
+NJIT, 323 Martin Luther King Boulevard, Newark, NJ 07102
+(973) 642-4877
+irb@njit.edu (preferred)
+
+W&M's Institutional Review Board, Research Compliance Office
+757-221-7650
+researchcompliance@wm.edu
+
+SIGNATURE OF PARTICIPANT
+I have read this form and understand it fully. My questions have been answered to my satisfaction. I agree to participate in this research study.
+
+SIGNATURE
+Participant Name: ${document.getElementById('participantName')?.innerText.trim() || ''}
+Signature (typed): ${document.getElementById('signatureConfirm')?.innerText.trim() || ''}
+Date: ${document.getElementById('signatureDate')?.innerText.trim() || ''}
+`;
+
+
+            const margin = 15;
+            const verticalOffset = 15;
+            const lineHeight = 8;
+            const maxLinesPerPage = Math.floor((297 - 2 * margin) / lineHeight); // A4 page height = 297mm
+            const lines = doc.splitTextToSize(fullText, 180); // wrap lines to 180mm width
+
+            let y = verticalOffset;
+            lines.forEach((line, i) => {
+                if ((i + 1) % maxLinesPerPage === 0) {
+                    doc.addPage();
+                    y = verticalOffset;
+                }
+                doc.text(line, margin, y);
+                y += lineHeight;
+            });
+
+            doc.save("Signed_Consent_Form.pdf");
+        }
+    </script>
+
+
+    <script>
+        function collectReferralsPayload() {
+            const referrerEmail = document.getElementById('emailHolder')?.textContent?.trim() || '';
+            const rows = Array.from(document.querySelectorAll('#referral-fields .referral-field'));
+            const referrals = rows.map(row => {
+                const [nameInput, emailInput] = row.querySelectorAll('input');
+                return { name: nameInput.value.trim(), email: emailInput.value.trim() };
+            });
+            return { referrerEmail, referrals };
+        }
+
+        async function submitReferrals() {
+            const payload = collectReferralsPayload();
+
+            try {
+                const res = await fetch('/submit_referrals', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const text = await res.text();
+                console.log("Referral response:", text);
+            } catch (err) {
+                console.error("Failed to submit referrals", err);
+            }
+        }
+    </script>
+
+    <script>
+        function addReferralField(btn) {
+            // scope to the same referrals box as the clicked button
+            const box = btn?.closest('.referrals-box') || document;
+            const container = box.querySelector('#referral-fields, .referral-fields');
+            if (!container) return;
+
+            const row = document.createElement('div');
+            row.className = 'referral-field';
+            row.innerHTML = `
+      <button type="button" class="referral-remove" onclick="removeReferralField(this)" aria-label="Remove this referral">−</button>
+      <input type="text" placeholder="Colleague Name" style="margin:5px; padding:6px; width:45%;">
+      <input type="email" placeholder="Colleague Email" style="margin:5px; padding:6px; width:45%;">
+    `;
+            container.appendChild(row);
+
+            // optional: focus the new name input
+            const firstInput = row.querySelector('input[type="text"]');
+            if (firstInput) firstInput.focus();
+        }
+
+        function removeReferralField(btn) {
+            const row = btn?.closest('.referral-field');
+            if (!row) return;
+            row.remove();
+        }
+
+        // If you have two referral boxes on the page, consider changing both
+        // containers from id="referral-fields" to class="referral-fields"
+        // and keep the selector '#referral-fields, .referral-fields' above.
+    </script>
+
+
+    <script>
+
+        function submitReferrals(btn) {
+            // scope collection to the same modal/box as the button
+            const box = btn ? btn.closest('.referrals-box') : document;
+            const rows = Array.from(box.querySelectorAll('.referral-field'));
+            const referrerEmail = document.getElementById('emailHolder')?.textContent?.trim() || '';
+
+            const referrals = rows.map(row => {
+                const [nameInput, emailInput] = row.querySelectorAll('input');
+                return {
+                    name: (nameInput?.value || '').trim(),
+                    email: (emailInput?.value || '').trim()
+                };
+            });
+
+            const payload = { referrerEmail, referrals };
+
+            fetch('/submit_referrals', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+                .then(r => r.text())
+                .then(t => console.log('Referral response:', t))
+                .catch(e => console.error('Failed to submit referrals', e));
+        }
+    </script>
+
+    <script>
+        // Find all widgets
+        const widgets = Array.from(document.querySelectorAll('iframe.referrals-widget'));
+
+        // Initialize each iframe
+        widgets.forEach((frame) => {
+            frame.style.width = '100%';
+            frame.style.border = '0';
+            frame.style.display = 'block';
+            frame.style.overflow = 'hidden';
+            frame.style.height = '240px';
+
+            const perFrameEmail = frame.dataset.referrer || localStorage.getItem('expert_email') || '';
+            const perFrameName = localStorage.getItem('referrerName') || '';
+
+            const url = new URL(frame.getAttribute('src'), location.origin);
+            if (perFrameEmail) url.searchParams.set('referrer', perFrameEmail);
+            if (perFrameName.trim()) url.searchParams.set('refname', perFrameName.trim()); // <-- add this
+            frame.src = url.toString();
+        });
+
+        // Listen for height / submitted messages from ANY referral iframe
+        window.addEventListener('message', (e) => {
+            const data = e.data || {};
+            if (!data.type) return;
+
+            // Find which iframe sent the message
+            const sender = widgets.find(f => f.contentWindow === e.source);
+            if (!sender) return;
+
+            if (data.type === 'referral-iframe-height' && typeof data.height === 'number') {
+                sender.style.height = Math.max(220, data.height) + 'px';
+            }
+
+            if (data.type === 'referral-submitted') {
+                // Optional: show a toast or mark that specific section as done
+                // Example:
+                sender.closest('.referrals-section')?.classList.add('submitted');
+                console.log('Referral widget submitted from this iframe:', data.count, 'rows');
+            }
+        });
+    </script>
+
+    <footer
+        style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 14px; color: #666;">
+        Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+    </footer>
+</body>
+
+</html>

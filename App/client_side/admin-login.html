@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --bg:#f6f8fc; --card:#fff; --border:#e6e8ef; --muted:#667085; --text:#0f172a; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); }
+    .wrap { max-width: 640px; margin: clamp(24px, 5vh, 64px) auto; padding: 0 16px; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.05); overflow:hidden; }
+    .card header { padding:18px 20px; border-bottom:1px solid var(--border); }
+    .card header h1 { margin:0; font-size: 20px; }
+    .content { padding:20px; }
+    label { display:block; font-size:14px; color:var(--muted); margin:10px 0 6px; }
+    input[type="text"], input[type="password"] {
+      width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:10px; font-size:16px;
+    }
+    .row { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+    .row label.inline { display:flex; align-items:center; gap:8px; margin:0; }
+    .btn {
+      display:inline-flex; gap:8px; align-items:center; justify-content:center;
+      margin-top:16px; padding:10px 14px; border-radius:10px; border:1px solid #d3d7e3;
+      background:#0ea5e9; color:#fff; font-weight:600; cursor:pointer; text-decoration:none;
+    }
+    .btn.secondary { background:#fff; color:#0f172a; }
+    .err { margin-top:12px; color:#b42318; background:#fee4e2; border:1px solid #fecdca; padding:8px 10px; border-radius:10px; display:none; }
+    .muted { color:var(--muted); font-size:14px; }
+    .links { display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+    .tag { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; background:#eef3ff; color:#2a4bd7; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <h1>Admin Login</h1>
+        <div class="muted">Sign in to view the dashboards</div>
+      </header>
+
+      <div class="content">
+        <!-- Logged-in view -->
+        <div id="logged-in" class="hidden">
+          <p>Welcome, <strong id="who"></strong> <span class="tag">authenticated</span></p>
+          <p class="muted mono" style="margin-top:6px">snippetOrder: <span id="order"></span></p>
+
+          <div class="links">
+            <a class="btn" href="/experts">Open Experts Dashboard</a>
+            <a class="btn" href="/students-dashboard">Open Students Dashboard</a>
+            <!-- <a class="btn secondary" href="/students-dashboard/raw">Students Raw JSON</a> -->
+            <a class="btn" href="/students-study-data">Open Students Study Data</a>
+            <a class="btn" href="/experts-final-submissions">Experts Final Submissions</a>
+          </div>
+
+          <button id="logout" class="btn secondary" style="margin-top:18px;">Log out</button>
+        </div>
+
+        <!-- Login form -->
+        <form id="login-form" autocomplete="on">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" inputmode="email" required />
+
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" required />
+
+          <div class="row">
+            <label class="inline">
+              <input id="remember" type="checkbox" />
+              <span>Remember me on this device</span>
+            </label>
+            <span class="muted">You must have a valid account.</span>
+          </div>
+
+          <div class="err" id="err"></div>
+
+          <button class="btn" type="submit">Sign in</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---- Your convention (as provided)
+    function isLoggedIn() {
+      const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+      const order = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+      return name && order;
+    }
+
+    function getName() {
+      return sessionStorage.getItem('participantName') || localStorage.getItem('participantName') || '';
+    }
+    function getOrder() {
+      return sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder') || '';
+    }
+
+    function setCreds(name, order, remember) {
+      const api = remember ? localStorage : sessionStorage;
+      // Clear both first so we don't keep stale values in the other store
+      sessionStorage.removeItem('participantName');
+      sessionStorage.removeItem('snippetOrder');
+      localStorage.removeItem('participantName');
+      localStorage.removeItem('snippetOrder');
+      api.setItem('participantName', name);
+      api.setItem('snippetOrder', order);
+    }
+
+    function clearCreds() {
+      sessionStorage.clear();
+      localStorage.removeItem('participantName');
+      localStorage.removeItem('snippetOrder');
+    }
+
+    function showLoggedIn() {
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('logged-in').classList.remove('hidden');
+      document.getElementById('who').textContent = getName();
+      document.getElementById('order').textContent = getOrder();
+    }
+
+    function showLogin() {
+      document.getElementById('logged-in').classList.add('hidden');
+      document.getElementById('login-form').classList.remove('hidden');
+      document.getElementById('username').focus();
+    }
+
+    // On load: either show links (already logged in) or show form
+    (function init() {
+      if (isLoggedIn()) {
+        showLoggedIn();
+      } else {
+        showLogin();
+      }
+    })();
+
+    // Handle logout
+    document.getElementById('logout').addEventListener('click', () => {
+      clearCreds();
+      showLogin();
+    });
+
+    // Handle login
+    document.getElementById('login-form').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const err = document.getElementById('err');
+      err.style.display = 'none';
+      err.textContent = '';
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const remember = document.getElementById('remember').checked;
+
+      if (!username || !password) {
+        err.textContent = 'Please enter both username and password.';
+        err.style.display = 'block';
+        return;
+      }
+
+      try {
+        const res = await fetch('/get_snippet_order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            err.textContent = 'Invalid credentials.';
+          } else {
+            err.textContent = 'Login failed. Status: ' + res.status;
+          }
+          err.style.display = 'block';
+          return;
+        }
+
+        const data = await res.json(); // { participantName, snippetOrder }
+        if (!data || !data.participantName || !data.snippetOrder) {
+          err.textContent = 'Unexpected server response.';
+          err.style.display = 'block';
+          return;
+        }
+
+        setCreds(data.participantName, data.snippetOrder, remember);
+        showLoggedIn();
+
+      } catch (e) {
+        err.textContent = 'Network error: ' + (e && e.message ? e.message : e);
+        err.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expert Instructions</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .instructions {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 10px #4CAF50;
+      animation: glowPulse 1.5s infinite alternate;
+    }
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 10px #4CAF50; }
+      100% { box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50; }
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+  .steps-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+  }
+  .steps-table td {
+    padding: 12px;
+    vertical-align: top;
+  }
+  .step-number {
+    background-color: #f4c542;
+    font-weight: bold;
+    width: 40px;
+    text-align: center;
+    border-radius: 6px;
+  }
+  .step-desc {
+    background-color: #fff7e6;
+  }
+  .step-time {
+    background-color: #f4c542;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 6px;
+    width: 80px;
+  }
+
+  .tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  border-bottom: 1px dotted #555;
+  }
+
+  .tooltip .tooltip-text {
+    visibility: hidden;
+    width: 260px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Show above the word */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .table-container {
+    display: flex;
+    justify-content: center;    /* center the table horizontally */
+    margin: 20px auto;
+  }
+
+  .device-warning {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #fff3cd;
+    color: #856404;
+    border-left: 6px solid #ffeeba;
+    padding: 12px 16px;
+    margin: 20px 0;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .device-icon {
+    font-size: 24px;
+  }
+
+  .deadline-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: #fff3f3;
+  color: #a94442;
+  border-left: 6px solid #f44336;
+  padding: 14px 16px;
+  margin: 20px 0;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.deadline-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.deadline-date {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.no-timer-note {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-left: 5px solid #66bb6a;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 15.5px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.study-notes {
+  background-color: #fefefe;
+  border-left: 5px solid #4CAF50;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin: 30px 0;
+  font-size: 15.5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.note-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.note-icon {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.note-text {
+  color: #333;
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="instructions">
+
+
+  <h1 style="text-align: center; font-weight: bold;">
+    Ranking Code Snippets by Comprehension Difficulty (Final Round — Round 3)
+  </h1>
+
+<details style="margin-bottom: 20px; cursor: pointer;">
+  <summary><h3 style="display: inline;">Study Goal and Overview (click to expand)</h3></summary>
+  <p>
+    The goal of this study is to develop a ranking of 
+    <span class="tooltip">code snippets
+      <span class="tooltip-text">Self-contained Java methods from real-world open-source projects.</span>
+    </span> 
+    based on the difficulty that software developers have in understanding them. This ranking will be used in future research on code comprehension.
+  </p>
+
+  <p>To create this ranking, this study uses the <a href="https://en.wikipedia.org/wiki/Delphi_method" target="_blank">Delphi method</a>. 
+  Multiple software developers (including you) first ranked a set of code snippets independently. 
+  Then, we provided anonymized feedback summarizing others’ rankings to guide a consensus-based result.
+  This page describes the <strong>final (third) round</strong>, which focuses on resolving remaining disagreements and finalizing rankings.</p>
+</details>
+
+<h2>What You'll Do</h2>
+<p>
+  This is the <strong>final round (Round&nbsp;3)</strong>, conducted because some disagreements remain among experts. 
+  You will review prior feedback, participate in focused discussions, and—if you wish—update your ranking.
+  The estimated time to complete this round is approximately <strong>40 minutes</strong>.
+</p>
+
+<p>This round involves the following interconnected activities. They are shown below for clarity, but you may move between them freely — they are not strictly sequential.</p>
+
+<div class="table-container">
+  <table class="steps-table">
+    <tr>
+      <td class="step-number">Review</td>
+      <td class="step-desc">
+        Look over your own and other experts’ rankings of the code snippets from round 2, along with the reasoning behind them.
+      </td>
+      <td class="step-time">~15 mins</td>
+    </tr>
+    <tr>
+      <td class="step-number">Discuss</td>
+      <td class="step-desc">
+        Participate in the discussion forums for each identified disagreement. Read others’ perspectives and share your thoughts to try to reach consensus where possible.
+      </td>
+      <td class="step-time">~20 mins</td>
+    </tr>
+    <tr>
+      <td class="step-number">Update</td>
+      <td class="step-desc">
+        Revise your ranking if you wish, based on the insights gained.
+      </td>
+      <td class="step-time">5 mins</td>
+    </tr>
+  </table>
+</div>
+
+
+<div class="study-notes">
+
+  <div class="note-item">
+    <span class="note-icon">⏱️</span>
+    <span class="note-text">
+      <strong>Timing:</strong> The times listed above are estimates. 
+      There are no strict time limits: you may take as much time as needed for each phase.
+    </span>
+  </div>
+
+<div class="note-item">
+  <span class="note-icon">📅</span>
+  <span class="note-text">
+    <strong>Submission Deadline:</strong>
+    <span style="text-decoration: line-through; color: #888;">
+      Friday, Jan 30, 2026
+    </span>
+    &nbsp;→&nbsp;
+    <span class="deadline-date">
+      Friday, Feb 9, 2026
+    </span>
+    <br>
+    This is a hard deadline.
+  </span>
+</div>
+
+  <div class="note-item">
+    <span class="note-icon">💻</span>
+    <span class="note-text">
+      <strong>Device Requirement:</strong> Please use a <strong>desktop</strong> web browser (<strong>Chrome preferred</strong>) to complete this study.
+    </span>
+  </div>
+
+</div>
+
+<details style="margin-top: 20px;" id="post-submission">
+  <summary style="font-weight: bold; font-size: 16px; cursor: pointer;">
+    What Happens After You Complete the Final Round (click to expand)
+  </summary>
+  <ul style="margin-top: 10px;">
+    <li>We will send you a $50 Amazon gift card as a token of appreciation.</li>
+    <li>We will analyze the participant rankings and discussion outcomes.</li>
+    <li>If sufficient agreement is reached, we will record the consensus ranking.</li>
+    <li>If consensus is not reached, we will finalize results using statistical aggregation—no additional rounds will be conducted.</li>
+    <li>We may contact you only for clarifications if something is unclear (not for another round).</li>
+  </ul>
+</details>
+
+<details style="margin-bottom: 20px;">
+  <summary style="font-weight: bold; font-size: 16px; cursor: pointer;">Important Definitions</summary>
+  <div style="background: #f0f8ff; border-left: 4px solid #4CAF50; padding: 15px; margin-top: 15px;">
+    <p><strong>Code Comprehensibility</strong>: The difficulty a software developer experiences when trying to understand a code snippet. 
+      This is influenced by the clarity of its structure, naming, and logic.
+    </p>
+    <p><strong>Code Snippet</strong>: A self-contained Java method selected from a real-world open-source software project. 
+      All 8 snippets in this study are independent of one another and were carefully selected.</p>
+  </div>
+</details>
+
+
+<p>Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a></p>
+
+<section id="next-step" style="margin-top: 40px; padding: 24px; background-color: #f9f9f9; border-top: 2px solid #ccc; border-radius: 8px;">
+  <h2>Let's Get Started</h2>
+
+  <!-- Login Section -->
+  <form id="login-box" onsubmit="return loginAndProceed(event)" autocomplete="on">
+    <p><strong>Please log into the system to start the study:</strong></p>
+
+    <input type="text" id="username" name="username" placeholder="Username" autocomplete="username"
+          style="padding: 8px; font-size: 16px; width: 300px; border-radius: 5px; border: 1px solid #ccc;"><br><br>
+
+    <input type="password" id="password" name="password" placeholder="Password" autocomplete="current-password"
+          style="padding: 8px; font-size: 16px; width: 300px; border-radius: 5px; border: 1px solid #ccc;"><br>
+
+    <p id="login-error" style="color: red; display: none;"></p>
+
+    <p style="margin-top: 20px;">
+      <button type="submit">Login and Start Phase 1</button>
+    </p>
+  </form>
+
+  <!-- Post-login Proceed Button -->
+  <div id="proceed-box" style="display: none; margin-top: 40px;">
+    <p>Welcome back, <span id="participant-display-name" style="font-weight: bold;"></span>!</p>
+    <button onclick="proceedToPhase1()">Proceed to Forums</button>
+    <div style="margin-top: 20px;">
+      <a href="#" onclick="logout()" style="cursor: pointer; text-decoration: underline;">Logout</a>
+    </div>
+  </div>
+
+</section>
+
+
+</div>
+
+
+<footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 14px; color: #666;">
+  Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+</footer>
+
+
+<script>
+  function setLocalStorage(name, value, days = 30) {
+    localStorage.setItem(name, encodeURIComponent(value));
+  }
+  
+    function cleaning(){
+    sessionStorage.clear();
+    localStorage.clear();
+
+
+    // Clear all cookies
+    document.cookie.split(";").forEach(cookie => {
+      const name = cookie.split("=")[0].trim();
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    });
+  }
+  async function loginAndProceed(event) {
+    event.preventDefault();
+
+    cleaning();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errorDiv = document.getElementById('login-error');
+    errorDiv.style.display = 'none';
+
+    if (!username || !password) {
+      errorDiv.textContent = "Please enter both username and password.";
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    try {
+      const response = await fetch('/get_snippet_order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (!response.ok) throw new Error("Invalid credentials");
+
+      const data = await response.json();
+      const { participantName, snippetOrder } = data;
+
+      if (!participantName || !snippetOrder) throw new Error("Incomplete response");
+
+      sessionStorage.setItem('participantName', participantName);
+      sessionStorage.setItem('snippetOrder', JSON.stringify(snippetOrder));
+      sessionStorage.setItem('username', username);
+
+      localStorage.setItem('participantName', participantName);
+      localStorage.setItem('snippetOrder', JSON.stringify(snippetOrder));
+      localStorage.setItem('username', username);
+      loadPreviousData()
+        .then(() => loadPreviousData2())
+        .then(() => fetchAndStoreFinishedChats())
+        .then(() => {
+          window.location.href = 'discussion.html';
+        })
+        .catch((e) => {
+          console.warn("⚠️ Preload chain issue:", e);
+          // Try to at least fetch finished chats before going
+          fetchAndStoreFinishedChats().finally(() => {
+            window.location.href = 'discussion.html';
+          });
+        });
+    } catch (err) {
+      console.error(err);
+      errorDiv.textContent = "Login failed. Please check your credentials.";
+      errorDiv.style.display = 'block';
+    }
+  }
+
+    function loadPreviousData() {
+    const username = sessionStorage.getItem('username') || localStorage.getItem('username');
+    if (!username) {
+      alert("Username not found.");
+      return Promise.reject("No username");  // return a rejected promise
+    }
+
+    return fetch('/get_latest_submission', {
+
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username })  // ✅ Correct key
+    })
+    .then(res => res.ok ? res.json() : Promise.reject("Not found"))
+    .then(data => {
+      console.log("Loaded data:", data);
+
+      // Phase 1: restore summary + compSummary per snippet
+      Object.entries(data.phase1 || {}).forEach(([key, value]) => {
+        const i = key.replace('snippet', '');
+        const summary = value.summary || '';
+        const comp = value.comprehensibility || '';
+
+        sessionStorage.setItem(`summary${i}`, summary);
+        sessionStorage.setItem(`compSummary${i}`, comp);
+
+        localStorage.setItem(`summary${i}`, summary);
+        localStorage.setItem(`compSummary${i}`, comp);
+      });
+
+      // Phase 2 and 3
+      if (data.phase2) {
+        const p2 = JSON.stringify(data.phase2);
+        sessionStorage.setItem('phase3_ranking', p2);
+        localStorage.setItem('phase3_ranking', p2);
+      }
+
+      if (data.phase3) {
+        const p3 = JSON.stringify(data.phase3);
+        sessionStorage.setItem('phase3_reasoning', p3);
+        localStorage.setItem('phase3_reasoning', p3);
+      }
+
+      // Participant name
+      if (data.participantName) {
+        sessionStorage.setItem('participantName', data.participantName);
+        localStorage.setItem('participantName', data.participantName);
+      }
+
+      // Snippet order
+      if (data.snippetOrder) {
+        const order = JSON.stringify(data.snippetOrder);
+        sessionStorage.setItem('snippetOrder', order);
+        localStorage.setItem('snippetOrder', order);
+      }
+
+      // ✅ Restore additional flags
+      if ('phase1Complete' in data) {
+        sessionStorage.setItem('phase1Complete', data.phase1Complete);
+        localStorage.setItem('phase1Complete', data.phase1Complete);
+      }
+      if ('phase2Complete' in data) {
+        sessionStorage.setItem('phase2Complete', data.phase2Complete);
+        localStorage.setItem('phase2Complete', data.phase2Complete);
+      }
+      if ('phase3Complete' in data) {
+        sessionStorage.setItem('phase3Complete', data.phase3Complete);
+        localStorage.setItem('phase3Complete', data.phase3Complete);
+      }
+
+      if ('codeTheme' in data) {
+        sessionStorage.setItem('codeTheme', data.codeTheme); // No cookie needed
+        localStorage.setItem('codeTheme', data.codeTheme); // No cookie needed
+      }
+      if ('submitted' in data) {
+        sessionStorage.setItem('submitted', data.submitted);
+        localStorage.setItem('submitted', data.submitted);
+      }
+      console.log("Previous data loaded successfully.");
+      return loadPreviousData2(); // ✅ Chain this promise
+    })
+    .catch(() => console.log("Could not load previous submission."));
+  }
+
+ function loadPreviousData2() {
+  const username = sessionStorage.getItem('username') || localStorage.getItem('username');
+  if (!username) {
+    alert("Username not found.");
+    return Promise.reject("No username");
+  }
+
+  return fetch('/get_latest_round4', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username })
+  })
+  .then(res => res.ok ? res.json() : Promise.reject("Not found"))
+  .then(data => {
+    console.log("Loaded data:", data);
+
+    // Phase 1
+    Object.entries(data.phase1 || {}).forEach(([key, value]) => {
+      const i = key.replace('snippet', '');
+      const summary = value.summary || '';
+      const comp = value.comprehensibility || '';
+      sessionStorage.setItem(`summary${i}`, summary);
+      localStorage.setItem(`summary${i}`, summary);
+      sessionStorage.setItem(`compSummary${i}`, comp);
+      localStorage.setItem(`compSummary${i}`, comp);
+    });
+
+    // Phase 2 & 3
+    if (data.phase2) {
+      const p2 = JSON.stringify(data.phase2);
+      sessionStorage.setItem('phase3_ranking', p2);
+      localStorage.setItem('phase3_ranking', p2);
+    }
+
+    if (data.phase3) {
+      const p3 = JSON.stringify(data.phase3);
+      sessionStorage.setItem('phase3_reasoning', p3);
+      localStorage.setItem('phase3_reasoning', p3);
+    }
+
+    // Participant name
+    if (data.participantName) {
+      sessionStorage.setItem('participantName', data.participantName);
+      localStorage.setItem('participantName', data.participantName);
+    }
+
+    // Snippet order
+    if (data.snippetOrder) {
+      const order = JSON.stringify(data.snippetOrder);
+      sessionStorage.setItem('snippetOrder', order);
+      localStorage.setItem('snippetOrder', order);
+    }
+
+    // Restore round4 responses
+    for (let i = 0; i <= 4; i++) {
+      const key = `round4_response_${i}`;
+      if (data[key]) {
+        const stringified = typeof data[key] === 'string' ? data[key] : JSON.stringify(data[key]);
+        sessionStorage.setItem(key, stringified);
+        localStorage.setItem(key, stringified);
+      }
+    }
+
+    // Restore round4 phase completion flags
+    for (let i = 1; i <= 5; i++) {
+      const key = `round4-phase${i}-complete`;
+      if (key in data) {
+        sessionStorage.setItem(key, data[key]);
+        localStorage.setItem(key, data[key]);
+      }
+    }
+
+    // Other flags
+    if ('codeTheme' in data) {
+      sessionStorage.setItem('codeTheme', data.codeTheme);
+      localStorage.setItem('codeTheme', data.codeTheme);
+    }
+    if ('submitted' in data) {
+      sessionStorage.setItem('submitted', data.submitted);
+      localStorage.setItem('submitted', data.submitted);
+    }
+
+    // Optional: log studyRound (for debugging or future logic)
+    if ('studyRound' in data) {
+      console.log("🧾 Study round:", data.studyRound);
+    }
+
+    console.log("Previous data loaded successfully.");
+  })
+  .catch(() => console.log("Could not load previous submission."));
+}
+
+
+  </script>
+  
+
+<script>
+function getLocalStorage(name) {
+  const value = localStorage.getItem(name);
+  return value ? decodeURIComponent(value) : null;
+}
+
+
+  function isLoggedIn() {
+    const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+    const order = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+    return name && order;
+  }
+
+  window.onload = () => {
+    if (isLoggedIn()) {
+      const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+      document.getElementById('login-box').style.display = 'none';
+      document.getElementById('proceed-box').style.display = 'block';
+      document.getElementById('participant-display-name').textContent = name;
+    }
+  };
+
+  function proceedToPhase1() {
+    window.location.href = 'discussion.html';
+  }
+</script>
+
+<script>
+  // Clear storage and redirect to login
+function logout() {
+  sessionStorage.clear();
+  localStorage.clear();
+
+  // Clear all cookies
+  document.cookie.split(";").forEach(cookie => {
+    const name = cookie.split("=")[0].trim();
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+
+  window.location.href = 'discussion.html';
+}
+</script>
+
+<script>
+  async function fetchAndStoreFinishedChats() {
+    const username = sessionStorage.getItem('username') || localStorage.getItem('username');
+    if (!username) return;
+
+    try {
+      const res = await fetch('/get_finished_chats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username })
+      });
+
+      if (!res.ok) throw new Error('finished-chats not found');
+      const data = await res.json();
+      // Expected: { ok: true, username, finishedIds: [...], updatedAt: "..." }
+
+      const ids = Array.isArray(data.finishedIds) ? data.finishedIds : [];
+      const idsJson = JSON.stringify(ids);
+      const updatedAt = data.updatedAt || '';
+
+      // Save array
+      sessionStorage.setItem('finishedChatIds', idsJson);
+      localStorage.setItem('finishedChatIds', idsJson);
+
+      // Also save a fast lookup set (as an object map)
+      const asSet = {};
+      ids.forEach(id => { asSet[id] = true; });
+      const setJson = JSON.stringify(asSet);
+      sessionStorage.setItem('finishedChatIdsSet', setJson);
+      localStorage.setItem('finishedChatIdsSet', setJson);
+
+      // Save timestamp (optional)
+      sessionStorage.setItem('finishedChatIdsUpdatedAt', updatedAt);
+      localStorage.setItem('finishedChatIdsUpdatedAt', updatedAt);
+
+      console.log('✅ Finished chats loaded:', ids);
+    } catch (e) {
+      console.warn('⚠️ Could not load finished chats', e);
+      // Keep keys consistent even on failure
+      sessionStorage.setItem('finishedChatIds', '[]');
+      localStorage.setItem('finishedChatIds', '[]');
+      sessionStorage.setItem('finishedChatIdsSet', '{}');
+      localStorage.setItem('finishedChatIdsSet', '{}');
+    }
+  }
+
+  // Tiny utility for later use anywhere in your app:
+  function isDiscussionDone(chatId) {
+    try {
+      const raw = sessionStorage.getItem('finishedChatIdsSet') || localStorage.getItem('finishedChatIdsSet') || '{}';
+      const set = JSON.parse(raw);
+      return !!set[chatId];
+    } catch {
+      return false;
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phase 1: Reading and Understanding Code Snippets</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .instructions {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        /* Code block themes */
+        #code {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 20px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .light-mode #code {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .light-mode body {
+            background-color: #ffffff;
+            color: #222;
+        }
+
+        .light-mode textarea {
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 15px;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #bbb;
+            resize: vertical;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button[disabled] {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+
+                /* Basic syntax highlighting classes */
+        .keyword     { color: #0000ff; font-weight: bold; }
+        .type        { color: #007070; }
+        .function    { color: #7928a1; font-weight: bold; }
+        .literal     { color: #009999; }
+        .string      { color: #a31515; }
+        .comment     { color: #6a9955; font-style: italic; }
+        .number      { color: #098658; }
+
+                /* Dark mode overrides */
+        .dark-mode .keyword  { color: #82aaff; }
+        .dark-mode .type     { color: #89ddff; }
+        .dark-mode .function { color: #c792ea; }
+        .dark-mode .literal  { color: #ffcb6b; }
+        .dark-mode .string   { color: #c3e88d; }
+        .dark-mode .comment  { color: #7f848e; }
+        .dark-mode .number   { color: #f78c6c; }
+
+              #continueBtn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: 0 0 10px #4CAF50;
+        animation: glowPulse 1.5s infinite alternate;
+      }
+
+      @keyframes glowPulse {
+        0% {
+          box-shadow: 0 0 10px #4CAF50;
+        }
+        100% {
+          box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+        }
+      }
+
+      #continueBtn:hover {
+        background-color: #45a049;
+      }
+</style>
+
+    
+</head>
+<body>
+
+<div id="instructions-box" style="background-color: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0;">Phase 1: Reading and Understanding All Code Snippets</h2>
+        <button onclick="toggleInstructions()" style="padding: 6px 12px; font-size: 14px; border-radius: 5px; background-color: #ddd; border: none; cursor: pointer;">Hide</button>
+    </div>
+
+    <div id="instructions-content" style="margin-top: 15px;">
+        <p><strong>Enter your name below</strong></p>
+        <label for="participantName"><strong>Your Full Name:</strong></label>
+        <input type="text" id="participantName" placeholder="Enter your name" style="width: 300px; padding: 8px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc;" oninput="storeParticipantName()"/>
+
+        <p><strong>Read Each Snippet:</strong> Carefully read each code snippet (provided below) to understand its functionality and purpose. Aim to spend around 1–5 minutes reading each snippet.</p>
+        <p><strong>Summarize:</strong> Write a brief summary of what each snippet does in the designated summary section. For example: “This method takes two numbers as input and returns their average.”</p>
+        <p><strong>Avoid External Tools:</strong> Please do not use generative AI tools (e.g., ChatGPT)</p>
+    </div>
+</div>
+    
+
+
+<div id="snippet-container">
+    <div style="background-color: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid #ccc;">
+          <h3 id="snippet-title" style="margin: 0;">Snippet Title</h3>
+          <button onclick="toggleTheme()" id="theme-toggle" style="padding: 6px 12px; border-radius: 5px; border: none; background-color: #333; color: white; cursor: pointer;">
+            Switch to Light Mode
+          </button>
+        </div>
+        <pre id="code" style="margin: 0;"><code>Loading snippet...</code></pre>
+    </div>      
+
+    <label for="summary"><strong>What does this code snippet do? Summarize its main functionality and purpose (1–2 sentences):</strong></label>
+    <textarea id="summary" oninput="saveSummary()"></textarea>
+
+    <div class="buttons">
+        <button id="prev" onclick="prevSnippet()">Previous</button>
+        <button id="save" onclick="saveSummary()">Save</button>
+        <button id="next" onclick="nextSnippet()">Next</button>
+        <button id="submit" onclick="submitAll()">Submit All Summaries</button>
+        <button id="continueBtn" onclick="goToPhase2()" style="display: none;">
+          Continue to Phase 2
+        </button>        
+    </div>
+</div>
+
+<script>
+const TOTAL_SNIPPETS = 8;
+let currentSnippet = 1;
+
+window.onload = function() {
+    loadSnippet(currentSnippet);
+    updateButtons();
+};
+
+function loadSnippet(snippetNumber) {
+    const snippet = snippets[snippetNumber - 1];
+    document.getElementById('snippet-title').innerText = snippet.title;
+    document.getElementById('code').innerHTML = snippet.code;
+
+    const key = `summary${snippetNumber}`;
+    let savedSummary = sessionStorage.getItem(key);
+
+    if (!savedSummary) {
+        const cookieValue = getCookie(key);
+        savedSummary = cookieValue ? decodeURIComponent(cookieValue) : '';
+    }
+
+    document.getElementById('summary').value = savedSummary;
+}
+
+
+
+function saveSummary() {
+    const summary = document.getElementById('summary').value;
+    const key = `summary${currentSnippet}`;
+
+    sessionStorage.setItem(key, summary);
+    setCookie(key, encodeURIComponent(summary), 30);  // store in cookie too
+
+    if (getCookie('hideSaveWarning') !== 'true') {
+        document.getElementById('save-warning').style.display = 'block';
+    }
+}
+
+
+function nextSnippet() {
+    saveSummary();
+    if (currentSnippet < TOTAL_SNIPPETS) {
+        currentSnippet++;
+        loadSnippet(currentSnippet);
+        updateButtons();
+    }
+}
+
+function prevSnippet() {
+    if (currentSnippet > 1) {
+        saveSummary();
+        currentSnippet--;
+        loadSnippet(currentSnippet);
+        updateButtons();
+    } else {
+        // Prevent any default behavior like navigating back
+        return false;
+    }
+}
+
+
+function updateButtons() {
+    document.getElementById('prev').disabled = currentSnippet === 1;
+    document.getElementById('next').disabled = currentSnippet === TOTAL_SNIPPETS;
+}
+
+function submitAll() {
+    saveSummary(); // save the current snippet
+    const allSummaries = {};
+    const name = document.getElementById('participantName').value.trim();
+    if (!name) {
+        alert("Please enter your name.");
+        return;
+    }
+
+    // Save name explicitly again
+    sessionStorage.setItem('participantName', name);
+    setCookie('participantName', encodeURIComponent(name), 30);
+    allSummaries['name'] = name;
+
+    // Pull all saved snippets from session or cookie
+    for (let i = 1; i <= TOTAL_SNIPPETS; i++) {
+        const key = `summary${i}`;
+        const sessionVal = sessionStorage.getItem(key);
+        const cookieVal = getCookie(key);
+        allSummaries[key] = sessionVal || decodeURIComponent(cookieVal || '');
+    }
+
+    fetch("http://localhost:8080/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(allSummaries)
+    })
+    .then(response => {
+      if (response.ok) {
+        alert('Summaries submitted successfully. Click the "Continue to Phase 2" button to proceed!');
+        document.getElementById('continueBtn').style.display = 'inline-block';
+        sessionStorage.setItem('phase1_submitted', 'true');
+        setCookie('phase1_submitted', 'true', 30);
+      } else {
+            alert("Failed to submit. Try again.");
+        }
+    })
+    .catch(error => {
+        console.error("Submission error:", error);
+        alert("Error submitting.");
+    });
+}
+
+
+
+</script>
+
+<script>
+    const snippets = [
+      {
+        id: 1,
+        title: "Method1",
+        code: `<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">method1</span>(<span class="type">String</span> name) {
+  <span class="keyword">if</span> (name == <span class="literal">null</span>) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">if</span> (name.<span class="function">startsWith</span>(<span class="string">"."</span>)) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">if</span> ((name.<span class="function">length</span>() < <span class="number">1</span>) || (name.<span class="function">length</span>() > MAX_NAME_LENGTH)) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i < name.<span class="function">length</span>(); i++) {
+    <span class="type">char</span> c = name.<span class="function">charAt</span>(i);
+    <span class="keyword">if</span> (!Character.<span class="function">isLetterOrDigit</span>(c) && !VALID_NAME_SET.<span class="function">contains</span>(c)) {
+      <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+  }
+  <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`
+      },
+      {
+        id: 2,
+        title: "Method2",
+        code: `<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">method2</span>(<span class="type">URI</span> uri) {
+  <span class="keyword">if</span> (<span class="function">isFilesystemPath</span>(uri)) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="type">String</span> scheme = uri.<span class="function">getScheme</span>();
+  <span class="keyword">if</span> (scheme == <span class="literal">null</span>) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">switch</span> (scheme) {
+    <span class="keyword">case</span> <span class="string">"file"</span>:
+    <span class="keyword">case</span> <span class="string">"jar"</span>:
+      <span class="keyword">return</span> <span class="literal">false</span>;
+    <span class="keyword">default</span>:
+      <span class="keyword">break</span>;
+  }
+  <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`
+      },
+      {
+        id: 3,
+        title: "Method3",
+        code: `<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">Method3</span>(<span class="type">short</span> type) {
+  <span class="keyword">if</span> (type == IMAGE_FILE_MACHINE_UNKNOWN) {
+    <span class="comment">// Unsupported machine type</span>
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">for</span> (<span class="type">Field</span> field : CoffMachineType.<span class="function">class</span>.<span class="function">getDeclaredFields</span>()) {
+    <span class="keyword">if</span> (!field.<span class="function">isSynthetic</span>()) {
+      <span class="type">int</span> modifiers = field.<span class="function">getModifiers</span>();
+      <span class="keyword">if</span> (<span class="function">Modifier.isFinal</span>(modifiers) && <span class="function">Modifier.isStatic</span>(modifiers)) {
+        <span class="keyword">try</span> {
+          <span class="keyword">if</span> (field.<span class="function">getShort</span>(<span class="literal">null</span>) == type) {
+            <span class="keyword">return</span> <span class="literal">true</span>;
+          }
+        } <span class="keyword">catch</span> (<span class="type">IllegalAccessException</span> e) {
+          <span class="keyword">continue</span>;
+        }
+      }
+    }
+  }
+  <span class="keyword">return</span> <span class="literal">false</span>;
+}
+`
+      },
+      {
+        id: 4,
+        title: "Method4",
+        code: `<span class="keyword">public static</span> <span class="type">int</span> <span class="function">Method4</span>(<span class="type">CharSequence</span> str, <span class="type">CharSequence</span> searchStr, <span class="type">int</span> startPos) {
+  <span class="keyword">if</span> (str == <span class="literal">null</span> || searchStr == <span class="literal">null</span>) {
+    <span class="keyword">return</span> INDEX_NOT_FOUND;
+  }
+  <span class="keyword">if</span> (startPos < <span class="number">0</span>) {
+    startPos = <span class="number">0</span>;
+  }
+  <span class="type">int</span> searchStrLen = searchStr.<span class="function">length</span>();
+  <span class="type">int</span> endLimit = str.<span class="function">length</span>() - searchStrLen + <span class="number">1</span>;
+  <span class="keyword">if</span> (startPos > endLimit) {
+    <span class="keyword">return</span> INDEX_NOT_FOUND;
+  }
+  <span class="keyword">if</span> (searchStrLen == <span class="number">0</span>) {
+    <span class="keyword">return</span> startPos;
+  }
+  <span class="keyword">for</span> (<span class="type">int</span> i = startPos; i < endLimit; i++) {
+    <span class="keyword">if</span> (<span class="function">regionMatches</span>(str, <span class="literal">true</span>, i, searchStr, <span class="number">0</span>, searchStrLen)) {
+      <span class="keyword">return</span> i;
+    }
+  }
+  <span class="keyword">return</span> INDEX_NOT_FOUND;
+}
+`
+      },
+      {
+        id: 5,
+        title: "method5",
+        code: `<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">method5</span>(@Nullable <span class="type">Path</span> root) <span class="keyword">throws</span> <span class="type">IOException</span> {
+  <span class="keyword">if</span> (root == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;
+  <span class="keyword">if</span> (!Files.<span class="function">exists</span>(root)) <span class="keyword">return</span> <span class="literal">false</span>;
+
+  Files.<span class="function">walkFileTree</span>(root, <span class="keyword">new</span> <span class="type">SimpleFileVisitor</span>&lt;&gt;() {
+    @Override
+    <span class="keyword">public</span> <span class="type">FileVisitResult</span> <span class="function">visitFile</span>(<span class="type">Path</span> file, <span class="type">BasicFileAttributes</span> attrs) <span class="keyword">throws</span> <span class="type">IOException</span> {
+      Files.<span class="function">delete</span>(file);
+      <span class="keyword">return</span> FileVisitResult.CONTINUE;
+    }
+    @Override
+    <span class="keyword">public</span> <span class="type">FileVisitResult</span> <span class="function">postVisitDirectory</span>(<span class="type">Path</span> dir, <span class="type">IOException</span> exc) <span class="keyword">throws</span> <span class="type">IOException</span> {
+      Files.<span class="function">delete</span>(dir);
+      <span class="keyword">return</span> FileVisitResult.CONTINUE;
+    }
+  });
+
+  <span class="keyword">return</span> <span class="literal">true</span>;
+}
+    `
+      },
+      {
+        id: 6,
+        title: "method6",
+        code: `<span class="keyword">public static</span> <span class="type">int</span> <span class="function">method6</span>(<span class="type">CharSequence</span> sequence) {
+  <span class="comment">// Optimized implementation</span>
+  <span class="type">int</span> utf16Length = sequence.<span class="function">length</span>();
+  <span class="type">int</span> utf8Length = utf16Length;
+  <span class="type">int</span> i = <span class="number">0</span>;
+
+  <span class="keyword">while</span> (i < utf16Length && sequence.<span class="function">charAt</span>(i) < <span class="literal">0x80</span>) {
+    i++;
+  }
+
+  <span class="keyword">for</span> (; i < utf16Length; i++) {
+    <span class="type">char</span> c = sequence.<span class="function">charAt</span>(i);
+    <span class="keyword">if</span> (c < <span class="literal">0x800</span>) {
+      utf8Length += ((<span class="literal">0x7f</span> - c) >>> <span class="number">31</span>);
+    } <span class="keyword">else</span> {
+      utf8Length += <span class="function">encodedLengthGeneral</span>(sequence, i);
+      <span class="keyword">break</span>;
+    }
+  }
+
+  <span class="keyword">if</span> (utf8Length < utf16Length) {
+    <span class="keyword">throw new</span> <span class="type">IllegalArgumentException</span>(
+      <span class="string">"UTF-8 length does not fit in int: "</span> + (utf8Length + (<span class="literal">1L</span> << <span class="number">32</span>)));
+  }
+
+  <span class="keyword">return</span> utf8Length;
+}
+`
+      },
+      {
+        id: 7,
+        title: "method7",
+        code: `<span class="keyword">public static</span> <span class="type">float</span> <span class="function">method7</span>(<span class="type">float</span> a, <span class="type">float</span> b, <span class="type">float</span> c) {
+  <span class="type">float</span> det = b * b - <span class="number">4</span> * a * c;
+  <span class="keyword">if</span> (det < <span class="number">0</span>) <span class="keyword">return</span> <span class="type">Float</span>.NaN;
+
+  <span class="type">float</span> sqrtD = (<span class="type">float</span>)<span class="type">Math</span>.<span class="function">sqrt</span>(det);
+  <span class="type">float</span> invA = <span class="number">1</span> / (<span class="number">2</span> * a);
+  <span class="type">float</span> r1 = (-b - sqrtD) * invA;
+  <span class="type">float</span> r2 = (-b + sqrtD) * invA;
+
+  <span class="keyword">if</span> (r1 > r2) {
+    <span class="type">float</span> tmp = r2;
+    r2 = r1;
+    r1 = tmp;
+  }
+
+  <span class="keyword">if</span> (r1 > <span class="number">0</span>) <span class="keyword">return</span> r1;
+  <span class="keyword">if</span> (r2 > <span class="number">0</span>) <span class="keyword">return</span> r2;
+  <span class="keyword">return</span> <span class="type">Float</span>.NaN;
+}
+`
+      },
+      {
+        id: 8,
+        title: "method 8",
+        code: `<span class="keyword">public static</span> <span class="type">float</span> <span class="function">method8</span>(<span class="type">float</span> y, <span class="type">float</span> x) {
+  <span class="type">float</span> n = y / x;
+
+  <span class="keyword">if</span> (n != n)
+    n = (y == x ? <span class="number">1f</span> : <span class="number">-1f</span>);
+  <span class="keyword">else if</span> (n - n != n - n)
+    x = <span class="number">0f</span>;
+
+  <span class="keyword">if</span> (x > <span class="number">0</span>)
+    <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n);
+  <span class="keyword">else if</span> (x < <span class="number">0</span>) {
+    <span class="keyword">if</span> (y >= <span class="number">0</span>) <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n) + PI;
+    <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n) - PI;
+  } <span class="keyword">else if</span> (y > <span class="number">0</span>)
+    <span class="keyword">return</span> x + HALF_PI;
+  <span class="keyword">else if</span> (y < <span class="number">0</span>)
+    <span class="keyword">return</span> x - HALF_PI;
+
+  <span class="keyword">return</span> x + y;
+}
+`
+      }
+    ];
+  </script>
+  
+  <div id="save-warning" style="
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff8db;
+    color: #4c4a00;
+    border: 1px solid #ffe58f;
+    padding: 20px;
+    border-radius: 10px;
+    width: 440px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 1000;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+">
+    <p style="font-weight: bold;">Summary saved locally!</p>
+    <p>Make sure to use the <strong>Save</strong> button to save to the server, and click <strong>Submit All Summaries</strong> at the end to submit your work.</p>
+    
+    <label style="display: block; margin-top: 15px;">
+        <input type="checkbox" id="hide-warning-checkbox" onchange="setCookie('hideSaveWarning', 'true', 30)">
+        Don’t show this message again
+    </label>
+    
+    <button onclick="hideSaveWarning()" style="
+        margin-top: 15px;
+        padding: 8px 14px;
+        background-color: #ffd666;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    ">OK</button>
+</div>
+
+<script>
+    function setCookie(name, value, days) {
+        const expires = new Date(Date.now() + days*24*60*60*1000).toUTCString();
+        document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+    }
+    
+    function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? match[2] : null;
+    }
+    
+    function hideSaveWarning() {
+        document.getElementById('save-warning').style.display = 'none';
+    }
+</script>
+
+<script>
+    function toggleInstructions() {
+        const content = document.getElementById("instructions-content");
+        const button = event.target;
+    
+        if (content.style.display === "none") {
+            content.style.display = "block";
+            button.textContent = "Hide";
+        } else {
+            content.style.display = "none";
+            button.textContent = "Show";
+        }
+    }
+</script>
+    
+<script>
+    function toggleTheme() {
+    const body = document.body;
+    const isLight = body.classList.contains("light-mode");
+
+    if (isLight) {
+        body.classList.remove("light-mode");
+        body.classList.add("dark-mode");
+        localStorage.setItem("theme", "dark");
+        document.getElementById('theme-toggle').textContent = "Switch to Light Mode";
+    } else {
+        body.classList.add("light-mode");
+        body.classList.remove("dark-mode");
+        localStorage.setItem("theme", "light");
+        document.getElementById('theme-toggle').textContent = "Switch to Dark Mode";
+    }
+}
+
+window.onload = function() {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+        document.body.classList.add("light-mode");
+        document.getElementById('theme-toggle').textContent = "Switch to Dark Mode";
+    } else {
+        document.body.classList.add("dark-mode");
+    }
+
+    const savedName = sessionStorage.getItem('participantName') || decodeURIComponent(getCookie('participantName') || '');
+    if (savedName) {
+        document.getElementById('participantName').value = savedName;
+    }
+
+    loadSnippet(currentSnippet);
+    updateButtons();
+
+    if (getCookie('hideSaveWarning') === 'true') {
+        document.getElementById('hide-warning-checkbox').checked = true;
+    }
+      if (sessionStorage.getItem('phase1_submitted') === 'true' || getCookie('phase1_submitted') === 'true') {
+    document.getElementById('continueBtn').style.display = 'inline-block';
+  }
+};
+
+</script>
+
+<script>
+    function storeParticipantName() {
+    const name = document.getElementById('participantName').value.trim();
+    sessionStorage.setItem('participantName', name);
+    setCookie('participantName', encodeURIComponent(name), 30); // expires in 30 days
+}
+</script>
+
+<script>
+  function goToPhase2() {
+    const name = document.getElementById('participantName').value.trim();
+    if (!name) {
+      alert("Please enter your name before proceeding.");
+      return;
+    }
+
+    // Save name to session and cookie
+    sessionStorage.setItem('phase_participant_name', name);
+    setCookie('phase_participant_name', name, 30);
+
+    // Redirect
+    window.location.href = 'phase2.html';
+  }
+
+
+  function setCookie(name, value, days) {
+    const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+  }
+
+</script>
+    
+</body>
+</html>

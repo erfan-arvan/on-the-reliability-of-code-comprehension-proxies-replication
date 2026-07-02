@@ -1,0 +1,189 @@
+{
+    "phase1": {
+      "nadeeshan": {
+        "1": {
+          "summary": "This method takes a project name and validates it based on several criteria.",
+          "comprehensibility": "Clear method/final variable names make it easier to understand. Also, the clear logic separation of the conditional statements makes it easier to follow."
+        },
+        "2": {
+          "summary": "This method takes a URI and checks if it is a local reference or not.",
+          "comprehensibility": "Meaningful method name (including clear internal method invocation names) and a switch statement with simple logic make it easier to understand."
+        },
+        "3": {
+          "summary": "This method takes the \"machine type\" as input, checks whether it is a CoffMachineType or not.",
+          "comprehensibility": "The method is relatively hard to understand because there is a lack of context in CoffMachineType in line 6. Also, line 11 is kinda weird to pass an argument to a getter method."
+        },
+        "4": {
+          "summary": "This method takes two character sequences(string and query string) and a starting position and returns the starting position of the query string in the string.",
+          "comprehensibility": "Clear identifier names and simple conditional statements make it easier to understand."
+        },
+        "5": {
+          "summary": "This method takes a root path and visits each file, directory under that root, and recursively deletes all the files and directories inside that tree.",
+          "comprehensibility": "The definition of the postVisitDirectory is needed to understand what to pass as the \"dir\"(I assume it is a Path object that is returned by FileVisitResult.CONTINUE in line 9 and 14)"
+        },
+        "6": {
+          "summary": "This method takes a character sequence and returns its UTF-8 representation length.",
+          "comprehensibility": "The snippet was easy to follow because of the meaningful identifier names and the new lines separating the logic between each sub-component."
+        },
+        "7": {
+          "summary": "This method takes three floating-point numbers as input and returns the lowest positive root.",
+          "comprehensibility": "The snippet was easy to follow due to its method name. However, even after following the code by assigning dummy values, it is unclear what the method is intended to do. My initial thought was that it returns the lowest possible root of the given three numbers, but it does not."
+        },
+        "8": {
+          "summary": "This snippet takes two floating-point numbers and returns the \"atan\" value of them.",
+          "comprehensibility": "It is a bit hard to understand because the mathematical definition of atan is not given. Not clear the purpose of the internal method \"atanUnchecked\"."
+        }
+      },
+      "oscar": {
+        "1": {
+          "summary": "Checks that the project name is valid: it is not null, does not start with ., is within length, is alphanumeric, and contains allowed characters.",
+          "comprehensibility": "This one is easy to understand: the logic is simple and the identifiers helped me understand what the method is doing."
+        },
+        "2": {
+          "summary": "It checks that the given URI is remote. If the URI is a file system path, does not has a scheme, of the scheme is a file or jar, it is not remote; otherwise; it is remote",
+          "comprehensibility": "easy to understand: easy logic, identifiers helped here too.\nit is harder to understand that snippet 1: I am not sure how isFilesystemPath works and what a scheme of a URI is"
+        }
+      }
+    },
+    "phase2": {
+      "nadeeshan": {
+        "1": [
+          1,
+          2
+        ],
+        "2": [],
+        "3": [
+          4
+        ],
+        "4": [
+          3
+        ],
+        "5": [
+          8
+        ],
+        "6": [
+          5
+        ],
+        "7": [
+          6
+        ],
+        "8": [
+          7
+        ]
+      },
+      "oscar": {
+        "1": [
+          1,
+          5,
+          3
+        ],
+        "3": [
+          7
+        ],
+        "4": [
+          2
+        ],
+        "6": [
+          4
+        ],
+        "7": [
+          6
+        ],
+        "8": [
+          8
+        ]
+      },
+      "martin": {
+        "1": [
+          2,
+          1
+        ],
+        "3": [
+          4,
+          7
+        ],
+        "4": [
+          5
+        ],
+        "6": [
+          3,
+          6
+        ],
+        "8": [
+          8
+        ]
+      }
+    },
+    "phase3": {
+      "nadeeshan": {
+        "groupings": [
+          {
+            "snippets": [
+              1,
+              2
+            ],
+            "reason": "Because both of them are equally understandable to me. Has similar LOC, clear and simple logical separation."
+          }
+        ],
+        "comparisons": [
+          {
+            "from": 3,
+            "to": 4,
+            "reason": "Snippet 3 requires more context understanding than Snippet 4. Also, there is weird syntax in Snippet 3; line 11 takes an argument in a getter. which is not common and passing null looks unnecessary)"
+          },
+          {
+            "from": 4,
+            "to": 5,
+            "reason": "Snippet 8 requires the mathematical definition of \"atan\""
+          },
+          {
+            "from": 5,
+            "to": 6,
+            "reason": "Snippet 5 has a clear logic: delete files/directories recursively. It does not need to have a specific mathematical definition to understand the logic like in Snippet 8"
+          },
+          {
+            "from": 6,
+            "to": 7,
+            "reason": "The logic used in Snippet 6's encoding is hard to understand.(I do not remember the hexadecimal meaning of 0x8 and 0x7)"
+          },
+          {
+            "from": 7,
+            "to": 8,
+            "reason": "Snippet 7 logic is in contradiction with the method name. I thought it returns the lowest positive root from three numbers, but line 2 is unclear."
+          }
+        ]
+      },
+      "oscar": {
+        "groupings": [
+          {
+            "snippets": [
+              1,
+              3,
+              5
+            ],
+            "reason": "It is hard for me to distinguish which one is easier/harder to understand. They have straightforward logic that I am familiar with, and I don't think the usage of a visitor or nested ifs or loops makes one harder/easier to understand than the others."
+          }
+        ],
+        "comparisons": [
+          {
+            "from": 3,
+            "to": 4,
+            "reason": "The reason a ranked snippet 2 after snippet 7 is that I am not familiar with an URI's scheme and why implementing that logic (in snippet 2) is enough to check if it is remote. Snippet 7 is straightforward to understand if we remember/know the quadratic formula."
+          },
+          {
+            "from": 6,
+            "to": 7,
+            "reason": "Snippet 6 is harder to understand for me because I don't know what the bit shifts are doing to check or determine the sequence length in UT8. Snippet 4 is easier to understand, despite it is unclear what regionMatches is doing -- overall, I understand what the method is doing."
+          },
+          {
+            "from": 7,
+            "to": 8,
+            "reason": "Snippet 6 is harder to understand for me because I don't know what the bit shifts are doing to check or determine the sequence length in UT8. Snippet 4 is easier to understand, despite it is unclear what regionMatches is doing -- overall, I understand what the method is doing."
+          }
+        ]
+      },
+      "martin": {
+        "narrative": "Snippet 8 is the toughest: it was the only one where I couldn't follow _why_ it was doing what it was doing. Snippet 6 is next: it required me to reason through the code \"bottom up\" to figure out what it's doing. Then comes snippet 3: it also required me to reason through it, since it wasn't clear what it was for just from reading through it once. However, it was noticeably easier to figure out what snippet 3 is doing vs snippet 6. Snippets 4, 5, and 7 are pretty similar, in the sense that each implements a well-known algorithm that I immediately recognized. However, all three are pretty complicated algorithms to get right. I'm actually not even confident that snippet 5 is correct, which is why I ranked it above the other two: the relevant Java APIs are quite confusing and easy to get wrong. Snippets 4 and 7 are moderately complex string and float algorithms, respectively. I don't differentiate between them. Snippets 1 and 2 both implement simple string validation logic. Snippet 2 has a shorter, simpler set of rules that it implements, so I ranked it lower. However, I don't think either of these are very difficult: both were pretty trivial to write a specification for. There are big gaps, though, that correspond to the blocks of texts above: my ranking looks something like this: 2 . 1 ... 4 7 . 5 ... 3 . 6 ... 8"
+      }
+    }
+  }

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expert Instructions</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .instructions {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 10px #4CAF50;
+      animation: glowPulse 1.5s infinite alternate;
+    }
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 10px #4CAF50; }
+      100% { box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50; }
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+  .steps-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+  }
+  .steps-table td {
+    padding: 12px;
+    vertical-align: top;
+  }
+  .step-number {
+    background-color: #f4c542;
+    font-weight: bold;
+    width: 40px;
+    text-align: center;
+    border-radius: 6px;
+  }
+  .step-desc {
+    background-color: #fff7e6;
+  }
+  .step-time {
+    background-color: #f4c542;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 6px;
+    width: 80px;
+  }
+
+  .tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  border-bottom: 1px dotted #555;
+  }
+
+  .tooltip .tooltip-text {
+    visibility: hidden;
+    width: 260px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Show above the word */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .table-container {
+    display: flex;
+    justify-content: center;    /* center the table horizontally */
+    margin: 20px auto;
+  }
+
+  .device-warning {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #fff3cd;
+    color: #856404;
+    border-left: 6px solid #ffeeba;
+    padding: 12px 16px;
+    margin: 20px 0;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .device-icon {
+    font-size: 24px;
+  }
+
+  .deadline-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: #fff3f3;
+  color: #a94442;
+  border-left: 6px solid #f44336;
+  padding: 14px 16px;
+  margin: 20px 0;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.deadline-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.deadline-date {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.no-timer-note {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-left: 5px solid #66bb6a;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 15.5px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.study-notes {
+  background-color: #fefefe;
+  border-left: 5px solid #4CAF50;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin: 30px 0;
+  font-size: 15.5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.note-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.note-icon {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.note-text {
+  color: #333;
+}
+
+
+
+</style>
+</head>
+<body>
+
+<div class="instructions">
+
+  <h1 style="text-align: center; font-weight: bold;">
+    Ranking Code Snippets by Comprehension Difficulty (Round 1)
+  </h1>
+  <h2>Study Goal and Overview</h2>
+
+<p>The goal of this study is to develop a ranking of 
+<span class="tooltip">code snippets
+  <span class="tooltip-text">Self-contained Java methods from real-world open-source projects.</span>
+</span> based on the difficulty that software developers have in understanding them. This ranking will be used in future research on code comprehension.</span> 
+</p>
+
+<p>To create this ranking, this study will use the <a href="https://en.wikipedia.org/wiki/Delphi_method" target="_blank">Delphi method</a>. 
+  Multiple software developers (including you) will first rank a set of code snippets independently. 
+  Then, we will provide anonymized feedback summarizing the rankings from other participants to guide a consensus-based final ranking.
+  We estimate that one or two rounds of ranking will be sufficient, depending on the level of agreement among participants.
+
+<h2>What You'll Do</h2>
+<p>
+  This is the <strong>first</strong> round of the study. You will review <strong>8 code snippets</strong> and provide your ranking along with brief explanations. 
+  The estimated time to complete this round is approximately <strong>75 minutes</strong>.
+</p>
+<p>
+  If a second round is needed, you will be invited to participate and it should take you less than <strong>30 minutes</strong>.
+   For details, see the <a href="#post-submission">What Happens After You Complete the First Round</a> section below.
+</p>
+
+
+<p>This round is divided into four phases:</p>
+
+<div class="table-container">
+  <table class="steps-table">
+    <!-- <caption style="caption-side: top; font-weight: bold; font-size: 18px; margin-bottom: 10px;">
+      Breakdown of Study Phases and Time Estimates for This Round (Which May Be the Only One)
+    </caption>     -->
+    <tr>
+      <th style="width: 100px;">Phase</th>
+      <th>Description</th>
+      <th style="width: 100px;">Time</th>
+    </tr>
+    <tr>
+      <td class="step-number">Phase 1</td>
+      <td class="step-desc">
+        Review each code snippet and provide a short summary, along with your assessment of how easy or difficulty it is to understand.
+      </td>
+      <td class="step-time">40 mins</td>
+    </tr>
+    <tr>
+      <td class="step-number">Phase 2</td>
+      <td class="step-desc">
+        Rank the snippets from easiest to hardest to understand, grouping similar snippets together.
+      </td>
+      <td class="step-time">15 mins</td>
+    </tr>
+    <tr>
+      <td class="step-number">Phase 3</td>
+      <td class="step-desc">
+        Explain your reasoning behind the ranking and the groupings.
+      </td>
+      <td class="step-time">15 mins</td>
+    </tr>
+    <tr>
+    <td class="step-number">Phase 4</td>
+      <td class="step-desc">
+        Complete a short background knowledge survey.
+      </td>
+      <td class="step-time">2 mins</td>
+    </tr>
+    <tr>
+      <td class="step-number">Submission</td>
+      <td class="step-desc">
+        Review and submit your answers. You may revise and resubmit them at any time.
+      </td>
+      <td class="step-time">3 mins</td>
+    </tr>
+  </table>
+</div>
+
+<div class="study-notes">
+
+  <div class="note-item">
+    <span class="note-icon">⏱️</span>
+    <span class="note-text">
+      <strong>Timing:</strong> The times listed above are estimates. 
+      There are no strict time limits: you may take as much time as needed for each phase.
+    </span>
+  </div>
+
+  <div class="note-item">
+    <span class="note-icon">📅</span>
+    <span class="note-text">
+    <strong>Submission Deadline:</strong> Please try to complete this round by 
+    <!-- <span style="text-decoration: line-through; color: #888;">Tuesday, November 18</span> →  -->
+    <span style="color: #d32f2f; font-weight: bold;">Thursday, November 27</span> 
+    (we are flexible with this deadline).    </span>
+  </div>
+
+  <div class="note-item">
+    <span class="note-icon">💻</span>
+    <span class="note-text">
+      <strong>Device Requirement:</strong> Please use a <strong>desktop</strong> web browser (<strong>Chrome preferred</strong>) to complete this study.
+    </span>
+  </div>
+
+</div>
+
+<details style="margin-top: 20px;" id="post-submission">
+  <summary style="font-weight: bold; font-size: 16px; cursor: pointer;">
+    What Happens After You Complete the First Round (click to expand)
+  </summary>
+  <ul style="margin-top: 10px;">
+    <li>We will analyze the participant rankings.</li>
+    <li>If unanimous agreement is reached, the study will conclude.</li>
+    <li>If not, we will initiate a second round and share anonymized feedback based on others' rankings.</li>
+    <li>You will have the opportunity to revise and submit a new ranking.</li>
+    <li>If disagreements remain after the second round, we will hold a final discussion round to resolve them.</li>
+    <li>If consensus is still not reached, we will use statistical aggregation to finalize the results.</li>
+    <!-- <li>We may revise or replace code snippets that experts report as too similar to distinguish.</li> -->
+  </ul>
+</details>
+
+<h2>Important Definitions</h2>
+<div style="background: #f0f8ff; border-left: 4px solid #4CAF50; padding: 15px; margin-bottom: 20px;">
+  <p><strong>Code Comprehensibility</strong>: the difficulty a software developer experiences when trying to understand a code snippet. 
+    <!-- This is influenced by the clarity of its structure, naming, and logic. -->
+    <!-- There is no single definition — your expert perspective defines it. -->
+  </p>
+  <p><strong>Code Snippet</strong>: A self-contained Java method selected from a real-world open-source software project. 
+    All 8 snippets in this study are independent of one another and were carefully selected.</p>
+</div>
+
+<p>Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a></p>
+
+<section id="next-step" style="margin-top: 40px; padding: 24px; background-color: #f9f9f9; border-top: 2px solid #ccc; border-radius: 8px;">
+  <h2>Let's Get Started</h2>
+
+  <!-- Login Section -->
+  <form id="login-box" onsubmit="return loginAndProceed(event)" autocomplete="on">
+    <p><strong>Please log into the system to start the study:</strong></p>
+
+    <input type="text" id="username" name="username" placeholder="Username" autocomplete="username"
+          style="padding: 8px; font-size: 16px; width: 300px; border-radius: 5px; border: 1px solid #ccc;"><br><br>
+
+    <input type="password" id="password" name="password" placeholder="Password" autocomplete="current-password"
+          style="padding: 8px; font-size: 16px; width: 300px; border-radius: 5px; border: 1px solid #ccc;"><br>
+
+    <p id="login-error" style="color: red; display: none;"></p>
+
+    <p style="margin-top: 20px;">
+      <button type="submit">Login and Start Phase 1</button>
+    </p>
+  </form>
+
+  <!-- Post-login Proceed Button -->
+  <div id="proceed-box" style="display: none; margin-top: 40px;">
+    <p>Welcome back, <span id="participant-display-name" style="font-weight: bold;"></span>!</p>
+    <button onclick="proceedToPhase1()">Proceed to Phase 1</button>
+    <div style="margin-top: 20px;">
+      <a href="#" onclick="logout()" style="cursor: pointer; text-decoration: underline;">Logout</a>
+    </div>
+  </div>
+
+</section>
+
+
+</div>
+
+
+<footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 14px; color: #666;">
+  Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+</footer>
+
+
+<script>
+  function setLocalStorage(name, value, days = 30) {
+    localStorage.setItem(name, encodeURIComponent(value));
+  }
+  
+  async function loginAndProceed(event) {
+    event.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errorDiv = document.getElementById('login-error');
+    errorDiv.style.display = 'none';
+
+    if (!username || !password) {
+      errorDiv.textContent = "Please enter both username and password.";
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    try {
+      const response = await fetch('/get_snippet_order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (!response.ok) throw new Error("Invalid credentials");
+
+      const data = await response.json();
+      const { participantName, snippetOrder } = data;
+
+      if (!participantName || !snippetOrder) throw new Error("Incomplete response");
+
+      sessionStorage.setItem('participantName', participantName);
+      sessionStorage.setItem('snippetOrder', JSON.stringify(snippetOrder));
+      sessionStorage.setItem('username', username);
+
+      localStorage.setItem('participantName', participantName);
+      localStorage.setItem('snippetOrder', JSON.stringify(snippetOrder));
+      localStorage.setItem('username', username);
+      loadPreviousData()
+        .then(() => {
+          window.location.href = 'phase1.html'; // only after data is fully loaded
+        })
+        .catch(() => {
+          alert("⚠️ Could not load previous data. Redirecting anyway.");
+          window.location.href = 'phase1.html';
+        });
+    } catch (err) {
+      console.error(err);
+      errorDiv.textContent = "Login failed. Please check your credentials.";
+      errorDiv.style.display = 'block';
+    }
+  }
+
+function loadPreviousData() {
+  const username = sessionStorage.getItem('username') || localStorage.getItem('username');
+  if (!username) {
+    alert("Username not found.");
+    return Promise.reject("No username");
+  }
+
+  return fetch('/get_latest_submission', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username })
+  })
+    .then(res => res.ok ? res.json() : Promise.reject("Not found"))
+    .then(data => {
+      console.log("Loaded data:", data);
+
+      // 🧩 Phase 1
+      Object.entries(data.phase1 || {}).forEach(([key, value]) => {
+        const i = key.replace('snippet', '');
+        const summary = value.summary || '';
+        const comp = value.comprehensibility || '';
+        sessionStorage.setItem(`summary${i}`, summary);
+        sessionStorage.setItem(`compSummary${i}`, comp);
+        localStorage.setItem(`summary${i}`, summary);
+        localStorage.setItem(`compSummary${i}`, comp);
+      });
+
+      // 🧩 Phase 2 (ranking)
+      if (data.phase2) {
+        const p2 = JSON.stringify(data.phase2);
+        sessionStorage.setItem('phase3_ranking', p2);
+        localStorage.setItem('phase3_ranking', p2);
+      }
+
+      // 🧩 Phase 3 (reasoning)
+      if (data.phase3) {
+        const p3 = JSON.stringify(data.phase3);
+        sessionStorage.setItem('phase3_reasoning', p3);
+        localStorage.setItem('phase3_reasoning', p3);
+      }
+
+      // 🧩 Phase 4 (familiarity)
+      if (data.phase4) {
+        const p4 = JSON.stringify(data.phase4);
+        localStorage.setItem('csKnowledgeSurveyAnswers', p4);
+        sessionStorage.setItem('csKnowledgeSurveyAnswers', p4);
+      }
+
+      // 🧩 Participant info
+      if (data.participantName) {
+        sessionStorage.setItem('participantName', data.participantName);
+        localStorage.setItem('participantName', data.participantName);
+      }
+
+      // 🧩 Snippet order
+      if (data.snippetOrder) {
+        const order = JSON.stringify(data.snippetOrder);
+        sessionStorage.setItem('snippetOrder', order);
+        localStorage.setItem('snippetOrder', order);
+      }
+
+      // 🧩 Completion flags
+      const flags = ['phase1Complete', 'phase2Complete', 'phase3Complete', 'phase4Complete', 'codeTheme', 'submitted'];
+      flags.forEach(flag => {
+        if (flag in data) {
+          sessionStorage.setItem(flag, data[flag]);
+          localStorage.setItem(flag, data[flag]);
+        }
+      });
+
+      console.log("Previous data loaded successfully (including Phase 4).");
+    })
+    .catch(err => console.warn("Could not load previous submission:", err));
+}
+
+
+
+  </script>
+  
+
+<script>
+function getLocalStorage(name) {
+  const value = localStorage.getItem(name);
+  return value ? decodeURIComponent(value) : null;
+}
+
+
+  function isLoggedIn() {
+    const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+    const order = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+    return name && order;
+  }
+
+  window.onload = () => {
+    if (isLoggedIn()) {
+      const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+      document.getElementById('login-box').style.display = 'none';
+      document.getElementById('proceed-box').style.display = 'block';
+      document.getElementById('participant-display-name').textContent = name;
+    }
+  };
+
+  function proceedToPhase1() {
+    window.location.href = 'phase1.html';
+  }
+</script>
+
+<script>
+  // Clear storage and redirect to login
+function logout() {
+  sessionStorage.clear();
+  localStorage.clear();
+
+  // Clear all cookies
+  document.cookie.split(";").forEach(cookie => {
+    const name = cookie.split("=")[0].trim();
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

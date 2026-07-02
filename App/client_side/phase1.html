@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Phase 1: Understanding the Code Snippets</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .instructions {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    pre {
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* Code block themes */
+    #code {
+      background-color: #2d2d2d;
+      color: #ccc;
+      padding: 20px;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      overflow-x: auto;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .light-mode #code {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    .light-mode body {
+      background-color: #ffffff;
+      color: #222;
+    }
+
+    .light-mode textarea {
+      background-color: #ffffff;
+      color: #000;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 15px;
+      font-size: 14px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #bbb;
+      resize: vertical;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button[disabled] {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+
+    /* Basic syntax highlighting classes */
+    .keyword {
+      color: #0000ff;
+      font-weight: bold;
+    }
+
+    .type {
+      color: #007070;
+    }
+
+    .function {
+      color: #7928a1;
+      font-weight: bold;
+    }
+
+    .literal {
+      color: #009999;
+    }
+
+    .string {
+      color: #a31515;
+    }
+
+    .comment {
+      color: #6a9955;
+      font-style: italic;
+    }
+
+    .number {
+      color: #098658;
+    }
+
+    /* Dark mode overrides */
+    .dark-mode .keyword {
+      color: #82aaff;
+    }
+
+    .dark-mode .type {
+      color: #89ddff;
+    }
+
+    .dark-mode .function {
+      color: #c792ea;
+    }
+
+    .dark-mode .literal {
+      color: #ffcb6b;
+    }
+
+    .dark-mode .string {
+      color: #c3e88d;
+    }
+
+    .dark-mode .comment {
+      color: #7f848e;
+    }
+
+    .dark-mode .number {
+      color: #f78c6c;
+    }
+
+    #continueBtn {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #4caf50;
+      animation: glowPulse 1.5s infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 10px #4caf50;
+      }
+
+      100% {
+        box-shadow: 0 0 20px #4caf50, 0 0 30px #4caf50;
+      }
+    }
+
+    #continueBtn:hover {
+      background-color: #45a049;
+    }
+
+    /*for status bar*/
+    .status-bar {
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .phase-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .phase-link:hover:not(.disabled) {
+      background-color: #4caf50;
+    }
+
+    .phase-link.active {
+      background-color: #4caf50;
+    }
+
+    .phase-link.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    a {
+      color: #4caf50;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .code-container {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      background-color: inherit;
+      color: inherit;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 15px;
+      line-height: 1.5;
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    .line-numbers {
+      text-align: right;
+      padding-right: 10px;
+      user-select: none;
+      color: #888;
+    }
+
+    .code-content {
+      white-space: pre;
+    }
+
+    /* Modal styles */
+    #javadocModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+    }
+
+    #javadocModalContent {
+      position: relative;
+      width: 80%;
+      height: 80%;
+      margin: 5% auto;
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    #javadocModalContent button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    #javadocFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* New style for standard Java methods */
+    .standard-method {
+      font-weight: bold;
+      text-decoration: underline dotted;
+      cursor: pointer;
+    }
+
+    #javadocModalHeader {
+      background: #f0f0f0;
+      padding: 6px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #javadocModalHeader button {
+      background-color: transparent;
+      border: 2px solid #4caf50;
+      color: #4caf50;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .underline-dotted-pointer {
+      text-decoration: underline dotted;
+      cursor: pointer;
+    }
+
+    a.underline-dotted-pointer {
+      text-decoration: underline dotted !important;
+      cursor: pointer !important;
+      color: inherit !important;
+      /* or set to your preferred color */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="status-bar">
+    <div class="user-dropdown" style="position: relative">
+      <div style="padding: 8px 12px; color: gainsboro; font-weight: bold">
+        <span id="user-info"></span> (<button onclick="logout()" style="
+              color: white;
+              background: none;
+              border: none;
+              cursor: pointer;
+              margin: 0;
+              padding: 0;
+            ">
+          🚪 Logout</button>)
+      </div>
+    </div>
+    <a href="index.html" class="phase-link" id="link-home">🏠 Home</a>
+    <a href="phase1.html" class="phase-link" id="link-phase1">Phase 1</a>
+    <a href="phase2.html" class="phase-link disabled" id="link-phase2">Phase 2</a>
+    <a href="phase3.html" class="phase-link disabled" id="link-phase3">Phase 3</a>
+    <a href="phase4.html" class="phase-link disabled" id="link-phase4">Phase 4</a>
+    <a href="review.html" class="phase-link disabled" id="link-review">Review & Submit</a>
+  </div>
+
+  <div id="instructions-box" style="
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 80px;
+      ">
+    <div style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        ">
+      <h2 style="margin: 0">Phase 1: Understanding the Code Snippets</h2>
+      <button onclick="toggleInstructions()" style="
+            padding: 6px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            background-color: #ffffff; border: none; cursor: pointer; color: #222; border: solid;
+          ">
+        Hide
+      </button>
+    </div>
+
+    <div id="instructions-content" style="margin-top: 15px">
+      <p>
+        In this phase, you will review and understand each of the 8 code
+        snippets. For each snippet:
+      </p>
+      <ol>
+        <li>
+          <strong>Summarize the snippet's functionality:</strong> Briefly
+          describe the task that the code is trying to achieve.
+          <!-- <em>Example:</em> <span style="color:#444">“This method takes two numbers as input and returns their average.”</span></li> -->
+        </li>
+
+        <li style="margin-top: 8px">
+          <strong>Assess the snippet's comprehensibility:</strong> Reflect on
+          how you understood the snippet and what features made it easy or
+          difficult to understand.
+          <!-- <em>Example:</em> <span style="color:#444">“The snippet was easy to follow due to its clear method name and a direct if-return structure. However, the use of a ternary operator inside a return statement added some cognitive load, and the absence of braces around conditionals made it harder to visually parse.”</span></li> -->
+        </li>
+      </ol>
+
+      <p>
+        <strong>Please complete this phase using your own judgment</strong>.
+        <span style="color: red"><strong>Do not consult with anyone else or use generative AI tools
+            (ChatGPT, GitHub Copilot, etc.), search engines, or external
+            websites</strong></span>. Your judgment is essential to the validity of our study.
+      </p>
+    </div>
+  </div>
+
+  <div id="snippet-container" style="display: flex; gap: 40px; align-items: flex-start">
+    <!-- LEFT: Snippet Display -->
+    <div id="snippet-box" style="
+          flex: 1;
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        ">
+      <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ccc;
+          ">
+        <h3 id="snippet-title" style="margin: 0">Snippet Title</h3>
+        <button onclick="toggleTheme()" id="theme-toggle" style="
+              padding: 6px 12px;
+              border-radius: 5px;
+              border: none;
+              background-color: #333;
+              color: white;
+              cursor: pointer;
+            ">
+          Switch to Light Mode
+        </button>
+      </div>
+      <div class="code-container" id="code">
+        <div class="line-numbers" id="line-numbers"></div>
+        <div class="code-content" id="code-content"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Questions -->
+    <div id="question-box" style="flex: 1">
+      <label for="summary"><strong>What does this code snippet do? Briefly describe its main
+          functionality.</strong></label>
+      <textarea id="summary" oninput="saveSummary()"></textarea>
+
+      <label for="compSummary"><strong>How did you assess this snippet's comprehensibility? What features
+          made it easy or hard to understand? Provide a brief
+          explanation.</strong></label>
+      <textarea id="compSummary" oninput="saveSummary()"></textarea>
+
+      <div class="buttons">
+        <button id="prev" onclick="prevSnippet()">Previous</button>
+        <button id="next" onclick="nextSnippet()">Next</button>
+        <p></p>
+        <button id="continueBtn" onclick="goToPhase2()" style="display: none; margin-top: 10px">
+          Continue to Phase 2
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaDoc Modal -->
+  <div id="javadocModal" style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+      ">
+    <div style="
+          position: relative;
+          width: 85%;
+          height: 85%;
+          margin: 3% auto;
+          background: white;
+          border-radius: 8px;
+          display: flex;
+          flex-direction: column;
+        ">
+      <div id="javadocModalHeader">
+        <button onclick="javadocFrameReload()" style="font-size: 16px; padding: 2px 6px">
+          🔁 Reload
+        </button>
+        <button style="margin-left: auto" onclick="closeJavadocModal()">
+          X
+        </button>
+      </div>
+      <iframe id="javadocFrame" src="" style="flex-grow: 1; border: none"></iframe>
+    </div>
+  </div>
+
+  <script src="js/dataExpert.js"></script>
+  <script src="js/common.js"></script>
+
+  <script>
+    // Returns existing or creates a new randomized order of indices
+    function getOrCreateSnippetOrder(length) {
+      const key = "snippetOrder";
+
+      // Try to load from sessionStorage or cookie
+      let stored = sessionStorage.getItem(key) || localStorage.getItem(key);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length === length)
+            return parsed;
+        } catch { }
+      }
+
+      // Generate new shuffled order of indices
+      const order = Array.from({ length }, (_, i) => i);
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+
+      // Store in sessionStorage and cookie
+      const serialized = JSON.stringify(order);
+      sessionStorage.setItem(key, serialized);
+      localStorage.setItem(key, serialized);
+      return order;
+    }
+
+    const originalSnippets = [...snippets]; // Clone BEFORE mutation
+    const order = getOrCreateSnippetOrder(originalSnippets.length); // 1-based [1..8]
+
+    const shuffled = order.map((i) => originalSnippets[i - 1]); // ✅ Convert to 0-based
+
+    snippets.length = 0;
+    snippets.push(...shuffled);
+
+    shuffled.forEach((snippet, newIndex) => {
+      snippet.id = newIndex + 1; // Maintain new 1-based IDs
+      snippet.title = `Snippet ${newIndex + 1}`; // Display title
+    });
+
+    console.log(
+      "Final snippet order (titles):",
+      snippets.map((s) => s.title)
+    );
+    console.log(
+      "Final snippet order (ids):",
+      snippets.map((s) => s.id)
+    );
+    console.log(
+      "Server snippet order (1-based):",
+      order.map((i) => `Snippet ${i}`)
+    );
+  </script>
+
+  <script>
+
+
+    function isComplete(key) {
+      return (
+        sessionStorage.getItem(key) === "true" ||
+        localStorage.getItem(key) === "true"
+      );
+    }
+
+    // Unlock links based on progress
+    if (isComplete("phase1Complete")) {
+      document.getElementById("link-phase2").classList.remove("disabled");
+    }
+    if (isComplete("phase2Complete")) {
+      document.getElementById("link-phase3").classList.remove("disabled");
+    }
+    if (isComplete("phase3Complete")) {
+      document.getElementById("link-phase4").classList.remove("disabled");
+    }
+    if (isComplete("phase4Complete")) {
+      document.getElementById("link-review").classList.remove("disabled");
+    }
+
+
+    // Highlight current phase
+    const current = window.location.pathname.split("/").pop();
+    if (current.includes("phase1"))
+      document.getElementById("link-phase1").classList.add("active");
+    else if (current.includes("phase2"))
+      document.getElementById("link-phase2").classList.add("active");
+    else if (current.includes("phase3"))
+      document.getElementById("link-phase3").classList.add("active");
+    else if (current.includes("review"))
+      document.getElementById("link-review").classList.add("active");
+  </script>
+
+  <script>
+    const TOTAL_SNIPPETS = 8;
+    let currentSnippet = 1;
+
+    function loadSnippet(snippetNumber) {
+      const snippet = snippets[snippetNumber - 1];
+      document.getElementById("snippet-title").innerText = snippet.methodName;
+      const codeLines = snippet.code.trim().split("\n");
+      document.getElementById("code-content").innerHTML =
+        codeLines.join("\n");
+
+      const lineNumbersHtml = codeLines.map((_, i) => i + 1).join("<br>");
+      document.getElementById("line-numbers").innerHTML = lineNumbersHtml;
+
+      const keySummary = `summary${snippetNumber}`;
+      const keycompSummary = `compSummary${snippetNumber}`;
+      let savedSummary = sessionStorage.getItem(keySummary);
+      let savedcompSummary = sessionStorage.getItem(keycompSummary);
+
+      if (!savedSummary)
+        savedSummary = localStorage.getItem(keySummary) || "";
+      if (!savedcompSummary)
+        savedcompSummary = localStorage.getItem(keycompSummary) || "";
+
+      document.getElementById("summary").value = savedSummary;
+      document.getElementById("compSummary").value = savedcompSummary;
+    }
+
+    function saveSummary() {
+      const summary = document.getElementById("summary").value.trim();
+      const compSummary = document.getElementById("compSummary").value.trim();
+
+      const keySummary = `summary${currentSnippet}`;
+      const keyCompSummary = `compSummary${currentSnippet}`;
+
+      // Save to sessionStorage
+      sessionStorage.setItem(keySummary, summary);
+      sessionStorage.setItem(keyCompSummary, compSummary);
+      localStorage.setItem(keySummary, summary);
+      localStorage.setItem(keyCompSummary, compSummary);
+
+      if (areAllSnippetsFilled()) {
+        document.getElementById("continueBtn").style.display = "inline-block";
+        sessionStorage.setItem("phase1Complete", "true");
+        localStorage.setItem("phase1Complete", "true");
+
+        //update status bar if needed
+        if (isComplete("phase1Complete"))
+          document.getElementById("link-phase2").classList.remove("disabled");
+      } else {
+        document.getElementById("continueBtn").style.display = "none";
+        sessionStorage.setItem("phase1Complete", "false");
+        localStorage.setItem("phase1Complete", "false");
+        document.getElementById("link-phase2").classList.add("disabled");
+        document.getElementById("link-phase3").classList.add("disabled");
+        document.getElementById("link-review").classList.add("disabled");
+      }
+    }
+
+    function saveSummarySilentForPrev() {
+      saveSummary();
+    }
+
+    function nextSnippet() {
+      if (!validateCurrentSnippetInputs()) return;
+
+      saveSummary();
+
+      if (currentSnippet < TOTAL_SNIPPETS) {
+        currentSnippet++;
+        loadSnippet(currentSnippet);
+        updateButtons();
+      }
+    }
+
+    function prevSnippet() {
+      if (currentSnippet > 1) {
+        saveSummarySilentForPrev();
+        currentSnippet--;
+        loadSnippet(currentSnippet);
+        updateButtons();
+      } else {
+        // Prevent any default behavior like navigating back
+        return false;
+      }
+    }
+
+    function updateButtons() {
+      document.getElementById("prev").disabled = currentSnippet === 1;
+      document.getElementById("next").disabled =
+        currentSnippet === TOTAL_SNIPPETS;
+    }
+
+    function submitAll() {
+      saveSummary(); // save the current snippet
+      const allSummaries = {};
+
+      // Pull all saved snippets from session or cookie
+      for (let i = 1; i <= TOTAL_SNIPPETS; i++) {
+        const key = `summary${i}`;
+        const sessionVal = sessionStorage.getItem(key);
+        const localVal = localStorage.getItem(key);
+        allSummaries[key] = sessionVal || localVal || "";
+      }
+
+      fetch("/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(allSummaries),
+      })
+        .then((response) => {
+          if (response.ok) {
+            showSubmissionModal(
+              "✅ Summaries submitted successfully. Click “Continue to Phase 2” to proceed.\nYou may resubmit before the deadline if you change your mind about any part of your response."
+            );
+            document.getElementById("continueBtn").style.display =
+              "inline-block";
+            sessionStorage.setItem("phase1_submitted", "true");
+            localStorage.setItem("phase1_submitted", "true");
+          } else {
+            showSubmissionModal("❌ Submission failed. Please try again.");
+          }
+        })
+        .catch((error) => {
+          console.error("Submission error:", error);
+          showSubmissionModal("⚠️ Error occurred during submission.");
+        });
+    }
+  </script>
+
+  <div id="submission-modal" style="
+        display: none;
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #e6fff2;
+        color: #003d2f;
+        border: 1px solid #7fdcbf;
+        padding: 20px;
+        border-radius: 10px;
+        width: 440px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      ">
+    <p id="submission-message" style="font-weight: bold">
+      Phase 1 submitted successfully, please
+    </p>
+    <button onclick="hideSubmissionModal()" style="
+          margin-top: 15px;
+          padding: 8px 14px;
+          background-color: #4caf50;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        ">
+      OK
+    </button>
+  </div>
+
+  <div id="review-modal" style="
+        display: none;
+        position: fixed;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-height: 80%;
+        overflow-y: auto;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 20px 20px 10px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1002;
+        font-family: 'Segoe UI', sans-serif;
+      ">
+    <div style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 15px;
+        ">
+      <h3 style="margin: 0">Review Your Summaries</h3>
+      <span onclick="document.getElementById('review-modal').style.display='none'"
+        style="cursor: pointer; font-size: 20px; font-weight: bold">&times;</span>
+    </div>
+
+    <div id="review-content" style="
+          white-space: pre-wrap;
+          margin-bottom: 20px;
+          font-size: 14px;
+          color: #333;
+        "></div>
+
+    <button onclick="submitAndCloseModal()">Submit Now</button>
+    <button onclick="document.getElementById('review-modal').style.display='none'" style="margin-left: 10px">
+      Cancel
+    </button>
+  </div>
+
+  <div id="validation-modal" style="
+        display: none;
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff0f0;
+        color: #660000;
+        border: 1px solid #ff9999;
+        padding: 20px;
+        border-radius: 10px;
+        width: 440px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1002;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      ">
+    <p id="validation-message" style="font-weight: bold"></p>
+    <button onclick="document.getElementById('validation-modal').style.display = 'none';" style="
+          margin-top: 15px;
+          padding: 8px 14px;
+          background-color: #ff9999;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        ">
+      OK
+    </button>
+  </div>
+
+  <script>
+    function showSubmissionModal(message) {
+      document.getElementById("submission-message").innerText = message;
+      document.getElementById("submission-modal").style.display = "block";
+    }
+
+    function hideSubmissionModal() {
+      document.getElementById("submission-modal").style.display = "none";
+    }
+  </script>
+
+  <script>
+    function toggleInstructions() {
+      const content = document.getElementById("instructions-content");
+      const button = event.target;
+
+      if (content.style.display === "none") {
+        content.style.display = "block";
+        button.textContent = "Hide";
+      } else {
+        content.style.display = "none";
+        button.textContent = "Show";
+      }
+    }
+  </script>
+
+  <script>
+    function applyTheme() {
+      const theme = localStorage.getItem("codeTheme") || "light";
+
+      // Clear both classes first
+      document.body.classList.remove("light-mode", "dark-mode");
+
+      if (theme === "dark") {
+        document.body.classList.add("dark-mode");
+        const btn = document.getElementById("theme-toggle");
+        if (btn) btn.textContent = "Switch to Light Mode";
+      } else {
+        document.body.classList.add("light-mode");
+        const btn = document.getElementById("theme-toggle");
+        if (btn) btn.textContent = "Switch to Dark Mode";
+      }
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const isLight = body.classList.contains("light-mode");
+
+      if (isLight) {
+        body.classList.remove("light-mode");
+        body.classList.add("dark-mode");
+        localStorage.setItem("codeTheme", "dark"); // Use unified key
+        document.getElementById("theme-toggle").textContent =
+          "Switch to Light Mode";
+      } else {
+        body.classList.add("light-mode");
+        body.classList.remove("dark-mode");
+        localStorage.setItem("codeTheme", "light"); // Use unified key
+        document.getElementById("theme-toggle").textContent =
+          "Switch to Dark Mode";
+      }
+    }
+
+    window.onload = function () {
+      displayUserName();
+      applyTheme();
+      loadSnippet(currentSnippet);
+      updateButtons();
+
+      // Unlock and highlight status bar
+      if (isComplete("phase1Complete"))
+        document.getElementById("link-phase2").classList.remove("disabled");
+      if (isComplete("phase2Complete"))
+        document.getElementById("link-phase3").classList.remove("disabled");
+      if (isComplete("phase3Complete"))
+        document.getElementById("link-phase4").classList.remove("disabled");
+      if (isComplete("phase4Complete"))
+        document.getElementById("link-review").classList.remove("disabled");
+
+      const current = window.location.pathname.split("/").pop();
+      if (current.includes("phase1"))
+        document.getElementById("link-phase1").classList.add("active");
+      else if (current.includes("phase2"))
+        document.getElementById("link-phase2").classList.add("active");
+      else if (current.includes("phase3"))
+        document.getElementById("link-phase3").classList.add("active");
+      else if (current.includes("review"))
+        document.getElementById("link-review").classList.add("active");
+
+      if (
+        sessionStorage.getItem("phase1Complete") === "true" ||
+        localStorage.getItem("phase1Complete") === "true"
+      ) {
+        document.getElementById("continueBtn").style.display = "inline-block";
+      }
+
+      setInterval(() => {
+        try {
+          saveToServer();
+          console.log("[Auto-Save] Progress saved to server.");
+        } catch (e) {
+          console.warn("[Auto-Save] Failed to save:", e);
+        }
+      }, 120000); // every 2 minutes
+    };
+  </script>
+
+  <script>
+    function validateCurrentSnippetInputs() {
+      const summary = document.getElementById("summary").value.trim();
+      const compSummary = document.getElementById("compSummary").value.trim();
+
+      let messages = [];
+
+      if (!summary)
+        messages.push(
+          `• Please enter a summary for Snippet ${currentSnippet}.`
+        );
+      if (!compSummary)
+        messages.push(
+          `• Please enter comprehensibility summary for Snippet ${currentSnippet}.`
+        );
+
+      if (messages.length > 0) {
+        showValidationMessage(
+          "⚠️ Missing Information:\n\n" + messages.join("\n")
+        );
+        return false;
+      }
+
+      return true;
+    }
+  </script>
+  <script>
+    function goToPhase2() {
+      // Redirect
+      window.location.href = "phase2.html";
+    }
+  </script>
+
+  <!-- <script>
+  function openReviewModal() {
+  saveSummary();
+
+  let content = `Name: ${name}\n\n`;
+  for (let i = 1; i <= TOTAL_SNIPPETS; i++) {
+    const key = `summary${i}`;
+    const val = sessionStorage.getItem(key) || decodeURIComponent(localStorage.getItem(key) || '');
+    content += `Snippet ${i}:\n${val.trim() || "(empty)"}\n\n`;
+  }
+
+  document.getElementById('review-content').innerText = content;
+  document.getElementById('review-modal').style.display = 'block';
+}
+
+function submitAndCloseModal() {
+  document.getElementById('review-modal').style.display = 'none';
+  submitAll();
+}
+
+</script> -->
+
+  <script>
+    function reviewAndSubmit() {
+      saveSummary();
+
+      let missing = [];
+      let reviewText = `Name: ${name}\n\n`;
+
+      for (let i = 1; i <= TOTAL_SNIPPETS; i++) {
+        const key = `summary${i}`;
+        const text =
+          sessionStorage.getItem(key) || localStorage.getItem(key) || "";
+
+        if (!text.trim()) {
+          missing.push(`Snippet ${i}`);
+        } else {
+          reviewText += `Snippet ${i} Summary:\n${text.trim()}\n\n`;
+        }
+      }
+
+      if (missing.length > 0) {
+        showValidationMessage(
+          `Please complete summaries for: ${missing.join(", ")}`
+        );
+        return;
+      }
+
+      document.getElementById("review-content").innerText = reviewText;
+      document.getElementById("review-modal").style.display = "block";
+    }
+
+    function showValidationMessage(msg) {
+      document.getElementById("validation-message").innerText = msg;
+      document.getElementById("validation-modal").style.display = "block";
+    }
+  </script>
+
+  <script>
+    function areAllSnippetsFilled() {
+      for (let i = 1; i <= 8; i++) {
+        const summaryKey = `summary${i}`;
+        const compKey = `compSummary${i}`;
+
+        const summary =
+          sessionStorage.getItem(summaryKey) ||
+          localStorage.getItem(summaryKey) ||
+          "";
+        const compSummary =
+          sessionStorage.getItem(compKey) ||
+          localStorage.getItem(compKey) ||
+          "";
+
+        if (!summary.trim() || !compSummary.trim()) {
+          return false;
+        }
+      }
+      return true;
+    }
+  </script>
+
+  <script>
+    function displayUserName() {
+      const name =
+        sessionStorage.getItem("participantName") ||
+        localStorage.getItem("participantName");
+      if (name) {
+        document.getElementById("user-info").textContent = `👤 ${name}`;
+      }
+    }
+  </script>
+
+  <script>
+    // Toggle logout menu visibility
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   const userInfo = document.getElementById('user-info');
+    //   const logoutMenu = document.getElementById('logout-menu');
+
+    //   userInfo.addEventListener('click', () => {
+    //     logoutMenu.style.display = logoutMenu.style.display === 'block' ? 'none' : 'block';
+    //   });
+
+    //   // Hide the menu if clicked outside
+    //   document.addEventListener('click', (event) => {
+    //     if (!event.target.closest('.user-dropdown')) {
+    //       logoutMenu.style.display = 'none';
+    //     }
+    //   });
+    // });
+
+  </script>
+
+
+
+  <footer style="
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #ccc;
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+      ">
+    Please contact us if you have any questions or issues:
+    <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+  </footer>
+</body>
+
+<script>
+  function saveToServer() {
+    saveSummary();
+    const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName') || 'Anonymous';
+    const username = localStorage.getItem('username') || 'anonymous';
+
+    // Phase 1
+    const phase1 = {};
+    for (let i = 1; i <= 8; i++) {
+      const summary = sessionStorage.getItem(`summary${i}`) || localStorage.getItem(`summary${i}`) || '';
+      const comp = sessionStorage.getItem(`compSummary${i}`) || localStorage.getItem(`compSummary${i}`) || '';
+      phase1[`snippet${i}`] = { summary, comprehensibility: comp };
+    }
+
+    // Phase 2 & 3
+    let phase2 = {}, phase3 = {};
+    try {
+      phase2 = JSON.parse(sessionStorage.getItem('phase3_ranking') || localStorage.getItem('phase3_ranking') || '{}');
+      phase3 = JSON.parse(sessionStorage.getItem('phase3_reasoning') || localStorage.getItem('phase3_reasoning') || '{}');
+    } catch {}
+
+    // Phase 4
+    const phase4 = JSON.parse(localStorage.getItem('csKnowledgeSurveyAnswers') || '{}');
+
+    const flags = {
+      phase1Complete: sessionStorage.getItem('phase1Complete') || localStorage.getItem('phase1Complete') || 'false',
+      phase2Complete: sessionStorage.getItem('phase2Complete') || localStorage.getItem('phase2Complete') || 'false',
+      phase3Complete: sessionStorage.getItem('phase3Complete') || localStorage.getItem('phase3Complete') || 'false',
+      phase4Complete: localStorage.getItem('phase4Complete') || 'false',
+      codeTheme: localStorage.getItem('codeTheme') || 'light',
+      submitted: '0',
+    };
+
+    const payload = { username, participantName: name, phase1, phase2, phase3, phase4, ...flags };
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    navigator.sendBeacon('/submit_final', blob);
+  }
+</script>
+
+<script>
+    window.addEventListener('beforeunload', function (e) {
+    saveToServer();
+  });
+</script>
+
+</html>

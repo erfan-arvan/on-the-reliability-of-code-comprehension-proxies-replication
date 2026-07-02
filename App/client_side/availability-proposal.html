@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal Defense Availability</title>
+
+<style>
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+
+  /* responsive font */
+  font-size: clamp(16px, 1.5vw, 24px);
+}
+
+/* Main container */
+.container {
+  width: 90%;
+  margin: 40px auto;
+}
+
+/* Titles */
+h1 {
+  margin-bottom: 5px;
+  font-size: clamp(22px, 2.5vw, 32px);
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Card style */
+.card {
+  background: white;
+  padding: clamp(15px, 2vw, 20px);
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+/* Instructions */
+.instructions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(16px, 2vw, 24px);
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.instructions-content ul {
+  padding-left: 20px;
+  line-height: 1.6;
+  font-size: clamp(16px, 2vw, 26px);
+}
+
+/* Tags */
+.tag {
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: white;
+  font-size: clamp(14px, 1.8vw, 22px);
+}
+
+.yes-tag { background: #4CAF50; }
+.maybe-tag { background: orange; }
+.no-tag { background: #e74c3c; }
+
+/* Table wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Table */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: clamp(14px, 1.5vw, 22px);
+  min-width: 800px; /* prevents crushing on mobile */
+}
+
+th, td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: clamp(6px, 1vw, 10px);
+}
+
+th {
+  background: #f0f0f0;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+td {
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 60px;
+}
+
+td:hover {
+  background: #eef3ff;
+}
+
+/* Slot colors */
+.slot.yes { background: #4CAF50; color: white; }
+.slot.maybe { background: orange; color: white; }
+.slot.no { background: #e74c3c; color: white; }
+
+/* Button */
+.actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: clamp(10px, 1.5vw, 14px) clamp(20px, 2vw, 30px);
+  font-size: clamp(16px, 2vw, 26px);
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+button:hover {
+  background: #43a047;
+}
+
+/* Email */
+#email-display {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background: white;
+  margin: 10% auto;
+  padding: clamp(20px, 3vw, 30px);
+  border-radius: 12px;
+  width: 500px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+#modal-close {
+  float: right;
+  font-size: clamp(20px, 3vw, 28px);
+  cursor: pointer;
+  color: #888;
+}
+
+#modal-close:hover {
+  color: #000;
+}
+
+.modal-icon {
+  font-size: clamp(40px, 6vw, 60px);
+  margin-bottom: 10px;
+}
+
+#modal-title {
+  margin: 10px 0;
+  font-size: clamp(22px, 3vw, 40px);
+}
+
+#modal-message {
+  font-size: clamp(16px, 2.5vw, 28px);
+  line-height: 1.5;
+  color: #444;
+}
+
+/* Footer */
+footer {
+  font-size: clamp(14px, 1.8vw, 20px);
+}
+
+/* ========================= */
+/* 📱 MOBILE SPECIFIC FIXES */
+/* ========================= */
+@media (max-width: 768px) {
+
+  .container {
+    width: 95%;
+    margin: 20px auto;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .instructions-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  td {
+    padding: 10px;
+  }
+
+  .modal-content {
+    margin: 20% auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Proposal Defense Availability</h1>
+  <h1 style="margin-top: 20px; margin-bottom: 20px;">Email: <span id="email-display"></span></h1>
+
+  <!-- Instructions -->
+  <div class="card">
+    <div class="instructions-header">
+      <h3>Instructions</h3>
+      <button onclick="toggleInstructions()">Hide</button>
+    </div>
+
+    <div id="instructions-content" class="instructions-content">
+      <ul>
+        <li>
+        We need to find a 2-hour time slot for my proposal defense. Since your availability may not line up with predefined 2-hour slots, please mark your availability in 30-minute slots (I will then try to find a suitable 2-hour window based on these).
+        </li>
+        <li>
+          Each slot represents a 30-minute interval (e.g., 8:00 = 8:00–8:30 AM).
+        </li>
+        <li>
+          Empty slots will be treated as <span class="tag no-tag">No</span>.
+        </li>
+        <li>
+        If you are not free but could adjust, mark it as <span class="tag maybe-tag">Maybe</span>, as this helps me find a time that works for everyone.
+        </li>
+        <li>
+          Click once for <span class="tag yes-tag">Yes</span>, again for <span class="tag maybe-tag">Maybe</span>, and again for <span class="tag no-tag">No</span>.
+        </li>
+    <li>
+    You can come back using the same link to update your availability. Please try to finalize your schedule within a week (by Friday the 10th).
+    </li>
+
+    <li>
+    Don’t forget to click the Save button to save your availability.
+    </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card table-wrapper">
+    <table id="table"></table>
+  </div>
+
+  <div class="actions">
+    <button onclick="save()">Save Availability</button>
+  </div>
+
+</div>
+
+<script>
+const days = [
+  "Monday May 4",
+  "Tuesday May 5",
+  "Wednesday May 6",
+  "Thursday May 7",
+  "Friday May 8",
+  "Monday May 11",
+  "Tuesday May 12",
+  "Wednesday May 13"
+];
+
+const slots = [];
+for (let h = 8; h < 18; h++) {
+  slots.push(`${h}:00`);
+  slots.push(`${h}:30`);
+}
+// slots.push("16:30");
+
+let state = {};
+
+// Email
+const params = new URLSearchParams(window.location.search);
+const email = params.get("email");
+document.getElementById("email-display").innerText = email;
+
+// Build table
+function buildTable() {
+  const table = document.getElementById("table");
+
+  let html = "<tr><th>Day / Time</th>";
+  slots.forEach(s => html += `<th>${s}</th>`);
+  html += "</tr>";
+
+  days.forEach(day => {
+    html += `<tr><th>${day}</th>`;
+    slots.forEach(slot => {
+      html += `<td class="slot" data-day="${day}" data-slot="${slot}" title="${day} at ${slot}"></td>`;
+    });
+    html += "</tr>";
+  });
+
+  table.innerHTML = html;
+
+  document.querySelectorAll(".slot").forEach(cell => {
+    cell.onclick = () => toggle(cell);
+  });
+}
+
+// Toggle
+function toggle(cell) {
+  const day = cell.dataset.day;
+  const slot = cell.dataset.slot;
+
+  if (!state[day]) state[day] = {};
+
+  const current = state[day][slot] || 0;
+  const next = (current + 1) % 4;
+
+  state[day][slot] = next;
+  renderCell(cell, next);
+}
+
+function renderCell(cell, val) {
+  cell.className = "slot";
+
+  if (val === 1) {
+    cell.classList.add("yes");
+    cell.innerText = "Yes";
+  } else if (val === 2) {
+    cell.classList.add("maybe");
+    cell.innerText = "Maybe";
+  } else if (val === 3) {
+    cell.classList.add("no");
+    cell.innerText = "No";
+  } else {
+    cell.innerText = "";
+  }
+}
+
+// Load
+function load() {
+  fetch("/get_proposal_availability", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.exists) return;
+
+    state = data.data.availability || {};
+
+    document.querySelectorAll(".slot").forEach(cell => {
+      const val = state?.[cell.dataset.day]?.[cell.dataset.slot] || 0;
+      renderCell(cell, val);
+    });
+  });
+}
+
+// Save
+function save() {
+  fetch("/save_proposal_availability", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      email: email,
+      availability: state
+    })
+  })
+.then(res => {
+  if (res.ok) {
+    showModal(
+      "Thank you! Your availability has been saved. You can use the same link anytime to update it.",
+      "success"
+    );
+  } else {
+    showModal(
+      "Something went wrong. Please try again. If the problem persists, please contact me at ea442@njit.edu.",
+      "error"
+    );
+  }
+})
+}
+
+// Toggle instructions
+function toggleInstructions() {
+  const el = document.getElementById("instructions-content");
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+buildTable();
+load();
+</script>
+
+  <footer style="
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #ccc;
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+        font-size: 20px;
+        margin-bottom: 10px;
+      ">
+    Please contact me if you have any questions or issues:
+    <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+  </footer>
+
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span id="modal-close">&times;</span>
+    
+    <div id="modal-icon" class="modal-icon"></div>
+    
+    <h2 id="modal-title"></h2>
+    <p id="modal-message"></p>
+  </div>
+</div>
+
+<script>
+function showModal(message, type = "success") {
+  const modal = document.getElementById("modal");
+  const text = document.getElementById("modal-message");
+  const title = document.getElementById("modal-title");
+  const icon = document.getElementById("modal-icon");
+
+  text.innerText = message;
+
+  if (type === "success") {
+    title.innerText = "Saved!";
+    icon.innerText = "✅";
+    title.style.color = "#2e7d32";
+  } else {
+    title.innerText = "Error";
+    icon.innerText = "❌";
+    title.style.color = "#e74c3c";
+  }
+
+  modal.style.display = "block";
+}
+
+// Close modal
+document.getElementById("modal-close").onclick = () => {
+  document.getElementById("modal").style.display = "none";
+};
+
+window.onclick = (e) => {
+  if (e.target.id === "modal") {
+    document.getElementById("modal").style.display = "none";
+  }
+};
+</script>
+</body>
+</html>

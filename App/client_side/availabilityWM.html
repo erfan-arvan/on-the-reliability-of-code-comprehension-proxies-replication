@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Availability</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #F4C41C;
+      margin: 40px;
+      color: #333;
+    }
+
+    .slots-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .day-card {
+      background-color: #f3f3f3;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .time-slot {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background-color: #ccc;
+      cursor: pointer;
+    }
+
+    .time-slot.selected {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slots-box">
+    <h2>📅 Select Your Available Times</h2>
+    <p>Please select all time slots that work for you. Then click <strong>Submit</strong>.</p>
+    <div id="dynamic-cards"></div>
+    <button onclick="submitAvailability()">Submit</button>
+  </div>
+
+  <script>
+    // --- Extract email from URL ---
+    const params = new URLSearchParams(window.location.search);
+    const userEmail = decodeURIComponent(params.get("email") || "");
+
+    // --- Generate weekday slots ---
+    function createDayCardsNext14Weekdays(containerId = 'dynamic-cards') {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+const timeSlots = [
+  '7:20 AM – 8:50 AM',
+  '8:50 AM – 10:20 AM',
+  '10:20 AM – 11:50 AM',
+  '11:50 AM – 1:20 PM',
+  '1:20 PM – 2:50 PM',
+  '2:50 PM – 4:20 PM',
+  '4:20 PM – 5:50 PM',
+  '5:50 PM – 7:20 PM'
+];
+
+      const fmtWeekday = new Intl.DateTimeFormat(undefined, { weekday: 'long' });
+      const fmtDay = new Intl.DateTimeFormat(undefined, { day: 'numeric' });
+      const fmtMonth = new Intl.DateTimeFormat(undefined, { month: 'short' });
+
+      const today = new Date();
+      let generated = 0;
+      let offset = 3; // start 3 days from now
+
+      while (generated < 14) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + offset);
+        offset++;
+
+        const dayOfWeek = d.getDay();
+        if (dayOfWeek === 0 || dayOfWeek === 6) continue; // skip weekends
+
+        const card = document.createElement('div');
+        card.className = 'day-card';
+        card.setAttribute('data-date', d.toISOString().slice(0,10));
+
+        const h4 = document.createElement('h4');
+        h4.textContent = `${fmtWeekday.format(d)} ${fmtDay.format(d)} ${fmtMonth.format(d)}`;
+        card.appendChild(h4);
+
+        const slotWrap = document.createElement('div');
+        timeSlots.forEach(t => {
+          const slot = document.createElement('div');
+          slot.className = 'time-slot';
+          slot.textContent = t;
+          slot.onclick = () => slot.classList.toggle('selected');
+          slotWrap.appendChild(slot);
+        });
+
+        card.appendChild(slotWrap);
+        container.appendChild(card);
+        generated++;
+      }
+    }
+
+    // --- Submit selected availability ---
+    async function submitAvailability() {
+      const selectedEls = document.querySelectorAll('.time-slot.selected');
+      if (selectedEls.length === 0) {
+        alert("Please select at least one time slot.");
+        return;
+      }
+
+      const selectedSlots = Array.from(selectedEls).map(el => {
+        const dayText = el.closest('.day-card').querySelector('h4').innerText;
+        return `${dayText} at ${el.innerText}`;
+      });
+
+      const payload = {
+        email: userEmail,
+        event: "availability",
+        selectedSlot: selectedSlots.join(", "),
+        submitted: true
+      };
+
+      try {
+        const res = await fetch("/register_studentWM", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          alert("✅ Your availability has been submitted successfully!");
+        } else {
+          alert("❌ Something went wrong. Please try again or contact ea442@njit.edu.");
+        }
+      } catch (err) {
+        console.error("Network error:", err);
+        alert("⚠️ Could not connect to the server. Please try again later.");
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => createDayCardsNext14Weekdays());
+  </script>
+
+</body>
+</html>

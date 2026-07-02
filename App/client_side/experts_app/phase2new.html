@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phase 2: Comprehensibility Ranking</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+
+    .instructions {
+      margin-bottom: 20px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .cards-container {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      min-width: 100px;
+      padding: 8px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: grab;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .card.dragging {
+      opacity: 0.5;
+    }
+
+    .preview-area {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .code-box {
+      background: #2d2d2d;
+      color: #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      flex: 1 1 45%;
+      min-width: 300px;
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+    }
+
+    .keyword  { color: #569CD6; font-weight: bold; }
+    .type     { color: #4EC9B0; }
+    .function { color: #DCDCAA; }
+    .literal  { color: #B5CEA8; }
+    .string   { color: #CE9178; }
+    .comment  { color: #6A9955; font-style: italic; }
+    .number   { color: #B5CEA8; }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #bbb;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .cards-container {
+    background: linear-gradient(to right, #eaffea, #fff5f5);
+    padding: 10px;
+    border-radius: 6px;
+}
+
+  </style>
+</head>
+<body>
+
+<h2>Phase 2: Rank and Compare Code Snippets</h2>
+
+<label for="participantName"><strong>Your Full Name:</strong></label>
+<input type="text" id="participantName" placeholder="Enter your name" style="width: 300px; padding: 8px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc;" />
+
+<div class="instructions">
+  <p><strong>Instructions:</strong> Drag and drop the cards below to rank the snippets from easiest to hardest. Use the checkboxes to compare snippet code side-by-side.</p>
+  <p><strong>Provide Reasoning:</strong> Briefly explain your ranking decisions after ordering the snippets.</p>
+  <p><strong>Prohibited:</strong> No automated metrics or generative AI tools.</p>
+</div>
+
+<div style="display: flex; justify-content: space-between; margin: 10px 0 5px 0; padding: 0 5px;">
+    <span style="font-weight: bold; color: #4CAF50;">⬅️ Easiest</span>
+    <span style="font-weight: bold; color: #f44336;">Hardest ➡️</span>
+  </div>  
+<div class="cards-container" id="cardsContainer">
+</div>
+
+<div class="preview-area" id="previewArea"></div>
+
+<textarea id="reasoning" placeholder="Explain your reasoning..."></textarea>
+<button onclick="savePhase2State()">💾 Save Progress</button>
+<button onclick="submitPhase2()">Submit Ranking and Reasoning</button>
+
+
+<script>
+    const snippets = [
+      {
+        id: 1,
+        title: "Method1",
+        code: `<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">method1</span>(<span class="type">String</span> name) {
+  <span class="keyword">if</span> (name == <span class="literal">null</span>) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">if</span> (name.<span class="function">startsWith</span>(<span class="string">"."</span>)) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">if</span> ((name.<span class="function">length</span>() < <span class="number">1</span>) || (name.<span class="function">length</span>() > MAX_NAME_LENGTH)) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i < name.<span class="function">length</span>(); i++) {
+    <span class="type">char</span> c = name.<span class="function">charAt</span>(i);
+    <span class="keyword">if</span> (!Character.<span class="function">isLetterOrDigit</span>(c) && !VALID_NAME_SET.<span class="function">contains</span>(c)) {
+      <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+  }
+  <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`
+      },
+      {
+        id: 2,
+        title: "Method2",
+        code: `<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">method2</span>(<span class="type">URI</span> uri) {
+  <span class="keyword">if</span> (<span class="function">isFilesystemPath</span>(uri)) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="type">String</span> scheme = uri.<span class="function">getScheme</span>();
+  <span class="keyword">if</span> (scheme == <span class="literal">null</span>) {
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">switch</span> (scheme) {
+    <span class="keyword">case</span> <span class="string">"file"</span>:
+    <span class="keyword">case</span> <span class="string">"jar"</span>:
+      <span class="keyword">return</span> <span class="literal">false</span>;
+    <span class="keyword">default</span>:
+      <span class="keyword">break</span>;
+  }
+  <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`
+      },
+      {
+        id: 3,
+        title: "Method3",
+        code: `<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">Method3</span>(<span class="type">short</span> type) {
+  <span class="keyword">if</span> (type == IMAGE_FILE_MACHINE_UNKNOWN) {
+    <span class="comment">// Unsupported machine type</span>
+    <span class="keyword">return</span> <span class="literal">false</span>;
+  }
+  <span class="keyword">for</span> (<span class="type">Field</span> field : CoffMachineType.<span class="function">class</span>.<span class="function">getDeclaredFields</span>()) {
+    <span class="keyword">if</span> (!field.<span class="function">isSynthetic</span>()) {
+      <span class="type">int</span> modifiers = field.<span class="function">getModifiers</span>();
+      <span class="keyword">if</span> (<span class="function">Modifier.isFinal</span>(modifiers) && <span class="function">Modifier.isStatic</span>(modifiers)) {
+        <span class="keyword">try</span> {
+          <span class="keyword">if</span> (field.<span class="function">getShort</span>(<span class="literal">null</span>) == type) {
+            <span class="keyword">return</span> <span class="literal">true</span>;
+          }
+        } <span class="keyword">catch</span> (<span class="type">IllegalAccessException</span> e) {
+          <span class="keyword">continue</span>;
+        }
+      }
+    }
+  }
+  <span class="keyword">return</span> <span class="literal">false</span>;
+}
+`
+      },
+      {
+        id: 4,
+        title: "Method4",
+        code: `<span class="keyword">public static</span> <span class="type">int</span> <span class="function">Method4</span>(<span class="type">CharSequence</span> str, <span class="type">CharSequence</span> searchStr, <span class="type">int</span> startPos) {
+  <span class="keyword">if</span> (str == <span class="literal">null</span> || searchStr == <span class="literal">null</span>) {
+    <span class="keyword">return</span> INDEX_NOT_FOUND;
+  }
+  <span class="keyword">if</span> (startPos < <span class="number">0</span>) {
+    startPos = <span class="number">0</span>;
+  }
+  <span class="type">int</span> searchStrLen = searchStr.<span class="function">length</span>();
+  <span class="type">int</span> endLimit = str.<span class="function">length</span>() - searchStrLen + <span class="number">1</span>;
+  <span class="keyword">if</span> (startPos > endLimit) {
+    <span class="keyword">return</span> INDEX_NOT_FOUND;
+  }
+  <span class="keyword">if</span> (searchStrLen == <span class="number">0</span>) {
+    <span class="keyword">return</span> startPos;
+  }
+  <span class="keyword">for</span> (<span class="type">int</span> i = startPos; i < endLimit; i++) {
+    <span class="keyword">if</span> (<span class="function">regionMatches</span>(str, <span class="literal">true</span>, i, searchStr, <span class="number">0</span>, searchStrLen)) {
+      <span class="keyword">return</span> i;
+    }
+  }
+  <span class="keyword">return</span> INDEX_NOT_FOUND;
+}
+`
+      },
+      {
+        id: 5,
+        title: "method5",
+        code: `<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">method5</span>(@Nullable <span class="type">Path</span> root) <span class="keyword">throws</span> <span class="type">IOException</span> {
+  <span class="keyword">if</span> (root == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;
+  <span class="keyword">if</span> (!Files.<span class="function">exists</span>(root)) <span class="keyword">return</span> <span class="literal">false</span>;
+
+  Files.<span class="function">walkFileTree</span>(root, <span class="keyword">new</span> <span class="type">SimpleFileVisitor</span>&lt;&gt;() {
+    @Override
+    <span class="keyword">public</span> <span class="type">FileVisitResult</span> <span class="function">visitFile</span>(<span class="type">Path</span> file, <span class="type">BasicFileAttributes</span> attrs) <span class="keyword">throws</span> <span class="type">IOException</span> {
+      Files.<span class="function">delete</span>(file);
+      <span class="keyword">return</span> FileVisitResult.CONTINUE;
+    }
+    @Override
+    <span class="keyword">public</span> <span class="type">FileVisitResult</span> <span class="function">postVisitDirectory</span>(<span class="type">Path</span> dir, <span class="type">IOException</span> exc) <span class="keyword">throws</span> <span class="type">IOException</span> {
+      Files.<span class="function">delete</span>(dir);
+      <span class="keyword">return</span> FileVisitResult.CONTINUE;
+    }
+  });
+
+  <span class="keyword">return</span> <span class="literal">true</span>;
+}
+    `
+      },
+      {
+        id: 6,
+        title: "method6",
+        code: `<span class="keyword">public static</span> <span class="type">int</span> <span class="function">method6</span>(<span class="type">CharSequence</span> sequence) {
+  <span class="comment">// Optimized implementation</span>
+  <span class="type">int</span> utf16Length = sequence.<span class="function">length</span>();
+  <span class="type">int</span> utf8Length = utf16Length;
+  <span class="type">int</span> i = <span class="number">0</span>;
+
+  <span class="keyword">while</span> (i < utf16Length && sequence.<span class="function">charAt</span>(i) < <span class="literal">0x80</span>) {
+    i++;
+  }
+
+  <span class="keyword">for</span> (; i < utf16Length; i++) {
+    <span class="type">char</span> c = sequence.<span class="function">charAt</span>(i);
+    <span class="keyword">if</span> (c < <span class="literal">0x800</span>) {
+      utf8Length += ((<span class="literal">0x7f</span> - c) >>> <span class="number">31</span>);
+    } <span class="keyword">else</span> {
+      utf8Length += <span class="function">encodedLengthGeneral</span>(sequence, i);
+      <span class="keyword">break</span>;
+    }
+  }
+
+  <span class="keyword">if</span> (utf8Length < utf16Length) {
+    <span class="keyword">throw new</span> <span class="type">IllegalArgumentException</span>(
+      <span class="string">"UTF-8 length does not fit in int: "</span> + (utf8Length + (<span class="literal">1L</span> << <span class="number">32</span>)));
+  }
+
+  <span class="keyword">return</span> utf8Length;
+}
+`
+      },
+      {
+        id: 7,
+        title: "method7",
+        code: `<span class="keyword">public static</span> <span class="type">float</span> <span class="function">method7</span>(<span class="type">float</span> a, <span class="type">float</span> b, <span class="type">float</span> c) {
+  <span class="type">float</span> det = b * b - <span class="number">4</span> * a * c;
+  <span class="keyword">if</span> (det < <span class="number">0</span>) <span class="keyword">return</span> <span class="type">Float</span>.NaN;
+
+  <span class="type">float</span> sqrtD = (<span class="type">float</span>)<span class="type">Math</span>.<span class="function">sqrt</span>(det);
+  <span class="type">float</span> invA = <span class="number">1</span> / (<span class="number">2</span> * a);
+  <span class="type">float</span> r1 = (-b - sqrtD) * invA;
+  <span class="type">float</span> r2 = (-b + sqrtD) * invA;
+
+  <span class="keyword">if</span> (r1 > r2) {
+    <span class="type">float</span> tmp = r2;
+    r2 = r1;
+    r1 = tmp;
+  }
+
+  <span class="keyword">if</span> (r1 > <span class="number">0</span>) <span class="keyword">return</span> r1;
+  <span class="keyword">if</span> (r2 > <span class="number">0</span>) <span class="keyword">return</span> r2;
+  <span class="keyword">return</span> <span class="type">Float</span>.NaN;
+}
+`
+      },
+      {
+        id: 8,
+        title: "method 8",
+        code: `<span class="keyword">public static</span> <span class="type">float</span> <span class="function">method8</span>(<span class="type">float</span> y, <span class="type">float</span> x) {
+  <span class="type">float</span> n = y / x;
+
+  <span class="keyword">if</span> (n != n)
+    n = (y == x ? <span class="number">1f</span> : <span class="number">-1f</span>);
+  <span class="keyword">else if</span> (n - n != n - n)
+    x = <span class="number">0f</span>;
+
+  <span class="keyword">if</span> (x > <span class="number">0</span>)
+    <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n);
+  <span class="keyword">else if</span> (x < <span class="number">0</span>) {
+    <span class="keyword">if</span> (y >= <span class="number">0</span>) <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n) + PI;
+    <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n) - PI;
+  } <span class="keyword">else if</span> (y > <span class="number">0</span>)
+    <span class="keyword">return</span> x + HALF_PI;
+  <span class="keyword">else if</span> (y < <span class="number">0</span>)
+    <span class="keyword">return</span> x - HALF_PI;
+
+  <span class="keyword">return</span> x + y;
+}
+`
+      }
+    ];
+</script>
+
+<script>
+
+window.onload = function () {
+  const container = document.getElementById('cardsContainer');
+
+  // 1. Build cards
+  snippets.forEach(snippet => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.draggable = true;
+    card.id = `snippet-${snippet.id}`;
+    card.innerHTML = `
+      <strong>${snippet.title}</strong><br>
+      <label><input type="checkbox" onchange="togglePreview(${snippet.id}, this)"> Compare</label>
+    `;
+    container.appendChild(card);
+  });
+
+  // 2. Restore saved state (after cards exist)
+  const saved = JSON.parse(sessionStorage.getItem('phase2_state') || getCookie('phase2_state') || '{}');
+  if (saved) {
+    document.getElementById('participantName').value = saved.name || '';
+    document.getElementById('reasoning').value = saved.reasoning || '';
+
+    // Restore ranking
+    saved.ranking?.forEach(id => {
+      const el = document.getElementById(`snippet-${id}`);
+      if (el) container.appendChild(el);
+    });
+
+    // Restore checked comparisons
+    saved.selectedSnippets?.forEach(id => {
+      const checkbox = document.querySelector(`#snippet-${id} input[type=checkbox]`);
+      if (checkbox) {
+        checkbox.checked = true;
+        togglePreview(parseInt(id), checkbox);
+      }
+    });
+  }
+
+  enableDragAndDrop();
+};
+
+
+function togglePreview(id, checkbox) {
+  const previewArea = document.getElementById('previewArea');
+  const snippet = snippets.find(s => s.id === id);
+  const existing = document.getElementById(`preview-${id}`);
+
+  if (checkbox.checked && !existing) {
+    const box = document.createElement('div');
+    box.className = 'code-box';
+    box.id = `preview-${id}`;
+    box.innerHTML = snippet.code;
+    previewArea.appendChild(box);
+  } else if (!checkbox.checked && existing) {
+    previewArea.removeChild(existing);
+  }
+}
+
+function enableDragAndDrop() {
+  const container = document.getElementById('cardsContainer');
+  let draggedItem = null;
+
+  container.addEventListener('dragstart', (e) => {
+    draggedItem = e.target;
+    e.target.classList.add('dragging');
+  });
+
+  container.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const afterElement = [...container.querySelectorAll('.card:not(.dragging)')]
+      .find(el => e.clientX < el.getBoundingClientRect().left + el.offsetWidth / 2);
+    if (afterElement) {
+      container.insertBefore(draggedItem, afterElement);
+    } else {
+      container.appendChild(draggedItem);
+    }
+  });
+
+  container.addEventListener('dragend', () => {
+    draggedItem.classList.remove('dragging');
+    draggedItem = null;
+  });
+}
+
+function submitPhase2() {
+  const name = document.getElementById('participantName').value.trim();
+  const reasoning = document.getElementById('reasoning').value.trim();
+  const ranking = Array.from(document.querySelectorAll('.card')).map(card => card.id.replace('snippet-', ''));
+
+  if (!name || !reasoning || ranking.length === 0) {
+    alert("Please fill in your name, ranking, and reasoning.");
+    return;
+  }
+
+  fetch("http://localhost:8080/submit_phase2", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: name, ranking: ranking, reasoning: reasoning })
+  })
+  .then(res => res.ok ? alert("Submitted!") : alert("Submission failed."))
+  .catch(err => {
+    console.error(err);
+    alert("Submission error.");
+  });
+}
+</script>
+
+<script>
+    function savePhase2State() {
+  const name = document.getElementById('participantName').value.trim();
+  const reasoning = document.getElementById('reasoning').value.trim();
+  const ranking = Array.from(document.querySelectorAll('.card')).map(card => card.id.replace('snippet-', ''));
+
+  // Store checkboxes
+  const selectedSnippets = [];
+  document.querySelectorAll('.cards-container input[type=checkbox]').forEach((cb, idx) => {
+    if (cb.checked) selectedSnippets.push(snippets[idx].id);
+  });
+
+  const data = {
+    name,
+    reasoning,
+    ranking,
+    selectedSnippets
+  };
+
+  sessionStorage.setItem('phase2_state', JSON.stringify(data));
+  setCookie('phase2_state', JSON.stringify(data), 30); // store for 30 days
+  alert('Progress saved locally!');
+}
+
+
+const saved = JSON.parse(sessionStorage.getItem('phase2_state'));
+if (saved) {
+  document.getElementById('participantName').value = saved.name || '';
+  document.getElementById('reasoning').value = saved.reasoning || '';
+
+  // Restore ranking order
+  const container = document.getElementById('cardsContainer');
+  saved.ranking?.forEach(id => {
+    const el = document.getElementById(`snippet-${id}`);
+    if (el) container.appendChild(el);
+  });
+
+  // Restore checkboxes
+  saved.selectedSnippets?.forEach(id => {
+    const checkbox = document.querySelector(`#snippet-${id} input[type=checkbox]`);
+    if (checkbox) {
+      checkbox.checked = true;
+      togglePreview(parseInt(id), checkbox); // show preview
+    }
+  });
+}
+
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days*24*60*60*1000).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+}
+
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
+</script>
+</body>
+</html>

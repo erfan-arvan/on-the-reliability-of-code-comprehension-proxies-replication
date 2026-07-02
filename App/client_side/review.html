@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Final Review</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0 40px 40px 40px;
+      /* top right bottom left */
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    pre,
+    .code-box {
+      background: #2d2d2d;
+      color: #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px 10px 0 0;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .nav-button {
+      background-color: #777;
+      color: white;
+    }
+
+    .submit-button {
+      background-color: #4CAF50;
+      color: white;
+      animation: glowPulse 1.5s infinite alternate;
+    }
+
+    /*status bar*/
+    .status-bar {
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .phase-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .phase-link:hover:not(.disabled) {
+      background-color: #4CAF50;
+    }
+
+    .phase-link.active {
+      background-color: #4CAF50;
+    }
+
+    .phase-link.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 10px #4CAF50;
+      }
+
+      100% {
+        box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="status-bar">
+    <div class="user-dropdown" style="position: relative;">
+      <div style="padding: 8px 12px; color: gainsboro; font-weight: bold;"><span id="user-info"></span> (<button
+          onclick="logout()"
+          style="color: white; background: none; border: none; cursor: pointer; margin: 0;padding: 0;">🚪
+          Logout</button>)</div>
+    </div>
+    <a href="index.html" class="phase-link" id="link-home">🏠 Home</a>
+    <a href="phase1.html" class="phase-link" id="link-phase1">Phase 1</a>
+    <a href="phase2.html" class="phase-link" id="link-phase2">Phase 2</a>
+    <a href="phase3.html" class="phase-link" id="link-phase3">Phase 3</a>
+    <a href="phase4.html" class="phase-link" id="link-phase4">Phase 4</a>
+    <a href="review.html" class="phase-link active" id="link-review">Review & Submit</a>
+  </div>
+
+  <div id="instructions-box"
+    style="background-color: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 80px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2 style="margin: 0;">Review and Submit</h2>
+      <button onclick="toggleInstructions()"
+        style="padding: 6px 12px; font-size: 14px; border-radius: 5px; background-color: #ddd; border: none; cursor: pointer;">Hide</button>
+    </div>
+
+    <div id="instructions-content" style="margin-top: 15px;">
+      <p>Please review your responses for all phases. If everything looks good, click the "Submit All Responses" button.
+      </p>
+      <p>You can edit each phase by clicking on the corresponding "Update" buttons.</p>
+    </div>
+  </div>
+
+
+
+  <div class="section">
+    <h2>Phase 1: Summary and Comprehensibility</h2>
+    <div id="phase1"></div>
+    <button class="nav-button" onclick="location.href='/phase1.html'">Update Phase 1</button>
+  </div>
+
+  <div class="section">
+    <h2>Phase 2: Snippet Ranking</h2>
+    <div id="phase2"></div>
+    <button class="nav-button" onclick="location.href='/phase2.html'">Update Phase 2</button>
+  </div>
+
+  <div class="section">
+    <h2>Phase 3: Ranking Reasoning</h2>
+    <div id="phase3"></div>
+    <button class="nav-button" onclick="location.href='/phase3.html'">Update Phase 3</button>
+  </div>
+
+  <div class="section">
+  <h2>Phase 4: Familiarity Survey</h2>
+  <div id="phase4"></div>
+  <button class="nav-button" onclick="location.href='/phase4.html'">Update Phase 4</button>
+</div>
+
+
+  <button class="submit-button" onclick="submitAll()">✅ Submit All Responses</button>
+
+  <div id="validation-modal" style="
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff0f0;
+  color: #660000;
+  border: 1px solid #ff9999;
+  padding: 20px;
+  border-radius: 10px;
+  width: 440px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 1002;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  ">
+    <p id="validation-message" style="font-weight: bold;"></p>
+    <button onclick="document.getElementById('validation-modal').style.display = 'none';" style="
+      margin-top: 15px;
+      padding: 8px 14px;
+      background-color: #ff9999;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">OK</button>
+  </div>
+
+  <div id="submission-modal" style="
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #e6fff2;
+    color: #003d2f;
+    border: 1px solid #7fdcbf;
+    padding: 20px;
+    border-radius: 10px;
+    width: 440px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 1001;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+">
+    <p id="submission-message" style="font-weight: bold;">Phase 1 submitted successfully, please </p>
+    <button onclick="hideSubmissionModal()" style="
+        margin-top: 15px;
+        padding: 8px 14px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    ">OK</button>
+  </div>
+
+  <script>
+    function showSubmissionModal(message) {
+      document.getElementById('submission-message').innerText = message;
+      document.getElementById('submission-modal').style.display = 'block';
+    }
+
+    function hideSubmissionModal() {
+      document.getElementById('submission-modal').style.display = 'none';
+    }
+  </script>
+
+  <script>
+    function showValidationMessage(msg) {
+      document.getElementById('validation-message').innerText = msg;
+      document.getElementById('validation-modal').style.display = 'block';
+    }
+  </script>
+
+<script>
+  const originalSnippets = [
+    {
+      id: 1,
+      title: "Snippet 1",
+      methodName:"isValidProjectName",
+      code: `
+<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">isValidProjectName</span>(<span class="type">String</span> name) {
+    <span class="keyword">if</span> (name == <span class="literal">null</span>) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">if</span> (name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#startsWith-java.lang.String-')">startsWith</a>(<span class="string">"."</span>)) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">if</span> ((name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#length--')">length</a>() < <span class="number">1</span>) || (name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#length--')">length</a>() > MAX_NAME_LENGTH)) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i < name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#length--')">length</a>(); i++) {
+        <span class="type">char</span> c = name.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#charAt-int-')">charAt</a>(i);
+        <span class="keyword">if</span> (!Character.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html#isLetterOrDigit-char-')">isLetterOrDigit</a>(c) && !VALID_NAME_SET.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/util/Set.html#contains-java.lang.Object-')">contains</a>(c)) {
+            <span class="keyword">return</span> <span class="literal">false</span>;
+        }
+    }
+    <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`
+          },
+          {
+            id: 2,
+            title: "Snippet 2",
+            methodName:"isRemote",
+            code: `
+<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">isRemote</span>(<span class="type">URI</span> uri) {
+    <span class="keyword">if</span> (<span class="function">isFilesystemPath</span>(uri)) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="type">String</span> scheme = uri.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/net/URI.html#getScheme--')">getScheme</a>();
+    <span class="keyword">if</span> (scheme == <span class="literal">null</span>) {
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">switch</span> (scheme) {
+        <span class="keyword">case</span> <span class="string">"file"</span>:
+        <span class="keyword">case</span> <span class="string">"jar"</span>:
+            <span class="keyword">return</span> <span class="literal">false</span>;
+        <span class="keyword">default</span>:
+            <span class="keyword">break</span>;
+    }
+    <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`            
+          },
+          {
+            id: 3,
+            title: "Snippet 3",
+            methodName:"isMachineTypeDefined",
+            code: `
+<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">isMachineTypeDefined</span>(<span class="type">short</span> type) {
+    <span class="keyword">if</span> (type == IMAGE_FILE_MACHINE_UNKNOWN) {
+        <span class="comment">// Unsupported machine type</span>
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    }
+    <span class="keyword">for</span> (<span class="type">Field</span> field : CoffMachineType.<span class="function">class</span>.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredFields--')">getDeclaredFields</a>()) {
+        <span class="keyword">if</span> (!field.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#isSynthetic--')">isSynthetic</a>()) {
+            <span class="type">int</span> modifiers = field.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getModifiers--')">getModifiers</a>();
+            <span class="keyword">if</span> (<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Modifier.html#isFinal-int-')">Modifier.isFinal</a>(modifiers) && <a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Modifier.html#isStatic-int-')">Modifier.isStatic</a>(modifiers)) {
+                <span class="keyword">try</span> {
+                    <span class="keyword">if</span> (field.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getShort-java.lang.Object-')">getShort</a>(<span class="literal">null</span>) == type) {
+                        <span class="keyword">return</span> <span class="literal">true</span>;
+                    }
+                } <span class="keyword">catch</span> (<span class="type">IllegalAccessException</span> e) {
+                    <span class="keyword">continue</span>;
+                }
+            }
+        }
+    }
+    <span class="keyword">return</span> <span class="literal">false</span>;
+}
+`            
+          },
+          {
+            id: 4,
+            title: "Snippet 4",
+            methodName:"indexOfIgnoreCase",
+code: `<span class="keyword">public static</span> <span class="type">int</span> <span class="function">indexOfIgnoreCase</span>(<span class="type">CharSequence</span> str, <span class="type">CharSequence</span> searchStr, <span class="type">int</span> startPos) {
+    <span class="keyword">if</span> (str == <span class="literal">null</span> || searchStr == <span class="literal">null</span>) {
+        <span class="keyword">return</span> INDEX_NOT_FOUND;
+    }
+    <span class="keyword">if</span> (startPos < <span class="number">0</span>) {
+        startPos = <span class="number">0</span>;
+    }
+    <span class="type">int</span> searchStrLen = searchStr.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#length--')">length</a>();
+    <span class="type">int</span> endLimit = str.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#length--')">length</a>() - searchStrLen + <span class="number">1</span>;
+    <span class="keyword">if</span> (startPos > endLimit) {
+        <span class="keyword">return</span> INDEX_NOT_FOUND;
+    }
+    <span class="keyword">if</span> (searchStrLen == <span class="number">0</span>) {
+        <span class="keyword">return</span> startPos;
+    }
+    <span class="keyword">for</span> (<span class="type">int</span> i = startPos; i < endLimit; i++) {
+        <span class="keyword">if</span> (<span class="function">regionMatches</span>(str, <span class="literal">true</span>, i, searchStr, <span class="number">0</span>, searchStrLen)) {
+            <span class="keyword">return</span> i;
+        }
+    }
+    <span class="keyword">return</span> INDEX_NOT_FOUND;
+}`
+          },              
+          {
+            id: 5,
+            title: "Snippet 5",
+            methodName:"deleteRecursively",
+            code: `
+<span class="keyword">public static</span> <span class="type">boolean</span> <span class="function">deleteRecursively</span>(@Nullable <span class="type">Path</span> root) <span class="keyword">throws</span> <span class="type">IOException</span> {
+    <span class="keyword">if</span> (root == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;
+    <span class="keyword">if</span> (!<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#exists-java.nio.file.Path-java.nio.file.LinkOption...-')">Files.exists</a>(root)) <span class="keyword">return</span> <span class="literal">false</span>;
+
+    <a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#walkFileTree-java.nio.file.Path-java.nio.file.FileVisitor-')">Files.walkFileTree</a>(root, <span class="keyword">new</span> <span class="type">SimpleFileVisitor</span>&lt;&gt;() {
+        @Override
+        <span class="keyword">public</span> <span class="type">FileVisitResult</span> <span class="function">visitFile</span>(<span class="type">Path</span> file, <span class="type">BasicFileAttributes</span> attrs) <span class="keyword">throws</span> <span class="type">IOException</span> {
+            <a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#delete-java.nio.file.Path-')">Files.delete</a>(file);
+            <span class="keyword">return</span> FileVisitResult.CONTINUE;
+        }
+        @Override
+        <span class="keyword">public</span> <span class="type">FileVisitResult</span> <span class="function">postVisitDirectory</span>(<span class="type">Path</span> dir, <span class="type">IOException</span> exc) <span class="keyword">throws</span> <span class="type">IOException</span> {
+            <a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#delete-java.nio.file.Path-')">Files.delete</a>(dir);
+            <span class="keyword">return</span> FileVisitResult.CONTINUE;
+        }
+    });
+
+    <span class="keyword">return</span> <span class="literal">true</span>;
+}
+`            
+      },
+      {
+        id: 6,
+        title: "Snippet 6",
+        methodName:"CharSequence",
+        code: `
+<span class="keyword">public static</span> <span class="type">int</span> <span class="function">encodedLength</span>(<span class="type">CharSequence</span> sequence) {
+    <span class="comment">// Optimized implementation</span>
+    <span class="type">int</span> utf16Length = sequence.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#length--')">length</a>();
+    <span class="type">int</span> utf8Length = utf16Length;
+    <span class="type">int</span> i = <span class="number">0</span>;
+
+    <span class="keyword">while</span> (i < utf16Length && sequence.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#charAt-int-')">charAt</a>(i) < <span class="literal">0x80</span>) {
+        i++;
+    }
+
+    <span class="keyword">for</span> (; i < utf16Length; i++) {
+        <span class="type">char</span> c = sequence.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#charAt-int-')">charAt</a>(i);
+        <span class="keyword">if</span> (c < <span class="literal">0x800</span>) {
+            utf8Length += ((<span class="literal">0x7f</span> - c) >>> <span class="number">31</span>);
+        } <span class="keyword">else</span> {
+            utf8Length += <span class="function">encodedLengthGeneral</span>(sequence, i);
+            <span class="keyword">break</span>;
+        }
+    }
+
+    <span class="keyword">if</span> (utf8Length < utf16Length) {
+        <span class="keyword">throw new</span> <span class="type">IllegalArgumentException</span>(
+            <span class="string">"UTF-8 length does not fit in int: "</span> + (utf8Length + (<span class="literal">1L</span> << <span class="number">32</span>)));
+    }
+
+    <span class="keyword">return</span> utf8Length;
+}
+`        
+      },
+      {
+        id: 7,
+        title: "Snippet 7",
+        methodName:"lowestPositiveRoot",
+        code: `
+<span class="keyword">public static</span> <span class="type">float</span> <span class="function">lowestPositiveRoot</span>(<span class="type">float</span> a, <span class="type">float</span> b, <span class="type">float</span> c) {
+    <span class="type">float</span> det = b * b - <span class="number">4</span> * a * c;
+    <span class="keyword">if</span> (det < <span class="number">0</span>) <span class="keyword">return</span> <span class="type">Float</span>.NaN;
+
+    <span class="type">float</span> sqrtD = (<span class="type">float</span>)<span class="type">Math</span>.<a href="#" class="standard-method function" onclick="openJavadocModal('https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html#sqrt-double-')">sqrt</a>(det);
+    <span class="type">float</span> invA = <span class="number">1</span> / (<span class="number">2</span> * a);
+    <span class="type">float</span> r1 = (-b - sqrtD) * invA;
+    <span class="type">float</span> r2 = (-b + sqrtD) * invA;
+
+    <span class="keyword">if</span> (r1 > r2) {
+        <span class="type">float</span> tmp = r2;
+        r2 = r1;
+        r1 = tmp;
+    }
+
+    <span class="keyword">if</span> (r1 > <span class="number">0</span>) <span class="keyword">return</span> r1;
+    <span class="keyword">if</span> (r2 > <span class="number">0</span>) <span class="keyword">return</span> r2;
+    <span class="keyword">return</span> <span class="type">Float</span>.NaN;
+}
+`        
+      },
+      {
+        id: 8,
+        title: "Snippet 8",
+        methodName:"atan2",
+        code: `
+<span class="keyword">public static</span> <span class="type">float</span> <span class="function">atan2</span>(<span class="type">float</span> y, <span class="type">float</span> x) {
+    <span class="type">float</span> n = y / x;
+
+    <span class="keyword">if</span> (n != n)
+        n = (y == x ? <span class="number">1f</span> : <span class="number">-1f</span>);
+    <span class="keyword">else if</span> (n - n != n - n)
+        x = <span class="number">0f</span>;
+
+    <span class="keyword">if</span> (x > <span class="number">0</span>)
+        <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n);
+    <span class="keyword">else if</span> (x < <span class="number">0</span>) {
+        <span class="keyword">if</span> (y >= <span class="number">0</span>) <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n) + PI;
+        <span class="keyword">return</span> <span class="function">atanUnchecked</span>(n) - PI;
+    } <span class="keyword">else if</span> (y > <span class="number">0</span>)
+        <span class="keyword">return</span> x + HALF_PI;
+    <span class="keyword">else if</span> (y < <span class="number">0</span>)
+        <span class="keyword">return</span> x - HALF_PI;
+
+    <span class="keyword">return</span> x + y;
+}
+`        
+      }
+    ];
+  
+
+  function getStoredSnippetOrder() {
+    const stored = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length === 8) return parsed;
+      } catch {}
+    }
+    return null;
+  }
+
+  // Apply the stored snippet order
+  const order = getStoredSnippetOrder();
+  const snippets = [];
+
+  if (order) {
+    order.forEach((index, newId) => {
+      snippet = { ...originalSnippets[index - 1] }; 
+      snippet.id = newId + 1;
+      snippet.title = `Snippet ${newId + 1}`;
+      snippets.push(snippet);
+    });
+  } else {
+    alert("⚠️ Missing snippet order. Please login again.");
+    window.location.href = '/';
+  }
+
+  console.log("Applied snippet order:", snippets.map(s => s.title));
+
+</script>
+
+  <script>
+    function renderPhase1() {
+  const container = document.getElementById('phase1');
+  container.innerHTML = '';
+  let foundAny = false;
+
+  snippets.forEach(snippet => {
+    const i = snippet.id; // still used for storage keys
+    const summary = sessionStorage.getItem(`summary${i}`) || localStorage.getItem(`summary${i}`) || '';
+    const comp = sessionStorage.getItem(`compSummary${i}`) || localStorage.getItem(`compSummary${i}`) || '';
+
+    if (summary || comp) {
+      foundAny = true;
+      container.innerHTML += `
+        <div style="margin-bottom: 15px;">
+          <strong>${snippet.methodName}</strong><br>
+          <strong>Summary:</strong> ${summary || '<em>No summary</em>'}<br>
+          <strong>Comprehensibility:</strong> ${comp || '<em>No explanation</em>'}
+        </div>
+      `;
+    }
+  });
+
+  if (!foundAny) container.innerHTML = '<em>No data found.</em>';
+    }
+
+    // Build quick lookup: "1" -> snippet object
+const byId = Object.fromEntries(snippets.map(s => [String(s.id), s]));
+
+function renderPhase2() {
+  const data = JSON.parse(sessionStorage.getItem('phase3_ranking') || localStorage.getItem('phase3_ranking') || '{}');
+  const container = document.getElementById('phase2');
+  container.innerHTML = '';
+
+  if (!data || Object.keys(data).length === 0) {
+    container.innerHTML = '<em>No data found.</em>';
+    return;
+  }
+
+  // ensure positions are shown 1..8 in order
+  const positions = Object.keys(data).map(Number).sort((a, b) => a - b);
+
+  positions.forEach(pos => {
+    const ids = data[String(pos)] || [];
+    if (!ids.length) {
+      container.innerHTML += `<p><strong>Position ${pos}:</strong> <em>(none)</em></p>`;
+      return;
+    }
+
+    const labels = ids.map(raw => {
+      // raw is like "snippet-7"
+      const num = String(raw).replace(/^snippet-/, '');
+      const s = byId[num];
+      return s ? s.methodName : `Snippet ${num}`;
+    });
+
+    // If multiple, they’re tied at this position
+    container.innerHTML += `<p><strong>Position ${pos}:</strong> ${labels.join(', ')}</p>`;
+  });
+}
+
+  // Phase 4 topics (ids must match what Phase 4 stored)
+  const phase4Topics = [
+    { id: "uri_scheme",                label: "URI schemes" },
+    { id: "file_vs_network_uri",       label: "Filesystem vs network URIs" },
+    { id: "reflection",                label: "Java Reflection API" },
+    { id: "visitor_walkFileTree",      label: "Visitor pattern (Files.walkFileTree)" },
+    { id: "utf8_utf16",                label: "UTF-8 vs UTF-16" },
+    { id: "bitwise_ops",               label: "Bitwise operators (&, |, ^, >>, >>>)" },
+    { id: "hex_to_dec",                label: "Hex ↔ Decimal conversion" },
+    { id: "quadratic",                 label: "Quadratic formula" },
+    { id: "atan",                      label: "Arctangent (atan)" },
+    { id: "nan",                       label: "NaN behavior in Java" },
+    { id: "fp_singularities",          label: "Floating-point singularities (e.g., 1.0/0.0)" }
+  ];
+</script>
+
+<script>
+  function renderPhase4() {
+    const container = document.getElementById('phase4');
+    container.innerHTML = '';
+
+    // answers saved by Phase 4 as { [id]: 'yes'|'no' }
+    const ans = JSON.parse(localStorage.getItem('csKnowledgeSurveyAnswers') || '{}');
+    if (!ans || Object.keys(ans).length === 0) {
+      container.innerHTML = '<em>No data found.</em>';
+      return;
+    }
+
+    let complete = true;
+    const rows = phase4Topics.map(t => {
+      const v = ans[t.id];
+      if (v !== 'yes' && v !== 'no') complete = false;
+      const pretty = (v === 'yes') ? 'Yes' : (v === 'no' ? 'No' : '<em>Not answered</em>');
+      return `<tr><td style="padding:6px 10px;">${t.label}</td><td style="padding:6px 10px;"><strong>${pretty}</strong></td></tr>`;
+    }).join('');
+
+    container.innerHTML = `
+      <div style="overflow-x:auto">
+        <table style="border-collapse:collapse; width:100%;">
+          <thead>
+            <tr style="background:#f5f5f5;">
+              <th style="text-align:left; padding:8px 10px;">Topic</th>
+              <th style="text-align:left; padding:8px 10px;">Familiar?</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px; color:${complete ? '#2e7d32' : '#9b0000'};">
+        ${complete ? '✅ All Phase 4 questions are answered.' : '⚠️ Some Phase 4 items are unanswered.'}
+      </div>
+    `;
+
+    // reflect completion to nav if fully answered
+    if (complete) {
+      localStorage.setItem('phase4Complete','true');
+      document.getElementById('link-review')?.classList.remove('disabled');
+    }
+  }
+
+  function renderPhase3() {
+      const data = JSON.parse(sessionStorage.getItem('phase3_reasoning') || '{}');
+      const container = document.getElementById('phase3');
+      if (!data || Object.keys(data).length === 0) {
+        container.innerHTML = '<em>No data found.</em>';
+        return;
+      }
+      Object.entries(data).forEach(([key, answer], i) => {
+        container.innerHTML += `<p><strong>Q${i + 1}:</strong> ${answer}</p>`;
+      });
+    }
+
+  function submitAll() {
+    const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName') || 'Anonymous';
+    const username = localStorage.getItem('username') || 'anonymous';
+
+    // Phase 1
+    const phase1 = {};
+    for (let i = 1; i <= 8; i++) {
+      const summary = sessionStorage.getItem(`summary${i}`) || localStorage.getItem(`summary${i}`) || '';
+      const comp = sessionStorage.getItem(`compSummary${i}`) || localStorage.getItem(`compSummary${i}`) || '';
+      phase1[`snippet${i}`] = { summary, comprehensibility: comp };
+    }
+
+    // Phase 2 & 3
+    const phase2 = JSON.parse(sessionStorage.getItem('phase3_ranking') || localStorage.getItem('phase3_ranking') || '{}');
+    const phase3 = JSON.parse(sessionStorage.getItem('phase3_reasoning') || localStorage.getItem('phase3_reasoning') || '{}');
+
+    // Phase 4 (familiarity only)
+    const phase4 = JSON.parse(localStorage.getItem('csKnowledgeSurveyAnswers') || '{}');
+
+    const flags = {
+      phase1Complete: sessionStorage.getItem('phase1Complete') || localStorage.getItem('phase1Complete') || 'false',
+      phase2Complete: sessionStorage.getItem('phase2Complete') || localStorage.getItem('phase2Complete') || 'false',
+      phase3Complete: sessionStorage.getItem('phase3Complete') || localStorage.getItem('phase3Complete') || 'false',
+      phase4Complete: localStorage.getItem('phase4Complete') || 'false',
+      codeTheme: localStorage.getItem('codeTheme') || 'light',
+      submitted: '1'
+    };
+
+    const payload = {
+      username,
+      participantName: name,
+      phase1,
+      phase2,
+      phase3,
+      phase4,   // ← NEW
+      ...flags
+    };
+
+    console.log("🚀 Submitting FINAL payload via Beacon:", payload);
+
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    const success = navigator.sendBeacon('/submit_final', blob);
+
+    if (success) {
+      showSubmissionModal('✅ Submission successful!\n\nWe will notify you about the possible next steps. \n\nYou can still resubmit your responses before the deadline if needed.');
+    } else {
+      showValidationMessage('❌ Submission failed. Beacon transmission failed.');
+    }
+  }
+
+
+    renderPhase1();
+    renderPhase2();
+    renderPhase3();
+    renderPhase4();
+  </script>
+
+  <script>
+    window.onload = () => {
+      displayUserName();
+      if (sessionStorage.getItem('phase1Complete') === 'true') {
+        document.getElementById('link-phase2')?.classList.remove('disabled');
+      }
+      if (sessionStorage.getItem('phase2Complete') === 'true') {
+        document.getElementById('link-phase3')?.classList.remove('disabled');
+      }
+      if (sessionStorage.getItem('phase3Complete') === 'true') {
+        document.getElementById('link-phase4')?.classList.remove('disabled');
+      }
+      if (sessionStorage.getItem('phase4Complete') === 'true') {
+        document.getElementById('link-review')?.classList.remove('disabled');
+      }
+
+      // Mark current phase active
+      document.getElementById('link-review')?.classList.add('active');
+
+      setInterval(() => {
+        try {
+          saveToServer();
+          console.log("[Auto-Save] Progress saved to server.");
+        } catch (e) {
+          console.warn("[Auto-Save] Failed to save:", e);
+        }
+      }, 120000); // every 2 minutes
+    };
+  </script>
+
+
+  <script>
+    function displayUserName() {
+      const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+      if (name) {
+        document.getElementById('user-info').textContent = `👤 ${name}`;
+      }
+    }
+  </script>
+
+  <script>
+    function isLoggedIn() {
+      const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName');
+      const order = sessionStorage.getItem('snippetOrder') || localStorage.getItem('snippetOrder');
+      return name && order;
+    }
+
+    function checkLogin() {
+      if (!isLoggedIn()) {
+        alert('You must be logged in to access this page. Redirecting to the homepage.');
+        window.location.href = '/';
+      }
+    }
+
+    function isPhaseComplete(phaseKey) {
+      const sessionVal = sessionStorage.getItem(phaseKey);
+      const cookieVal = localStorage.getItem(phaseKey);
+      return sessionVal === 'true' || cookieVal === 'true';
+    }
+
+    function checkPhase3Completion() {
+      if (!isPhaseComplete('phase3Complete') || !isPhaseComplete('phase2Complete') || !isPhaseComplete('phase1Complete')) {
+        alert('Please complete Phase 3 before continuing.');
+        window.location.href = 'phase3.html';
+      }
+    }
+
+    window.addEventListener('load', checkLogin);
+    window.addEventListener('load', checkPhase3Completion);
+  </script>
+
+
+  <script>
+    // Toggle logout menu visibility
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   const userInfo = document.getElementById('user-info');
+    //   const logoutMenu = document.getElementById('logout-menu');
+
+    //   userInfo.addEventListener('click', () => {
+    //     logoutMenu.style.display = logoutMenu.style.display === 'block' ? 'none' : 'block';
+    //   });
+
+    //   // Hide the menu if clicked outside
+    //   document.addEventListener('click', (event) => {
+    //     if (!event.target.closest('.user-dropdown')) {
+    //       logoutMenu.style.display = 'none';
+    //     }
+    //   });
+    // });
+
+    // Clear storage and redirect to login
+    function logout() {
+      saveToServer();
+      sessionStorage.clear();
+      localStorage.clear();
+
+
+      // Clear all cookies
+      document.cookie.split(";").forEach(cookie => {
+        const name = cookie.split("=")[0].trim();
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      });
+
+      window.location.href = 'index.html';
+    }
+  </script>
+
+  <script>
+  function saveToServer() {
+    const name = sessionStorage.getItem('participantName') || localStorage.getItem('participantName') || 'Anonymous';
+    const username = localStorage.getItem('username') || 'anonymous';
+
+    // Phase 1
+    const phase1 = {};
+    for (let i = 1; i <= 8; i++) {
+      const summary = sessionStorage.getItem(`summary${i}`) || localStorage.getItem(`summary${i}`) || '';
+      const comp = sessionStorage.getItem(`compSummary${i}`) || localStorage.getItem(`compSummary${i}`) || '';
+      phase1[`snippet${i}`] = { summary, comprehensibility: comp };
+    }
+
+    // Phase 2 & 3
+    let phase2 = {}, phase3 = {};
+    try {
+      phase2 = JSON.parse(sessionStorage.getItem('phase3_ranking') || localStorage.getItem('phase3_ranking') || '{}');
+      phase3 = JSON.parse(sessionStorage.getItem('phase3_reasoning') || localStorage.getItem('phase3_reasoning') || '{}');
+    } catch {}
+
+    // Phase 4
+    const phase4 = JSON.parse(localStorage.getItem('csKnowledgeSurveyAnswers') || '{}');
+
+    const flags = {
+      phase1Complete: sessionStorage.getItem('phase1Complete') || localStorage.getItem('phase1Complete') || 'false',
+      phase2Complete: sessionStorage.getItem('phase2Complete') || localStorage.getItem('phase2Complete') || 'false',
+      phase3Complete: sessionStorage.getItem('phase3Complete') || localStorage.getItem('phase3Complete') || 'false',
+      phase4Complete: localStorage.getItem('phase4Complete') || 'false',
+      codeTheme: localStorage.getItem('codeTheme') || 'light',
+      submitted: '0',
+    };
+
+    const payload = { username, participantName: name, phase1, phase2, phase3, phase4, ...flags };
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    navigator.sendBeacon('/submit_final', blob);
+  }
+
+    window.addEventListener('beforeunload', function (e) {
+      saveToServer();
+    });
+
+  </script>
+
+  
+
+
+
+  <footer
+    style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 14px; color: #666;">
+    Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+  </footer>
+</body>
+
+</html>

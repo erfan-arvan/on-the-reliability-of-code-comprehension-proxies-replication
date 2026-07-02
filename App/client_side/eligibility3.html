@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eligibility Check</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #F4C41C;
+      color: #333;
+    }
+
+    .instructions,
+    .email-box,
+    .survey-box,
+    .slots-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .day-card {
+      background-color: #eaeaea;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .time-slot {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background-color: #ccc;
+      cursor: pointer;
+    }
+
+    .time-slot.selected {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      background-color: #fff;
+      color: #333;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 10px;
+      margin-bottom: 16px;
+      background-color: #fff;
+      color: #333;
+      box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+    }
+
+    .full-width-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .full-width-btn:hover {
+      background-color: #45a049;
+    }
+
+    .modal.hidden {
+      display: none !important;
+    }
+
+    .success-message {
+      position: relative;
+      background-color: #e6f9ec;
+      color: #2e7d32;
+      border: 1px solid #2e7d32;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .success-message .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: none;
+      border: none;
+      color: #2e7d32;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+      margin: 0;
+    }
+
+    .success-message .close-btn:hover {
+      color: #1b5e20;
+    }
+
+    .confirm-box,
+    .final-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .confirm-box a {
+      color: #4CAF50;
+      margin-left: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .confirm-box a:hover {
+      text-decoration: underline;
+    }
+
+    .final-box button {
+      margin-top: 10px;
+    }
+
+    input.input-error {
+      border: 2px solid red;
+      background-color: #ffe6e6;
+    }
+
+    #warning-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #warning-modal .modal-content {
+      background-color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 10px #4CAF50;
+      }
+
+      100% {
+        box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+      }
+    }
+
+    #email {
+      animation: glowPulse 1.5s infinite alternate;
+    }
+
+    button:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        margin: 16px;
+      }
+
+      .instructions,
+      .email-box,
+      .survey-box,
+      .slots-box {
+        padding: 16px;
+      }
+
+      .modal-content {
+        max-width: 90%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+
+  <div class="instructions">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h3>About This Study</h3>
+      <button
+        style="padding: 6px 12px; font-size: 14px; border-radius: 5px; background-color: #ddd; border: none;color: darkslategrey; cursor: pointer;"
+        onclick="toggleInfo(this)">Hide</button>
+    </div>
+    <div id="study-info">
+      <p><strong>📘 Study Overview:</strong> You're invited to participate in a research study exploring how students
+        understand real-world Java code.</p>
+
+      <p><strong>🧠 What You'll Do:</strong> You'll review <strong>8 Java code snippets</strong> and answer a few
+        questions about each one.</p>
+
+      <p><strong>⏱️ Duration:</strong> The session typically lasts <strong>up to 60 minutes</strong>, but may take up to
+        <strong>90 minutes</strong> including setup, the consent process, and serving snacks. There are no strict time
+        limits—you may take breaks as needed.
+      </p>
+
+      <p><strong>📍 Format:</strong> The study takes place <strong>in person</strong>, and you’ll use <strong>your own
+          laptop</strong> to complete the tasks online.</p>
+
+      <p><strong>🏫 Location:</strong> The exact room—somewhere on the NJIT campus—will be shared with you in a
+        follow-up message after registration.</p>
+
+      <p><strong>🎁 Incentives:</strong> Everyone receives <strong>pizza and snacks</strong> at the end of the session,
+        and one participant will win a <strong>$50 gift card</strong> through a post-study drawing.</p>
+
+      <p><strong>🔒 Confidentiality:</strong> All of your responses will be recorded anonymously and used only for
+        research purposes.</p>
+
+      <p><a href="#"
+          onclick="document.getElementById('detailed-info').style.display='block'; this.style.display='none'; return false;">📘
+          Learn more about what to expect</a></p>
+
+      <div id="detailed-info" style="display: none;">
+        <p>Here's what the full session will involve:</p>
+
+        <ul>
+          <li>👋 A short in-person introduction to the study and how to use the website</li>
+          <li>📝 Reading and signing the informed consent form</li>
+          <li>📝 Two quick surveys:
+            <ul>
+              <li>Background Questionnaire</li>
+              <li>Programming Experience Self-Assessment</li>
+            </ul>
+          </li>
+          <li>🔍 The main study tasks:
+            <ul>
+              <li>Read 8 Java code snippets</li>
+              <li>Answer some questions for each snippet</li>
+            </ul>
+          </li>
+          <li>📝 A quick post survey
+          <li>⏸️ You can pause the study at any time if you need a break</li>
+          <li>🚪 You can withdraw at any moment—no worries and no penalty.</li>
+          <li>🙋 Need help? Raise your hand and a researcher will assist you</li>
+          <li>📊 Only your answers and time spent on tasks will be recorded—nothing else</li>
+          <li>⚠️ Participation is voluntary. You can leave at any time with no penalty</li>
+          <li>📣 At the end, you'll complete a quick feedback survey</li>
+          <li>🍕 Enjoy snacks after your session, and a chance to win a $50 gift card!</li>
+        </ul>
+
+        <p>We appreciate your interest—your participation helps advance research in software engineering education!</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="email-box" id="email-box">
+    <h2>Check Your Eligibility</h2>
+    <input type="email" id="email" placeholder="Enter your email" class="input-field" autocomplete="email">
+    <button onclick="startSurvey()" class="full-width-btn">Check My Eligibility</button>
+  </div>
+
+  <div class="survey-box hidden" id="survey-box">
+    <h3>Eligibility Questions</h3>
+    <div id="question-container"></div>
+    <div style="margin-top: 20px;">
+      <button onclick="prevQuestion()" id="prevBtn" disabled>Previous</button>
+      <button onclick="nextQuestion()" id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <div id="eligibility-success" class="success-message hidden">
+    <button class="close-btn"
+      onclick="document.getElementById('eligibility-success').classList.add('hidden')">✕</button>
+    🎉 You're eligible to participate in the study! Please select all time slots that work for you and click on Next.
+  </div>
+
+
+
+  <div class="slots-box hidden" id="slots-box">
+    <div id="selectedOnes">
+      <p>
+        <strong>📅 Please select a time slot that works for you:</strong><br>
+      </p>
+      <div class="day-card" data-date="2025-11-07">
+        <h4>Friday 7 Nov</h4>
+        <div>
+          <div class="time-slot" onclick="selectSlot(this)">1:00 PM – 2:30 PM</div>
+        </div>
+      </div>
+
+      <div class="day-card" data-date="2025-11-14">
+        <h4>Friday 14 Nov</h4>
+        <div>
+          <div class="time-slot" onclick="selectSlot(this)">4:00 PM – 5:30 PM</div>
+        </div>
+      </div>
+
+      <div class="day-card" data-date="2025-11-18">
+        <h4>Tuesday 18 Nov</h4>
+        <div>
+          <div class="time-slot" onclick="selectSlot(this)">2:30 PM – 4:00 PM</div>
+        </div>
+      </div>
+
+      <div class="day-card" data-date="2025-11-19">
+        <h4>Wednesday 19 Nov</h4>
+        <div>
+          <div class="time-slot" onclick="selectSlot(this)">4:00 PM – 5:30 PM</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 1em;">
+      <a id="selectedvsall" href="#" onclick="toggleCustomTimeBox2(); return false;">None of these work for you?</a>
+    </p>
+
+    <div id="allTimes" style="display: none;">
+      <p>
+        <strong>📅 Please select <u>all</u> of your available times in the next two weeks (weekdays only):</strong><br>
+        <span style="color:#555;">We need this information to schedule your session at a time that best matches your
+          availability.</span>
+      </p>
+
+      <div id="dynamic-cards"></div>
+
+      <!-- Old: <button onclick="finalizeMultiSlotSelection()">Next</button> -->
+      <button onclick="openSlotConfirmModal()">Next</button>
+
+      <p style="margin-top: 1em;">
+        <a href="#" onclick="toggleCustomTimeBox(); return false;">None of these work for you?</a>
+      </p>
+    </div>
+
+    <div id="custom-time-box"
+      style="display: none; margin-top: 1em; border: 1px solid #ccc; padding: 1em; border-radius: 8px;">
+      <p><strong>Please contact us at ea442@njit.edu</strong></p>
+    </div>
+
+  </div>
+
+  <div class="modal hidden" id="slot-confirm-modal">
+    <div class="modal-content">
+      <h3>Have you selected all of your available slots?</h3>
+      <p id="slot-confirm-text" style="margin-top: 8px;"></p>
+      <div style="margin-top: 16px; display:flex; gap:10px; justify-content:center;">
+        <button id="slot-confirm-yes" onclick="finalizeMultiSlotSelection()" style="padding:10px 16px;">Yes,
+          continue</button>
+        <button id="slot-confirm-no" onclick="closeSlotConfirmModal()"
+          style="padding:10px 16px; background:#ddd; color:#333;">Go back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Section -->
+  <div class="confirm-box hidden" id="confirm-box">
+    <p><strong>You selected:</strong> <span id="selected-slot-info"></span>
+      <a href="#" onclick="changeSlot()">Change date</a>
+    </p>
+
+    <!-- Email opt-in (default) -->
+    <label style="display: block; margin: 12px 0;">
+      <input type="checkbox" id="notify-checkbox" checked>
+      I want to receive notifications about this session through my email
+      "<span id="notify-email"></span>"
+    </label>
+
+    <!-- SMS opt-in -->
+    <label style="display: block; margin: 12px 0;">
+      <input type="checkbox" id="sms-checkbox" checked onchange="toggleSmsInput()">
+      I don’t check email often — also send me SMS notifications (<span style="color: red;">recommended</span>).
+    </label>
+
+    <div id="sms-input-wrap">
+      <input type="tel" id="phone-input" class="input-field"
+        placeholder="Mobile number (any format, e.g., 973-555-0123 or +1 973 555 0123)" inputmode="tel"
+        autocomplete="tel" aria-label="Mobile number for SMS notifications" />
+      <small style="color:#666;">We’ll only use this number for study-related notifications.</small>
+    </div>
+
+
+
+    <button onclick="finalizeRegistration()">Finalize My Registration</button>
+  </div>
+
+
+  <!-- Final Success Section -->
+  <div class="final-box hidden" id="final-box">
+    <h3>✅ Registration Received!</h3>
+    <p>Thank you! We'll reach out to you soon to confirm the final session time and share the exact room location. It
+      will be in one of the rooms at <strong>GITC, NJIT</strong>.</p>
+    <p><strong>Selected availability:</strong> <span id="confirmed-session"></span></p>
+    <!-- <p>You can add a placeholder to your Google Calendar for now:</p>
+    <button onclick="addToGoogleCalendar()">📅 Add to Google Calendar</button> -->
+  </div>
+
+
+  <div class="final-box hidden" id="final-box-custom">
+    <h3>✅ Submitted!</h3>
+    <p>Thank you! Your submission has been received. <strong>We’ll contact you soon to schedule a time.</strong></p>
+    <p>The exact room location will be shared in a separate follow-up—it will be in one of the rooms at <strong>GITC,
+        NJIT</strong>.</p>
+  </div>
+
+  <div class="slots-box" id="final-confirmation-panel" style="display: none;">
+    <p id="final-summary"></p>
+    <a href="#" onclick="changeSlotCustom()">Change date</a>
+    <button onclick="submitPendingRegistration()">Submit</button>
+  </div>
+
+
+
+  <div class="modal hidden" id="ineligible-modal">
+    <div class="modal-content">
+      <h3>Sorry!</h3>
+      <p>Unfortunately, you are not eligible to participate in this study. Thank you for your interest.</p>
+      <button onclick="document.getElementById('ineligible-modal').classList.add('hidden')">Close</button>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="warning-modal">
+    <div class="modal-content">
+      <p id="warning-message">Placeholder warning text.</p>
+      <button onclick="closeWarningModal()">Close</button>
+    </div>
+  </div>
+
+
+  <script>
+    const questions = [
+      {
+        text: "what's your class standing?",
+        options: [
+          { label: "Freshman" },
+          { label: "Sophomore" },
+          { label: "Junior" },
+          { label: "Senior" },
+          { label: "Graduate student", ineligible: true }
+        ]
+      },
+      {
+        text: "What is your age?",
+        options: [
+          { label: "Under 18", ineligible: true },
+          { label: "18–24" },
+          { label: "25–34" },
+          { label: "35–44" },
+          { label: "45–54" },
+          { label: "55–64" },
+          { label: "65 or older" }
+        ]
+      },
+      {
+        id: "cs288",
+        text: "Have you taken CS 288: Intensive Programming?",
+        options: [
+          { label: "I completed the course with a grade of C or better", course_ok: true },
+          { label: "I am currently enrolled in the course", course_ok: true },
+          { label: "I have taken the course but did not receive a grade of C or better, and I am not currently enrolled" },
+          { label: "I have not taken CS 288" }
+        ]
+      },
+      {
+        text: "Are you willing to bring your own laptop to the session?",
+        options: [
+          { label: "Yes" },
+          { label: "No", ineligible: true }
+        ]
+      },
+      {
+        id: "javaYears",
+        text: "How many years have you been programming in Java (through coursework, personal projects, or other experiences)?",
+        options: [
+          { label: "I am not familiar with Java", ineligible: true },
+          { label: "Less than 1 year" },
+          { label: "1–2 years" },
+          { label: "3–4 years", gt1y: true },
+          { label: "5+ years", gt1y: true },
+          // { label: "Prefer not to say" }
+        ]
+      }
+    ];
+
+
+    let currentQuestion = 0;
+    let answers = [];
+
+    function startSurvey() {
+
+      const emailInput = document.getElementById('email');
+      const email = emailInput.value.trim().toLowerCase();
+
+
+      // Remove any prior error indication
+      emailInput.classList.remove("input-error");
+
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!isValidEmail) {
+        emailInput.classList.add("input-error");
+        showWarningModal("Please enter a valid email address.");
+        emailInput.focus();
+        return;
+      }
+
+      //   if (!email.endsWith("@njit.edu")) {
+      //     emailInput.classList.add("input-error");
+      //     showWarningModal("Please use your NJIT email address (e.g., yourname@njit.edu).");
+      //     emailInput.focus();
+      //     return;
+      //   }
+
+      localStorage.setItem("student_email", email);
+      document.getElementById('email-box').classList.add('hidden');
+      document.getElementById('survey-box').classList.remove('hidden');
+      hideStudyInfoIfVisible();
+      showQuestion();
+    }
+
+
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      const container = document.getElementById('question-container');
+      let html = `<p><strong>${q.text}</strong></p>`;
+      q.options.forEach((opt, i) => {
+        const checked = answers[currentQuestion] === i ? 'checked' : '';
+        html += `<label><input type="radio" name="q${currentQuestion}" value="${i}" ${checked}> ${opt.label}</label><br>`;
+      });
+      container.innerHTML = html;
+
+      document.getElementById('prevBtn').disabled = currentQuestion === 0;
+      document.getElementById('nextBtn').innerText = currentQuestion === questions.length - 1 ? 'Check Eligibility' : 'Next';
+    }
+
+    function nextQuestion() {
+      const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+      if (!selected) return alert("Please select an option.");
+      answers[currentQuestion] = parseInt(selected.value);
+      if (currentQuestion === questions.length - 1) {
+        checkEligibility();
+      } else {
+        currentQuestion++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) currentQuestion--;
+      showQuestion();
+    }
+
+    function checkEligibility() {
+      let hasIneligible = false;
+      let courseOk = false;
+      let expOk = false; // lots of experience (accept exp_ok or gt1y)
+
+      for (let i = 0; i < answers.length; i++) {
+        const q = questions[i];
+        const opt = q?.options?.[answers[i]];
+        if (!opt) continue;
+
+        if (opt.ineligible === true) { hasIneligible = true; break; }
+        if (opt.course_ok === true) courseOk = true;
+        if (opt.exp_ok === true || opt.gt1y === true) expOk = true; // <-- key line
+      }
+
+      const eligible = !hasIneligible && (courseOk || expOk);
+
+      sendEligibilityOutcome(eligible);
+
+      if (!eligible) {
+        document.getElementById('survey-box').classList.add('hidden');
+        document.getElementById('ineligible-modal').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('survey-box').classList.add('hidden');
+      document.getElementById('eligibility-success').classList.remove('hidden');
+      document.getElementById('slots-box').classList.remove('hidden');
+    }
+
+
+
+
+
+
+
+    // function selectSlot(el) {
+    //   el.classList.toggle('selected');
+
+    //   // Gather all selected slots
+    //   const selectedEls = document.querySelectorAll('.slots-box .time-slot.selected');
+    //   if (selectedEls.length === 0) return;
+
+    //   const selectedSlots = Array.from(selectedEls).map(el => {
+    //     const dayText = el.closest('.day-card').querySelector('h4').innerText;
+    //     return `${dayText} at ${el.innerText}`;
+    //   });
+
+    //   localStorage.setItem("selected_slot", selectedSlots.join(", "));
+
+    //   // Update confirmation UI
+    //   document.getElementById('eligibility-success').classList.add('hidden');
+    //   document.getElementById('slots-box').classList.add('hidden');
+    //   document.getElementById('selected-slot-info').innerText = selectedSlots.join(", ");
+    //   document.getElementById('notify-email').innerText = localStorage.getItem("student_email");
+    //   document.getElementById('confirm-box').classList.remove('hidden');
+    // }
+
+
+    function finalizeRegistration() {
+      const notifyEmail = document.getElementById('notify-checkbox').checked;
+      const smsOptIn = document.getElementById('sms-checkbox').checked;
+      const phone = document.getElementById('phone-input')?.value?.trim() || "";
+
+      if (smsOptIn && !isPlausiblePhone(phone)) {
+        showWarningModal("Please enter a valid mobile number for SMS notifications (e.g., +1 973 555 0123).");
+        document.getElementById('phone-input').focus();
+        return;
+      }
+
+      localStorage.setItem("notify_opt_in", notifyEmail);
+      localStorage.setItem("sms_opt_in", smsOptIn);
+      if (smsOptIn) localStorage.setItem("sms_phone", phone);
+
+      // Call registration submit before showing final confirmation
+      submitRegistrationData().then(success => {
+        if (success) {
+          document.getElementById('confirm-box').classList.add('hidden');
+          document.getElementById('final-box').classList.remove('hidden');
+          const selectedSlot = localStorage.getItem("selected_slot");
+          const sessionText = `${selectedSlot}`;
+          document.getElementById("confirmed-session").innerText = sessionText;
+        } else {
+          alert("❌ Something went wrong while registering. Please try again or contact the research team.");
+        }
+      });
+    }
+
+
+
+    function addToGoogleCalendar() {
+      const selected = localStorage.getItem("selected_slot"); // e.g., "Monday, June 10 at 10:00 AM"
+      if (!selected) return alert("No time slot selected.");
+
+      const [dayText, timeText] = selected.split(" at ");
+      const dateMap = {
+        "Monday, June 10": "20250610",
+        "Tuesday, June 11": "20250611"
+      };
+      const baseDate = dateMap[dayText.trim()];
+      if (!baseDate) return alert("Invalid date.");
+
+      // Parse time (e.g., "1:00 PM")
+      const [hourPart, minutePartWithSuffix] = timeText.trim().split(":");
+      const minutes = minutePartWithSuffix.slice(0, 2);
+      const suffix = minutePartWithSuffix.trim().slice(-2); // AM or PM
+      let hour = parseInt(hourPart);
+
+      if (suffix === "PM" && hour !== 12) hour += 12;
+      if (suffix === "AM" && hour === 12) hour = 0;
+
+      const startHourStr = hour.toString().padStart(2, '0');
+      const startMinuteStr = minutes.padStart(2, '0');
+      const startTime = `${baseDate}T${startHourStr}${startMinuteStr}00`;
+
+      // Add 90 minutes for end time
+      const startDate = new Date(`${baseDate.slice(0, 4)}-${baseDate.slice(4, 6)}-${baseDate.slice(6)}T${startHourStr}:${startMinuteStr}:00`);
+      const endDate = new Date(startDate.getTime() + 90 * 60 * 1000); // 90 min in ms
+      const endTime = `${endDate.getFullYear()}${(endDate.getMonth() + 1).toString().padStart(2, '0')}${endDate.getDate().toString().padStart(2, '0')}T${endDate.getHours().toString().padStart(2, '0')}${endDate.getMinutes().toString().padStart(2, '0')}00`;
+
+      // Build Google Calendar URL
+      const title = encodeURIComponent("Code Comprehension Session");
+      const location = encodeURIComponent("To be declared");
+      const details = encodeURIComponent("You registered for a code comprehension session. We'll contact you with the exact room. It will be in GITC at NJIT.");
+      const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startTime}/${endTime}&details=${details}&location=${location}`;
+
+      window.open(calendarUrl, "_blank");
+    }
+
+
+    function toggleInfo(btn) {
+      const info = document.getElementById('study-info');
+      if (info.classList.contains('hidden')) {
+        info.classList.remove('hidden');
+        btn.innerText = "Hide";
+      } else {
+        info.classList.add('hidden');
+        btn.innerText = "Show";
+      }
+    }
+
+    function toggleStudyInfo() {
+      const info = document.getElementById('study-info');
+      const button = document.getElementById('toggleInfoButton');
+
+      if (info.classList.contains('hidden')) {
+        info.classList.remove('hidden');
+        button.innerText = "Hide";
+      } else {
+        info.classList.add('hidden');
+        button.innerText = "Show";
+      }
+    }
+
+    function hideStudyInfoIfVisible() {
+      const info = document.getElementById('study-info');
+      const button = document.getElementById('toggleInfoButton');
+
+      if (!info.classList.contains('hidden')) {
+        info.classList.add('hidden');
+        if (button) button.innerText = "Show";
+      }
+    }
+
+
+
+    function submitRegistrationData() {
+      const email = localStorage.getItem("student_email") || "unknown";
+      const notify = localStorage.getItem("notify_opt_in") === "true";
+      const selectedSlot = localStorage.getItem("selected_slot") || "unspecified";
+
+      const eligibilityResponses = questions.map((q, index) => {
+        const selectedIndex = answers[index];
+        return {
+          question: q.text,
+          selectedOption: q.options[selectedIndex]?.label || "No answer"
+        };
+      });
+
+      const payload = {
+        email: email,
+        notify: notify,
+        selectedSlot: selectedSlot,
+        eligibilityResponses: eligibilityResponses,
+        submitted: true,
+        event: "availability", // or "pending"/"register"/etc. as you already use
+        // NEW:
+        smsOptIn: localStorage.getItem("sms_opt_in") === "true",
+        smsPhone: localStorage.getItem("sms_phone") || ""
+      };
+
+
+
+      return fetch("/register_student", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.ok)
+        .catch(err => {
+          console.error("❌ Network error:", err);
+          return false;
+        });
+    }
+
+    function showWarningModal(message) {
+      document.getElementById("warning-message").textContent = message;
+      document.getElementById("warning-modal").classList.remove("hidden");
+    }
+
+    function closeWarningModal() {
+      document.getElementById("warning-modal").classList.add("hidden");
+    }
+
+    document.getElementById('email').addEventListener('input', function () {
+      const value = this.value.trim().toLowerCase();
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+      // If the input is now a valid email OR ends with '@njit.edu', remove error styling
+      if (isValidEmail) {
+        this.classList.remove('input-error');
+      }
+    });
+
+
+    function changeSlot() {
+      // Hide confirmation section and show time slot selection again
+      document.getElementById('confirm-box').classList.add('hidden');
+      document.getElementById('slots-box').classList.remove('hidden');
+      document.getElementById('final-confirmation-panel').style.display = 'none';
+
+    }
+
+    function changeSlotCustom() {
+      // Hide confirmation section and show time slot selection again
+      document.getElementById('confirm-box').classList.add('hidden');
+      document.getElementById('slots-box').classList.remove('hidden');
+      document.getElementById('final-confirmation-panel').style.display = 'none';
+      toggleCustomTimeBox();
+
+    }
+
+  </script>
+
+  <script>
+    function toggleCustomTimeBox() {
+      const box = document.getElementById('custom-time-box');
+      box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+    }
+
+    function reviewCustomTime() {
+      const selected = Array.from(document.querySelectorAll('#custom-time-box .time-slot.selected'))
+        .map(el => {
+          const day = el.closest('.day-card').querySelector('h4').innerText;
+          return `${day} at ${el.innerText}`;
+        });
+
+      if (selected.length === 0) {
+        alert("Please select at least one time slot.");
+        return;
+      }
+
+      window.customEventData = {
+        event: "pending",
+        availabilityNote: selected
+      };
+
+      document.getElementById('eligibility-success').classList.add('hidden');
+
+      goToFinalStepWithPendingEvent();
+    }
+
+
+    function goToFinalStepWithPendingEvent() {
+      const selectedTimes = Array.from(document.querySelectorAll('#custom-time-box .time-slot.selected'))
+        .map(slot => {
+          const day = slot.closest('.day-card').querySelector('h4').innerText;
+          return `${day} at ${slot.innerText.trim()}`;
+        });
+
+      if (selectedTimes.length === 0) {
+        alert("Please select at least one available time.");
+        return;
+      }
+
+      window.customEventData = {
+        event: "pending",
+        availabilityNote: selectedTimes
+      };
+
+      const formatted = selectedTimes.map(t => `<li>${t}</li>`).join("");
+
+      document.getElementById('final-summary').innerHTML = `
+    <p><strong>🕒 Please review your selected availability before submitting:</strong></p>
+    <ul>${formatted}</ul>
+    <p>Click “Submit” below and we’ll follow up to schedule your session based on your availability.</p>
+  `;
+
+      document.getElementById('slots-box').classList.add('hidden');
+      document.getElementById('custom-time-box').style.display = 'none';
+      document.getElementById('final-confirmation-panel').style.display = 'block';
+    }
+
+
+
+    function submitPendingRegistration() {
+      const email = document.getElementById('email').value;
+      const payload = {
+        email: email,
+        event: "pending",
+        customAvailability: window.customEventData.availabilityNote.join(", "),
+        submitted: true
+      };
+
+      fetch("/register_student", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(response => {
+        if (response.ok) {
+          document.getElementById('final-confirmation-panel').style.display = 'none';
+          document.getElementById('final-box-custom').classList.remove('hidden');
+
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+      });
+    }
+
+    function toggleCustomSlot(el) {
+      el.classList.toggle('selected');
+    }
+
+
+    function finalizeMultiSlotSelection() {
+
+      // Close the confirm modal if open
+      const m = document.getElementById('slot-confirm-modal');
+      if (m && !m.classList.contains('hidden')) m.classList.add('hidden');
+
+      const selectedEls = document.querySelectorAll('.slots-box .time-slot.selected');
+      if (selectedEls.length === 0) {
+        alert("Please select at least one time slot.");
+        return;
+      }
+
+      const selectedSlots = Array.from(selectedEls).map(el => {
+        const dayText = el.closest('.day-card').querySelector('h4').innerText;
+        return `${dayText} at ${el.innerText}`;
+      });
+
+      localStorage.setItem("selected_slot", selectedSlots.join(", "));
+
+      // Go to confirmation step
+      document.getElementById('slots-box').classList.add('hidden');
+      document.getElementById('eligibility-success').classList.add('hidden');
+      document.getElementById('selected-slot-info').innerText = selectedSlots.join(", ");
+      document.getElementById('notify-email').innerText = localStorage.getItem("student_email");
+      document.getElementById('confirm-box').classList.remove('hidden');
+
+      sendAvailabilityBeforeNotif(selectedSlots);
+
+    }
+
+
+    function selectSlot(el) {
+      // Find the container that holds the "recommended" slots
+      const container = document.getElementById('selectedOnes');
+
+      // Remove 'selected' from any previously chosen slot
+      container.querySelectorAll('.time-slot.selected')
+        .forEach(s => s.classList.remove('selected'));
+
+      // Mark the newly clicked slot as selected
+      el.classList.add('selected');
+
+      // Continue to the next step (optional)
+      finalizeSingleSlot(el);
+    }
+
+      function finalizeSingleSlot(el) {
+    const dayText = el.closest('.day-card').querySelector('h4').innerText;
+    const selectedSlot = `${dayText} at ${el.innerText.trim()}`;
+
+    // persist
+    localStorage.setItem("selected_slot", selectedSlot);
+
+    // go to confirmation UI
+    document.getElementById('slots-box').classList.add('hidden');
+    document.getElementById('eligibility-success').classList.add('hidden');
+    document.getElementById('selected-slot-info').innerText = selectedSlot;
+    document.getElementById('notify-email').innerText = localStorage.getItem("student_email");
+    document.getElementById('confirm-box').classList.remove('hidden');
+
+    // fire your “before notify” hook
+    sendAvailabilityBeforeNotif([selectedSlot]);
+  }
+
+  </script>
+
+  <footer
+    style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 14px; color: #666;">
+    Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+  </footer>
+  <script>
+    function createDayCardsNext14Weekdays(containerId = 'dynamic-cards') {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      const timeSlots = [
+        '9:00 AM – 10:30 AM',
+        '10:30 AM – 12:00 PM',
+        '1:00 PM – 2:30 PM',
+        '2:30 PM – 4:00 PM',
+        '4:00 PM – 5:30 PM',
+        '5:30 PM – 7:00 PM'
+      ];
+
+      const fmtWeekday = new Intl.DateTimeFormat(undefined, { weekday: 'long' });
+      const fmtDay = new Intl.DateTimeFormat(undefined, { day: 'numeric' });
+      const fmtMonth = new Intl.DateTimeFormat(undefined, { month: 'short' });
+
+      const today = new Date();
+      let generated = 0;
+      let offset = 3; // ✅ start from 3 days after the current day
+
+      while (generated < 14) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + offset);
+        offset++;
+
+        const dayOfWeek = d.getDay(); // 0=Sun, 6=Sat
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+          continue; // skip weekends
+        }
+
+        const card = document.createElement('div');
+        card.className = 'day-card';
+        card.setAttribute('data-date', d.toISOString().slice(0, 10));
+
+        const h4 = document.createElement('h4');
+        h4.textContent = `${fmtWeekday.format(d)} ${fmtDay.format(d)} ${fmtMonth.format(d)}`;
+        card.appendChild(h4);
+
+        const slotWrap = document.createElement('div');
+        timeSlots.forEach(t => {
+          const slot = document.createElement('div');
+          slot.className = 'time-slot';
+          slot.textContent = t;
+          slot.onclick = function () { toggleCustomSlot(this); };
+          slotWrap.appendChild(slot);
+        });
+
+        card.appendChild(slotWrap);
+        container.appendChild(card);
+
+        generated++;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => createDayCardsNext14Weekdays());
+  </script>
+
+  <script>
+    function sendEligibilityOutcome(eligible) {
+      const email = (localStorage.getItem("student_email") || document.getElementById('email')?.value || "").trim().toLowerCase();
+
+      const eligibilityResponses = questions.map((q, index) => {
+        const selectedIndex = answers[index];
+        return {
+          question: q.text,
+          selectedOption: q.options[selectedIndex]?.label ?? "No answer",
+          ineligible: Boolean(q.options[selectedIndex]?.ineligible)
+        };
+      });
+
+      const payload = {
+        email,
+        event: "eligibility",        // <-- distinguish this server-side
+        eligible,                    // true/false
+        eligibilityResponses,
+        submitted: true
+      };
+
+      fetch("/register_student", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error("❌ Network error posting eligibility:", err));
+    }
+
+  </script>
+
+  <script>
+    function toggleSmsInput() {
+      const wrap = document.getElementById('sms-input-wrap');
+      const smsChecked = document.getElementById('sms-checkbox').checked;
+      wrap.classList.toggle('hidden', !smsChecked);
+    }
+
+    // show it by default when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('sms-checkbox').checked = true;
+      document.getElementById('sms-input-wrap').classList.remove('hidden');
+    });
+
+
+    /** Very light validation:
+     * Accepts E.164 (+country …) or common US forms.
+     * You can tighten this later if you like.
+     */
+    function isPlausiblePhone(s) {
+      if (!s) return false;
+      const trimmed = s.trim();
+      // Accept E.164-ish or digits with optional separators
+      const e164 = /^\+\d{7,15}$/;                     // +19995551234
+      const loose = /^[\d\-\s().+]{7,20}$/;            // (973) 555-0123, 973-555-0123, +1 973 555 0123
+      return e164.test(trimmed) || loose.test(trimmed);
+    }
+
+  </script>
+
+  <script>
+    async function sendAvailabilityBeforeNotif(selectedSlots) {
+      const email = localStorage.getItem("student_email") || "unknown";
+      const payload = {
+        email: email,
+        event: "availabilityBeforeNotif",
+        selectedSlot: selectedSlots.join(", "),
+        submitted: true
+      };
+
+      try {
+        const res = await fetch("/register_student", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          console.warn("⚠️ Failed to submit availabilityBeforeNotif:", res.statusText);
+        } else {
+          console.log("✅ Sent availabilityBeforeNotif successfully for", email);
+        }
+      } catch (err) {
+        console.error("❌ Network error while sending availabilityBeforeNotif:", err);
+      }
+    }
+
+  </script>
+
+
+  <script>
+
+    function openSlotConfirmModal() {
+      const selectedEls = document.querySelectorAll('.slots-box .time-slot.selected');
+      const count = selectedEls.length;
+
+      if (count === 0) {
+        alert("Please select your available time slots.");
+        return;
+      }
+
+      if (count > 10) {
+        finalizeMultiSlotSelection();
+        return;
+      }
+
+      const msgBase = `You’ve selected <strong>${count}</strong> time slot${count > 1 ? 's' : ''}.`;
+      const nudge = (count < 3)
+        ? `<br><strong style="color:#d00;">We recommend selecting <u>at least 3</u> time slots to help us schedule your session easily.</strong>`
+        : '';
+
+
+      const finalQ = ` `;
+
+
+
+      document.getElementById('slot-confirm-text').innerHTML = msgBase + nudge + finalQ;
+
+      // Style the buttons dynamically
+      const yesBtn = document.getElementById('slot-confirm-yes');
+      const noBtn = document.getElementById('slot-confirm-no');
+
+      if (count < 3) {
+        // Gray submit button (de-emphasized)
+        yesBtn.style.background = '#ccc';
+        yesBtn.style.color = '#333';
+        yesBtn.style.border = 'none';
+        yesBtn.style.opacity = '0.9';
+        yesBtn.style.cursor = 'pointer';
+
+        // Green "Go back" button (emphasized)
+        noBtn.style.background = '#4CAF50';
+        noBtn.style.color = '#fff';
+        noBtn.style.border = 'none';
+        noBtn.style.opacity = '1';
+        noBtn.style.cursor = 'pointer';
+      } else {
+        // Normal buttons
+        yesBtn.style.background = '#4CAF50';
+        yesBtn.style.color = '#fff';
+        yesBtn.style.border = 'none';
+        yesBtn.style.opacity = '1';
+        yesBtn.style.cursor = 'pointer';
+
+        noBtn.style.background = '#ddd';
+        noBtn.style.color = '#333';
+        noBtn.style.border = 'none';
+        noBtn.style.opacity = '1';
+        noBtn.style.cursor = 'pointer';
+      }
+
+      // Show modal
+      document.getElementById('slot-confirm-modal').classList.remove('hidden');
+    }
+
+
+    function closeSlotConfirmModal() {
+      document.getElementById('slot-confirm-modal').classList.add('hidden');
+    }
+
+
+
+  </script>
+
+
+  <script>
+    function toggleCustomTimeBox2() {
+      const allTimes = document.getElementById('allTimes');       // full availability picker
+      const selected = document.getElementById('selectedOnes');   // recommended slots list
+      const link = document.getElementById('selectedvsall');
+
+      const showAllTimes = getComputedStyle(allTimes).display === 'none';
+
+      // swap panels
+      allTimes.style.display = showAllTimes ? 'block' : 'none';
+      selected.style.display = showAllTimes ? 'none' : 'block';
+
+      // update link text + a11y
+      if (link) {
+        link.textContent = showAllTimes
+          ? 'go back to the recommended slots'
+          : 'None of these work for you?';
+        link.setAttribute('aria-expanded', String(showAllTimes));
+        link.setAttribute('aria-controls', 'allTimes');
+      }
+    }
+  </script>
+
+
+</body>
+
+</html>

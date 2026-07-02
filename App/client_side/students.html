@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .instructions {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        pre {
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        /* Code block themes */
+        #code {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 20px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .light-mode #code {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .light-mode body {
+            background-color: #ffffff;
+            color: #222;
+        }
+
+        .light-mode textarea {
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 15px;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #bbb;
+            resize: vertical;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button[disabled] {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+
+                /* Basic syntax highlighting classes */
+        .keyword     { color: #0000ff; font-weight: bold; }
+        .type        { color: #007070; }
+        .function    { color: #7928a1; font-weight: bold; }
+        .literal     { color: #009999; }
+        .string      { color: #a31515; }
+        .comment     { color: #6a9955; font-style: italic; }
+        .number      { color: #098658; }
+
+                /* Dark mode overrides */
+        .dark-mode .keyword  { color: #82aaff; }
+        .dark-mode .type     { color: #89ddff; }
+        .dark-mode .function { color: #c792ea; }
+        .dark-mode .literal  { color: #ffcb6b; }
+        .dark-mode .string   { color: #c3e88d; }
+        .dark-mode .comment  { color: #7f848e; }
+        .dark-mode .number   { color: #f78c6c; }
+
+      #continueBtn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: 0 0 10px #4CAF50;
+        animation: glowPulse 1.5s infinite alternate;
+      }
+
+      @keyframes glowPulse {
+        0% {
+          box-shadow: 0 0 10px #4CAF50;
+        }
+        100% {
+          box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+        }
+      }
+
+      #continueBtn:hover {
+        background-color: #45a049;
+      }
+
+      /*for status bar*/
+.status-bar {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.phase-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.phase-link:hover:not(.disabled) {
+  background-color: #4CAF50;
+}
+
+.phase-link.active {
+  background-color: #4CAF50;
+}
+
+.phase-link.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+  a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+
+  .code-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  background-color: inherit;
+  color: inherit;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.line-numbers {
+  text-align: right;
+  padding-right: 10px;
+  user-select: none;
+  color: #888;
+}
+
+.code-content {
+  white-space: pre;
+}
+
+#timer-wrapper button {
+  background-color: transparent;
+  border: 2px solid #4CAF50;
+  color: #4CAF50;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#timer-wrapper button:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/*For the code parts in questions*/
+.qcode {
+  font-family: 'Courier New', Courier, monospace;
+  color: #333;
+}
+
+.short-answer-input {
+  font-size: 0.95em;
+  padding: 6px 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.short-answer-label {
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.assumptions {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9fafb; /* light gray-blue */
+  border-left: 4px solid #3b82f6; /* blue accent bar */
+  font-size: 14px;
+}
+
+.assumptions ul {
+  margin: 5px 0;
+  padding-left: 20px;
+}
+
+.input-block {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background-color: #f9fafb;
+  border-left: 4px solid #10b981; /* green accent bar */
+  font-size: 14px;
+}
+
+.qcode {
+  font-family: monospace;
+  background-color: #e5e7eb;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.instruction {
+  font-size: 15px;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.emphasis {
+  font-weight: bold;
+  color: #d97706; /* amber-600 or a highlight color */
+}
+
+
+    /* Modal styles */
+    #javadocModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      z-index: 1000;
+    }
+
+    #javadocModalContent {
+      position: relative;
+      width: 80%; height: 80%;
+      margin: 5% auto;
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    #javadocModalContent button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    #javadocFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* New style for standard Java methods */
+.standard-method {
+  font-weight: bold;
+  text-decoration: underline dotted;
+  cursor: pointer;
+}
+
+#javadocModalHeader {
+  background:#f0f0f0;
+  padding:6px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+#javadocModalHeader button {
+  background-color: transparent;
+  border: 2px solid #4CAF50;
+  color: #4CAF50;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.underline-dotted-pointer {
+  text-decoration: underline dotted;
+  cursor: pointer;
+}
+
+a.underline-dotted-pointer {
+  text-decoration: underline dotted !important;
+  cursor: pointer !important;
+  color: inherit !important; /* or set to your preferred color */
+}
+
+
+</style>
+
+    
+</head>
+<body>
+
+    <div class="status-bar">
+        <div class="user-dropdown" style="position: relative;">
+            <div id="timer-wrapper" style="display: flex; align-items: center; gap: 10px;">
+                <div id="timer" style="font-weight: bold;">⏱️ 00:00</div>
+              
+                <button id="pause-btn" onclick="pauseStudy()" title="Pause Timer" style="font-size: 16px; padding: 2px 6px;">⏸️</button>
+                <button id="resume-btn" onclick="resumeStudy()" title="Resume Timer" style="font-size: 16px; padding: 2px 6px; display: none;">▶️</button>
+                
+                <button onclick="toggleTimer()" title="Show/Hide Timer" style="font-size: 16px; padding: 2px 6px;">Hide Timer</button>
+                <button onclick="resetTimer()" title="Reset Timer" style="font-size: 16px; padding: 2px 6px; display: none;">🔁</button>
+              </div>
+
+        </div>
+          <!-- <a href="index.html" class="phase-link" id="link-home">🏠 Home</a>
+          <a href="phase1.html" class="phase-link" id="link-phase1">Phase 1</a>
+          <a href="phase2.html" class="phase-link disabled" id="link-phase2">Phase 2</a>
+          <a href="phase3.html" class="phase-link disabled" id="link-phase3">Phase 3</a>
+          <a href="review.html" class="phase-link disabled" id="link-review">Review & Submit</a> -->
+    </div>
+
+
+<div id="snippet-container" style="display: flex; gap: 40px; align-items: flex-start;margin-top:100px;">
+  
+    <!-- LEFT: Snippet Display -->
+    <div id="snippet-box" style="flex: 1; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid #ccc;">
+        <h3 id="snippet-title" style="margin: 0;">Snippet Title</h3>
+        <button onclick="toggleTheme()" id="theme-toggle" style="padding: 6px 12px; border-radius: 5px; border: none; background-color: #333; color: white; cursor: pointer;">
+          Switch to Light Mode
+        </button>
+      </div>
+      <div class="code-container" id="code">
+        <div class="line-numbers" id="line-numbers"></div>
+        <div class="code-content" id="code-content"></div>
+      </div>      
+    </div>
+  
+    <!-- RIGHT: Questions -->
+    <div id="question-box" style="flex: 1;">
+        <div id="question-area"></div>
+        <div class="buttons">
+          <!-- <button id="prev-question" onclick="prevQuestion()">Previous</button> -->
+          <button id="next-question" onclick="nextQuestion()">Next</button>
+        </div>
+        <!-- <button onclick="showAnswerReview()" style="margin-top: 20px;">Review All Responses</button> -->
+
+  
+      <!-- <div class="buttons">
+          <button id="prev" onclick="prevSnippet()">Previous</button>
+          <button id="next" onclick="nextSnippet()">Next</button>
+          <p></p><button id="continueBtn" onclick="goToPhase2()" style="display: none;margin-top: 10px;">
+            Continue to Phase 2
+          </button>        
+      </div> -->
+    </div>
+  </div>
+
+  <div id="answer-review-modal" style="
+  display: none;
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  font-family: 'Segoe UI', sans-serif;
+  position: fixed;
+">
+
+  <!-- Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <h2 style="margin: 0;">📝 Review All Responses</h2>
+    <button onclick="document.getElementById('answer-review-modal').style.display='none'" style="
+      background: none;
+      border: none;
+      font-size: 20px;
+      font-weight: bold;
+      color: #444;
+      cursor: pointer;
+    " title="Close">&times;</button>
+  </div>
+
+  <!-- Review content -->
+  <div id="answer-review-content" style="
+    white-space: pre-wrap;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+  "></div>
+
+  <!-- Action buttons -->
+  <div style="text-align: right;">
+    <button onclick="submitFinalAnswersToServer(); document.getElementById('answer-review-modal').style.display='none';" style="
+      padding: 10px 18px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    ">Submit Answers</button>
+
+    <button onclick="document.getElementById('answer-review-modal').style.display='none'" style="
+      margin-left: 10px;
+      padding: 10px 18px;
+      background-color: #ccc;
+      color: #333;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">Cancel</button>
+  </div>
+</div>
+
+<!-- JavaDoc Modal -->
+<div id="javadocModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:1000;">
+  <div style="position:relative; width:85%; height:85%; margin:3% auto; background:white; border-radius:8px; display:flex; flex-direction:column;">
+    <div id="javadocModalHeader">
+      <button onclick="javadocFrameReload()" style="font-size: 16px; padding: 2px 6px;">🔁 Reload</button>
+      <button style="margin-left:auto;" onclick="closeJavadocModal()">X</button>
+    </div>
+    <iframe id="javadocFrame" src="" style="flex-grow:1; border:none;"></iframe>
+  </div>
+</div>
+
+
+
+
+<script>
+  function openJavadocModal(url) {
+    const iframe = document.getElementById("javadocFrame");
+    iframe.src = url;
+    document.getElementById("javadocModal").style.display = "block";
+  }
+  
+  function closeJavadocModal() {
+    document.getElementById("javadocModal").style.display = "none";
+    document.getElementById("javadocFrame").src = "";
+  }
+  
+  function javadocFrameReload() {
+    const iframe = document.getElementById("javadocFrame");
+    iframe.src = iframe.src;
+  }
+  </script>
+  
+  
+   
+<script src="js/data.js?v=1.0.0"></script>
+
+
+<script>
+  function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? decodeURIComponent(match[2]) : null;
+  }
+  
+  // Returns existing or creates a new randomized order of indices
+  function getOrCreateSnippetOrder(length) {
+  const key = 'snippetOrder';
+
+  // Try to load from localStorage or cookie
+  let stored = localStorage.getItem(key);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length === length) return parsed;
+    } catch {}
+  }
+
+  // Generate new shuffled 1-based order: [1, 2, ..., length]
+  const order = Array.from({ length }, (_, i) => i + 1);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+
+  // Store in localStorage and cookie
+  const serialized = JSON.stringify(order);
+  localStorage.setItem(key, serialized);
+  document.cookie = `${key}=${encodeURIComponent(serialized)}; path=/; max-age=2592000`; // 30 days
+
+  return order;
+}
+
+  
+// Create randomized snippets based on snippetsOriginal
+const snippetOrder = getOrCreateSnippetOrder(snippetsOriginal.length);
+console.log("🔀 New randomized snippet order (1-based):", snippetOrder);
+console.log("snippetsOriginal:", snippetsOriginal);
+
+
+// Create shuffled snippets using 1-based indices
+const snippets = snippetOrder.map((i, idx) => {
+  const s = { ...snippetsOriginal[i - 1] }; // Clone
+  s.id = idx + 1;                           // New display ID
+  s.title = `Snippet ${idx + 1}`;          // Updated title
+  s.originalId = i;                        // 🔥 Save original ID
+  return s;
+});
+
+
+
+// Assign new display ids and titles
+snippets.forEach((snippet, idx) => {
+  snippet.id = idx + 1;
+  snippet.title = `Snippet ${idx + 1}`;
+});
+
+// Debug
+console.log("Final snippet order (titles):", snippets.map(s => s.title));
+console.log("Final snippet order (ids):", snippets.map(s => s.id));
+console.log("Mapping from original (1-based):", snippetOrder.map(i => `Original Snippet ${i}`))
+
+</script>
+
+<script>
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? decodeURIComponent(match[2]) : null;
+    }
+  
+    function isComplete(key) {
+      return localStorage.getItem(key) === 'true' ;
+    }
+  
+</script>
+  
+
+
+<script>
+const TOTAL_SNIPPETS = 8;
+let currentSnippet = 1;
+
+
+
+function loadSnippet(snippetNumber) {
+  const snippet = snippets[snippetNumber - 1];
+  document.getElementById('snippet-title').innerText = snippet.title;
+  const codeLines = snippet.code.trim().split('\n');
+  document.getElementById('code-content').innerHTML = codeLines.join('\n');
+
+  const lineNumbersHtml = codeLines.map((_, i) => (i + 1)).join('<br>');
+  document.getElementById('line-numbers').innerHTML = lineNumbersHtml;
+
+  // ✅ FIXED: use the correct snippetNumber
+//   const snippetSpecific = questionsPerSnippet[snippetNumber];
+//   allQuestions = [...StartingQuestions, ...snippetSpecific];
+
+  loadQuestion();
+}
+
+
+
+
+function saveSummary() {
+
+}
+
+
+function saveSummarySilentForPrev() {
+    saveSummary();
+}
+
+function nextSnippet() {
+    if (!validateCurrentSnippetInputs()) return;
+
+    saveSummary();
+
+    if (currentSnippet < TOTAL_SNIPPETS) {
+        currentSnippet++;
+        loadSnippet(currentSnippet);
+        updateButtons();
+    }
+}
+
+
+function prevSnippet() {
+    if (currentSnippet > 1) {
+        saveSummarySilentForPrev();
+        currentSnippet--;
+        loadSnippet(currentSnippet);
+        updateButtons();
+    } else {
+        // Prevent any default behavior like navigating back
+        return false;
+    }
+}
+
+
+function updateButtons() {
+    document.getElementById('prev').disabled = currentSnippet === 1;
+    document.getElementById('next').disabled = currentSnippet === TOTAL_SNIPPETS;
+}
+
+</script>
+
+
+<div id="submission-modal" style="
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #e6fff2;
+    color: #003d2f;
+    border: 1px solid #7fdcbf;
+    padding: 20px;
+    border-radius: 10px;
+    width: 440px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 1001;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+">
+    <p id="submission-message" style="font-weight: bold;">Phase 1 submitted successfully, please </p>
+    <button onclick="hideSubmissionModal()" style="
+        margin-top: 15px;
+        padding: 8px 14px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    ">OK</button>
+</div>
+
+<div id="review-modal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); width:80%; max-height:80%; overflow-y:auto; background:#fff; border:1px solid #ccc; padding:20px 20px 10px 20px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:1002; font-family:'Segoe UI', sans-serif;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+    <h3 style="margin:0;">Review Your Summaries</h3>
+    <span onclick="document.getElementById('review-modal').style.display='none'" style="cursor:pointer; font-size:20px; font-weight:bold;">&times;</span>
+  </div>
+
+  <div id="review-content" style="white-space:pre-wrap; margin-bottom:20px; font-size:14px; color:#333;"></div>
+
+  <button onclick="submitAndCloseModal()">Submit Now</button>
+  <button onclick="document.getElementById('review-modal').style.display='none'" style="margin-left:10px;">Cancel</button>
+</div>
+
+<div id="validation-modal" style="
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff0f0;
+  color: #660000;
+  border: 1px solid #ff9999;
+  padding: 20px;
+  border-radius: 10px;
+  width: 440px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 1002;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+">
+  <p id="validation-message" style="font-weight: bold;"></p>
+  <button onclick="document.getElementById('validation-modal').style.display = 'none';" style="
+    margin-top: 15px;
+    padding: 8px 14px;
+    background-color: #ff9999;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  ">OK</button>
+</div>
+
+
+<!-- Start Modal -->
+<div id="start-modal" style="
+  display: none;  /* or 'none' by default, set to 'block' on load */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.965);
+  z-index: 9999;
+  display: none;  /* important: toggle this from JS */
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2>Ready to Begin?</h2>
+    <p>Click the button below to start the study. A timer will begin.</p>
+    <button onclick="startStudy()">Start</button>
+  </div>
+</div>
+
+  
+<!-- Pause Modal -->
+<div id="pause-modal" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.965);
+  z-index: 9999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2>Study Paused</h2>
+    <p>The timer is paused. Click below to resume.</p>
+    <button onclick="resumeStudy()">Resume</button>
+  </div>
+</div>
+
+<!-- Pause Modal -->
+<div id="pause-modal-short" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.965);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2>Short Break</h2>
+    <img src="img/relax.gif" alt="Relax..." style="max-width: 100%; height: auto;">
+    <br>
+    <!-- <p>Please wait <span id="pause-countdown">60</span> seconds before continuing.</p> -->
+    <p>Take a 30 to 60 second in-seat rest, then resume the study.</p>
+    <p id="soonShort" style="display: none;">Not so fast! Take a few more seconds to chill.</p>
+    <button id="resume-btn-short" onclick="resumeStudy()">Resume</button>
+  </div>
+</div>
+
+
+
+<!-- Pause Modal -->
+<div id="pause-modal-long" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.965);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2>Long Break</h2>
+    <img src="img/stretch.gif" alt="Relax..." style="width: 400px; height: auto;">
+    <br>
+    <!-- <p>Please wait <span id="pause-countdown-long">420</span> seconds before continuing.</p> -->
+    <p>You may take a 1 to 7 minute rest, either in your seat or outside, before resuming the study.</p>
+    <p>You are welcome to use the restroom or stretch your legs during this break.</p>
+    <p>If you leave, please do so and return quietly.</p>    
+    <p id="soonLong" style="display: none;">No rush! Keep chilling a little longer.</p>
+    <button id="resume-btn-long" onclick="resumeStudy()">Resume</button>
+  </div>
+</div>
+
+<script>
+    let allQuestions = [];
+</script>
+
+<script>
+  function showSubmissionModal(message) {
+    document.getElementById('submission-message').innerText = message;
+    document.getElementById('submission-modal').style.display = 'block';
+  }
+  
+  function hideSubmissionModal() {
+    document.getElementById('submission-modal').style.display = 'none';
+  }
+  </script>  
+
+
+
+<script>
+    function toggleInstructions() {
+        const content = document.getElementById("instructions-content");
+        const button = event.target;
+    
+        if (content.style.display === "none") {
+            content.style.display = "block";
+            button.textContent = "Hide";
+        } else {
+            content.style.display = "none";
+            button.textContent = "Show";
+        }
+    }
+</script>
+    
+<script>
+function applyTheme() {
+  const theme = localStorage.getItem('codeTheme') || 'light';
+
+  // Clear both classes first
+  document.body.classList.remove('light-mode', 'dark-mode');
+
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.textContent = 'Switch to Light Mode';
+  } else {
+    document.body.classList.add('light-mode');
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.textContent = 'Switch to Dark Mode';
+  }
+}
+
+
+function toggleTheme() {
+  const body = document.body;
+  const isLight = body.classList.contains("light-mode");
+
+  if (isLight) {
+    body.classList.remove("light-mode");
+    body.classList.add("dark-mode");
+    localStorage.setItem("codeTheme", "dark"); // Use unified key
+    document.getElementById('theme-toggle').textContent = "Switch to Light Mode";
+  } else {
+    body.classList.add("light-mode");
+    body.classList.remove("dark-mode");
+    localStorage.setItem("codeTheme", "light"); // Use unified key
+    document.getElementById('theme-toggle').textContent = "Switch to Dark Mode";
+  }
+}
+
+function syncAnswersFromCookies() {
+  const cookies = document.cookie.split(';');
+  let synced = false;
+
+  cookies.forEach(cookie => {
+    const [rawKey, rawValue] = cookie.split('=');
+    const key = rawKey.trim();
+    const value = decodeURIComponent(rawValue || '');
+
+    if (key.startsWith('answer-') && !localStorage.getItem(key)) {
+      console.log(`✅ Syncing: ${key} = ${value}`);
+      localStorage.setItem(key, value);
+      synced = true;
+    }
+  });
+
+  // Only reload ONCE per session
+//   if (synced && !localStorage.getItem('alreadyReloaded')) {
+//     localStorage.setItem('alreadyReloaded', 'true');
+//     location.reload();
+//   }
+}
+
+
+
+
+
+
+function toggleTimer() {
+  const timerEl = document.getElementById('timer');
+  const btn = event.target;
+
+  const isHidden = timerEl.style.display === 'none';
+
+  if (isHidden) {
+    timerEl.style.display = 'inline';
+    btn.innerHTML = 'Hide Timer'; // Show "eye" icon again
+    localStorage.setItem('timerHidden', 'false');
+  } else {
+    timerEl.style.display = 'none';
+    btn.innerHTML = 'Show Timer'; // Hidden eye icon
+    localStorage.setItem('timerHidden', 'true');
+  }
+}
+
+
+function startTimer() {
+  const timerEl = document.getElementById('timer');
+
+  if (!startTime || isNaN(startTime) || startTime <= 0) {
+    const stored = localStorage.getItem('startTime');
+    startTime = stored ? parseInt(stored) : Date.now();
+    localStorage.setItem('startTime', startTime);
+  }
+
+  if (timerInterval) clearInterval(timerInterval);
+
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime - totalPausedTime) / 1000);
+    const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const secs = String(elapsed % 60).padStart(2, '0');
+    timerEl.textContent = `⏱️ ${mins}:${secs}`;
+  }, 1000);
+}
+
+
+
+function generateAndStoreUsername() {
+    const randomNumber = Math.floor(Math.random() * 1_000_000_000);
+    const username = 'student' + randomNumber.toString().padStart(9, '0');
+
+    // Save to localStorage
+    localStorage.setItem('usernameS', username);
+
+    // Save to cookies (expires in 30 days)
+    const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = `usernameS=${username}; expires=${expires}; path=/`;
+
+    console.log("Generated and stored username:", username);
+    return username;
+}
+
+
+function startStudy() {
+  startTime = Date.now();
+  localStorage.setItem('studyStarted', 'true');
+  localStorage.setItem('startTime', startTime);
+  localStorage.setItem('lastResumeTime', startTime);
+  localStorage.setItem('pausedTotal', '0');
+  totalPausedTime = 0;
+
+  generateAndStoreUsername();
+  document.getElementById('start-modal').style.display = 'none';
+  loadSnippet(currentSnippet);
+  startTimer();
+}
+
+let pauseCountdownInterval;
+
+function pauseStudyShort() {
+  recordQuestionTime(currentSnippet, currentQuestionIndex);
+  updateTimerDisplay();
+  pauseTimer();
+
+  pausedAt = Date.now();
+  localStorage.setItem('pausedAt', pausedAt);
+
+  const modal = document.getElementById('pause-modal-short');
+  // const countdownEl = document.getElementById('pause-countdown');
+  const resumeBtn = document.getElementById('resume-btn-short');
+
+  // Reset UI state
+  let remaining = 60;
+  // countdownEl.textContent = remaining;
+  // resumeBtn.style.display = 'none';
+  resumeBtn.onclick = showTooSoonMessageShort;
+  modal.style.display = 'flex';
+
+  pauseCountdownInterval = setInterval(() => {
+    remaining--;
+
+    if (remaining >= 0) {
+      // countdownEl.textContent = remaining;
+    }
+
+    // Show resume button when 10 seconds are left (i.e., after 50s passed)
+    if (remaining === 30) {
+      resumeBtn.onclick = resumeStudy;
+    }
+
+    if (remaining <= 0) {
+      clearInterval(pauseCountdownInterval);
+    }
+  }, 1000);
+}
+
+let shortMessageIndex = 0;
+
+function showTooSoonMessageShort() {
+  const msg = document.getElementById('soonShort');
+  msg.textContent = messagesShort[shortMessageIndex];
+  shortMessageIndex = (shortMessageIndex + 1) % messagesShort.length;
+
+  msg.style.display = 'block';
+
+  setTimeout(() => {
+    msg.style.display = 'none';
+  }, 4000);
+}
+
+let longMessageIndex = 0;
+
+function showTooSoonMessageLong() {
+  const msg = document.getElementById('soonLong');
+  msg.textContent = messagesLong[longMessageIndex];
+  longMessageIndex = (longMessageIndex + 1) % messagesLong.length;
+
+  msg.style.display = 'block';
+
+  setTimeout(() => {
+    msg.style.display = 'none';
+  }, 4000);
+}
+
+
+function pauseStudyLong() {
+  recordQuestionTime(currentSnippet, currentQuestionIndex);
+  updateTimerDisplay();
+  pauseTimer();
+
+  pausedAt = Date.now();
+  localStorage.setItem('pausedAt', pausedAt);
+
+  const modal = document.getElementById('pause-modal-long');
+  // const countdownEl = document.getElementById('pause-countdown-long');
+  const resumeBtn = document.getElementById('resume-btn-long');
+
+  let remaining = 420; // 7 minutes
+  // countdownEl.textContent = remaining;
+  // resumeBtn.style.display = 'none';
+  resumeBtn.onclick = showTooSoonMessageLong;
+  modal.style.display = 'flex';
+
+  pauseCountdownInterval = setInterval(() => {
+    remaining--;
+
+    if (remaining >= 0) {
+      // countdownEl.textContent = remaining;
+      console.log("Remaining timne:"+ remaining);
+    }
+
+    // Show resume button after 180 seconds (when 240 seconds are left)
+    if (remaining <= 360) {
+      console.log("Less than 360" + remaining);
+      resumeBtn.onclick = resumeStudy;
+    }
+
+    // Stop countdown when it finishes
+    if (remaining <= 0) {
+      clearInterval(pauseCountdownInterval);
+    }
+  }, 1000);
+}
+
+
+
+function pauseStudy() {
+  recordQuestionTime(currentSnippet, currentQuestionIndex);
+  localStorage.setItem('pausedAt', Date.now());
+  updateTimerDisplay(); // ensure last moment is rendered before freezing
+  pauseTimer();         // clears the interval
+  pausedAt = Date.now();
+  localStorage.setItem('pausedAt', pausedAt);
+  document.getElementById('pause-modal').style.display = 'flex';
+
+  // 👇 Add this to toggle buttons
+  document.getElementById('pause-btn').style.display = 'none';
+  document.getElementById('resume-btn').style.display = 'inline';
+}
+
+function resumeStudy() {
+  document.getElementById('pause-modal').style.display = 'none';
+  document.getElementById('pause-modal-short').style.display = 'none';
+  document.getElementById('pause-modal-long').style.display = 'none';
+
+
+  const pausedAtStored = parseInt(localStorage.getItem('pausedAt') || '0', 10);
+  if (pausedAtStored && !isNaN(pausedAtStored)) {
+    const resumeDelta = Date.now() - pausedAtStored;
+    totalPausedTime += resumeDelta;
+    localStorage.setItem('pausedTotal', totalPausedTime);
+    localStorage.removeItem('pausedAt');
+    pausedAt = null;
+  }
+
+  localStorage.setItem('lastResumeTime', Date.now());
+
+  updateTimerDisplay();
+  startTimer();
+
+  document.getElementById('pause-btn').style.display = 'inline';
+  document.getElementById('resume-btn').style.display = 'none';
+
+  // ✅ Fix: Resume timing for the current question if it was cleared
+  if (questionStartTime === null) {
+    questionStartTime = Date.now();
+    localStorage.setItem('currentQuestionStartTime', questionStartTime);
+    console.log(`[FIX] Resumed question timer at ${new Date(questionStartTime).toLocaleTimeString()} (qIndex ${currentQuestionIndex})`);
+  }
+
+}
+
+
+
+
+window.onload = function () {
+  setTimeout(syncAnswersFromCookies, 100);
+  syncAnswersFromCookies();
+
+  console.log("Unload was triggered at:", new Date(parseInt(localStorage.getItem('lastUnloadTriggeredAt') || 0)).toLocaleTimeString());
+  console.log("Page load");
+  console.log("Loaded startTime:", localStorage.getItem('startTime'));
+  console.log("Loaded pausedTotal:", localStorage.getItem('pausedTotal'));
+  console.log("Loaded pausedAt:", localStorage.getItem('pausedAt'));
+  console.log("Loaded lastResumeTime:", localStorage.getItem('lastResumeTime'));
+
+  applyTheme();
+
+  const hidden = localStorage.getItem('timerHidden') === 'true';
+  if (hidden) {
+    document.getElementById('timer').style.display = 'none';
+    document.querySelector('#timer-wrapper button').textContent = 'Show Timer';
+  }
+
+  const started = localStorage.getItem('studyStarted') === 'true';
+  if (!started) {
+    document.getElementById('start-modal').style.display = 'flex';
+  } else {
+    startTime = parseInt(localStorage.getItem('startTime') || `${Date.now()}`, 10);
+    totalPausedTime = parseInt(localStorage.getItem('pausedTotal') || '0', 10);
+    pausedAt = parseInt(localStorage.getItem('pausedAt') || '0', 10);
+
+    if (!isNaN(pausedAt) && pausedAt > 0) {
+      const lastResume = parseInt(localStorage.getItem('lastResumeTime') || startTime, 10);
+
+      if (pausedAt > lastResume) {
+        // Legit paused state
+        const resumeDelta = Date.now() - pausedAt;
+        totalPausedTime += resumeDelta;
+
+        localStorage.setItem('pausedTotal', totalPausedTime);
+        localStorage.removeItem('pausedAt');
+        localStorage.setItem('lastResumeTime', Date.now());
+        pausedAt = null;
+      } else {
+        // Probably a stale pausedAt — ignore it
+        pausedAt = null;
+        localStorage.removeItem('pausedAt');
+      }
+
+    }
+
+const Ispaused = localStorage.getItem('pausedUnload') === 'true';
+if(Ispaused){
+    setTimeout(() => {
+    pauseStudy();
+    isFromPrevPage=localStorage.getItem('FromPrevPage') === 'true';
+    if(isFromPrevPage){
+      resumeStudy();
+      localStorage.setItem('FromPrevPage','false');
+    }
+    }, 100);
+
+    localStorage.setItem('pausedUnload', 'false');
+  } else{startTimer();}
+
+
+    document.getElementById('pause-btn').style.display = 'inline';
+    document.getElementById('resume-btn').style.display = 'none';
+  }
+
+  if (localStorage.getItem('studyStarted') === 'true') {
+    loadSnippet(currentSnippet);
+  }
+
+
+  // setInterval(() => {
+  //   try {
+  //     // saveToServer();
+  //     console.log("[Auto-Save] Progress saved to server.");
+  //   } catch (e) {
+  //     console.warn("[Auto-Save] Failed to save:", e);
+  //   }
+  // }, 120000);
+};
+
+
+
+
+
+
+</script>
+
+<script>
+function validateCurrentSnippetInputs() {
+
+    return true;
+}
+
+</script>
+<script>
+  function goToPhase2() {
+    // Redirect
+    window.location.href = 'phase2.html';
+  }
+
+
+  function setCookie(name, value, days) {
+    const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+  }
+
+</script>
+
+<script>
+function getOrCreateQuestionOrder(snippetId, numQuestions) {
+  const key = `qOrder-${snippetId}`;
+  const stored = localStorage.getItem(key);
+
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length === numQuestions) return parsed;
+    } catch {}
+  }
+
+  // Create array excluding the last question
+  const order = Array.from({ length: numQuestions - 1 }, (_, i) => i + 1);
+
+  // Fisher–Yates shuffle
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+
+  // Append the last question at the end
+  order.push(numQuestions);
+
+  const serialized = JSON.stringify(order);
+  localStorage.setItem(key, serialized);
+  document.cookie = `${key}=${encodeURIComponent(serialized)}; path=/; max-age=2592000`;
+  return order;
+}
+
+
+const questionsPerSnippet = {};
+
+console.log("🧪 questionsPerSnippetOriginal =", questionsPerSnippetOriginal);
+
+// `snippets` is already randomized, and each has `.originalId`
+snippets.forEach((snippet, newIndex) => {
+  const newSnippetId = newIndex + 1; // 1-based for current session
+  const originalId = snippet.originalId; 
+
+  const originalQs = questionsPerSnippetOriginal[String(originalId)];
+  console.log("💥 originalId =", originalId);
+  console.log("💥 questionsPerSnippetOriginal =", questionsPerSnippetOriginal);
+  console.log("💥 originalQs =", questionsPerSnippetOriginal?.[String(originalId)]);
+
+  const order = getOrCreateQuestionOrder(newSnippetId, originalQs.length);
+  questionsPerSnippet[newSnippetId] = order.map(i => structuredClone(originalQs[i - 1]));
+});
+
+
+</script>
+<script>
+function areAllSnippetsFilled() {
+  for (let i = 1; i <= TOTAL_SNIPPETS; i++) {
+    const questions = questionsPerSnippet[i];
+    for (const q of questions) {
+      const mainVal = localStorage.getItem(`answer-${i}-${q.id}`) || '';
+      if (!mainVal.trim()) return false;
+
+      if (q.id2) {
+        const secondVal = localStorage.getItem(`answer-${i}-${q.id2}`) || '';
+        if (!secondVal.trim()) return false;
+      }
+    }
+  }
+  return true;
+}
+
+
+</script>
+
+<!-- <script>
+  function displayUserName() {
+    const name = localStorage.getItem('participantName') || getCookie('participantName');
+    if (name) {
+      document.getElementById('user-info').textContent = `👤 ${name}`;
+    }
+  }
+</script> -->
+
+
+<script>
+async function saveToServer() {
+  const username = getStoredUsername();
+  const payload = {
+    username: username,
+    submitted: '0',
+    answers: {}
+  };
+
+  for (let snippet = 1; snippet <= TOTAL_SNIPPETS; snippet++) {
+    const snippetKey = `snippet-${snippet}`;
+    payload.answers[snippetKey] = {
+      readTime: parseInt(localStorage.getItem(`time-q-${snippet}-1`) || '0'),
+      questions: []
+    };
+
+    const questions = questionsPerSnippet[snippet] || [];
+
+    // Custom questions
+    questions.forEach((q, i) => {
+      const answer = localStorage.getItem(`answer-${snippet}-${q.id}`) || '[No answer]';
+      const time = parseInt(localStorage.getItem(`time-q-${snippet}-${i + 2}`) || '0');
+      const entry = {
+        id: q.id,
+        prompt: q.prompt || '[Missing prompt]',
+        answer: answer,
+        timeSec: time
+      };
+
+      if (q.id2 && q.question2) {
+        const secondAnswer = localStorage.getItem(`answer-${snippet}-${q.id2}`) || '[No answer]';
+        entry.followUp = {
+          id: q.id2,
+          prompt: q.question2,
+          answer: secondAnswer
+        };
+      }
+
+      payload.answers[snippetKey].questions.push(entry);
+    });
+
+    // // General Q5: Function description
+    // const answer5 = localStorage.getItem(`answer-${snippet}-function`) || getCookie(`answer-${snippet}-function`) || '[No answer]';
+    // const time5 = parseInt(localStorage.getItem(`time-q-${snippet}-6`) || getCookie(`time-q-${snippet}-6`) || '0');
+    // payload.answers[snippetKey].questions.push({
+    //   id: 'function',
+    //   prompt: "What does this code snippet do? Briefly describe its main functionality.",
+    //   answer: answer5,
+    //   timeSec: time5
+    // });
+
+    // // General Q6.1: Self-assessed difficulty
+    // const answer6_1 = localStorage.getItem(`answer-${snippet}-scaleSM`) || getCookie(`answer-${snippet}-scaleSM`) || '[No answer]';
+
+    // // General Q6.2: Perceived difficulty
+    // const answer6_2 = localStorage.getItem(`answer-${snippet}-scaleST`) || getCookie(`answer-${snippet}-scaleST`) || '[No answer]';
+    // const time6 = parseInt(localStorage.getItem(`time-q-${snippet}-7`) || getCookie(`time-q-${snippet}-7`) || '0');
+
+    // payload.answers[snippetKey].questions.push({
+    //   id: 'scaleSM',
+    //   prompt: "How easy or difficult were the tasks you performed for this snippet?",
+    //   answer: answer6_1
+    // });
+
+    // payload.answers[snippetKey].questions.push({
+    //   id: 'scaleST',
+    //   prompt: "How easy or difficult was this snippet to understand?",
+    //   answer: answer6_2,
+    //   timeSec: time6
+    // });
+  }
+
+  try {
+    const response = await fetch('/submit_students_part', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      console.log("✅ Draft answers saved to server.");
+    } else {
+      const error = await response.text();
+      console.error("❌ Save failed:", error);
+    }
+  } catch (err) {
+    console.error("❌ Network error during save:", err.message);
+  }
+}
+</script>
+
+<script>
+
+
+//save answer
+function saveAnswer(snippetId, questionId, value) {
+    const key = `answer-${snippetId}-${questionId}`;
+
+    // Save to localStorage
+    localStorage.setItem(key, value);
+
+    // Save to cookies (expires in 30 days)
+    const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = `${key}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+}
+
+
+let currentQuestionIndex = 0;
+
+function recordQuestionTime(snippetId, questionIndex) {
+  if (questionStartTime === null) return;
+
+  const elapsedMs = Date.now() - questionStartTime;
+  const elapsedSec = Math.round(elapsedMs / 1000);
+
+  const key = `time-q-${snippetId}-${questionIndex + 1}`;
+
+  // Get current total from memory, localStorage, or cookies
+  const sessionVal = questionTimers[key] || 0;
+  const localVal = parseInt(localStorage.getItem(key) || '0');
+  const cookieVal = parseInt(getCookie(key) || '0');
+
+  const currentTotal = Math.max(sessionVal, localVal, cookieVal); // pick most up-to-date
+  const newTotal = currentTotal + elapsedSec;
+
+  // Update all sources
+  questionTimers[key] = newTotal;
+  localStorage.setItem(key, newTotal);
+
+  // Clear start timestamp
+  questionStartTime = null;
+  localStorage.removeItem('currentQuestionStartTime');
+
+  console.log(`[📌 recordQuestionTime] Called for snippet=${snippetId}, qIndex=${questionIndex}`);
+console.log(`[⏱️ Timing] Elapsed: ${elapsedSec}s | key: time-q-${snippetId}-${questionIndex + 1}`);
+console.log(`[🧹 Resetting] questionStartTime cleared`);
+
+
+  // Debug
+  console.log(`[⏱️ Debug] Recorded time for ${key}: +${elapsedSec}s → total ${newTotal}s`);
+}
+
+function loadQuestion() {
+    questionStartTime = Date.now();
+    localStorage.setItem('currentQuestionStartTime', questionStartTime);
+    const snippetSpecific = questionsPerSnippet[currentSnippet];
+    allQuestions = [...StartingQuestions, ...snippetSpecific];
+    const question = allQuestions[currentQuestionIndex];
+
+    const container = document.getElementById('question-area');
+    container.innerHTML = ''; // Clear the previous content
+
+    // Render the current question
+    renderQuestion(container, question, currentSnippet);
+
+    // Optionally, show progress (e.g., "Question 3 of 7")
+    const progressText = document.createElement('div');
+    progressText.style.marginTop = '10px';
+    progressText.style.fontSize = '14px';
+    progressText.style.color = '#777';
+    progressText.textContent = `Question ${currentQuestionIndex + 1} of ${allQuestions.length}`;
+    container.appendChild(progressText);
+
+    const totalQuestions = allQuestions.length;
+    const nextBtn = document.getElementById('next-question');
+    nextBtn.textContent = 'Next';
+    nextBtn.onclick = nextQuestion;
+
+    if (currentQuestionIndex === totalQuestions - 1) {
+      nextBtn.textContent = 'Go to next snippet';
+      if (currentSnippet >= TOTAL_SNIPPETS) {
+        autoSaveProgress();
+        nextBtn.textContent = 'Go to the next Survey';
+        nextBtn.onclick = () => {
+          localStorage.setItem('FromPrevPage', 'true');
+          window.location = "familiarity-survey.html";
+        };
+      }
+    } else {
+      nextBtn.textContent = 'Next';
+    }
+
+    // ✅ Disable previous button if on first question
+    // const prevBtn = document.getElementById('prev-question');
+    // prevBtn.disabled = (currentQuestionIndex === 0);
+}
+
+
+function renderQuestion(container, question, snippetNum) {
+  // First prompt
+  console.log("currentSnippet:", currentSnippet);
+    console.log("currentQuestionIndex:", currentQuestionIndex);
+    console.log("allQuestions:", allQuestions);
+    console.log("question at index:", allQuestions[currentQuestionIndex]);
+
+  const label1 = document.createElement('label');
+  label1.innerHTML = `${question.prompt}`;
+  container.appendChild(label1);
+
+  const key1 = `answer-${snippetNum}-${question.id}`;
+  const saved1 = localStorage.getItem(key1) || '';
+
+  if (question.type === 'short') {
+    const input1 = document.createElement('input');
+    input1.type = 'text';
+    input1.id = key1;
+    input1.value = saved1;
+    input1.classList.add('short-answer-input');
+
+    input1.placeholder = '';
+
+    input1.addEventListener('input', () => {
+      saveAnswer(snippetNum, question.id, input1.value);
+    });
+
+    const shortLabel = document.createElement('div');
+    shortLabel.textContent = 'Short Answer';
+    shortLabel.classList.add('short-answer-label');
+
+    container.appendChild(shortLabel);
+    container.appendChild(input1);
+} else if (question.type === 'open') {
+    const input1 = document.createElement('textarea');
+    input1.rows = question.type === 'short' ? 2 : 5;
+    input1.id = key1;
+    input1.value = saved1;
+    input1.oninput = () => saveAnswer(snippetNum, question.id, input1.value);
+    container.appendChild(input1);
+
+  } else if (question.type === 'binary' || question.type === 'bin') {
+    const radioWrapper = document.createElement('div');
+    radioWrapper.style.display = 'flex';
+    radioWrapper.style.flexDirection = 'column';
+    radioWrapper.style.gap = '8px';
+    radioWrapper.style.margin = '10px 0';
+
+    ['Yes', 'No'].forEach(choice => {
+      const label = document.createElement('label');
+      label.style.display = 'flex';
+      label.style.alignItems = 'center';
+      label.style.gap = '6px';
+
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = key1;
+      radio.value = choice;
+      if (saved1 === choice) {
+        radio.checked = true;
+      }
+
+      radio.onchange = () => saveAnswer(snippetNum, question.id, choice);
+
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(choice));
+      radioWrapper.appendChild(label);
+    });
+
+    container.appendChild(radioWrapper);
+
+  } else if (question.type === 'scale') {
+    renderLikertScale(container, key1, question.labels, saved1);
+  }
+
+  // Optional second question
+  if (question.question2 && question.id2) {
+    const label2 = document.createElement('label');
+    label2.innerHTML = `<strong style="display:block; margin-top:15px;">${question.question2}</strong>`;
+    container.appendChild(label2);
+
+    const key2 = `answer-${snippetNum}-${question.id2}`;
+    const saved2 = localStorage.getItem(key2) || '';
+
+    if (question.type2 === 'short') {
+      const input2 = document.createElement('input');
+      input2.type = 'text';
+      input2.id = key2;
+      input2.value = saved2;
+      input2.classList.add('short-answer-input');
+
+      input2.placeholder = '';
+
+      input2.addEventListener('input', () => {
+        saveAnswer(snippetNum, question.id2, input2.value);
+      });
+
+      const shortLabel2 = document.createElement('div');
+      shortLabel2.textContent = 'Short Answer';
+      shortLabel2.classList.add('short-answer-label');
+
+      container.appendChild(shortLabel2);
+      container.appendChild(input2);
+    } else if (question.type2 === 'open' || question.type2 === 'short') {
+      const input2 = document.createElement('textarea');
+      input2.rows = question.type2 === 'short' ? 2 : 5;
+      input2.id = key2;
+      input2.value = saved2;
+      input2.oninput = () => saveAnswer(snippetNum, question.id2, input2.value);
+      container.appendChild(input2);
+
+    } else if (question.type2 === 'binary' || question.type2 === 'bin') {
+      const radioWrapper = document.createElement('div');
+      radioWrapper.style.display = 'flex';
+      radioWrapper.style.flexDirection = 'column';
+      radioWrapper.style.gap = '8px';
+      radioWrapper.style.margin = '10px 0';
+
+      ['Yes', 'No'].forEach(choice => {
+        const label = document.createElement('label');
+        label.style.display = 'flex';
+        label.style.alignItems = 'center';
+        label.style.gap = '6px';
+
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = key2;
+        radio.value = choice;
+        if (saved2 === choice) {
+          radio.checked = true;
+        }
+
+        radio.onchange = () => saveAnswer(snippetNum, question.id2, choice);
+
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(choice));
+        radioWrapper.appendChild(label);
+      });
+
+      container.appendChild(radioWrapper);
+
+    } else if (question.type2 === 'scale') {
+      renderLikertScale(container, key2, question.labels2, saved2);
+    }
+  }
+}
+
+
+
+
+
+function renderLikertScale(container, id, labels, saved = '') {
+  const wrapper = document.createElement('div');
+  wrapper.style.display = 'flex';
+  wrapper.style.gap = '10px';
+  wrapper.style.margin = '8px 0 20px 0';
+  wrapper.style.flexWrap = 'wrap';
+
+  labels.forEach(label => {
+    const labelEl = document.createElement('label');
+    labelEl.style.display = 'flex';
+    labelEl.style.alignItems = 'center';
+    labelEl.style.gap = '5px';
+
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = id;
+    radio.value = label;
+    radio.checked = saved === label;
+    radio.onchange = () => localStorage.setItem(id, radio.value);
+
+    labelEl.appendChild(radio);
+    labelEl.appendChild(document.createTextNode(label));
+    wrapper.appendChild(labelEl);
+  });
+
+  container.appendChild(wrapper);
+}
+
+
+
+
+function nextQuestion() {
+
+  //check for read
+    const groupName = `answer-${currentSnippet}-ReadConfirm`;
+    const selected = document.querySelector(`input[name="${groupName}"]:checked`);
+    const confirmed = selected?.value?.trim().toLowerCase() === "yes";
+
+    if (currentQuestionIndex === 0 && !confirmed) {
+      showValidationMessage("⚠️ Please confirm you read the snippet before proceeding.");
+      return;
+    }
+
+    //check for other questions
+    if (currentQuestionIndex !== 0 && !isCurrentQuestionAnswered()) {
+        showValidationMessage("⚠️ Please answer the question before proceeding.");
+        return;
+    }
+
+  recordQuestionTime(currentSnippet, currentQuestionIndex);
+  const total = allQuestions.length;
+
+  if (currentQuestionIndex < total - 1) {
+    currentQuestionIndex++;
+    loadQuestion();
+  } else if (currentSnippet < TOTAL_SNIPPETS) {
+    currentSnippet++;
+    currentQuestionIndex = 0;
+    loadSnippet(currentSnippet); 
+  }
+
+  questionStartTime = Date.now();
+  localStorage.setItem('currentQuestionStartTime', questionStartTime);
+  console.log(`[⏱️ Debug] Started timer for time-q-${currentSnippet}-${currentQuestionIndex+1} at ${new Date(questionStartTime).toLocaleTimeString()}`);
+
+  if (currentSnippet === 3 && localStorage.getItem("break3") !== "1") {
+    localStorage.setItem("break3", "1");
+    pauseStudyShort();
+  } else if (currentSnippet === 5 && localStorage.getItem("break5") !== "1") {
+    localStorage.setItem("break5", "1");
+    pauseStudyLong();
+  } else if (currentSnippet === 7 && localStorage.getItem("break7") !== "1") {
+    localStorage.setItem("break7", "1");
+    pauseStudyShort();
+  }
+
+
+}
+
+
+function prevQuestion() {
+  recordQuestionTime(currentSnippet, currentQuestionIndex);
+
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    loadQuestion();
+  } else if (currentSnippet > 1) {
+    currentSnippet--;
+    currentQuestionIndex = questionsPerSnippet[currentSnippet].length - 1;
+    loadSnippet(currentSnippet);
+  }
+
+  // Start timing the new question
+  questionStartTime = Date.now();
+  localStorage.setItem('currentQuestionStartTime', questionStartTime);
+  console.log(`[⏱️ Debug] Started timer for time-q-${currentSnippet}-${currentQuestionIndex+1} at ${new Date(questionStartTime).toLocaleTimeString()}`);
+}
+
+
+
+</script>
+
+<script>
+let timerInterval = null;
+let startTime = null;
+let pausedAt = null;
+let totalPausedTime = 0;
+let questionStartTime = null;
+let questionTimers = {}; // key: `q-{snippetId}-{questionIndex}`, value: seconds
+
+
+function formatTime(seconds) {
+  const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+  const secs = String(seconds % 60).padStart(2, '0');
+  return `${mins}:${secs}`;
+}
+
+function updateTimerDisplay() {
+  const timerEl = document.getElementById('timer');
+  localStorage.setItem('pausedTotal', totalPausedTime);
+  if (!startTime) return;
+  const now = Date.now();
+  const elapsed = Math.floor((now - startTime - totalPausedTime) / 1000);
+  timerEl.textContent = `⏱️ ${formatTime(elapsed)}`;
+}
+
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+}
+
+
+
+
+function resetTimer() {
+  if (confirm("Are you sure you want to reset the timer?")) {
+    clearInterval(timerInterval);
+    const now = Date.now();
+    startTime = now;
+    pausedAt = null;
+    totalPausedTime = 0;
+
+    localStorage.setItem('startTime', startTime);
+    localStorage.setItem('pausedTotal', '0');
+    localStorage.removeItem('pausedAt');
+
+    updateTimerDisplay();
+    startTimer(); // restart interval
+    clearAllStoredData();
+    localStorage.setItem('isReset','true');
+    location.reload();
+  }
+}
+
+window.addEventListener('beforeunload', () => {
+  // if (!startTime) return;
+
+  // // 1. Record time spent on the current question
+  // try {
+  //   recordQuestionTime(currentSnippet, currentQuestionIndex);
+  // } catch (e) {
+  //   console.warn("recordQuestionTime failed", e);
+  // }
+
+  // const now = Date.now();
+  // const lastResume = parseInt(localStorage.getItem('lastResumeTime') || startTime, 10);
+  // const currentPausedTotal = parseInt(localStorage.getItem('pausedTotal') || '0', 10);
+  // const delta = now - lastResume;
+  // const newPausedTotal = currentPausedTotal + delta;
+
+  // // 2. Save pause state
+  // localStorage.setItem('pausedAt', now);
+  // localStorage.setItem('pausedTotal', newPausedTotal);
+  // localStorage.setItem('lastResumeTime', now);
+  // localStorage.setItem('startTime', startTime);
+
+  // // 3. Sync in-memory state
+  // pausedAt = now;
+  // totalPausedTime = newPausedTotal;
+
+  // // ✅ DO NOT try to show pause modal or touch DOM
+
+    // 1. Record time spent on the current question
+  try {
+    const isReset = localStorage.getItem('isReset') === 'true';
+    if (isReset) {
+      localStorage.removeItem('isReset');
+      recordQuestionTime(currentSnippet, currentQuestionIndex);
+    } 
+  } catch (e) {
+    console.warn("recordQuestionTime failed", e);
+  }
+  localStorage.setItem('pausedUnload', 'true');
+  //localStorage.setItem('FromPrevPage', 'true');
+  //pauseStudy();
+});
+
+
+
+</script>
+
+<script>
+  function getStoredUsername() {
+    // 1. Try localStorage
+    let username = localStorage.getItem('usernameS');
+    if (username) return username;
+
+    // 2. Try cookies
+    const cookieMatch = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('usernameS='));
+    
+    if (cookieMatch) {
+        username = cookieMatch.split('=')[1];
+        // Optional: sync back to localStorage if only found in cookies
+        localStorage.setItem('usernameS', username);
+        return username;
+    }
+
+    // Not found
+    return null;
+}
+</script>
+<script>
+function showAnswerReview() {
+  const reviewDiv = document.getElementById('answer-review-content');
+  let output = '';
+  const username = getStoredUsername();
+
+  output+=`\n USERNAME: ${username}`;
+  for (let snippet = 1; snippet <= TOTAL_SNIPPETS; snippet++) {
+    output += `\n🔹 Snippet ${snippet}\n`;
+    let readTimeKey = `time-q-${snippet}-1`;
+    const timeSecRead = parseInt(localStorage.getItem(readTimeKey) || localStorage.getItem(readTimeKey) || '0');
+    output+=`     Read Time: ${timeSecRead}s\n\n`;
+
+    const questions = questionsPerSnippet[snippet];
+
+    if (!questions || !Array.isArray(questions)) {
+      output += '  ⚠️ No questions found for this snippet.\n\n';
+    } else {
+      questions.forEach((q, i) => {
+        const key1 = `answer-${snippet}-${q?.id}`;
+        const val1 = localStorage.getItem(key1) || '[No answer]';
+
+        const timeKey = `time-q-${snippet}-${i + 2}`;
+        const timeSec = parseInt(localStorage.getItem(timeKey) || localStorage.getItem(timeKey) || '0');
+        const timeFormatted = `${timeSec}s`;
+
+        output += `  ${i + 1}. ${q?.prompt || '[Missing prompt]'}\n     → Answer: ${val1}\n     🕒 Time: ${timeFormatted}\n`;
+
+        if (q?.id2 && q?.question2) {
+          const key2 = `answer-${snippet}-${q.id2}`;
+          const val2 = localStorage.getItem(key2)  || '[No answer]';
+          output += `     ↪ ${q.question2}\n        → Answer: ${val2}\n`;
+        }
+
+        output += '\n';
+      });
+    }
+    
+
+    // General questions (always)
+    // const timeKeyGen1 = `time-q-${snippet}-6`;
+    // const timeKeyGen2 = `time-q-${snippet}-7`;
+
+    // const timeSecGen1 = parseInt(localStorage.getItem(timeKeyGen1) || localStorage.getItem(timeKeyGen1) || getCookie(timeKeyGen1) || '0');
+    // const timeSecGen2 = parseInt(localStorage.getItem(timeKeyGen2) || localStorage.getItem(timeKeyGen2) || getCookie(timeKeyGen2) || '0');
+
+    // const key1Gen1 = `answer-${snippet}-function`;
+    // const key1Gen2 = `answer-${snippet}-scaleSM`;
+    // const key2Gen2 = `answer-${snippet}-scaleST`;
+
+    // const val1Gen1 = localStorage.getItem(key1Gen1) || localStorage.getItem(key1Gen1) || getCookie(key1Gen1) || '[No answer]';
+    // const val1Gen2 = localStorage.getItem(key1Gen2) || localStorage.getItem(key1Gen2) || getCookie(key1Gen2) || '[No answer]';
+    // const val2Gen2 = localStorage.getItem(key2Gen2) || localStorage.getItem(key2Gen2) || getCookie(key2Gen2) || '[No answer]';
+
+    // output += `  ${(questions?.length || 0) + 1}. What does this code snippet do? Briefly describe its main functionality.\n`;
+    // output += `     → Answer: ${val1Gen1}\n`;
+    // output += `     🕒 Time: ${timeSecGen1}s\n\n`;
+
+    // output += `  ${(questions?.length || 0) + 2}.1. How easy or difficult were the tasks you performed for this snippet?\n`;
+    // output += `     → Answer: ${val1Gen2}\n`;
+    // output += `  ${(questions?.length || 0) + 2}.2. How easy or difficult was this snippet to understand?\n`;
+    // output += `     → Answer: ${val2Gen2}\n`;
+    // output += `     🕒 Time: ${timeSecGen2}s\n\n`;
+  }
+
+  reviewDiv.innerHTML = output.trim();
+  document.getElementById('answer-review-modal').style.display = 'block';
+}
+
+
+</script>
+
+<script>
+async function submitFinalAnswersToServer() {
+  const username = getStoredUsername();
+  const payload = {
+    username: username,
+    submitted: '1',
+    answers: {}
+  };
+
+  for (let snippet = 1; snippet <= TOTAL_SNIPPETS; snippet++) {
+    const snippetKey = `snippet-${snippet}`;
+    payload.answers[snippetKey] = {
+      readTime: parseInt(localStorage.getItem(`time-q-${snippet}-1`) || '0'),
+      questions: []
+    };
+
+    const questions = questionsPerSnippet[snippet] || [];
+
+    // Custom questions
+    questions.forEach((q, i) => {
+      const answer = localStorage.getItem(`answer-${snippet}-${q.id}`) || '[No answer]';
+      const time = parseInt(localStorage.getItem(`time-q-${snippet}-${i + 2}`) || '0');
+      const entry = {
+        id: q.id,
+        prompt: q.prompt || '[Missing prompt]',
+        answer: answer,
+        timeSec: time
+      };
+
+      if (q.id2 && q.question2) {
+        const secondAnswer = localStorage.getItem(`answer-${snippet}-${q.id2}`) || '[No answer]';
+        entry.followUp = {
+          id: q.id2,
+          prompt: q.question2,
+          answer: secondAnswer
+        };
+      }
+
+      payload.answers[snippetKey].questions.push(entry);
+    });
+  }
+
+  try {
+    const response = await fetch('/submit_students_part', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      alert("✅ Final answers submitted successfully.");
+    } else {
+      const error = await response.text();
+      alert("❌ Submission failed:\n" + error);
+    }
+  } catch (err) {
+    console.error("Submission error:", err);
+    alert("❌ Submission error: " + err.message);
+  }
+}
+
+</script>
+<script>
+function showValidationMessage(message) {
+  document.getElementById('validation-message').innerText = message;
+  document.getElementById('validation-modal').style.display = 'block';
+}
+
+function isCurrentQuestionAnswered() {
+  const snippetId = currentSnippet;
+  const question = allQuestions[currentQuestionIndex];
+
+  // First sub-question is always required
+  const key1 = `answer-${snippetId}-${question.id}`;
+  const answer1 = localStorage.getItem(key1) || '';
+  if (!answer1.trim()) return false;
+
+  // If second sub-question exists, it is also required
+  if (question.id2 && question.question2) {
+    const key2 = `answer-${snippetId}-${question.id2}`;
+    const answer2 = localStorage.getItem(key2) || '';
+    if (!answer2.trim()) return false;
+  }
+
+  return true;
+}
+
+
+</script>
+    
+<script>
+    function clearAllStoredData() {
+  // 🧹 Clear all cookies
+  document.cookie.split(";").forEach(cookie => {
+    const eqPos = cookie.indexOf("=");
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name.trim() + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+  });
+
+  // 🧹 Clear localStorage
+  localStorage.clear();
+
+  // 🧹 Clear localStorage
+  localStorage.clear();
+
+  console.log("✅ All cookies, localStorage, and localStorage have been cleared.");
+}
+
+</script>
+
+<script>
+  function FinishAndSubmit(){
+    if (currentQuestionIndex !== 0 && !isCurrentQuestionAnswered()) {
+        showValidationMessage("⚠️ Please answer the question before proceeding.");
+        return;
+    }
+    recordQuestionTime(currentSnippet, currentQuestionIndex);
+    showAnswerReview();
+  }
+</script>
+<footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 14px; color: #666;">
+  Please contact us if you have any questions or issues: <a href="mailto:ea442@njit.edu">ea442@njit.edu</a>
+</footer>
+
+<script>
+  async function autoSaveProgress() {
+  try {
+    const username = getStoredUsername();
+    if (!username) return;
+
+    const payload = {
+      username: username,
+      submitted: "0",
+      timestamp: new Date().toISOString(),
+      snippetOrder: localStorage.getItem("snippetOrder"),
+      answers: {},
+    };
+
+    // include all answered snippets so far
+    for (let snippet = 1; snippet <= TOTAL_SNIPPETS; snippet++) {
+      const snippetKey = `snippet-${snippet}`;
+      payload.answers[snippetKey] = {
+        readTime: parseInt(localStorage.getItem(`time-q-${snippet}-1`) || '0'),
+        questions: []
+      };
+
+      const questions = questionsPerSnippet[snippet] || [];
+      questions.forEach((q, i) => {
+        const answer = localStorage.getItem(`answer-${snippet}-${q.id}`);
+        if (answer) {
+          payload.answers[snippetKey].questions.push({
+            id: q.id,
+            answer: answer,
+            timeSec: parseInt(localStorage.getItem(`time-q-${snippet}-${i + 2}`) || '0')
+          });
+        }
+      });
+    }
+
+    await fetch('/submit_students_part', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    console.log("✅ Auto-saved progress successfully");
+  } catch (err) {
+    console.warn("⚠️ Auto-save failed:", err);
+  }
+}
+
+</script>
+</body>
+</html>

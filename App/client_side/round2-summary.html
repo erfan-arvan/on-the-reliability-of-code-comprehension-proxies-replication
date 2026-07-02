@@ -1,0 +1,1383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>round 2 Rankings & Reasonings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --card: #f9fafb;
+      --border: #e5e7eb;
+      --accent: #2563eb;
+      --reason: #10b981;
+    }
+    body {
+      margin: 0; padding: 24px;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: var(--bg); color: var(--text);
+    }
+    h1 { margin: 0 0 16px 0; font-size: 22px; }
+    .container { max-width: 1100px; margin: 0 auto; margin-bottom: 300px;}
+    .legend { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+    .last-updated { color: var(--muted); font-size: 13px; margin: -6px 0 12px; }
+
+    .participant-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    .participant-section > strong {
+      display: inline-block;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .ranking-labels {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .ranking-label {
+      font-size: 12px; color: var(--muted); text-align: center;
+    }
+    .ranking-row {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+    }
+    .ranking-slot {
+      min-height: 96px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: flex-start;
+    }
+    .ranking-slot button {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .ranking-slot button:hover { border-color: var(--accent); }
+
+    .reasoning-point {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--reason);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+      cursor: pointer; z-index: 2;
+    }
+    .tooltip-box {
+      position: absolute; background: #111827; color: #fff;
+      font-size: 12px; padding: 8px 10px; border-radius: 8px;
+      max-width: 260px; display: none; z-index: 3;
+    }
+
+        body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0 40px 40px 40px;
+      /* top right bottom left */
+      background-color: #f4f4f4;
+      color: #333;
+    }
+  
+    .instructions {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  
+    .ranking-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: visible;
+      margin-bottom: 10px;
+    }
+  
+    .ranking-row-numbers {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 0;
+    }
+
+    .ranking-number {
+      flex: 1;
+      text-align: center;
+      color: #009999;
+    }
+  
+    .card {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 8px;
+      margin: 5px;
+      cursor: grab;
+    }
+  
+    .card.dragging {
+      opacity: 0.5;
+    }
+  
+    .preview-area {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+  
+    .snippet-preview-box {
+      flex: 1 1 45%;
+      min-width: 300px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+    }
+  
+    .snippet-header {
+      background-color: #f5f5f5;
+      padding: 10px 15px;
+      font-weight: bold;
+      font-size: 16px;
+      border-bottom: 1px solid #ccc;
+    }
+  
+    .code-box {
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      padding: 15px;
+      font-size: 14px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+  
+    #theme-toggle {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+  
+    #continueBtn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #4CAF50;
+    }
+  
+    #continueBtn:hover {
+      background-color: #45a049;
+      animation: glowPulse 1.5s infinite alternate;
+    }
+  
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 10px #4CAF50;
+      }
+  
+      100% {
+        box-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+      }
+    }
+  
+    /*.status-bar {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 0;
+        position: static; 
+      }*/
+  
+    .status-bar {
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+  
+    .phase-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+  
+    .phase-link:hover:not(.disabled) {
+      background-color: #4CAF50;
+    }
+  
+    .phase-link.active {
+      background-color: #4CAF50;
+    }
+  
+    .phase-link.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  
+    /*For snippet cards*/
+    #cards {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0;
+      flex-wrap: nowrap;
+    }
+  
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+  
+    button:hover {
+      background-color: #45a049;
+    }
+  
+    button[disabled] {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+  
+    /*dark/light mode*/
+    /* === Default (light mode) === */
+    .card {
+      background-color: #ffffff;
+      border-color: #ccc;
+      color: #333;
+    }
+  
+    .snippet-preview-box {
+      background-color: #fefefe;
+      border: 1px solid #bbb;
+    }
+  
+    .code-box {
+      background-color: #f9f9f9;
+      color: #222;
+    }
+  
+    /* === Dark mode overrides === */
+    body.dark-mode .card {
+      background-color: #2a2a2a;
+      border-color: #555;
+      color: #ddd;
+    }
+  
+    body.dark-mode .snippet-preview-box {
+      background-color: #1e1e1e;
+      border: 1px solid #444;
+    }
+  
+    body.dark-mode .code-box {
+      background-color: #2d2d2d;
+      color: #ddd;
+    }
+  
+    /* Basic syntax highlighting classes */
+    .keyword {
+      color: #0000ff;
+      font-weight: bold;
+    }
+  
+    .type {
+      color: #007070;
+    }
+  
+    .function {
+      color: #7928a1;
+      font-weight: bold;
+    }
+  
+    .literal {
+      color: #009999;
+    }
+  
+    .string {
+      color: #a31515;
+    }
+  
+    .comment {
+      color: #6a9955;
+      font-style: italic;
+    }
+  
+    .number {
+      color: #098658;
+    }
+  
+    /* Dark mode overrides */
+    .dark-mode .keyword {
+      color: #82aaff;
+    }
+  
+    .dark-mode .type {
+      color: #89ddff;
+    }
+  
+    .dark-mode .function {
+      color: #c792ea;
+    }
+  
+    .dark-mode .literal {
+      color: #ffcb6b;
+    }
+  
+    .dark-mode .string {
+      color: #c3e88d;
+    }
+  
+    .dark-mode .comment {
+      color: #7f848e;
+    }
+  
+    .dark-mode .number {
+      color: #f78c6c;
+    }
+  
+    html {
+      scroll-behavior: smooth;
+    }
+  
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+  
+    a:hover {
+      text-decoration: underline;
+    }
+
+      .participant-section {
+      margin-bottom: 10px;
+    }
+
+    .participant-section-wide{
+      height: 100px;
+    }
+
+    .ranking-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .ranking-labels {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 5px;
+    }
+
+    .ranking-label {
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
+      color: #009999;
+    }
+
+    .ranking-slot {
+      flex: 1;
+      min-height: 30px;
+      border: 2px dashed #4CAF50;
+      background-color: #e8f5e9;
+      border-radius: 6px;
+      padding-left: 1px;
+      padding-right: 1px;
+
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ranking-slot button {
+      display: inline-block;
+      width: auto;
+      margin: 1px;
+      padding: 1px 5px;
+      border: none;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .ranking-slot button:hover {
+      background-color: #45a049;
+      position: relative;
+    }
+
+    .ranking-label:last-child {
+      color: red;
+    }
+
+    .snippet-1 { background-color: #4CAF50; color: white; }
+    .snippet-2 { background-color: #2196F3; color: white; }
+    .snippet-3 { background-color: #f44336; color: white; }
+    .snippet-4 { background-color: #FF9800; color: white; }
+    .snippet-5 { background-color: #9C27B0; color: white; }
+    .snippet-6 { background-color: #3F51B5; color: white; }
+    .snippet-7 { background-color: #009688; color: white; }
+    .snippet-8 { background-color: #795548; color: white; }
+
+    button.snippet-1 { background-color: #4CAF50; color: white; }
+    button.snippet-2 { background-color: #2196F3; color: white; }
+    button.snippet-3 { background-color: #f44336; color: white; }
+    button.snippet-4 { background-color: #FF9800; color: white; }
+    button.snippet-5 { background-color: #9C27B0; color: white; }
+    button.snippet-6 { background-color: #3F51B5; color: white; }
+    button.snippet-7 { background-color: #009688; color: white; }
+    button.snippet-8 { background-color: #795548; color: white; }
+
+.reasoning-point {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border: 2px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+
+.reasoning-point:hover {
+  transform: scale(1.2);
+}
+
+.tooltip-box {
+  position: absolute;
+  background-color: #333;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: none;
+  z-index: 99;
+}
+
+.reasoning-container {
+  position: relative;
+}
+
+/* Show tooltip on hover */
+.reasoning-point:hover + .tooltip-box {
+  display: block;
+}
+
+.snippet-box {
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-family: 'Courier New', monospace;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.participant {
+  background: #f9f9f9;
+  border-left: 4px solid #aaa;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.participant h4 {
+  margin-top: 0;
+}
+
+#modal-code {
+  background-color: #2d2d2d;
+  color: #ccc;
+  padding: 20px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.light-mode #modal-code {
+  background-color: #f0f0f0;
+  color: #333;
+}
+.code-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  background-color: inherit;
+  color: inherit;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.line-numbers {
+  text-align: right;
+  padding-right: 10px;
+  user-select: none;
+  color: #888;
+}
+
+.code-content {
+  white-space: pre;
+}
+
+#code {
+  background-color: #2d2d2d;
+  color: #ccc;
+  padding: 20px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.light-mode #code {
+  background-color: #f0f0f0;
+  color: #333;
+}
+/* LIGHT MODE styles */
+.keyword     { color: #0000ff; font-weight: bold; }
+.type        { color: #007070; }
+.function    { color: #7928a1; font-weight: bold; }
+.literal     { color: #009999; }
+.string      { color: #a31515; }
+.comment     { color: #6a9955; font-style: italic; }
+.number      { color: #098658; }
+
+/* DARK MODE overrides */
+.dark-mode .keyword  { color: #82aaff; }
+.dark-mode .type     { color: #89ddff; }
+.dark-mode .function { color: #c792ea; }
+.dark-mode .literal  { color: #ffcb6b; }
+.dark-mode .string   { color: #c3e88d; }
+.dark-mode .comment  { color: #7f848e; }
+.dark-mode .number   { color: #f78c6c; }
+
+a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+.sticky-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  z-index: 1000;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.06);
+}
+
+.sticky-menu button {
+  background: #ffffff;
+  color: #333;
+  font-weight: 500;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.sticky-menu button:hover {
+  background: #f3f3f3;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.disagreement-box {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+textarea {
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #45a049;
+}
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.content-wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.disagreement-box, .question-box {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+textarea {
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.question-box .navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+.content-wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.disagreement-box, .right-panel {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.question-box textarea {
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+}
+
+.right-panel .navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.toggle-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  background-color: #ffc800;
+  border: 1px solid #aaa;
+  cursor: pointer;
+  color: #222;
+}
+
+.phase-bar {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  z-index: 999;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-bottom: 1px solid #ccc;
+  transition: max-height 0.3s ease;
+}
+
+.phase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.phase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.phase-title {
+  font-weight: 600;
+  color: #333;
+}
+
+#scroll-trigger-element {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+#scroll-trigger-element.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#phase-section-content {
+  overflow: auto;
+  min-height: 50px;
+  height: 200px; /* default */
+  resize: none;  /* disable built-in resizing — we use custom handle */
+  overflow-y: visible;
+  padding: 10px 20px;
+}
+
+#phase2-resize-handle {
+  height: 10px;
+  background: #ccc;
+  cursor: ns-resize;
+  position: relative;
+}
+
+.fade {
+  transition: opacity 0.4s ease;
+  opacity: 1;
+}
+.fade.hidden {
+  opacity: 0;
+}
+.reasoning-point:hover + .tooltip-box { display: block; }
+
+.sticky-back-btn{
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0));
+  z-index: 1000;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 700;
+
+  background: linear-gradient(145deg, var(--accent, #6e59f9), var(--accent2, #4f46e5));
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0,0,0,.15);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+
+.sticky-back-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.22);
+  filter: brightness(1.02);
+}
+
+.sticky-back-btn:active{
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(0,0,0,.18);
+}
+
+.sticky-back-btn:focus-visible{
+  outline: 3px solid color-mix(in srgb, white 70%, var(--accent2, #4f46e5));
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent2, #4f46e5) 35%, transparent);
+}
+
+/* Respect printing */
+@media print{
+  .sticky-back-btn{ display: none !important; }
+}
+
+/* Optional: nudge up on very small screens */
+@media (max-width: 420px){
+  .sticky-back-btn{ right: 12px; bottom: 12px; }
+}
+
+  </style>
+</head>
+<body>
+    <a
+  href="discussion.html"
+  class="sticky-back-btn"
+  aria-label="Go back to the last round (discussions)"
+  style="display: none;"
+>
+  ← Back to last round
+</a>
+
+  <div class="container">
+    <h1>round 2 Rankings & Reasonings</h1>
+    <div class="last-updated" style="display: none;">
+      Last updated: <time id="last-updated" datetime="2025-09-19T06:47:32.337309+00:00"></time>
+    </div>
+    <div class="legend">
+      <ol>
+        <li>
+          Hover your mouse over the
+          <strong><span style="font-size: 18px;">○</span> icons above the positions</strong> to see the reasoning behind
+          grouping the snippets. You can also hover over the
+          <strong><span style="font-size: 18px;">○</span> icons between two positions</strong> to see the reasoning behind
+          placing snippets in those positions.
+        </li>
+        <li>
+          <strong>Click on a <span style="font-size: 18px;">○</span> icon</strong> to view the related snippets or compare
+          them.
+        </li>
+      </ol>
+    </div>
+
+
+   <div class="participant-section">
+      <strong>expertC</strong>
+      <div class="ranking-labels">
+        <div class="ranking-label">1 (easiest)</div>
+        <div class="ranking-label">2</div>
+        <div class="ranking-label">3</div>
+        <div class="ranking-label">4</div>
+        <div class="ranking-label">5</div>
+        <div class="ranking-label">6</div>
+        <div class="ranking-label">7</div>
+        <div class="ranking-label">8 (hardest)</div>
+      </div>
+      <div class="ranking-row">
+        <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-4" onclick="show_snippet(4)">indexOfIgnoreCa</button>
+<button class="snippet-5" onclick="show_snippet(5)">deleteRecursive</button>
+            <div class="reasoning-point" onclick="compare([4],[5])" style="position: absolute; top: -7px; right: 50px;"></div>
+            <div class="tooltip-box" style="position: absolute; top: 25px; left: 10px; width: 360px;">💡 <strong>Reason:</strong><br>I can go line by line through each and know what each line does. All variable names/method names make sense. Error cases are clear.<br><br>The business logic is straightforward based on the method name/signature.</div>
+            <div class="reasoning-point" onclick="compare([4,5],[2,1])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">Position 2 requires more knowledge of the domain, like why are &#x27;file&#x27; and &#x27;jar&#x27; unique cases in isRemote.<br><br>for isValidProjectName, I would almost put that in position 1 but I only knocked it down because of the unclear reason for line 13 having two checks (why a separate letter or digit check? could be performance reasons, not sure)</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-2" onclick="show_snippet(2)">isRemote</button>
+<button class="snippet-1" onclick="show_snippet(1)">isValidProjectN</button>
+            <div class="reasoning-point" onclick="compare([2],[1])" style="position: absolute; top: -7px; right: 50px;"></div>
+            <div class="tooltip-box" style="position: absolute; top: 25px; left: 10px; width: 360px;">💡 <strong>Reason:</strong><br>Kinda explained in the last one. Requires some business knowledge or knowledge of the unique cases here</div>
+            <div class="reasoning-point" onclick="compare([2,1],[3])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">isMachineTypeDefined requires even more business knowledge about the domain, is this any machine? only coffee machines? is &quot;Coff&quot; even &quot;Coffee&quot; for sure?. I can make better guesses for Position 2 stuff.<br><br>This also uses advanced Java stuff that is not very common, checking class declared fields. I usually stay away from doing that</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-3" onclick="show_snippet(3)">isMachineTypeDe</button>
+            <div class="reasoning-point" onclick="compare([3],[8])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">At least in isMachienTypeDefined I can take good guesses at the logic, and at minimum the method name makes it clear what it&#x27;s trying to check for.<br><br>atan2 requires either math knowledge or context in the package - I still don&#x27;t know if it&#x27;s a V2 or squared<br><br>Depending on a user knowing math is difficult, I would add more comments</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-8" onclick="show_snippet(8)">atan2</button>
+            <div class="reasoning-point" onclick="compare([8],[7])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">lowestPositiveRoot is even more complicated math in my mind. Also it&#x27;s confusing why line 10-17 are written the way they are, I think it could be combined and simplified</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-7" onclick="show_snippet(7)">lowestPositiveR</button>
+            <div class="reasoning-point" onclick="compare([7],[6])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">I put CharSequence as most difficult because it&#x27;s doing bitwise stuff and UTF stuff I&#x27;m not familiar with. Based on the comment about being optimized, I think it&#x27;s complicated on purpose so that it&#x27;s efficient. What&#x27;s good for computers isn&#x27;t always good for humans</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-6" onclick="show_snippet(6)">encodedLength</button>
+          </div>
+      </div>
+    </div>
+
+    <div class="participant-section">
+      <strong>expertD</strong>
+      <div class="ranking-labels">
+        <div class="ranking-label">1 (easiest)</div>
+        <div class="ranking-label">2</div>
+        <div class="ranking-label">3</div>
+        <div class="ranking-label">4</div>
+        <div class="ranking-label">5</div>
+        <div class="ranking-label">6</div>
+        <div class="ranking-label">7</div>
+        <div class="ranking-label">8 (hardest)</div>
+      </div>
+      <div class="ranking-row">
+        <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-1" onclick="show_snippet(1)">isValidProjectN</button>
+            <div class="reasoning-point" onclick="compare([1],[2])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">I can understand isValidProjectName better than isRemote because of the clarity of the code flow.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-2" onclick="show_snippet(2)">isRemote</button>
+            <div class="reasoning-point" onclick="compare([2],[3])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">isRemote is simpler and easier to understand than isMachineTypeDefined due to the control flow.<br>Additionally, the complexity of the isRemote problem is perceived as less complex.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-3" onclick="show_snippet(3)">isMachineTypeDe</button>
+            <div class="reasoning-point" onclick="compare([3],[5])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The deleteRecursively code can be improved by using native Java resources, which I see are not being used. Unlike isMachineTypeDefined, which uses Java methods to shorten the code logic.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-5" onclick="show_snippet(5)">deleteRecursive</button>
+            <div class="reasoning-point" onclick="compare([5],[4])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The way indexOfIgnoreCase is resolved seems to be a more complicated problem than deleteRecursively, when in fact it is not, since an exception is not centralized as a response and this validation is performed several times.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-4" onclick="show_snippet(4)">indexOfIgnoreCa</button>
+            <div class="reasoning-point" onclick="compare([4],[7])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">On lowestPositiveRoot, I disagree with naming variables as letters, because the code looks like a mathematical equation rather than the solution to an algorithm.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-7" onclick="show_snippet(7)">lowestPositiveR</button>
+            <div class="reasoning-point" onclick="compare([7],[8])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The atan2 method expects a context to understand how each of its validations works. In this case, it shares several errors with lowestPositiveRoot, but lowestPositiveRoot handles the code better in fragments.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-8" onclick="show_snippet(8)">atan2</button>
+            <div class="reasoning-point" onclick="compare([8],[6])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">la logica que se usa en las validaciones de encodedLength es muy complicado de entender</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-6" onclick="show_snippet(6)">encodedLength</button>
+          </div>
+      </div>
+    </div>
+
+    <div class="participant-section">
+      <strong>expertB</strong>
+      <div class="ranking-labels">
+        <div class="ranking-label">1 (easiest)</div>
+        <div class="ranking-label">2</div>
+        <div class="ranking-label">3</div>
+        <div class="ranking-label">4</div>
+        <div class="ranking-label">5</div>
+        <div class="ranking-label">6</div>
+        <div class="ranking-label">7</div>
+        <div class="ranking-label">8 (hardest)</div>
+      </div>
+      <div class="ranking-row">
+        <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-1" onclick="show_snippet(1)">isValidProjectN</button>
+            <div class="reasoning-point" onclick="compare([1],[2])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">Because the problem of defining a valid project name is more straightforward than that of defining a URI as local. The URI class is one of those classes that you don&#x27;t use everyday and you need to go to check the documentation to remember how it is composed. On the other hand the valid project name function is very self explanatory.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-2" onclick="show_snippet(2)">isRemote</button>
+            <div class="reasoning-point" onclick="compare([2],[5])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">While reading the `deleteRecursively` method for the first time I was looking for the recursion pattern in the code and instead the code used the Files.walkFileTree method to traverse the files. Because of this reading this code was a bit more confusing than the snippet checking whether a URI is remote.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-5" onclick="show_snippet(5)">deleteRecursive</button>
+            <div class="reasoning-point" onclick="compare([5],[4])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">`deleteRecursively` is still clearer than `indexOfIgnoreCase` in that the method reads quite nicely with well defined variable names and usage of the familiar Files java library. Despite the fact that the method uses a Visitor pattern, even not knowing what the pattern exactly does a reader could understand the file tree traversing method happening based on the names of the overridden methods for the SimpleFileVisitor instance. Even though `indexOfIgnoreCase` is a simple method I still consider that its implementation needs a bit more thinking and mental compilation than the `deleteRecursively` method.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-4" onclick="show_snippet(4)">indexOfIgnoreCa</button>
+            <div class="reasoning-point" onclick="compare([4],[7])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">`indexOfIgnoreCase` requires less background knowledge to understand what the method is doing. The issue with `lowestPositiveRoot` is still that the names are not fully explicit and the fact that we&#x27;re using the quadratic formula is not given anywhere in the code. Some comments or better naming could make this more explicit.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-7" onclick="show_snippet(7)">lowestPositiveR</button>
+            <div class="reasoning-point" onclick="compare([7],[3])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The difference in the ranking for these two methods is a bit harder to give as they sit close in how comprehensible they are. I still consider that `lowestPositiveRoot` reads easier than `isMachineTypeDefined` once you know you&#x27;re dealing with the quadratic formula. On the other hand `isMachineTypeDefined` has the difficulties of dealing with the reflection libraries which is always a bit confusing.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-3" onclick="show_snippet(3)">isMachineTypeDe</button>
+            <div class="reasoning-point" onclick="compare([3],[8,6])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">`isMachineTypeDefined` is still a well defined method that can be understood even if it has some struggles due to the reflection library used. On the other hand both `encodedLength` and `atan2` methods are still very cryptic on their implementations. Despite other experts clarifications I still find the explanations not fully convincing and the two methods feel equally incomprehensible to me.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-6" onclick="show_snippet(6)">encodedLength</button>
+<button class="snippet-8" onclick="show_snippet(8)">atan2</button>
+            <div class="reasoning-point" onclick="compare([8],[6])" style="position: absolute; top: -7px; right: 50px;"></div>
+            <div class="tooltip-box" style="position: absolute; top: 25px; left: -50px; width: 200px; ">💡 <strong>Reason:</strong><br>After reading the feedback from other experts, it&#x27;s still unclear to me whether the methods actually do what they are intended to do. One of the experts explained that `atan2` is an approximation method but I&#x27;m still not convinced the mathematics behind it are sound. And `encodedLenght` using binary shifts and validating a set of ascii characters, that to me still don&#x27;t make sense, make this method not easy to comprehend. I still think they are equally cryptic and possibly equally flawed</div>
+          </div>
+      </div>
+    </div>
+
+    <div class="participant-section">
+      <strong>expertA</strong>
+      <div class="ranking-labels">
+        <div class="ranking-label">1 (easiest)</div>
+        <div class="ranking-label">2</div>
+        <div class="ranking-label">3</div>
+        <div class="ranking-label">4</div>
+        <div class="ranking-label">5</div>
+        <div class="ranking-label">6</div>
+        <div class="ranking-label">7</div>
+        <div class="ranking-label">8 (hardest)</div>
+      </div>
+      <div class="ranking-row">
+        <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-2" onclick="show_snippet(2)">isRemote</button>
+<button class="snippet-1" onclick="show_snippet(1)">isValidProjectN</button>
+            <div class="reasoning-point" onclick="compare([1],[2])" style="position: absolute; top: -7px; right: 50px;"></div>
+            <div class="tooltip-box" style="position: absolute; top: 25px; left: -50px; width: 360px;">💡 <strong>Reason:</strong><br>Short snippets. The purpose of local variables and called methods is clear.</div>
+            <div class="reasoning-point" onclick="compare([1,2],[4,3,5])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">Short and simple. The simplicity also includes the fact that no specific previous knowledge is required. In contrast, the ones in Position 4 do require specific knowledge. Also, indexOfIgnoreCa suffers from bad naming.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-3" onclick="show_snippet(3)">isMachineTypeDe</button>
+<button class="snippet-5" onclick="show_snippet(5)">deleteRecursive</button>
+<button class="snippet-4" onclick="show_snippet(4)">indexOfIgnoreCa</button>
+            <div class="reasoning-point" onclick="compare([4],[3,5])" style="position: absolute; top: -7px; right: 50px;"></div>
+            <div class="tooltip-box" style="position: absolute; top: 25px; left: 10px; width: 360px;">💡 <strong>Reason:</strong><br>4 and seven required specific knowledge. <br>1 was downgraded from Position 5 after reading reviewer&#x27;s comments.</div>
+            <div class="reasoning-point" onclick="compare([4,3,5],[7])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">Variable names easily convey the purpose of the method. Specific knowledge is required only to understand the implementation in detail. <br><br>lowestPositiveR suffers from bad variable naming. Specific knowledge is required to understand the purpose AND the actual implementation of the method.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-7" onclick="show_snippet(7)">lowestPositiveR</button>
+            <div class="reasoning-point" onclick="compare([7],[8,6])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The name of the method gives a good (but not complete) idea of its purpose. In Position 8, nothing seems to be descriptive enough to decipher their purpose.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-6" onclick="show_snippet(6)">encodedLength</button>
+<button class="snippet-8" onclick="show_snippet(8)">atan2</button>
+            <div class="reasoning-point" onclick="compare([8],[6])" style="position: absolute; top: -7px; right: 50px;"></div>
+            <div class="tooltip-box" style="position: absolute; top: 25px; left: -50px; width: 200px; ">💡 <strong>Reason:</strong><br>suffer from the same issue: names that do not really convey the purpose of the method. Also, the existence of some magic numbers with unclear meaning.</div>
+          </div>
+      </div>
+    </div>
+
+    <div class="participant-section">
+      <strong>expertE</strong>
+      <div class="ranking-labels">
+        <div class="ranking-label">1 (easiest)</div>
+        <div class="ranking-label">2</div>
+        <div class="ranking-label">3</div>
+        <div class="ranking-label">4</div>
+        <div class="ranking-label">5</div>
+        <div class="ranking-label">6</div>
+        <div class="ranking-label">7</div>
+        <div class="ranking-label">8 (hardest)</div>
+      </div>
+      <div class="ranking-row">
+        <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-1" onclick="show_snippet(1)">isValidProjectN</button>
+            <div class="reasoning-point" onclick="compare([1],[2])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -120px;">I found the project name validation snippet easier to understand than the URI one because everything it does is right there in front of you and self-contained. It just walks through a series of simple checks on a single string: null, leading dot, length range, and allowed characters. The loop is straightforward, the conditions are easy to read, and the intent matches the method name exactly.<br><br>The isRemote method is still pretty readable, but it pulls in a bit more context. You have to reason about URI schemes and what counts as “remote”.  And, there’s also a dependency on isFilesystemPath(uri), whose behavior you don’t see in this snippet and must infer. That extra bit of indirection and the need to think and infer about external behavior makes it slightly less immediate to understand than the project name validator.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-2" onclick="show_snippet(2)">isRemote</button>
+            <div class="reasoning-point" onclick="compare([2],[4])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The isRemote snippet is easier to understand because it’s shorter, more linear, and deals with only a couple of simple conditions. You can read straight through it and immediately see the intent: check a few properties of the URI and return true or false based on the scheme. There are no loops and the branching stays relatively shallow.<br><br>The indexOfIgnoreCase snippet, while still readable, requires a little more mental work to parse out its logic. It has more parameters to consider, several edge-case checks, and a loop that searches through the characters. You also have to reason about the starting position, the calculated end boundary, and infer what regionMatches does. None of the code is overly complex, but there are simply more moving parts than in isRemote, which makes it take a bit more effort to follow.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-4" onclick="show_snippet(4)">indexOfIgnoreCa</button>
+            <div class="reasoning-point" onclick="compare([4],[5])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The substring search method is easier to understand because everything it’s doing is contained within the method itself. Even though it has a loop and a few boundary checks, the overall idea is straightforward: adjust the starting position, calculate how far you can search, and then scan through the string looking for a match. The control flow is familiar and the logic stays localized.<br><br>Conversely, the recursive delete method requires understanding how Files.walkFileTree works and how the SimpleFileVisitor callbacks interact with it. The actual deletion logic is simple, but the pattern itself isn’t something you interpret linearly—you have to mentally connect the visitor methods to the traversal process and understand that the framework is controlling the recursion. Because the behavior depends on the external file-tree traversal API rather than just the code in front of you, it takes more effort to follow and understand what’s happening in the function.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-5" onclick="show_snippet(5)">deleteRecursive</button>
+            <div class="reasoning-point" onclick="compare([5],[7])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The recursive delete snippet is easier to understand because the overall intent is clear right away: walk through a directory tree and delete everything in it. Even though it uses walkFileTree, the logic inside the visitor is simple—delete each file, then delete each directory. Once you recognize the pattern, the flow is pretty easy to follow.<br><br>The quadratic-root snippet requires more mental work because you have to track the math. You need to remember how the discriminant works, how the quadratic formula is applied, and why the roots are swapped. The code itself isn’t really complicated — it’s the underlying math that makes you pause. A brief comment explaining the steps of the quadratic calculation would make it easier to understand more quickly. The method is still readable, but you do have to think through the algebra and the ordering logic, which makes it a bit more involved than just iterating over a file tree and deleting entries.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-7" onclick="show_snippet(7)">lowestPositiveR</button>
+            <div class="reasoning-point" onclick="compare([7],[3])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The quadratic-root snippet, even though it requires some math, has a very linear and predictable flow. You compute the discriminant, calculate two roots, reorder them if necessary, and then return the smallest positive one. The logic is contained entirely within the method, and once you understand the math, the code itself is straightforward and easy to follow, particularly with the variables named appropriately.<br><br>The machine-type snippet is harder because it relies heavily on reflection, which is much less intuitive to read. Instead of simply working with local variables, the code dynamically inspects fields on another class, checks their modifiers, and retrieves values at runtime. Understanding what’s happening means keeping track of the reflection API, the meaning of synthetic fields, and why static final fields are being filtered. Without comments, you also have to infer why reflection is even being used. All of that requires more mental overhead and analysis outside of the function itself than following the quadratic formula.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-3" onclick="show_snippet(3)">isMachineTypeDe</button>
+            <div class="reasoning-point" onclick="compare([3],[6])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">The machine-type snippet is easier to understand because, even though it uses reflection, the overall idea is straightforward: loop through a set of constants and check whether any of them match the input value. Once you recognize the pattern, the flow is pretty direct, and most of the complexity comes from the API calls rather than any tricky or confusing logic.<br><br>The UTF-8 encoded-length snippet is more difficult because the logic is dense and optimized in ways that aren’t immediately obvious or intuitive. You have to understand character ranges, multi-byte UTF-8 encoding rules, and why certain bit-level expressions, like ((0x7f - c) &gt;&gt;&gt; 31), work the way they do. There’s also an abrupt jump to a helper method when a non-ASCII, non-2-byte character is found, which adds another layer you have to understand and think about. The method is correct but compact and “clever,” so it takes more effort to unpack than the reflection loop.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-6" onclick="show_snippet(6)">encodedLength</button>
+            <div class="reasoning-point" onclick="compare([6],[8])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -200px;">The UTF-8 length calculation snippet is tricky because of the bit-level optimizations, but the overall structure is still pretty logical. It walks through the characters, handles ASCII first, then moves on to multi-byte ranges, and finally checks for overflow. Even if you don’t fully understand the condensed/clever arithmetic, you can still follow the high-level idea.<br><br>The atan2 snippet is harder because the flow is much less intuitive. It uses unusual NaN-detection tricks like n != n and n - n != n - n, which aren’t patterns most developers use or encounter, since they would typically rely on built-in helper functions. On top of that, the method branches into several quadrant-handling cases, and the fallback returns involve expressions like x + HALF_PI, which require you to reason about what x actually represents at that point. Without comments, you have to mentally reconstruct how each case produces the correct angle. All of that makes the atan2 code more confusing and less straightforward than the UTF-8 length calculation.</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-8" onclick="show_snippet(8)">atan2</button>
+          </div>
+      </div>
+    </div>
+
+    <!-- <div class="participant-section">
+      <strong>facilitator</strong>
+      <div class="ranking-labels">
+        <div class="ranking-label">1 (easiest)</div>
+        <div class="ranking-label">2</div>
+        <div class="ranking-label">3</div>
+        <div class="ranking-label">4</div>
+        <div class="ranking-label">5</div>
+        <div class="ranking-label">6</div>
+        <div class="ranking-label">7</div>
+        <div class="ranking-label">8 (hardest)</div>
+      </div>
+      <div class="ranking-row">
+        <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-3" onclick="show_snippet(3)">isMachineTypeDe</button>
+<button class="snippet-8" onclick="show_snippet(8)">atan2</button>
+            <div class="reasoning-point" onclick="compare([3],[8])" style="position: absolute; top: -7px; right: 50px;"></div>
+            <div class="tooltip-box" style="position: absolute; top: 25px; left: 10px; width: 360px;">💡 <strong>Reason:</strong><br>I can go line by line through each and know what each line does. All variable names/method names make sense. Error cases are clear.<br><br>The business logic is straightforward based on the method name/signature.</div>
+            <div class="reasoning-point" onclick="compare([3,8],[2,4])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">Position 2 requires more knowledge of the domain, like why are &#x27;file&#x27; and &#x27;jar&#x27; unique cases in isRemote.<br><br>for isValidProjectName, I would almost put that in position 1 but I only knocked it down because of the unclear reason for line 13 having two checks (why a separate letter or digit check? could be performance reasons, not sure)</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-2" onclick="show_snippet(2)">isRemote</button>
+<button class="snippet-4" onclick="show_snippet(4)">indexOfIgnoreCa</button>
+            <div class="reasoning-point" onclick="compare([2],[4])" style="position: absolute; top: -7px; right: 50px;"></div>
+            <div class="tooltip-box" style="position: absolute; top: 25px; left: 10px; width: 360px;">💡 <strong>Reason:</strong><br>Kinda explained in the last one. Requires some business knowledge or knowledge of the unique cases here</div>
+            <div class="reasoning-point" onclick="compare([2,4],[7])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">isMachineTypeDefined requires even more business knowledge about the domain, is this any machine? only coffee machines? is &quot;Coff&quot; even &quot;Coffee&quot; for sure?. I can make better guesses for Position 2 stuff.<br><br>This also uses advanced Java stuff that is not very common, checking class declared fields. I usually stay away from doing that</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-7" onclick="show_snippet(7)">lowestPositiveR</button>
+            <div class="reasoning-point" onclick="compare([7],[6])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">At least in isMachienTypeDefined I can take good guesses at the logic, and at minimum the method name makes it clear what it&#x27;s trying to check for.<br><br>atan2 requires either math knowledge or context in the package - I still don&#x27;t know if it&#x27;s a V2 or squared<br><br>Depending on a user knowing math is difficult, I would add more comments</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-6" onclick="show_snippet(6)">encodedLength</button>
+            <div class="reasoning-point" onclick="compare([6],[1])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">lowestPositiveRoot is even more complicated math in my mind. Also it&#x27;s confusing why line 10-17 are written the way they are, I think it could be combined and simplified</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-1" onclick="show_snippet(1)">isValidProjectN</button>
+            <div class="reasoning-point" onclick="compare([1],[5])" style="position: absolute; top: 10px; right: -12px;"></div>
+            <div class="tooltip-box" style="top: 35px; right: -160px;">I put CharSequence as most difficult because it&#x27;s doing bitwise stuff and UTF stuff I&#x27;m not familiar with. Based on the comment about being optimized, I think it&#x27;s complicated on purpose so that it&#x27;s efficient. What&#x27;s good for computers isn&#x27;t always good for humans</div>
+          </div>
+
+          <div class="ranking-slot" style="position: relative;">
+          <button class="snippet-5" onclick="show_snippet(5)">deleteRecursive</button>
+          </div>
+      </div>
+    </div> -->
+  </div>
+
+ <div id="validation-modal" style="
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff0f0;
+  color: #660000;
+  border: 1px solid #ff9999;
+  padding: 20px;
+  border-radius: 10px;
+  width: 440px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 1002;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  ">
+    <p id="validation-message" style="font-weight: bold;"></p>
+    <button onclick="document.getElementById('validation-modal').style.display = 'none';" style="
+      margin-top: 15px;
+      padding: 8px 14px;
+      background-color: #ff9999;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">OK</button>
+  </div>
+
+<div id="snippet-modal" style="display:none; position:fixed; top:10%;
+left:50%; transform:translateX(-50%); width:80%; max-height:80%;
+overflow-y:auto; background:#fff; border:1px solid #ccc; padding:0px 20px;
+border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:1002;">
+  <div style="position: sticky; top: 0; background: #fff; z-index: 10; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+    <h3 id="modal-snippet-title" style="margin:0;">Snippet</h3>
+    <div>
+      <button onclick="toggleModalTheme()" id="modal-theme-toggle" style="margin-right: 10px; padding: 6px 12px; border-radius: 5px; border: none; background-color: #333; color: white; cursor: pointer;">Switch to Light Mode</button>
+      <span onclick="document.getElementById('snippet-modal').style.display='none'" style="cursor:pointer; font-size:20px; font-weight:bold;">&times;</span>
+    </div>
+  </div>
+
+  <div class="code-container" id="modal-code">
+    <div class="line-numbers" id="modal-line-numbers"></div>
+    <div class="code-content" id="modal-code-content"></div>
+  </div>
+</div>
+
+<div id="compare-modal" style="display:none; position:fixed; top:10%;
+left:50%; transform:translateX(-50%); width:90%; max-height:80%;
+overflow-y:auto; background:#fff; border:1px solid #ccc;
+padding: 0px 20px!important;
+border-radius:8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); z-index:1002;">
+  <div style="position: sticky; top: 0; background: #fff; display: flex;
+  justify-content: space-between; align-items: center; margin-bottom: 15px;
+  padding: 10px 0px; z-index: 0; border-bottom: 1px solid #ddd;">
+    <h3 style="margin: 0;">Compare Snippets</h3>
+    <span onclick="document.getElementById('compare-modal').style.display='none'" style="cursor: pointer; font-size: 20px; font-weight: bold;">&times;</span>
+  </div>
+
+  <div id="compare-columns" style="display: flex; gap: 20px; ">
+    <div id="compare-left" style="flex: 1; overflow-x: auto;" ></div>
+    <div id="compare-right" style="flex: 1; overflow-x: auto;"></div>
+  </div>
+</div>
+
+  <!-- Localize Last Updated into client timezone -->
+  <script>
+  (function () {
+    var t = document.getElementById('last-updated');
+    if (!t) return;
+    var iso = t.getAttribute('datetime');
+    if (!iso) return;
+    var d = new Date(iso);
+    if (isNaN(d)) return;
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      var formatted = new Intl.DateTimeFormat(undefined, {
+        year:'numeric', month:'short', day:'2-digit',
+        hour:'2-digit', minute:'2-digit', second:'2-digit',
+        hour12:false, timeZoneName:'short', timeZone: tz
+      }).format(d);
+      t.textContent = formatted;
+      t.title = new Date(iso).toISOString(); // UTC tooltip
+    } catch (e) {}
+  })();
+  </script>
+
+  <script src="js/dataForLive.js"></script>
+
+</body>
+</html>

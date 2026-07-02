@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>W&M Java Code Comprehension Study — Recruitment Flyer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --njit-red: #cc0000;
+      --dark: #1f2937;
+      --muted: #6b7280;
+      --bg: #F4C41C;
+      /* soft yellow background */
+      --card: #fffdf3;
+      /* slightly lighter card yellow */
+    }
+
+    @media print {
+      @page {
+        size: Letter;
+        margin: 0.75in;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      body {
+        background: #fff !important;
+      }
+
+      .flyer {
+        box-shadow: none !important;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--dark);
+      background: var(--bg);
+    }
+
+    .flyer {
+      max-width: 9in;
+      margin: 0 auto;
+      padding: 10px;
+      background: var(--bg);
+    }
+
+    /* ---------- HEADER ---------- */
+    /* .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    } */
+    .header {
+      display: flex;
+      flex-direction: column;
+      /* stack vertically */
+      align-items: center;
+      /* center horizontally */
+      justify-content: center;
+      text-align: center;
+      /* center the text */
+      margin-bottom: 20px;
+    }
+
+
+    .brand {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      background: var(--njit-red);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 52px;
+      line-height: 1.2;
+      color: var(--njit-red);
+    }
+
+    .sub {
+      margin: 4px 0 0 0;
+      color: var(--dark);
+      font-size: 16px;
+    }
+
+    .hr {
+      height: 3px;
+      background: var(--njit-red);
+      width: 100%;
+      margin: 18px 0 24px;
+      border-radius: 2px;
+    }
+
+    /* ---------- GRID LAYOUT ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ---------- IMPORTANT SECTIONS ---------- */
+    .section {
+      background: var(--card);
+      border: 1px solid #f0d47c;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .section h2 {
+      margin: 0 0 10px 0;
+      font-size: 30px;
+      color: var(--dark);
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 12px;
+      margin: 8px 0;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    .bullet {
+      text-align: center;
+      font-size: 26px;
+    }
+
+    .strong {
+      font-weight: 700;
+    }
+
+    /* ---------- CTA / QR ---------- */
+    .qr-wrap {
+      display: grid;
+      place-items: center;
+      background: #fffef4;
+      border: 3px solid var(--njit-red);
+      border-radius: 16px;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .qr-wrap h3 {
+      margin: 0 0 8px 0;
+      font-size: 22px;
+      color: var(--njit-red);
+    }
+
+    #qrcode {
+      width: 100%;
+      max-width: 250px;
+      margin: 10px auto;
+    }
+
+    .url {
+      font-size: 15px;
+      font-family: ui-monospace, monospace;
+      word-break: break-all;
+      margin-top: 6px;
+    }
+
+    .note {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ---------- SECONDARY SECTIONS ---------- */
+    .section.minor {
+      background: #fffdf5;
+      border: 1px dashed #f3d87a;
+      padding: 12px 14px;
+    }
+
+    .section.minor h2 {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .roles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ---------- PRINT NOTE ---------- */
+    .no-print {
+      position: fixed;
+      bottom: 12px;
+      left: 12px;
+      background: #111827;
+      color: white;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .java-logo {
+      width: 70px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    @font-face {
+      font-family: 'WantedPoster';
+      src: url('/fonts/WantedPosterRegular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+
+    .wanted-title {
+      font-family: 'WantedPoster', serif;
+      font-size: 64px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flyer">
+    <div class="header">
+      <!-- <div class="brand">NJIT</div> -->
+      <div style="flex: 1;">
+        <h1>
+          <img src="img/java-logo-50.png" alt="Java logo" class="java-logo">
+          <span style="font-size: 43px;">Undergrad</span>
+          Java
+          <span style="font-size: 43px;">programmers</span>
+          <img src="img/java-logo-50.png" alt="Java logo" class="java-logo">
+        </h1>
+        <h1 class="wanted-title" style="font-size: 100px; color: black;">____wanted!____</h1>
+        <h1 style="color: var(--njit-red); font-size: 39px; margin-top: 10px;">Participate in a short study on code
+          comprehension. Enjoy 🍕 and Win $50!</h1>
+        <p class="sub">Help improve research on how programmers understand code</p>
+      </div>
+      <!-- <img src="img/java-logo-50.png" alt="Java logo" class="java-logo"> -->
+    </div>
+
+
+    <div class="hr"></div>
+
+    <div class="grid">
+      <!-- LEFT COLUMN -->
+      <div>
+        <div class="section">
+          <h2>What you’ll do</h2>
+          <div class="item">
+            <div class="bullet">💻</div>
+            <div>Review <span class="strong">8 short Java snippets</span> and answer comprehension questions on our
+              study website using your own laptop.</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>When & where</h2>
+          <div class="item">
+            <div class="bullet">🕒</div>
+            <div>The study itself takes about <span class="strong">60 minutes</span></div>
+          </div>
+          <div class="item">
+            <div class="bullet">📍</div>
+            <div>Held <strong>in-person</strong> at <span class="strong">W&M</span> (room TBD).</div>
+          </div>
+          <div class="item">
+            <div class="bullet">📅</div>
+            <div>Scheduled by your availability.</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>What you’ll receive</h2>
+          <div class="item">
+            <div class="bullet">🍕</div>
+            <div><span class="strong">Snacks and pizza</span> will be provided.</div>
+          </div>
+          <div class="item">
+            <div class="bullet">🎁</div>
+            <div>Entry in a <span class="strong">$50 Amazon gift card</span> drawing.</div>
+          </div>
+        </div>
+
+        <div class="section minor">
+          <h2>Questions? ✉️ Contact: <span class="strong">kgdesilva@wm.edu</span></h2>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div>
+        <div class="section qr-wrap">
+          <h3>Check eligibility & register</h3>
+          <div id="qrcode" aria-label="QR code"><img src="img/wmAd.png" alt="QR placeholder"
+              style="max-width: 100%; height: auto;"></div>
+          <div class="url">https://codecomprehensibility.site/eligibilityW&M.html</div>
+          <div class="note">Scan the QR code or visit the link to register in under 2 minutes.</div>
+        </div>
+
+        <div class="section minor">
+          <h2>Study team</h2>
+          <div class="roles">
+            <div><span class="strong">Nadeeshan De Silva</span><br />Ph.D. Candidate, CS, WM</div>
+            <div><span class="strong">Oscar Chaparro</span><br />Associate Professor, CS, WM</div>
+          </div>
+        </div>
+
+      <div class="footer">
+        Approved as IRB-exempt. Participation is voluntary. For individuals 18 years or older.
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var url = "https://codecomprehensibility.site/eligibility.html";
+      var el = document.getElementById("qrcode");
+      var size = 240;
+      if (window.QRCode) new QRCode(el, { width: size, height: size, correctLevel: QRCode.CorrectLevel.M }).makeCode(url);
+    })();
+  </script>
+
+
+</body>
+
+</html>
