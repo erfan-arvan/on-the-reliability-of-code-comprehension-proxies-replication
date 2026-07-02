@@ -26,7 +26,8 @@ import java.nio.charset.StandardCharsets;
 @CrossOrigin(origins = {
         "https://codecomprehensibility.site",
         "https://panelb.codecomprehensibility.site",
-        "http://localhost:8000"
+        "http://localhost:8000",
+        "http://localhost:8080"
 })
 @RestController
 public class SubmissionController {
@@ -82,7 +83,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
 }
 
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/submit_final")
     public synchronized String handleFinalSubmission(@RequestBody Map<String, Object> body) {
         String username = (String) body.getOrDefault("username", "anonymous");
@@ -145,7 +146,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/get_latest_submission")
     public Map<String, Object> getLatestSubmission(@RequestBody Map<String, String> request) {
         String username = request.getOrDefault("username", "anonymous");
@@ -172,7 +173,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/submit_students_part")
     public synchronized String handleStudentSubmission(@RequestBody Map<String, Object> body) {
         String username = (String) body.getOrDefault("username", "anonymous");
@@ -273,7 +274,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         return "'" + input.replace("'", "'\"'\"'") + "'";
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/register_student")
     public synchronized String handleStudentRegistration(@RequestBody Map<String, Object> body) {
         String email = (String) body.getOrDefault("email", "unknown");
@@ -425,7 +426,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         return defaultIfNull;
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/register_studentWM")
     public synchronized String handleStudentRegistrationWM(@RequestBody Map<String, Object> body) {
         String email = (String) body.getOrDefault("email", "unknown");
@@ -566,7 +567,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         return baseUrl + (baseUrl.contains("?") ? "&" : "?") + "e=" + b64;
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/register_expert")
     public synchronized String handleExpertRegistration(@RequestBody Map<String, Object> body) {
         String email = (String) body.getOrDefault("email", "unknown");
@@ -689,7 +690,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/submit_round2")
     public synchronized String handleRound2Submission(@RequestBody Map<String, Object> body) {
         String username = (String) body.getOrDefault("username", "anonymous");
@@ -743,7 +744,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/get_latest_round2")
     public Map<String, Object> getLatestRound2Submission(@RequestBody Map<String, String> request) {
         String username = request.getOrDefault("username", "anonymous");
@@ -769,7 +770,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/submit_round3")
     public synchronized String handleRound3Submission(@RequestBody Map<String, Object> body) {
         String username = (String) body.getOrDefault("username", "anonymous");
@@ -823,7 +824,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/get_latest_round3")
     public Map<String, Object> getLatestRound3Submission(@RequestBody Map<String, String> request) {
         String username = request.getOrDefault("username", "anonymous");
@@ -940,7 +941,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         mapper.enable(SerializationFeature.INDENT_OUTPUT).writeValue(CHAT_FILE, store);
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/get_latest_chat")
     public synchronized Map<String, Object> getLatestChat(@RequestBody Map<String, String> req) {
         String username = Objects.toString(req.get("username"), "").trim().toLowerCase();
@@ -1012,7 +1013,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         return new ArrayList<>(out);
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/submit_chat")
     public synchronized Map<String, Object> submitChat(@RequestBody Map<String, Object> body) {
         String username = Objects.toString(body.get("username"), "").trim().toLowerCase();
@@ -1115,7 +1116,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/delete_chat")
     public synchronized Map<String, Object> deleteChat(@RequestBody Map<String, Object> req) {
         String username = Objects.toString(req.get("username"), "").trim();
@@ -1163,7 +1164,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/vote_chat")
     public synchronized Map<String, Object> voteChat(@RequestBody Map<String, Object> req) {
         String username = Objects.toString(req.get("username"), "").trim();
@@ -1238,7 +1239,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/set_last_seen_disagreement")
     public synchronized Map<String, Object> setLastSeenDisagreement(@RequestBody Map<String, Object> body) {
         String username = Objects.toString(body.get("username"), "").trim().toLowerCase(Locale.ROOT);
@@ -1316,7 +1317,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
     private static final String R4_RENDER_OUT = "/var/www/html/live-ranking.html";
     private static final String R4_TOHTML = "/home/ubuntu/scripts/tohtml.py";
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/submit_round4")
     public synchronized String handleRound4Submission(@RequestBody Map<String, Object> body) {
         String username = (String) body.getOrDefault("username", "anonymous");
@@ -1428,7 +1429,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/get_latest_round4")
     public Map<String, Object> getLatestRound4Submission(@RequestBody Map<String, String> request) {
         String username = request.getOrDefault("username", "anonymous");
@@ -1455,7 +1456,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/get_latest_round4_final")
     public Map<String, Object> getLatestRound4Final(@RequestBody Map<String, String> request) {
         String username = request.getOrDefault("username", "anonymous");
@@ -1522,7 +1523,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         return list;
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/update_finished_chat")
     public synchronized Map<String, Object> updateFinishedChat(@RequestBody Map<String, Object> body) {
         String username = Objects.toString(body.get("username"), "").trim().toLowerCase(Locale.ROOT);
@@ -1597,7 +1598,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/get_finished_chats")
     public Map<String, Object> getFinishedChats(@RequestBody Map<String, Object> body) {
         String username = Objects.toString(body.get("username"), "").trim().toLowerCase(Locale.ROOT);
@@ -1619,7 +1620,7 @@ public Map<String, Object> getSnippetOrder(@RequestBody Map<String, String> cred
         }
     }
 
-    @CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+    @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
     @PostMapping("/submit_referrals")
     public synchronized String handleExpertReferrals(@RequestBody Map<String, Object> body) {
         String referrerEmail = String.valueOf(body.getOrDefault("referrerEmail", "unknown")).trim();
@@ -1789,7 +1790,7 @@ private static final File PROPOSAL_FILE = new File("submissions/proposal_availab
 // -------------------------------
 // GET existing availability
 // -------------------------------
-@CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+@CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
 @PostMapping("/get_proposal_availability")
 public synchronized Map<String, Object> getProposalAvailability(@RequestBody Map<String, String> body) {
 
@@ -1828,7 +1829,7 @@ public synchronized Map<String, Object> getProposalAvailability(@RequestBody Map
 // -------------------------------
 // SAVE availability
 // -------------------------------
-@CrossOrigin(origins = { "http://localhost:8000", "http://codecomprehensibility.site" })
+@CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8000", "http://codecomprehensibility.site" })
 @PostMapping("/save_proposal_availability")
 public synchronized String saveProposalAvailability(@RequestBody Map<String, Object> body) {
 

@@ -7,38 +7,48 @@ This repository contains the web application used to run the study described in 
 | `ServerApp/`   | Spring Boot back-end (REST API + serves the UI) |
 | `client_side/` | Static HTML/JS front-end (study interface)      |
 
-The back-end serves `client_side/` as static files, so a single command starts everything.
+---
+
+## Option 1: Run with Docker (recommended)
+
+No Java or Maven installation required.
+
+**Prerequisite:** [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+```bash
+git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
+cd on-the-reliability-of-code-comprehension-proxies-replication
+docker compose up --build
+```
+
+Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
+
+To stop: `Ctrl+C`, then `docker compose down`.
 
 ---
 
-## Prerequisites
+## Option 2: Run without Docker
+
+**Prerequisites:**
 
 | Tool  | Version      | Check with      |
 |-------|--------------|-----------------|
 | JDK   | 17 or later  | `java -version` |
 | Maven | 3.8 or later | `mvn -version`  |
 
----
-
-## Running Locally
-
 ```bash
-git clone https://github.com/erfan-arvan/expertsApp.git
-cd expertsApp/ServerApp
+git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
+cd on-the-reliability-of-code-comprehension-proxies-replication/App/ServerApp
 mvn spring-boot:run
 ```
 
-Wait for `Started Main in X.XXX seconds`, then open:
-
-```
-http://localhost:8080
-```
+Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
 
 ---
 
 ## Demo Credentials
 
-Accounts are defined in `ServerApp/users/experts_panel.json`:
+Accounts are defined in `App/ServerApp/users/experts_panel.json`:
 
 | Username | Password |
 |----------|----------|
@@ -70,6 +80,6 @@ These are used for the expert study flows. The student study does not require lo
 
 ## Notes
 
-- Submission data is saved to `ServerApp/submissions/` (created automatically).
+- Submission data is saved to `submissions/` inside the container (or `App/ServerApp/submissions/` when running locally), created automatically on first run.
 - Email notifications are disabled locally; any related log warnings can be ignored.
-- Stop the server with `Ctrl+C`.
+- To add or modify user accounts, edit `App/ServerApp/users/experts_panel.json` — no rebuild needed when using Docker.
