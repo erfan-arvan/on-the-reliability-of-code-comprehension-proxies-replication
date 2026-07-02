@@ -1,4 +1,57 @@
-### Run Everything
+# On the Reliability of Code Comprehension Proxies — Replication Package
+
+This repository contains the full replication package for our paper, including the web application used to run the study, all collected data, and the analysis scripts that reproduce every figure and table in the paper.
+
+---
+
+## Quick Start with Docker (recommended)
+
+**Prerequisite:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+```bash
+git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
+cd on-the-reliability-of-code-comprehension-proxies-replication
+```
+
+### Run the web application
+
+```bash
+docker compose up --build
+```
+
+Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
+See `App/README.md` for study entry points and demo login credentials.
+To stop: `Ctrl+C` then `docker compose down`.
+
+### Run all analysis scripts
+
+```bash
+docker compose --profile analysis run --rm analysis python run_all.py
+```
+
+Generated plots are saved to `plots/` in your local directory.
+
+### Run scripts interactively
+
+```bash
+docker compose --profile analysis run --rm analysis bash
+# then inside the container:
+python correlate_expert_vs_students.py
+python plot_all.py
+# etc.
+```
+
+---
+
+## Quick Start without Docker
+
+### Web application
+**Prerequisites:** JDK 17+, Maven 3.8+
+```bash
+cd App/ServerApp && mvn spring-boot:run
+```
+
+### Run Everything (analysis scripts)
 
 - `run_all.py`  
   Executes the full analysis pipeline:

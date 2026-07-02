@@ -1,13 +1,26 @@
 services:
-  app:
-    build: .
+
+  # ── Web application ───────────────────────────────────────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     volumes:
-      # persists submission data across container restarts
       - submissions:/app/submissions
-      # mount users file so you can edit credentials without rebuilding
       - ./App/ServerApp/users:/app/users
+
+  # ── Python analysis environment ───────────────────────────────────────────
+  analysis:
+    build:
+      context: .
+      dockerfile: Dockerfile.analysis
+    volumes:
+      # generated plots are written back to your local plots/ directory
+      - ./plots:/analysis/plots
+    profiles:
+      - analysis
 
 volumes:
   submissions:
