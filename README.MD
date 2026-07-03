@@ -61,17 +61,13 @@ It streams progress to the terminal and completes in under 5 minutes.
 
 **What is reproduced:**
 
-| Paper element | Script | Output |
-|---|---|---|
-| Figure 1 (taxonomy tree) | `show_figure1.py` | printed to terminal |
-| Table 1 (task categories) | `generate_table1.py` | printed to terminal |
-| Figures 3–5 (agg. students vs agg. experts) | `correlate_expert_vs_students.py` + `plot_all.py` | `plots/heatmap_agg_vs_agg_*.png`, `plots/box_agg_vs_agg_*.png` |
-| Figures 6–7 (agg. students vs individual experts) | `correlate_single_expert_vs_students.py` + `plot_all.py` | `plots/heatmap_avg_vs_expert_*.png`, `plots/box_avg_vs_expert_*.png` |
-| Figures 8–9 (per-student vs agg. experts) | `correlate_expert_vs_students.py` + `plot_all.py` | `plots/heatmap_perstudent_vs_aggexpert_*.png`, `plots/box_perstudent_vs_aggexpert_*.png` |
-| Figures 10–11 (per-student vs individual experts) | `correlate_single_expert_vs_students.py` + `plot_all.py` | `plots/heatmap_perstudent_vs_expert_*.png`, `plots/box_perstudent_vs_expert_*.png` |
-| Exact values for Figures 3–11 | `show_all_figs_data.py` | printed to terminal |
-| Table 7 (student factors) | `analyze_student_factors.py` | printed to terminal |
-| Table 8 (cross-institution) | `compare_University1_University2_correlations.py` | printed to terminal |
+| Paper element | Output |
+|---|---|
+| Figure 1 (taxonomy tree) | printed to terminal |
+| Table 1 (task categories) | printed to terminal |
+| Figures 3–11 (all correlation results) | exact numerical values printed to terminal; PNG plots saved to `plots/` |
+| Table 7 (student factors) | printed to terminal |
+| Table 8 (cross-institution) | printed to terminal; scatter plots saved to `plots/` |
 
 **Claims supported by the artifact:**
 - All correlation values reported in Figures 3–11 (RQ1–RQ4)
