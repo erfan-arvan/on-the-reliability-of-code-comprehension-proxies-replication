@@ -1,75 +1,225 @@
-# Code Comprehension Study — Paper Artifact
+# On the Reliability of Code Comprehension Proxies — Replication Package
 
-This repository contains the web application used to run the study described in our paper. It supports two participant groups — students and experts — each going through their own study flow.
-
-| Directory      | Role                                            |
-|----------------|-------------------------------------------------|
-| `ServerApp/`   | Spring Boot back-end (REST API + serves the UI) |
-| `client_side/` | Static HTML/JS front-end (study interface)      |
-
-The back-end serves `client_side/` as static files, so a single command starts everything.
+This repository contains the full replication package for our paper, including the web application used to run the study, all collected data, and the analysis scripts that reproduce every figure and table in the paper.
 
 ---
 
-## Prerequisites
+## Quick Start with Docker (recommended)
 
-| Tool  | Version      | Check with      |
-|-------|--------------|-----------------|
-| JDK   | 17 or later  | `java -version` |
-| Maven | 3.8 or later | `mvn -version`  |
-
----
-
-## Running Locally
+**Prerequisite:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ```bash
-git clone https://github.com/erfan-arvan/expertsApp.git
-cd expertsApp/ServerApp
-mvn spring-boot:run
+git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
+cd on-the-reliability-of-code-comprehension-proxies-replication
 ```
 
-Wait for `Started Main in X.XXX seconds`, then open:
+### Run the web application
 
+```bash
+docker compose up --build
 ```
-http://localhost:8080
+
+Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
+See `App/README.md` for study entry points and demo login credentials.
+To stop: `Ctrl+C` then `docker compose down`.
+
+### Run all analysis scripts
+
+```bash
+docker compose --profile analysis run --name analysis_run analysis python run_all.py
+```
+
+Generated plots are saved to `plots/` in your local directory automatically.
+
+To also retrieve the output CSV files locally:
+
+```bash
+mkdir -p results
+docker cp analysis_run:/analysis/correlation_results.csv results/
+docker cp analysis_run:/analysis/per_student_correlations.csv results/
+docker cp analysis_run:/analysis/correlation_results_second.csv results/
+docker cp analysis_run:/analysis/per_student_correlations_second.csv results/
+docker cp analysis_run:/analysis/student_factor_model_results.csv results/
+docker cp analysis_run:/analysis/Uni1_vs_Uni2_merged.csv results/
+docker rm analysis_run
+```
+
+### Run scripts interactively
+
+```bash
+docker compose --profile analysis run --rm analysis bash
+# then inside the container:
+python correlate_expert_vs_students.py
+python plot_all.py
+# etc.
 ```
 
 ---
 
-## Demo Credentials
+## Quick Start without Docker
 
-Accounts are defined in `ServerApp/users/experts_panel.json`:
+### Web application
+**Prerequisites:** JDK 17+, Maven 3.8+
+```bash
+cd App/ServerApp && mvn spring-boot:run
+```
 
-| Username | Password |
-|----------|----------|
-| `demo1`  | `pass1`  |
-| `demo2`  | `pass2`  |
-| `demo3`  | `pass3`  |
+### Run Everything (analysis scripts)
 
-These are used for the expert study flows. The student study does not require login.
+- `run_all.py`  
+  Executes the full analysis pipeline:
 
----
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python run_all.py
+```
 
-## Key Entry Points
+This will generate all results used in the paper, including:
 
-### Student Study
-
-| URL | Description |
-|-----|-------------|
-| `http://localhost:8080/start.html` | Starting point of the student study |
-
-### Expert Study
-
-| URL | Description |
-|-----|-------------|
-| `http://localhost:8080/experts_app/index.html` | Round 1 — rate and summarise code snippets |
-| `http://localhost:8080/round2.html` | Round 2 — re-rate after seeing group results |
-| `http://localhost:8080/discussion-round.html` | Round 3 — expert discussion of disagreements |
+- Data used for **Figures 3–11** (correlation results and visualizations)
+- Data for **Table 7 (Appendix)**:  
+  *Impact of participant characteristics and fatigue on comprehension proxies*
+- Data for **Table 8 (Appendix)**:  
+  *Cross-institution consistency between University 1 (𝑛 = 37) and University 2 (𝑛 = 7)*
 
 ---
 
-## Notes
+### Core Dataset
 
-- Submission data is saved to `ServerApp/submissions/` (created automatically).
-- Email notifications are disabled locally; any related log warnings can be ignored.
-- Stop the server with `Ctrl+C`.
+- `students_graded.xlsx`  
+  **Main dataset containing all student study data**, including:
+  - Responses to survey questions
+  - Timing data
+  - Accuracy (Correctness) data
+
+All main student-side analyses in the repository are derived from this file.
+
+---
+
+### Accessing Specific Artifacts and Underlying Data
+
+#### Figures 3–11 (Correlation Results)
+
+All correlation-based figures are generated from the following files:
+
+- **Figures 3–5 (Aggregated students vs aggregated experts):**
+  - Source: `correlation_results.csv`
+
+- **Figures 6–7 (Aggregated students vs individual experts):**
+  - Source: `correlation_results_second.csv`
+
+- **Figures 8–9 (Per-student vs aggregated experts):**
+  - Source: `per_student_correlations.csv`
+
+- **Figures 10–11 (Per-student vs individual experts):**
+  - Source: `per_student_correlations_second.csv`
+
+To inspect the **exact numeric values used in the figures**:
+```bash
+python show_all_figs_data.py
+```
+
+All plots are saved in:
+```
+plots/
+```
+
+---
+
+#### Table 7 (Appendix)
+
+- **Impact of participant characteristics and fatigue on comprehension proxies**
+- Source:
+```
+student_factor_model_results.csv
+```
+- Generated by:
+```bash
+python analyze_student_factors.py
+```
+
+---
+
+#### Table 8 (Appendix)
+
+- **Cross-institution consistency between University 1 (𝑛 = 37) and University 2 (𝑛 = 7)**
+- Sources:
+  - `correlation_resultsUni1.csv`
+  - `correlation_resultsUni2.csv`
+  - `Uni1_vs_Uni2_merged.csv`
+- Generated by:
+```bash
+python compare_University1_University2_correlations.py
+```
+
+---
+
+### Study Materials
+
+#### Grading (Function Question Evaluation)
+
+- `gradings/function_question_grading_log.xlsx`  
+  Grading records for free-response function questions
+
+- `gradings/kappa_for_gradings.py`  
+  Script to compute inter-rater agreement (Cohen’s kappa)
+
+---
+
+#### Study Materials Folder
+
+- `study_materials/familaritySurvey.js`  
+  Background knowledge survey used in the student study
+
+- `study_materials/javaExperienceQuestions.js`  
+  Java experience survey used in the student study
+
+- `study_materials/tasks_per_snippet.js`  
+  Full list of comprehension tasks (questions) per snippet
+
+- `study_materials/selected_methods.csv`  
+  All methods extracted from repositories that met selection criteria
+
+- `study_materials/snippets-implementations.java`  
+  Implementations of the final selected snippets
+
+- `study_materials/repositories.csv`  
+  Full list of repositories used in the study
+
+- `study_materials/question_design_process_and_prompts_used.txt`  
+  Documentation of the question design process and prompts used
+
+---
+
+#### Open Coding Study
+
+- `open_coding/FinalTreeWithNumbers.txt`  
+  Full taxonomy tree generated from the open coding study
+
+- `open_coding/open_coding_logs.xlsx`  
+  Logs of open coding decisions by authors
+
+- `open_coding/kappa_open_coding.py`  
+  Script to compute inter-rater agreement for open coding
+
+To view the taxonomy (Figure 1):
+```bash
+cat open_coding/FinalTreeWithNumbers.txt
+```
+
+---
+
+#### Expert Study Materials
+
+- `experts_study/disagreement_points.js`  
+  Disagreement points shown to experts in Rounds 2 and 3
+
+- `experts_study/rounds_stats.txt`  
+  Summary statistics for expert study rounds
+
+To view expert study statistics (Table 4):
+```bash
+cat experts_study/rounds_stats.txt
+```

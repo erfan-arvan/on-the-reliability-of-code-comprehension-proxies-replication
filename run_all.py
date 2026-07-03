@@ -10,7 +10,8 @@ COMMANDS = [
     ["python", "plot_all.py"],
     ["python", "show_all_figs_data.py"],
     ["python", "analyze_student_factors.py"],
-    ["python", "compare_university1_university2_correlations.py"],
+    ["python", "compare_University1_University2_correlations.py"],
+    ["python", "generate_table1.py"],
 ]
 
 

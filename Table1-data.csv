@@ -1,0 +1,166 @@
+Task Category,Task Type,S-Code,Authors,Year,Full Title
+Tc1: Provide information about the code,Answer comprehension questions,S5,Avidan & Feitelson,2017,Effects of variable names on comprehension: An empirical study
+Tc1: Provide information about the code,Answer comprehension questions,S8,Bavota et al.,2014,Are test smells really harmful? An empirical study
+Tc1: Provide information about the code,Answer comprehension questions,S31,Feigenspan et al.,2012,Measuring programming experience
+Tc1: Provide information about the code,Answer comprehension questions,S32,Fritz et al.,2014,Using psychophysiological measures to assess task difficulty in software development
+Tc1: Provide information about the code,Answer comprehension questions,S33,Gilmore & Green,1984,Comprehension and recall of miniature programs
+Tc1: Provide information about the code,Answer comprehension questions,S34,Gopstein et al.,2017,Understanding misunderstandings in source code
+Tc1: Provide information about the code,Answer comprehension questions,S36,Hansen et al.,2013,An experiment on the cognitive complexity of code
+Tc1: Provide information about the code,Answer comprehension questions,S37,Hendrix et al.,2002,The effectiveness of control structure diagrams in source code comprehension activities
+Tc1: Provide information about the code,Answer comprehension questions,S43,Johnson et al.,2019,An empirical study assessing source code readability in comprehension
+Tc1: Provide information about the code,Answer comprehension questions,S44,Kasto & Whalley,2013,Measuring the difficulty of code comprehension tasks using software metrics
+Tc1: Provide information about the code,Answer comprehension questions,S45,Katzmarski & Koschke,2012,Program complexity metrics and programmer opinions
+Tc1: Provide information about the code,Answer comprehension questions,S51,Lucas et al.,2019,Does the introduction of lambda expressions improve the comprehension of Java programs?
+Tc1: Provide information about the code,Answer comprehension questions,S52,McChesney & Bond,2018,Eye tracking analysis of computer program comprehension in programmers with dyslexia
+Tc1: Provide information about the code,Answer comprehension questions,S54,Medeiros et al.,2019,Software code complexity assessment using EEG features
+Tc1: Provide information about the code,Answer comprehension questions,S56,Miara et al.,1983,Program indentation and comprehensibility
+Tc1: Provide information about the code,Answer comprehension questions,S62,Orlov & Bednarik,2016,The role of extrafoveal vision in source code comprehension
+Tc1: Provide information about the code,Answer comprehension questions,S63,Peitek et al.,2020,A look into programmers' heads
+Tc1: Provide information about the code,Answer comprehension questions,S67,Ramalingam & Wiedenbeck,1997,An empirical study of novice program comprehension in the imperative and object-oriented styles
+Tc1: Provide information about the code,Answer comprehension questions,S68,Rambally,1986,The influence of color on program readability and comprehensibility
+Tc1: Provide information about the code,Answer comprehension questions,S69,Ribeiro & Travassos,2018,Attributes influencing the reading and comprehension of source code — Discussing contradictory evidence
+Tc1: Provide information about the code,Answer comprehension questions,S71,Salvaneschi et al.,2014,An empirical study on program comprehension with reactive programming
+Tc1: Provide information about the code,Answer comprehension questions,S76,Schulze et al.,2013,Does the discipline of preprocessor annotations matter?
+Tc1: Provide information about the code,Answer comprehension questions,S77,Sedano,2016,Code readability testing: an empirical study
+Tc1: Provide information about the code,Answer comprehension questions,S80,Siegmund et al.,2017,Measuring neural efficiency of program comprehension
+Tc1: Provide information about the code,Answer comprehension questions,S81,Soloway & Ehrlich,1984,Empirical studies of programming knowledge
+Tc1: Provide information about the code,Answer comprehension questions,S82,Stefik et al.,2011,An empirical investigation into the design of auditory cues to enhance computer program comprehension
+Tc1: Provide information about the code,Answer comprehension questions,S83,Takang et al.,1996,The effects of comments and identifier names on program comprehensibility: An experimental investigation
+Tc1: Provide information about the code,Answer comprehension questions,S86,Tenny,1988,Program readability: Procedures versus comments
+Tc1: Provide information about the code,Answer comprehension questions,S89,Wiedenbeck,1986,Beacons in computer program comprehension
+Tc1: Provide information about the code,Answer comprehension questions,S90,Wiedenbeck,1991,The initial stage of program comprehension
+Tc1: Provide information about the code,Answer comprehension questions,S91,Wiedenbeck et al.,1999,A comparison of the comprehension of object-oriented and procedural programs by novice programmers
+Tc1: Provide information about the code,Answer comprehension questions,S92,Wiese et al.,2019,Linking code readability structure and comprehension among novices: It's complicated
+Tc1: Provide information about the code,Answer comprehension questions,S93,Wulff-Jensen et al.,2018,Gaze strategies can reveal the impact of source code features on the cognitive load of novice programmers
+Tc1: Provide information about the code,Determine output of a program,S1,Abid et al.,2019,Developer reading behavior while summarizing Java methods: Size and context matters
+Tc1: Provide information about the code,Determine output of a program,S2,Ajami et al.,2018,Syntax predicates idioms — What really affects code complexity?
+Tc1: Provide information about the code,Determine output of a program,S5,Avidan & Feitelson,2017,Effects of variable names on comprehension: An empirical study
+Tc1: Provide information about the code,Determine output of a program,S7,Bauer et al.,2019,Indentation: Simply a matter of style or support for program comprehension?
+Tc1: Provide information about the code,Determine output of a program,S9,Bednarik et al.,2006,Program visualization: Comparing eye-tracking patterns with comprehension summaries and performance
+Tc1: Provide information about the code,Determine output of a program,S11,Bednarik & Tukiainen,2006,An eye-tracking methodology for characterizing program comprehension processes
+Tc1: Provide information about the code,Determine output of a program,S12,Beelders & Du Plessis,2015,Syntax highlighting as an influencing factor when reading and comprehending source code
+Tc1: Provide information about the code,Determine output of a program,S13,Benander et al.,1996,Recursion vs. iteration: An empirical study of comprehension
+Tc1: Provide information about the code,Determine output of a program,S14,Beniamini et al.,2017,Meaningful identifier names: The case of single-letter variables
+Tc1: Provide information about the code,Determine output of a program,S15,Binkley et al.,2012,The impact of identifier style on effort and comprehension
+Tc1: Provide information about the code,Determine output of a program,S16,Binkley et al.,2009,Identifier length and limited programmer memory
+Tc1: Provide information about the code,Determine output of a program,S17,Blinman & Cockburn,2005,Program comprehension: Investigating the effects of naming style and documentation
+Tc1: Provide information about the code,Determine output of a program,S23,Couceiro et al.,2019,Spotting problematic code lines using nonintrusive programmers' biofeedback
+Tc1: Provide information about the code,Determine output of a program,S25,Crk et al.,2016,Understanding programming expertise
+Tc1: Provide information about the code,Determine output of a program,S37,Hendrix et al.,2002,The effectiveness of control structure diagrams in source code comprehension activities
+Tc1: Provide information about the code,Determine output of a program,S39,Iselin,1988,Conditional statements looping constructs and program comprehension: An experimental study
+Tc1: Provide information about the code,Determine output of a program,S48,Lawrie et al.,2007,Effective identifier names for comprehension and memory
+Tc1: Provide information about the code,Determine output of a program,S50,Lee et al.,2016,Comparing programming language comprehension between novice and expert programmers using EEG analysis
+Tc1: Provide information about the code,Determine output of a program,S57,Mosemann & Wiedenbeck,2001,Navigation and comprehension of programs by novice programmers
+Tc1: Provide information about the code,Determine output of a program,S59,Nielebock et al.,2018,Commenting source code: Is it worth it for small programming tasks?
+Tc1: Provide information about the code,Determine output of a program,S60,Norcio,1982,Indentation documentation and programmer comprehension
+Tc1: Provide information about the code,Determine output of a program,S68,Rambally,1986,The influence of color on program readability and comprehensibility
+Tc1: Provide information about the code,Determine output of a program,S70,Saddler et al.,2019,Reading behavior and comprehension of c++ source code — A classroom study
+Tc1: Provide information about the code,Determine output of a program,S77,Sedano,2016,Code readability testing: an empirical study
+Tc1: Provide information about the code,Determine output of a program,S84,Teasley,1994,The effects of naming style and expertise on program comprehension
+Tc1: Provide information about the code,Determine output of a program,S88,Whalley et al.,2006,An Australasian study of reading and comprehension skills in novice programmers using the Bloom and SOLO taxonomies
+Tc1: Provide information about the code,Summarize code verbally or textually,S4,Asenov et al.,2016,The effect of richer visualizations on code comprehension
+Tc1: Provide information about the code,Summarize code verbally or textually,S11,Bednarik & Tukiainen,2006,An eye-tracking methodology for characterizing program comprehension processes
+Tc1: Provide information about the code,Summarize code verbally or textually,S20,Buse & Weimer,2010,Learning a metric for code readability
+Tc1: Provide information about the code,Summarize code verbally or textually,S24,Couceiro et al.,2019,Biofeedback augmented software engineering: Monitoring of programmers' mental effort
+Tc1: Provide information about the code,Summarize code verbally or textually,S29,Duraisingam et al.,2017,Cognitive task difficulty analysis using EEG and data mining
+Tc1: Provide information about the code,Summarize code verbally or textually,S35,Guerrouj et al.,2013,An experimental investigation on the effects of context on source code identifiers splitting and expansion
+Tc1: Provide information about the code,Summarize code verbally or textually,S36,Hansen et al.,2013,An experiment on the cognitive complexity of code
+Tc1: Provide information about the code,Summarize code verbally or textually,S37,Hendrix et al.,2002,The effectiveness of control structure diagrams in source code comprehension activities
+Tc1: Provide information about the code,Summarize code verbally or textually,S38,Hofmeister et al.,2018,Shorter identifier names take longer to comprehend
+Tc1: Provide information about the code,Summarize code verbally or textually,S42,Jbara & Feitelson,2016,How programmers read regular code: A controlled experiment using eye tracking
+Tc1: Provide information about the code,Summarize code verbally or textually,S46,Konopka et al.,2018,Data flow metrics in program comprehension tasks
+Tc1: Provide information about the code,Summarize code verbally or textually,S47,Kosti et al.,2018,Towards an affordable brain computer interface for the assessment of programmers' mental workload
+Tc1: Provide information about the code,Summarize code verbally or textually,S49,Lee et al.,2017,Mining biometric data to predict programmer expertise and task difficulty
+Tc1: Provide information about the code,Summarize code verbally or textually,S58,Nakagawa et al.,2014,Quantifying programmers' mental workload during program comprehension based on cerebral blood flow measurement
+Tc1: Provide information about the code,Summarize code verbally or textually,S61,Nunez-Varela et al.,2019,A study and experimental assessment of the cognitive weight base of the cognitive metrics
+Tc1: Provide information about the code,Summarize code verbally or textually,S72,Sasaki et al.,2012,Preprocessing of metrics measurement based on simplifying program structures
+Tc1: Provide information about the code,Summarize code verbally or textually,S75,Schankin et al.,2018,Descriptive compound identifier names improve source code comprehension
+Tc1: Provide information about the code,Summarize code verbally or textually,S77,Sedano,2016,Code readability testing: an empirical study
+Tc1: Provide information about the code,Summarize code verbally or textually,S79,Sheppard et al.,1979,Modern coding practices and programmer performance
+Tc1: Provide information about the code,Summarize code verbally or textually,S87,Turner et al.,2014,An eye-tracking study assessing the comprehension of c++ and Python source code
+Tc1: Provide information about the code,Summarize code verbally or textually,S94,Yeh et al.,2017,Detecting and comparing brain activity in short program comprehension using EEG
+Tc1: Provide information about the code,Summarize code verbally or textually,S95,Yu et al.,2019,Comprehending test code: An empirical study
+Tc1: Provide information about the code,Recall (parts of) the code,S29,Duraisingam et al.,2017,Cognitive task difficulty analysis using EEG and data mining
+Tc1: Provide information about the code,Recall (parts of) the code,S44,Kasto & Whalley,2013,Measuring the difficulty of code comprehension tasks using software metrics
+Tc1: Provide information about the code,Recall (parts of) the code,S61,Nunez-Varela et al.,2019,A study and experimental assessment of the cognitive weight base of the cognitive metrics
+Tc1: Provide information about the code,Recall (parts of) the code,S66,Pennington,1987,Stimulus structures and mental representations in expert comprehension of computer programs
+Tc1: Provide information about the code,Recall (parts of) the code,S72,Sasaki et al.,2012,Preprocessing of metrics measurement based on simplifying program structures
+Tc1: Provide information about the code,Recall (parts of) the code,S73,Scalabrino et al.,2021,Automatically assessing code understandability
+Tc1: Provide information about the code,Recall (parts of) the code,S74,Scanlan,1989,Structured flowcharts outperform pseudocode: An experimental comparison
+Tc1: Provide information about the code,Determine code trace,S35,Guerrouj et al.,2013,An experimental investigation on the effects of context on source code identifiers splitting and expansion
+Tc1: Provide information about the code,Match with diagram or similar code,S77,Sedano,2016,Code readability testing: an empirical study
+Tc1: Provide information about the code,Match with diagram or similar code,S84,Teasley,1994,The effects of naming style and expertise on program comprehension
+Tc1: Provide information about the code,Match with diagram or similar code,S85,Tenny,1985,Procedures and comments vs. the banker's algorithm
+Tc2: Provide personal opinion,Rate code comprehensibility,S4,Asenov et al.,2016,The effect of richer visualizations on code comprehension
+Tc2: Provide personal opinion,Rate code comprehensibility,S6,Baecker,1989,Enhancing program readability and comprehensibility with tools for program visualization
+Tc2: Provide personal opinion,Rate code comprehensibility,S34,Gopstein et al.,2017,Understanding misunderstandings in source code
+Tc2: Provide personal opinion,Rate code comprehensibility,S36,Hansen et al.,2013,An experiment on the cognitive complexity of code
+Tc2: Provide personal opinion,Rate code comprehensibility,S42,Jbara & Feitelson,2016,How programmers read regular code: A controlled experiment using eye tracking
+Tc2: Provide personal opinion,Rate code comprehensibility,S49,Lee et al.,2017,Mining biometric data to predict programmer expertise and task difficulty
+Tc2: Provide personal opinion,Rate code comprehensibility,S53,Medeiros et al.,2018,An investigation of misunderstanding code patterns in C open-source software projects
+Tc2: Provide personal opinion,Rate code comprehensibility,S69,Ribeiro & Travassos,2018,Attributes influencing the reading and comprehension of source code — Discussing contradictory evidence
+Tc2: Provide personal opinion,Rate code comprehensibility,S70,Saddler et al.,2019,Reading behavior and comprehension of c++ source code — A classroom study
+Tc2: Provide personal opinion,Rate code comprehensibility,S75,Schankin et al.,2018,Descriptive compound identifier names improve source code comprehension
+Tc2: Provide personal opinion,Rate own code understanding,S5,Avidan & Feitelson,2017,Effects of variable names on comprehension: An empirical study
+Tc2: Provide personal opinion,Rate own code understanding,S31,Feigenspan et al.,2012,Measuring programming experience
+Tc2: Provide personal opinion,Rate task difficulty or task load,S12,Beelders & Du Plessis,2015,Syntax highlighting as an influencing factor when reading and comprehending source code
+Tc2: Provide personal opinion,Rate task difficulty or task load,S14,Beniamini et al.,2017,Meaningful identifier names: The case of single-letter variables
+Tc2: Provide personal opinion,Rate task difficulty or task load,S23,Couceiro et al.,2019,Spotting problematic code lines using nonintrusive programmers' biofeedback
+Tc2: Provide personal opinion,Rate task difficulty or task load,S38,Hofmeister et al.,2018,Shorter identifier names take longer to comprehend
+Tc2: Provide personal opinion,Rate task difficulty or task load,S51,Lucas et al.,2019,Does the introduction of lambda expressions improve the comprehension of Java programs?
+Tc2: Provide personal opinion,Rate confidence in answer/understanding,S23,Couceiro et al.,2019,Spotting problematic code lines using nonintrusive programmers' biofeedback
+Tc2: Provide personal opinion,Rate confidence in answer/understanding,S24,Couceiro et al.,2019,Biofeedback augmented software engineering: Monitoring of programmers' mental effort
+Tc2: Provide personal opinion,Rate confidence in answer/understanding,S33,Gilmore & Green,1984,Comprehension and recall of miniature programs
+Tc2: Provide personal opinion,Rate confidence in answer/understanding,S94,Yeh et al.,2017,Detecting and comparing brain activity in short program comprehension using EEG
+Tc2: Provide personal opinion,Compare or rank code snippets,S21,Busjahn et al.,2015,Eye movements in code reading: Relaxing the linear order
+Tc2: Provide personal opinion,Compare or rank code snippets,S22,Castelhano et al.,2018,The role of the insula in intuitive expert bug detection in computer code: An fMRI study
+Tc2: Provide personal opinion,Compare or rank code snippets,S40,Iselin,1988,Conditional statements looping constructs and program comprehension: An experimental study
+Tc2: Provide personal opinion,Compare or rank code snippets,S78,Sharif et al.,2012,An eye-tracking study on the role of scan time in finding source code defects
+Tc2: Provide personal opinion,Other subjective indications,S21,Busjahn et al.,2015,Eye movements in code reading: Relaxing the linear order
+Tc2: Provide personal opinion,Other subjective indications,S22,Castelhano et al.,2018,The role of the insula in intuitive expert bug detection in computer code: An fMRI study
+Tc2: Provide personal opinion,Other subjective indications,S33,Gilmore & Green,1984,Comprehension and recall of miniature programs
+Tc2: Provide personal opinion,Other subjective indications,S41,Ishida & Uwano,2019,Synchronized analysis of eye movement and EEG during program comprehension
+Tc2: Provide personal opinion,Other subjective indications,S46,Konopka et al.,2018,Data flow metrics in program comprehension tasks
+Tc2: Provide personal opinion,Other subjective indications,S78,Sharif et al.,2012,An eye-tracking study on the role of scan time in finding source code defects
+Tc2: Provide personal opinion,Other subjective indications,S85,Tenny,1985,Procedures and comments vs. the banker's algorithm
+Tc3: Debug code,Find a bug,S3,Alardawi & Agil,2015,Novice comprehension of Object-Oriented OO programs: An empirical study
+Tc3: Debug code,Find a bug,S10,Bednarik et al.,2018,Eye-movement modeling examples in source code comprehension
+Tc3: Debug code,Find a bug,S28,Dolado et al.,2003,An empirical investigation of the influence of a type of side effects on program comprehension
+Tc3: Debug code,Find a bug,S38,Hofmeister et al.,2018,Shorter identifier names take longer to comprehend
+Tc3: Debug code,Find a bug,S55,Melo et al.,2017,Variability through the eyes of the programmer
+Tc3: Debug code,Find a bug,S64,Peitek et al.,2018,Beyond gaze
+Tc3: Debug code,Find a bug,S87,Turner et al.,2014,An eye-tracking study assessing the comprehension of c++ and Python source code
+Tc3: Debug code,Fix a bug,S26,Crosby et al.,2002,The roles beacons play in comprehension for novice and expert programmers
+Tc3: Debug code,Fix a bug,S27,Daka et al.,2015,Modeling readability to improve unit tests
+Tc3: Debug code,Fix a bug,S77,Sedano,2016,Code readability testing: an empirical study
+Tc3: Debug code,Determine if code is correct,S33,Gilmore & Green,1984,Comprehension and recall of miniature programs
+Tc4: Maintain code,Cloze test on code,S4,Asenov et al.,2016,The effect of richer visualizations on code comprehension
+Tc4: Maintain code,Cloze test on code,S30,Fakhoury et al.,2019,Measuring the impact of lexical and structural inconsistencies on developers' cognitive load during bug localization
+Tc4: Maintain code,Cloze test on code,S74,Scanlan,1989,Structured flowcharts outperform pseudocode: An experimental comparison
+Tc4: Maintain code,Extend the code,S21,Busjahn et al.,2015,Eye movements in code reading: Relaxing the linear order
+Tc4: Maintain code,Extend the code,S26,Crosby et al.,2002,The roles beacons play in comprehension for novice and expert programmers
+Tc4: Maintain code,Extend the code,S27,Daka et al.,2015,Modeling readability to improve unit tests
+Tc4: Maintain code,Refactor code,S65,Peitek et al.,2018,Simultaneous measurement of program comprehension with fMRI and eye tracking
+Tc4: Maintain code,Refactor code,S82,Stefik et al.,2011,An empirical investigation into the design of auditory cues to enhance computer program comprehension
+Tc3: Debug code,Find a bug,,Nielebock et al.,2019,Commenting source code: is it worth it for small programming tasks?
+Tc3: Debug code,Fix a bug,,Nielebock et al.,2019,Commenting source code: is it worth it for small programming tasks?
+Tc4: Maintain code,Extend the code,,Nielebock et al.,2019,Commenting source code: is it worth it for small programming tasks?
+Tc1: Provide information about the code,Determine output of a program,,Peitek et al.,2021,Program Comprehension and Code Complexity Metrics: An fMRI Study
+Tc2: Provide personal opinion,Rate code comprehensibility,,Peitek et al.,2021,Program Comprehension and Code Complexity Metrics: An fMRI Study
+Tc2: Provide personal opinion,Rate code comprehensibility,,Ribeiro et al,2023,On the Investigation of Empirical Contradictions ‑ Aggregated Results of Local Studies on Readability and Comprehensibility of Source Code
+Tc1: Provide information about the code,Determine output of a program,,ANDALOUSSI et al.,2022,Estimating developers' cognitive load at a fine-grained level using eyetracking measures
+Tc1: Provide information about the code,Summarize code verbally or textually,,KARAS et al.,2024,A Tale of Two Comprehensions? Analyzing Student Programmer Attention during Code Summarization
+Tc1: Provide information about the code,Read code with a given summary (measure with eye movment data),,KARAS et al.,2024,A Tale of Two Comprehensions? Analyzing Student Programmer Attention during Code Summarization
+Tc1: Provide information about the code,Answer comprehension questions,,Park et al,2024,An eye tracking study assessing source code readability rules for program comprehension
+Tc2: Provide personal opinion,Rate confidence in answer/understanding,,Park et al,2024,An eye tracking study assessing source code readability rules for program comprehension
+Tc2: Provide personal opinion,Compare or rank code snippets,,Park et al,2024,An eye tracking study assessing source code readability rules for program comprehension
+Tc1: Provide information about the code,Summarize code verbally or textually,,Peitek,2020,What Drives the Reading Order of Programmers?: An Eye Tracking Study
+Tc1: Provide information about the code,Answer comprehension questions,,Peitek,2020,What Drives the Reading Order of Programmers?: An Eye Tracking Study
+Tc1: Provide information about the code,Answer comprehension questions,,,2024,The Effect of Comments on Program Comprehension: An Eye-tracking Study
+Tc2: Provide personal opinion,Rate code comprehensibility,,,2024,The Effect of Comments on Program Comprehension: An Eye-tracking Study
+Tc1: Provide information about the code,Determine output of a program,,,2024,Predicting code comprehension: a novel approach to align human gaze with code using deep neural networks
+Tc1: Provide information about the code,Answer comprehension questions,,,2025,NRevisit: A Cognitive Behavioral Metric for CodeUnderstandability Assessment
+Tc4: Maintain code,Refactor code,,,2025,GazeCopilot: Evaluating Novel Gaze-Informed Prompting for AI-Supported Code Comprehension and Readability
+Tc3: Debug code,Find a bug,,,2026,Do Developers Read Type Information? An Eye-Tracking Study on TypeScript
+Tc1: Provide information about the code,Summarize code verbally or textually,,,2026,Do Developers Read Type Information? An Eye-Tracking Study on TypeScript
+Tc1: Provide information about the code,Determine output of a program,,,2026,On the Influence of the Baseline in Neuroimaging Experiments on Program Comprehension

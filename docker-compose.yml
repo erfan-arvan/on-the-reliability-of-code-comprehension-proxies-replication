@@ -1,0 +1,27 @@
+services:
+
+  # ── Web application ───────────────────────────────────────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - submissions:/app/submissions
+      - ./App/ServerApp/users:/app/users
+
+  # ── Python analysis environment ───────────────────────────────────────────
+  analysis:
+    build:
+      context: .
+      dockerfile: Dockerfile.analysis
+    volumes:
+      # generated plots are written back to your local plots/ directory
+      - ./plots:/analysis/plots
+
+    profiles:
+      - analysis
+
+volumes:
+  submissions:
