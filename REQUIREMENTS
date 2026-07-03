@@ -1,0 +1,42 @@
+# Requirements
+
+## Architecture
+The artifact has been packaged and tested on x86-64 (amd64) architecture.
+Apple Silicon (ARM/M-series) is also supported via Docker Desktop's built-in emulation.
+
+## Recommended: Docker-based setup
+
+- **Docker Desktop** 4.0 or later (includes Docker Compose v2)
+  - https://www.docker.com/products/docker-desktop/
+- Approximately **2 GB** of free disk space (for Docker images and output)
+- An internet connection is required only for the initial `docker compose up --build`
+  to pull base images; all subsequent runs are fully offline
+
+No other software is required when using Docker.
+
+## Alternative: Local setup (without Docker)
+
+### Web application
+- JDK 17 or later
+- Maven 3.8 or later
+
+### Analysis scripts
+- Python 3.9 or later
+- The following Python packages (also listed in `requirements.txt`):
+  - pandas
+  - numpy
+  - scipy
+  - matplotlib
+  - seaborn
+  - openpyxl
+  - statsmodels
+  - pingouin
+
+Install with:
+```bash
+pip install -r requirements.txt
+```
+
+## Hardware
+No special hardware is required. A standard laptop or desktop is sufficient.
+The full analysis pipeline (`run_all.py`) completes in under 5 minutes on typical hardware.

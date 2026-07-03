@@ -1,0 +1,15 @@
+# Artifact Status
+
+We are applying for the following ACM artifact badges:
+
+## Artifacts Available
+**Reason:** The artifact is permanently archived on Zenodo with a DOI, ensuring long-term public availability beyond the authors' personal infrastructure. It includes all collected data, analysis scripts, the web application used to conduct the study, and all study materials.
+
+## Artifacts Reusable
+**Reason:** The artifact is self-contained and reproducible via Docker with a single command. It includes:
+- A complete Docker-based setup for both the web application and all analysis scripts
+- Step-by-step instructions to reproduce every figure (Figures 3–11) and table (Tables 1, 7, 8) in the paper
+- All raw data (students_graded.xlsx, expert annotations, grading logs)
+- All study materials (code snippets, comprehension tasks, surveys) in both machine-readable (.js) and human-readable (.md) formats
+- Inter-rater agreement scripts (Cohen's kappa) for grading and open coding
+- Clear documentation of the dataset schema and artifact layout
