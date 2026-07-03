@@ -74,10 +74,6 @@ def print_table(counts, width=None):
     indent = "  "
     gap = "  "  # space between task name and its count
 
-    print("=" * min(width, 60))
-    print("TABLE 1: Task categories and types")
-    print("=" * min(width, 60))
-
     for cat_i, cat in enumerate(categories):
         total = sum(counts[cat].values())
         header = f"{cat}  ({total} studies)"

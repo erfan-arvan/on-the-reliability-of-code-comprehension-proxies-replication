@@ -318,13 +318,9 @@ def main():
 
     display_df = display_df.sort_values(by=["analysis", "outcome"])
 
-    print("\n" + "="*100)
-    print("FINAL MODEL RESULTS TABLE")
-    print("="*100 + "\n")
-
+    print("\nFINAL MODEL RESULTS TABLE\n")
     print(display_df.to_string(index=False))
 
-    print("\n" + "="*100 + "\n")
 
 if __name__ == "__main__":
     main()

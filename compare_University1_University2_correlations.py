@@ -43,9 +43,7 @@ df = pd.merge(
 
 def analyze_subset(df_sub, label):
 
-    print("\n====================================")
-    print(f"AGGREGATION: {label}")
-    print("====================================")
+    print(f"\nAGGREGATION: {label}")
 
     valid = df_sub[[
         "spearman_mean_Uni1",
@@ -111,10 +109,6 @@ def analyze_subset(df_sub, label):
 # -------------------------------------------------
 # RUN PER AGGREGATION
 # -------------------------------------------------
-print("\n" + "=" * 100)
-print("Cross-Institutional Consistency Analysis")
-print("=" * 100)
-
 for agg in AGGREGATIONS:
 
     df_sub = df[df["aggregation"] == agg]
@@ -128,5 +122,3 @@ df["abs_delta_spearman"] = df["delta_spearman"].abs()
 df.to_csv(f"{OUTPUT_PREFIX}_merged.csv", index=False)
 
 print("\nSaved merged dataset.")
-
-print("\n" + "=" * 100)
