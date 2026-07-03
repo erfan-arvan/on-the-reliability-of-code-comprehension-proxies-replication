@@ -62,19 +62,21 @@ def ordered_categories(counts):
 
 def print_table(counts, width=None):
     """Print a responsive layout: each category on its own header line,
-    tasks listed below it with dot-leaders connecting the name to its
-    count. Width adapts to the current terminal so it stays readable
-    whether the window is full-screen or narrow."""
+    tasks listed below it with the count right-aligned a short distance
+    after the task name. Column width is based on the content itself
+    (not stretched to the terminal edge), but long lines still wrap to
+    fit narrow terminals."""
     if width is None:
         width = shutil.get_terminal_size(fallback=(80, 20)).columns
     width = max(width, 30)  # sane floor so things don't collapse entirely
 
     categories = ordered_categories(counts)
     indent = "  "
+    gap = "  "  # space between task name and its count
 
-    print("=" * width)
+    print("=" * min(width, 60))
     print("TABLE 1: Task categories and types")
-    print("=" * width)
+    print("=" * min(width, 60))
 
     for cat_i, cat in enumerate(categories):
         total = sum(counts[cat].values())
@@ -84,20 +86,22 @@ def print_table(counts, width=None):
         print("-" * min(width, len(cat)))
 
         tasks = sorted(counts[cat].items(), key=lambda kv: (-kv[1], kv[0]))
+        # Natural column width: just wide enough for the longest task name
+        # in this category, capped so it still fits the terminal.
+        num_w = max((len(str(n)) for _, n in tasks), default=1)
+        max_task_w = max((len(t) for t, _ in tasks), default=0)
+        task_w = min(max_task_w, width - len(indent) - len(gap) - num_w)
+
         for task, n in tasks:
             num_str = str(n)
-            avail = width - len(indent) - len(num_str) - 1  # space before number
-            if len(task) > avail:
-                # Wrap long task names; put the count after the last line.
-                wrapped = textwrap.wrap(task, width=max(avail, 10))
+            if len(task) <= task_w:
+                print(f"{indent}{task:<{task_w}}{gap}{num_str:>{num_w}}")
+            else:
+                wrapped = textwrap.wrap(task, width=max(task_w, 10))
                 for wline in wrapped[:-1]:
                     print(f"{indent}{wline}")
                 last = wrapped[-1]
-                dots = max(1, avail - len(last))
-                print(f"{indent}{last} {'.' * dots} {num_str}")
-            else:
-                dots = max(1, avail - len(task))
-                print(f"{indent}{task} {'.' * dots} {num_str}")
+                print(f"{indent}{last:<{task_w}}{gap}{num_str:>{num_w}}")
 
         if cat_i < len(categories) - 1:
             print()
