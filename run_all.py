@@ -4,50 +4,78 @@
 import subprocess
 import sys
 
-COMMANDS = [
-    ["python", "generate_table1.py"],
-    ["cat", "open_coding/FinalTreeWithNumbers.txt"],
-    ["python", "correlate_expert_vs_students.py"],
-    ["python", "correlate_single_expert_vs_students.py"],
-    ["python", "plot_all.py"],
-    ["python", "show_all_figs_data.py"],
-    ["python", "analyze_student_factors.py"],
-    ["python", "compare_University1_University2_correlations.py"],
+# These scripts generate intermediate CSVs/plots — run silently
+PREP_COMMANDS = [
+    "correlate_expert_vs_students.py",
+    "correlate_single_expert_vs_students.py",
+    "plot_all.py",
 ]
 
+# Each entry: (label shown to user, script filename)
+OUTPUT_SECTIONS = [
+    ("Table 1: Task Categories and Types",              "generate_table1.py"),
+    ("Figure 1: Taxonomy of Code Comprehension Tasks",  "show_figure1.py"),
+    ("Figures 3-11: Correlation Results",               "show_all_figs_data.py"),
+    ("Table 7: Impact of Participant Factors",          "analyze_student_factors.py"),
+    ("Table 8: Cross-Institution Consistency",          "compare_University1_University2_correlations.py"),
+]
 
-def run_command(cmd):
-    print("\n" + "=" * 80)
-    print(f"Running: {' '.join(cmd)}")
-    print("=" * 80 + "\n")
+SEP = "─" * 72
+
+
+def run_silent(script):
+    result = subprocess.run(
+        ["python", script],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if result.returncode != 0:
+        print(f"ERROR while preparing data ({script}):")
+        print(result.stderr)
+        sys.exit(result.returncode)
+
+
+def run_section(label, script):
+    print(f"\n{'━' * 72}")
+    print(f"  {label}")
+    print(f"{'━' * 72}")
+    print(f"  Running: python {script}")
+    print(SEP)
 
     process = subprocess.Popen(
-        cmd,
+        ["python", script],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True
+        text=True,
     )
-
-    # stream output live
     for line in process.stdout:
         print(line, end="")
-
     process.wait()
 
     if process.returncode != 0:
-        print(f"\nCommand failed: {' '.join(cmd)}")
+        print(f"\n  ERROR: python {script} failed.")
         sys.exit(process.returncode)
 
-    print(f"\nFinished: {' '.join(cmd)}\n")
+    print(SEP)
+    print(f"  Done: {label}")
 
 
 def main():
-    print("\nStarting full pipeline...\n")
+    print("\n" + "━" * 72)
+    print("  Preparing data (running correlation and plot scripts)...")
+    print("━" * 72)
+    for script in PREP_COMMANDS:
+        print(f"  python {script} ...", end=" ", flush=True)
+        run_silent(script)
+        print("done")
 
-    for cmd in COMMANDS:
-        run_command(cmd)
+    for label, script in OUTPUT_SECTIONS:
+        run_section(label, script)
 
-    print("\nAll scripts completed successfully.\n")
+    print(f"\n{'━' * 72}")
+    print("  All results reproduced successfully.")
+    print("━" * 72 + "\n")
 
 
 if __name__ == "__main__":
