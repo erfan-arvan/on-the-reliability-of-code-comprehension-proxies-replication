@@ -19,6 +19,7 @@ services:
     volumes:
       # generated plots are written back to your local plots/ directory
       - ./plots:/analysis/plots
+
     profiles:
       - analysis
 

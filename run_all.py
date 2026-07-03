@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import glob
-import os
-import shutil
 import subprocess
 import sys
 
@@ -49,13 +46,6 @@ def main():
         run_command(cmd)
 
     print("\nAll scripts completed successfully.\n")
-
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    results_dir = os.path.join(script_dir, "results")
-    if os.path.isdir(results_dir):
-        for csv in glob.glob(os.path.join(script_dir, "*.csv")):
-            shutil.copy(csv, results_dir)
-        print(f"CSV files copied to results/\n")
 
 
 if __name__ == "__main__":

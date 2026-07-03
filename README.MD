@@ -26,10 +26,23 @@ To stop: `Ctrl+C` then `docker compose down`.
 ### Run all analysis scripts
 
 ```bash
-docker compose --profile analysis run --rm analysis python run_all.py
+docker compose --profile analysis run --name analysis_run analysis python run_all.py
 ```
 
-Generated plots are saved to `plots/` in your local directory.
+Generated plots are saved to `plots/` in your local directory automatically.
+
+To also retrieve the output CSV files locally:
+
+```bash
+mkdir -p results
+docker cp analysis_run:/analysis/correlation_results.csv results/
+docker cp analysis_run:/analysis/per_student_correlations.csv results/
+docker cp analysis_run:/analysis/correlation_results_second.csv results/
+docker cp analysis_run:/analysis/per_student_correlations_second.csv results/
+docker cp analysis_run:/analysis/student_factor_model_results.csv results/
+docker cp analysis_run:/analysis/Uni1_vs_Uni2_merged.csv results/
+docker rm analysis_run
+```
 
 ### Run scripts interactively
 
