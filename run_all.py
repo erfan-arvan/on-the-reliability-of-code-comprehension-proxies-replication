@@ -13,8 +13,8 @@ PREP_COMMANDS = [
 
 # Each entry: (label shown to user, script filename)
 OUTPUT_SECTIONS = [
-    ("Table 1: Task Categories and Types",              "generate_table1.py"),
     ("Figure 1: Taxonomy of Code Comprehension Tasks",  "show_figure1.py"),
+    ("Table 1: Task Categories and Types",              "generate_table1.py"),
     ("Figures 3-11: Correlation Results",               "show_all_figs_data.py"),
     ("Table 7: Impact of Participant Factors",          "analyze_student_factors.py"),
     ("Table 8: Cross-Institution Consistency",          "compare_University1_University2_correlations.py"),
@@ -40,8 +40,6 @@ def run_section(label, script):
     print(f"\n{'━' * 72}")
     print(f"  {label}")
     print(f"{'━' * 72}")
-    print(f"  Running: python {script}")
-    print(SEP)
 
     process = subprocess.Popen(
         ["python", script],
@@ -56,9 +54,6 @@ def run_section(label, script):
     if process.returncode != 0:
         print(f"\n  ERROR: python {script} failed.")
         sys.exit(process.returncode)
-
-    print(SEP)
-    print(f"  Done: {label}")
 
 
 def main():

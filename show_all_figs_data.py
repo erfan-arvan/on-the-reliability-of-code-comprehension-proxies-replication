@@ -23,24 +23,16 @@ def remove_log(df):
 
 
 def show_heatmap(title, source, pivot_df):
-    print("\n" + "=" * 100)
-    print(title)
-    print("=" * 100)
-
-    print(f"\nSource file: {source}")
-    print("\n=== EXACT VALUES USED IN HEATMAP ===\n")
+    print(f"\n{title}")
+    print(f"Source file: {source}")
+    print("\nExact values used in heatmap:\n")
     print(pivot_df)
-
     print("\nShape:", pivot_df.shape)
-    print("=" * 100 + "\n")
 
 
 def show_distribution(title, source, df, columns):
-    print("\n" + "=" * 100)
-    print(title)
-    print("=" * 100)
-
-    print(f"\nSource file: {source}")
+    print(f"\n{title}")
+    print(f"Source file: {source}")
     print(f"Columns used: {columns}")
 
     df_used = df[columns]
@@ -49,7 +41,6 @@ def show_distribution(title, source, df, columns):
     print(df_used.head(20))
 
     print("\nShape:", df_used.shape)
-    print("=" * 100 + "\n")
 
 
 # =====================================================
