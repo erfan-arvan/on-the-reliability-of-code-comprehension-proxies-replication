@@ -146,13 +146,9 @@ To stop: `Ctrl+C`.
 │   └── ServerApp/             ← Maven project
 │
 ├── study_materials/           ← all study instruments
-│   ├── snippets_and_tasks.md  ← 8 code snippets and comprehension tasks (human-readable)
-│   ├── familiarity_survey.md  ← background knowledge survey (human-readable)
-│   ├── experience_survey.md   ← Java experience questionnaire (human-readable)
-│   ├── tasks_per_snippet.js   ← same as above (machine-readable, used by web app)
-│   ├── familaritySurvey.js    ← same as above (machine-readable, used by web app)
-│   ├── javaExperienceQuestions.js ← same as above (machine-readable, used by web app)
-│   ├── snippets-implementations.java ← full source of the 8 selected methods
+│   ├── snippets_and_tasks.md  ← 8 code snippets and comprehension tasks
+│   ├── familiarity_survey.md  ← CS knowledge background survey
+│   ├── experience_survey.md   ← Java experience questionnaire
 │   ├── selected_methods.csv   ← all candidate methods before selection
 │   ├── repositories.csv       ← source repositories used
 │   └── question_design_process_and_prompts_used.txt
