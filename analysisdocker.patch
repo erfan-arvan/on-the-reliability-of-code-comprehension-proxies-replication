@@ -1,0 +1,155 @@
+From d1ae421ac584628220573ff5a52a13311b8dfa7c Mon Sep 17 00:00:00 2001
+From: Erfan Arvan <ea442@njit.edu>
+Date: Thu, 2 Jul 2026 20:21:51 +0000
+Subject: [PATCH] Add analysis Docker service and update README
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- Dockerfile.analysis: Python 3.11 image with all requirements installed
+- docker-compose.yml: two services — web (Spring Boot) and analysis (Python)
+  analysis service uses profiles so it only starts when explicitly requested
+- .dockerignore: exclude .git, DS_Store, pycache, pre-built plots
+- README.MD: prepend Docker quick-start instructions, preserve existing content
+- App/README.md: carried forward from previous commit
+---
+ .dockerignore       |  6 +++++
+ Dockerfile.analysis | 13 +++++++++++
+ README.MD           | 55 ++++++++++++++++++++++++++++++++++++++++++++-
+ docker-compose.yml  | 21 +++++++++++++----
+ 4 files changed, 90 insertions(+), 5 deletions(-)
+ create mode 100644 .dockerignore
+ create mode 100644 Dockerfile.analysis
+
+diff --git a/.dockerignore b/.dockerignore
+new file mode 100644
+index 00000000..d96d2f73
+--- /dev/null
++++ b/.dockerignore
+@@ -0,0 +1,6 @@
++.git
++.DS_Store
++~$*
++plots/*.png
++__pycache__
++*.pyc
+diff --git a/Dockerfile.analysis b/Dockerfile.analysis
+new file mode 100644
+index 00000000..9612f2f1
+--- /dev/null
++++ b/Dockerfile.analysis
+@@ -0,0 +1,13 @@
++FROM python:3.11-slim
++
++WORKDIR /analysis
++
++# install dependencies first (cached layer)
++COPY requirements.txt .
++RUN pip install --no-cache-dir -r requirements.txt
++
++# copy all scripts and data
++COPY . .
++
++# default: drop into a shell so users can run scripts interactively
++CMD ["bash"]
+diff --git a/README.MD b/README.MD
+index 34259418..8074c5eb 100644
+--- a/README.MD
++++ b/README.MD
+@@ -1,4 +1,57 @@
+-### Run Everything
++# On the Reliability of Code Comprehension Proxies — Replication Package
++
++This repository contains the full replication package for our paper, including the web application used to run the study, all collected data, and the analysis scripts that reproduce every figure and table in the paper.
++
++---
++
++## Quick Start with Docker (recommended)
++
++**Prerequisite:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
++
++```bash
++git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
++cd on-the-reliability-of-code-comprehension-proxies-replication
++```
++
++### Run the web application
++
++```bash
++docker compose up --build
++```
++
++Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
++See `App/README.md` for study entry points and demo login credentials.
++To stop: `Ctrl+C` then `docker compose down`.
++
++### Run all analysis scripts
++
++```bash
++docker compose --profile analysis run --rm analysis python run_all.py
++```
++
++Generated plots are saved to `plots/` in your local directory.
++
++### Run scripts interactively
++
++```bash
++docker compose --profile analysis run --rm analysis bash
++# then inside the container:
++python correlate_expert_vs_students.py
++python plot_all.py
++# etc.
++```
++
++---
++
++## Quick Start without Docker
++
++### Web application
++**Prerequisites:** JDK 17+, Maven 3.8+
++```bash
++cd App/ServerApp && mvn spring-boot:run
++```
++
++### Run Everything (analysis scripts)
+ 
+ - `run_all.py`  
+   Executes the full analysis pipeline:
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 1056108e..b564526a 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -1,13 +1,26 @@
+ services:
+-  app:
+-    build: .
++
++  # ── Web application ───────────────────────────────────────────────────────
++  web:
++    build:
++      context: .
++      dockerfile: Dockerfile
+     ports:
+       - "8080:8080"
+     volumes:
+-      # persists submission data across container restarts
+       - submissions:/app/submissions
+-      # mount users file so you can edit credentials without rebuilding
+       - ./App/ServerApp/users:/app/users
+ 
++  # ── Python analysis environment ───────────────────────────────────────────
++  analysis:
++    build:
++      context: .
++      dockerfile: Dockerfile.analysis
++    volumes:
++      # generated plots are written back to your local plots/ directory
++      - ./plots:/analysis/plots
++    profiles:
++      - analysis
++
+ volumes:
+   submissions:
+-- 
+2.43.0
+
