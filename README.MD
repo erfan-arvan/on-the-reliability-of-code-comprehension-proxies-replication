@@ -1,8 +1,7 @@
 # On the Reliability of Code Comprehension Proxies — Replication Package
 
-This repository contains the full replication package for the paper
-**"On the Reliability of Code Comprehension Proxies"**, including the web
-application used to run the study, all collected data, and the analysis
+Replication package for the paper **"On the Reliability of Code Comprehension Proxies"**.
+Contains the web application used to run the study, all collected data, and the analysis
 scripts that reproduce every figure and table in the paper.
 
 ---
@@ -16,17 +15,30 @@ scripts that reproduce every figure and table in the paper.
 Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (includes Docker Compose v2).
 No other software is required.
 
-### Clone the repository
+### Download the artifact
+
+Download the two Docker images from Zenodo:
+
+- `code-comprehension-analysis.tar.gz` — Python analysis environment (all scripts + data baked in)
+- `code-comprehension-web.tar.gz` — Spring Boot web application
+
+Load them into Docker:
 
 ```bash
-git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
-cd on-the-reliability-of-code-comprehension-proxies-replication
+docker load < code-comprehension-analysis.tar.gz
+docker load < code-comprehension-web.tar.gz
 ```
 
-### Smoke test — verify the analysis environment works
+Expected output for each:
+```
+Loaded image: code-comprehension-analysis:latest
+Loaded image: code-comprehension-web:latest
+```
+
+### Smoke test — verify the analysis environment
 
 ```bash
-docker compose --profile analysis run --rm analysis python -c "import pandas, scipy, matplotlib; print('OK')"
+docker run --rm code-comprehension-analysis:latest python -c "import pandas, scipy, matplotlib; print('OK')"
 ```
 
 Expected output:
@@ -34,58 +46,48 @@ Expected output:
 OK
 ```
 
-### Smoke test — verify the web application builds
-
-```bash
-docker compose build web
-```
-
-Expected output ends with: `naming to docker.io/library/...-web`
-
 ---
 
 ## Step-by-Step Instructions
 
-### Part 1 — Reproduce all paper results (Figures 3–11, Tables 1, 7, 8)
-
-Run the full analysis pipeline:
+### Part 1 — Reproduce all paper results (Figure 1, Table 1, Figures 3–11, Tables 7–8)
 
 ```bash
-docker compose --profile analysis run --name analysis_run analysis python run_all.py
+docker run --name analysis_run code-comprehension-analysis:latest python run_all.py
 ```
 
 This single command reproduces all quantitative results in the paper.
 It streams progress to the terminal and completes in under 5 minutes.
 
-**What is generated:**
+**What is reproduced:**
 
 | Paper element | Script | Output |
 |---|---|---|
+| Figure 1 (taxonomy tree) | `show_figure1.py` | printed to terminal |
 | Table 1 (task categories) | `generate_table1.py` | printed to terminal |
 | Figures 3–5 (agg. students vs agg. experts) | `correlate_expert_vs_students.py` + `plot_all.py` | `plots/heatmap_agg_vs_agg_*.png`, `plots/box_agg_vs_agg_*.png` |
 | Figures 6–7 (agg. students vs individual experts) | `correlate_single_expert_vs_students.py` + `plot_all.py` | `plots/heatmap_avg_vs_expert_*.png`, `plots/box_avg_vs_expert_*.png` |
 | Figures 8–9 (per-student vs agg. experts) | `correlate_expert_vs_students.py` + `plot_all.py` | `plots/heatmap_perstudent_vs_aggexpert_*.png`, `plots/box_perstudent_vs_aggexpert_*.png` |
 | Figures 10–11 (per-student vs individual experts) | `correlate_single_expert_vs_students.py` + `plot_all.py` | `plots/heatmap_perstudent_vs_expert_*.png`, `plots/box_perstudent_vs_expert_*.png` |
 | Exact values for Figures 3–11 | `show_all_figs_data.py` | printed to terminal |
-| Table 7 (student factors) | `analyze_student_factors.py` | printed to terminal + `student_factor_model_results.csv` |
-| Table 8 (cross-institution) | `compare_University1_University2_correlations.py` | printed to terminal + `plots/Uni1_vs_Uni2_*.png` |
-
-Generated plots appear in the `plots/` directory in your local checkout.
+| Table 7 (student factors) | `analyze_student_factors.py` | printed to terminal |
+| Table 8 (cross-institution) | `compare_University1_University2_correlations.py` | printed to terminal |
 
 **Claims supported by the artifact:**
 - All correlation values reported in Figures 3–11 (RQ1–RQ4)
-- Table 1: task category distribution across prior studies
+- Figure 1 and Table 1: open coding taxonomy and task category distribution
 - Table 7 (Appendix): impact of participant background and fatigue on proxies
 - Table 8 (Appendix): cross-institution consistency between University 1 and University 2
 
 **Claims not directly reproducible from this artifact:**
-- The expert annotation process (Rounds 1–3) — the final consensus labels are stored in `students_graded.xlsx`; the raw round-by-round expert responses are archived in `experts_study/`
-- The open coding taxonomy (Figure 1, Figure 2) — the final taxonomy is in `open_coding/FinalTreeWithNumbers.txt`; the log of coding decisions is in `open_coding/open_coding_logs.xlsx`
+- The expert annotation process (Rounds 1–3) — the final consensus labels are stored in `students_graded.xlsx`; the raw round-by-round expert responses are in `experts_study/`
+- The open coding process (Figure 2) — the final taxonomy is in `open_coding/FinalTreeWithNumbers.txt`; the log of coding decisions is in `open_coding/open_coding_logs.xlsx`
 
-#### Retrieve output CSV files locally
+#### Retrieve generated plots and CSV files
 
 ```bash
-mkdir -p results
+mkdir -p results plots
+docker cp analysis_run:/analysis/plots/. plots/
 docker cp analysis_run:/analysis/correlation_results.csv results/
 docker cp analysis_run:/analysis/per_student_correlations.csv results/
 docker cp analysis_run:/analysis/correlation_results_second.csv results/
@@ -95,32 +97,30 @@ docker cp analysis_run:/analysis/Uni1_vs_Uni2_merged.csv results/
 docker rm analysis_run
 ```
 
+#### Explore interactively or run individual scripts
+
+```bash
+docker run -it --rm code-comprehension-analysis:latest bash
+# inside the container:
+python show_all_figs_data.py
+python generate_table1.py
+python analyze_student_factors.py
+# etc.
+```
+
 ---
 
 ### Part 2 — Run the web application (study platform)
 
 ```bash
-docker compose up --build
+docker run -p 8080:8080 code-comprehension-web:latest
 ```
 
 Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
 
-See `App/README.md` for study entry points and demo login credentials.
+See `App/README.md` in the Zenodo archive for study entry points and demo login credentials.
 
-To stop: `Ctrl+C` then `docker compose down`.
-
----
-
-### Part 3 — Run individual scripts or explore interactively
-
-```bash
-docker compose --profile analysis run --rm analysis bash
-# inside the container:
-python correlate_expert_vs_students.py
-python show_all_figs_data.py
-python generate_table1.py
-# etc.
-```
+To stop: `Ctrl+C`.
 
 ---
 
@@ -132,9 +132,9 @@ python generate_table1.py
 ├── REQUIREMENTS               ← hardware/software requirements
 ├── STATUS                     ← badge applications
 ├── LICENSE                    ← MIT + CC BY 4.0
-├── Dockerfile                 ← web application image
-├── Dockerfile.analysis        ← Python analysis image
-├── docker-compose.yml         ← orchestrates both services
+├── Dockerfile                 ← web application image (used to build code-comprehension-web.tar.gz)
+├── Dockerfile.analysis        ← Python analysis image (used to build code-comprehension-analysis.tar.gz)
+├── docker-compose.yml         ← alternative orchestration (for building from source)
 ├── requirements.txt           ← Python dependencies
 │
 ├── students_graded.xlsx       ← MAIN DATASET (all student responses, timing, accuracy)
@@ -201,34 +201,14 @@ One row per (student × snippet × task). Key columns:
 
 ---
 
-## Running without Docker
-
-### Web application
-**Prerequisites:** JDK 17+, Maven 3.8+
-```bash
-cd App/ServerApp && mvn spring-boot:run
-```
-Then open `http://localhost:8080`.
-
-### Analysis scripts
-```bash
-python3 -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python run_all.py
-```
-
----
-
 ## Additional Materials
 
 ### Inter-rater agreement
 
-```bash
-# Grading agreement (Cohen's kappa for function-description grading)
-python gradings/kappa_for_gradings.py
+Run inside the analysis container (`docker run -it --rm code-comprehension-analysis:latest bash`):
 
-# Open coding agreement
+```bash
+python gradings/kappa_for_gradings.py
 python open_coding/kappa_open_coding.py
 ```
 
@@ -238,8 +218,19 @@ python open_coding/kappa_open_coding.py
 cat experts_study/rounds_stats.txt
 ```
 
-### Taxonomy (Figure 1)
+---
+
+## Building from Source (optional)
+
+If you prefer to build the Docker images yourself instead of loading from Zenodo:
 
 ```bash
-cat open_coding/FinalTreeWithNumbers.txt
+git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
+cd on-the-reliability-of-code-comprehension-proxies-replication
+
+# Analysis image
+docker build -t code-comprehension-analysis:latest -f Dockerfile.analysis .
+
+# Web application image
+docker build -t code-comprehension-web:latest -f Dockerfile .
 ```
