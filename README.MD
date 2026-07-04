@@ -20,19 +20,35 @@ No other software is required.
 This Zenodo record contains two files:
 
 - `artifact.zip` — everything: the full source tree, all data and study
-  materials, and the two pre-built Docker images
-  (`code-comprehension-analysis.tar.gz`, `code-comprehension-web.tar.gz`) at
-  its top level, alongside this file, `REQUIREMENTS`, `STATUS`, and `LICENSE`.
+  materials, and four pre-built Docker image files (two architectures x two
+  images) at its top level, alongside this file, `REQUIREMENTS`, `STATUS`,
+  and `LICENSE`.
 - `artifact-abstract.pdf` — the AE submission abstract (paper link, purpose, badge, provenance, instructions), provided standalone so reviewers can read it without downloading `artifact.zip`.
 
-Download and extract `artifact.zip`, then load the two Docker images:
+Both images are provided natively for x86_64 and ARM64 — no emulation
+required either way. Check your architecture, then download and extract
+`artifact.zip` and load only the matching pair:
 
 ```bash
+uname -m
+# x86_64  -> use the "-amd64" files below
+# arm64 / aarch64 -> use the "-arm64" files below
+
 unzip artifact.zip
 cd artifact
-docker load < code-comprehension-analysis.tar.gz
-docker load < code-comprehension-web.tar.gz
+
+# x86_64:
+docker load < code-comprehension-analysis-amd64.tar.gz
+docker load < code-comprehension-web-amd64.tar.gz
+
+# ARM64 (Apple Silicon):
+docker load < code-comprehension-analysis-arm64.tar.gz
+docker load < code-comprehension-web-arm64.tar.gz
 ```
+
+Either pair loads as `code-comprehension-analysis:latest` and
+`code-comprehension-web:latest` — every other command in this README is the
+same regardless of which architecture you picked.
 
 Expected output for each:
 ```
@@ -157,8 +173,8 @@ the contents of any subfolder shown below (`relatedwork/`, `experts_study/`,
 ├── REQUIREMENTS               ← hardware/software requirements
 ├── STATUS                     ← badge applications
 ├── LICENSE                    ← MIT + CC BY 4.0
-├── Dockerfile                 ← web application image (used to build code-comprehension-web.tar.gz)
-├── Dockerfile.analysis        ← Python analysis image (used to build code-comprehension-analysis.tar.gz)
+├── Dockerfile                 ← web application image (used to build code-comprehension-web-{amd64,arm64}.tar.gz)
+├── Dockerfile.analysis        ← Python analysis image (used to build code-comprehension-analysis-{amd64,arm64}.tar.gz)
 ├── docker-compose.yml         ← alternative orchestration (for building from source)
 ├── requirements.txt           ← Python dependencies
 │

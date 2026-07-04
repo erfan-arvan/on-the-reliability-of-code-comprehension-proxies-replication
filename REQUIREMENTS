@@ -1,14 +1,26 @@
 # Requirements
 
 ## Architecture
-The artifact has been packaged and tested on x86-64 (amd64) architecture.
-Apple Silicon (ARM/M-series) is also supported via Docker Desktop's built-in emulation.
+Both the analysis and web-application Docker images are provided as two
+separate native builds, covering x86_64 (amd64) and ARM64 (Apple Silicon /
+aarch64) — no emulation required on either platform. `artifact.zip` contains
+four image files:
+
+- `code-comprehension-analysis-amd64.tar.gz` / `code-comprehension-web-amd64.tar.gz` — for x86_64 (Intel/AMD) machines
+- `code-comprehension-analysis-arm64.tar.gz` / `code-comprehension-web-arm64.tar.gz` — for ARM64 (Apple Silicon) machines
+
+Check your machine's architecture with `uname -m` (`x86_64` → amd64 files;
+`arm64`/`aarch64` → arm64 files) and load only the matching pair. Each file
+loads as `code-comprehension-analysis:latest` / `code-comprehension-web:latest`
+regardless of which architecture you picked, so every other command in this
+artifact is unaffected by which pair you use.
 
 ## Recommended: Docker-based setup
 
 - **Docker Desktop** 4.0 or later (includes Docker Compose v2)
   - https://www.docker.com/products/docker-desktop/
-- Approximately **2 GB** of free disk space (for Docker images and output)
+- Approximately **2 GB** of free disk space for the pair of images matching
+  your architecture (you only need to load one pair, not all four files)
 - An internet connection is required only for the initial `docker compose up --build`
   to pull base images; all subsequent runs are fully offline
 
