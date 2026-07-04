@@ -173,23 +173,32 @@ To stop: `Ctrl+C`.
 
 ### `students_graded.xlsx` (main dataset)
 
-One row per (student × snippet × task). Key columns:
+One row per student (44 rows), wide format: each of the 8 snippets has its
+own block of columns. Key columns:
 
-| Column | Description |
+| Column pattern | Description |
 |---|---|
-| `student_id` | Anonymous participant identifier |
-| `university` | University 1 (n=37) or University 2 (n=7) |
-| `snippet_id` | Snippet number (1–8) |
-| `acc_output` | Accuracy on output-prediction task (0–1) |
-| `acc_syntaxBL` | Accuracy on syntax/binary task (0 or 1) |
-| `acc_function` | Accuracy on function-description task (graded 0–3, normalized) |
-| `time_output` | Time spent on output-prediction task (seconds) |
-| `time_syntaxBL` | Time spent on syntax/binary task (seconds) |
-| `time_function` | Time spent on function-description task (seconds) |
-| `readTime` | Time spent reading the snippet before tasks (seconds) |
-| `scaleSM` | Likert rating: snippet difficulty (1–5) |
-| `scaleST` | Likert rating: task difficulty (1–5) |
-| Background columns | Java experience, OOP experience, prior programming exposure, etc. |
+| `username` | Anonymous participant identifier |
+| `snippet-{1-8}.output.answer` / `.timeSec` / `.score` | Output-prediction task: answer, time spent (seconds), accuracy |
+| `snippet-{1-8}.syntaxBL.answer` / `.timeSec` / `.score` | Syntax/binary task: answer, time spent (seconds), accuracy (0 or 1) |
+| `snippet-{1-8}.function.answer` / `.timeSec` / `.score` | Function-description task: answer, time spent (seconds), accuracy (graded 0–3) |
+| `snippet-{1-8}.readTime` | Time spent reading the snippet before tasks (seconds) |
+| `snippet-{1-8}.scaleSM.answer` / `.timeSec` | Likert rating + response time: snippet difficulty (1–5) |
+| `snippet-{1-8}.scaleST.answer` / `.timeSec` | Likert rating + response time: task difficulty (1–5) |
+| `javaExperience.s.*`, `csKnowledgeSurveyAnswers.*`, `backgroundQuestionnaire.*` | Background columns: Java/OOP experience, CS knowledge survey, demographics |
+
+The per-(student × snippet × task) long-format columns referenced elsewhere
+in this README and used internally by the analysis scripts (`acc_output`,
+`acc_syntaxBL`, `acc_function`, `time_output`, `time_syntaxBL`,
+`time_function`, `readTime`, `scaleSM`, `scaleST`) are derived from the wide
+columns above at analysis time (see `extract_proxy()` in
+`correlate_expert_vs_students.py`) — they are not literal column names in
+the `.xlsx` file.
+
+There is no `university` column in `students_graded.xlsx` itself. The
+University 1 (n=37) vs. University 2 (n=7) split used for Table 8 comes
+from two separate files with the same wide schema: `students_gradedUni1.xlsx`
+and `students_gradedUni2.xlsx`.
 
 ---
 
