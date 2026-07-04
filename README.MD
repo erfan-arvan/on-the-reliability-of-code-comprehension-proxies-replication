@@ -56,7 +56,7 @@ OK
 
 ## Step-by-Step Instructions
 
-### Part 1 — Reproduce all paper results (Figure 1, Table 1, Figures 3–11, Tables 7–8)
+### Part 1 — Reproduce all paper results (Figure 1, Table 1, Figures 3–11, Tables 4, 7–8)
 
 ```bash
 docker run --name analysis_run code-comprehension-analysis:latest python run_all.py
@@ -72,15 +72,15 @@ It streams progress to the terminal and completes in under 5 minutes.
 - **Figures 3–11** (all correlation results) — exact numerical values printed to terminal; PNG plots saved to `plots/`
 - **Table 7** (student factors) — printed to terminal
 - **Table 8** (cross-institution) — printed to terminal; scatter plots saved to `plots/`
+- **Table 4** (expert agreement across Delphi rounds) — printed to terminal
 
 **Claims supported by the artifact:**
 - All correlation values reported in Figures 3–11 (RQ1–RQ4)
 - Figure 1 and Table 1: open coding taxonomy and task category distribution
 - Table 7 (Appendix): impact of participant background and fatigue on proxies
 - Table 8 (Appendix): cross-institution consistency between University 1 and University 2
-- Table 4: evolution of expert agreement across the three Delphi rounds — run
-  `python experts_study/generate_table4.py` on the raw per-round data in
-  `experts_study/` (see `experts_study/README.md`)
+- Table 4: evolution of expert agreement across the three Delphi rounds, from
+  the raw per-round data in `experts_study/` (see `experts_study/README.md`)
 
 **Claims not directly reproducible from this artifact:**
 - The qualitative content of the Delphi expert-consensus process itself (Rounds
@@ -231,9 +231,14 @@ python open_coding/kappa_open_coding.py
 
 ### Expert study statistics (Table 4)
 
+Table 4 is already printed automatically by `python run_all.py` (see Part 1
+above). To regenerate just Table 4 on its own:
+
 ```bash
-cat experts_study/rounds_stats.txt
+cd experts_study && python generate_table4.py
 ```
+
+`experts_study/rounds_stats.txt` has the same per-round statistics in narrative form.
 
 ---
 

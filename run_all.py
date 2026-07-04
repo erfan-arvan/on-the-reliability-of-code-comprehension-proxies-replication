@@ -11,13 +11,14 @@ PREP_COMMANDS = [
     "plot_all.py",
 ]
 
-# Each entry: (label shown to user, script filename)
+# Each entry: (label shown to user, script filename, working directory or None for repo root)
 OUTPUT_SECTIONS = [
-    ("Figure 1: Taxonomy of Code Comprehension Tasks",  "show_figure1.py"),
-    ("Table 1: Task Categories and Types",              "generate_table1.py"),
-    ("Figures 3-11: Correlation Results",               "show_all_figs_data.py"),
-    ("Table 7: Impact of Participant Factors",          "analyze_student_factors.py"),
-    ("Table 8: Cross-Institution Consistency",          "compare_University1_University2_correlations.py"),
+    ("Figure 1: Taxonomy of Code Comprehension Tasks",  "show_figure1.py", None),
+    ("Table 1: Task Categories and Types",              "generate_table1.py", None),
+    ("Figures 3-11: Correlation Results",               "show_all_figs_data.py", None),
+    ("Table 7: Impact of Participant Factors",          "analyze_student_factors.py", None),
+    ("Table 8: Cross-Institution Consistency",          "compare_University1_University2_correlations.py", None),
+    ("Table 4: Evolution of Expert Agreement Across Delphi Rounds", "generate_table4.py", "experts_study"),
 ]
 
 SEP = "─" * 72
@@ -36,7 +37,7 @@ def run_silent(script):
         sys.exit(result.returncode)
 
 
-def run_section(label, script):
+def run_section(label, script, cwd=None):
     print(f"\n{'━' * 72}")
     print(f"  {label}")
     print(f"{'━' * 72}")
@@ -46,6 +47,7 @@ def run_section(label, script):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
+        cwd=cwd,
     )
     for line in process.stdout:
         print(line, end="")
@@ -65,8 +67,8 @@ def main():
         run_silent(script)
         print("done")
 
-    for label, script in OUTPUT_SECTIONS:
-        run_section(label, script)
+    for label, script, cwd in OUTPUT_SECTIONS:
+        run_section(label, script, cwd)
 
     print(f"\n{'━' * 72}")
     print("  All results reproduced successfully.")
