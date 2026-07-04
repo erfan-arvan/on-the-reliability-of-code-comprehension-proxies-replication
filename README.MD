@@ -90,15 +90,6 @@ It streams progress to the terminal and completes in under 5 minutes.
 - Tables 3, 4, and 6 are all derived from the raw per-round data in
   `experts_study/` (see `experts_study/README.md`)
 
-> **Known discrepancy:** Table 3 as reproduced by this artifact gives Expert A's
-> ranking as `(1 = 2) -> (3 = 5) -> 4 -> (7 = 8) -> 6`, which differs from the
-> published paper's `(1 = 2) -> 3 -> (4 = 5) -> (7 = 8) -> 6` (snippets 3 and 4
-> are transposed). This was verified directly against
-> `experts_study/round3_submissions_transfered.json` and matches the pre-existing
-> `FINAL_RANKINGS` data used elsewhere in the analysis; Experts B–E match the
-> paper exactly. This looks like a transcription error in the paper's Table 3,
-> not an artifact bug.
-
 **Claims not directly reproducible from this artifact:**
 - The qualitative content of the Delphi expert-consensus process itself (Rounds
   1–3: experts' written justifications and the moderated Round 3 discussion) —
