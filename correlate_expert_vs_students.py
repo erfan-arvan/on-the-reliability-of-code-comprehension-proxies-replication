@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
 import pandas as pd
 import numpy as np
 from scipy.stats import spearmanr, kendalltau
@@ -399,10 +400,11 @@ def main():
 
     corr_rows = []
 
-    agg_file = "correlation_results.csv"
+    os.makedirs("results", exist_ok=True)
+    agg_file = "results/correlation_results.csv"
     # snippet_file = "student_factor_long_snippet.csv"
     # question_file = "student_factor_long_question.csv"
-    per_student_file = "per_student_correlations.csv"
+    per_student_file = "results/per_student_correlations.csv"
 
     with open(agg_file, "w", newline="") as f:
 

@@ -31,10 +31,10 @@ EXPERT_ORDER = [
 # LOAD FILES
 # =====================================================
 
-agg_df = pd.read_csv("correlation_results.csv")
-per_student_df = pd.read_csv("per_student_correlations.csv")
-per_student_second = pd.read_csv("per_student_correlations_second.csv")
-avg_vs_expert_df = pd.read_csv("correlation_results_second.csv")
+agg_df = pd.read_csv("results/correlation_results.csv")
+per_student_df = pd.read_csv("results/per_student_correlations.csv")
+per_student_second = pd.read_csv("results/per_student_correlations_second.csv")
+avg_vs_expert_df = pd.read_csv("results/correlation_results_second.csv")
 
 
 print("agg_df cases:", sorted(agg_df["case"].dropna().unique()))

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import os
 import warnings
 import numpy as np
 import pandas as pd
@@ -13,7 +14,8 @@ from pathlib import Path
 EXCEL_FILE = "students_graded.xlsx"
 ORDER_FILE = "studentsFinal.json"
 
-OUT_MODEL_RESULTS = "student_factor_model_results.csv"
+os.makedirs("results", exist_ok=True)
+OUT_MODEL_RESULTS = "results/student_factor_model_results.csv"
 
 QUESTION_TYPES = ["function", "output", "syntaxBL"]
 SNIPPETS = list(range(1, 9))

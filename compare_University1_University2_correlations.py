@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
 import pandas as pd
 import numpy as np
 from scipy.stats import spearmanr, wilcoxon
@@ -10,8 +11,10 @@ import matplotlib.pyplot as plt
 # CONFIG
 # -------------------------------------------------
 
-Uni1_FILE = "correlation_resultsUni1.csv"
-Uni2_FILE   = "correlation_resultsUni2.csv"
+os.makedirs("results", exist_ok=True)
+
+Uni1_FILE = "results/correlation_resultsUni1.csv"
+Uni2_FILE   = "results/correlation_resultsUni2.csv"
 
 OUTPUT_PREFIX = "Uni1_vs_Uni2"
 
@@ -119,6 +122,6 @@ for agg in AGGREGATIONS:
 df["delta_spearman"] = df["spearman_mean_Uni1"] - df["spearman_mean_Uni2"]
 df["abs_delta_spearman"] = df["delta_spearman"].abs()
 
-df.to_csv(f"{OUTPUT_PREFIX}_merged.csv", index=False)
+df.to_csv(f"results/{OUTPUT_PREFIX}_merged.csv", index=False)
 
 print("\nSaved merged dataset.")

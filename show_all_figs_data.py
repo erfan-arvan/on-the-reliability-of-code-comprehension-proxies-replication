@@ -8,10 +8,10 @@ import pandas as pd
 # LOAD FILES
 # =====================================================
 
-agg_df = pd.read_csv("correlation_results.csv")
-per_student_df = pd.read_csv("per_student_correlations.csv")
-per_student_second = pd.read_csv("per_student_correlations_second.csv")
-avg_vs_expert_df = pd.read_csv("correlation_results_second.csv")
+agg_df = pd.read_csv("results/correlation_results.csv")
+per_student_df = pd.read_csv("results/per_student_correlations.csv")
+per_student_second = pd.read_csv("results/per_student_correlations_second.csv")
+avg_vs_expert_df = pd.read_csv("results/correlation_results_second.csv")
 
 
 # =====================================================
@@ -67,7 +67,7 @@ pivot3 = df3.groupby(["proxy"])["kendall_mean"].mean().to_frame()
 
 show_heatmap(
     "Figure 3: Aggregated vs MEAN RANKING (majority heatmap)",
-    "correlation_results.csv",
+    "results/correlation_results.csv",
     pivot3
 )
 
@@ -85,7 +85,7 @@ pivot4 = (
 
 show_heatmap(
     "Figure 4: Aggregated vs Aggregated Experts (Kendall heatmap)",
-    "correlation_results.csv",
+    "results/correlation_results.csv",
     pivot4
 )
 
@@ -96,7 +96,7 @@ show_heatmap(
 
 show_distribution(
     "Figure 5: Distribution (Aggregated vs Aggregated Experts)",
-    "correlation_results.csv",
+    "results/correlation_results.csv",
     agg_df,
     ["case", "proxy", "kendall_mean"]
 )
@@ -119,7 +119,7 @@ pivot6 = (
 
 show_heatmap(
     "Figure 6: Aggregated vs Individual Experts (heatmap)",
-    "correlation_results_second.csv",
+    "results/correlation_results_second.csv",
     pivot6
 )
 
@@ -130,7 +130,7 @@ show_heatmap(
 
 show_distribution(
     "Figure 7: Distribution (Aggregated vs Individual Experts)",
-    "correlation_results_second.csv",
+    "results/correlation_results_second.csv",
     df6,
     ["case", "proxy", "kendall_mean"]
 )
@@ -151,7 +151,7 @@ pivot8 = (
 
 show_heatmap(
     "Figure 8: Per-student vs Aggregated Experts (heatmap)",
-    "per_student_correlations.csv",
+    "results/per_student_correlations.csv",
     pivot8
 )
 
@@ -162,7 +162,7 @@ show_heatmap(
 
 show_distribution(
     "Figure 9: Distribution (Per-student vs Aggregated Experts)",
-    "per_student_correlations.csv",
+    "results/per_student_correlations.csv",
     df8,
     ["case", "proxy", "kendall"]
 )
@@ -183,7 +183,7 @@ pivot10 = (
 
 show_heatmap(
     "Figure 10: Per-student vs Individual Experts (heatmap)",
-    "per_student_correlations_second.csv",
+    "results/per_student_correlations_second.csv",
     pivot10
 )
 
@@ -194,7 +194,7 @@ show_heatmap(
 
 show_distribution(
     "Figure 11: Distribution (Per-student vs Individual Experts)",
-    "per_student_correlations_second.csv",
+    "results/per_student_correlations_second.csv",
     df10,
     ["case", "proxy", "kendall"]
 )
