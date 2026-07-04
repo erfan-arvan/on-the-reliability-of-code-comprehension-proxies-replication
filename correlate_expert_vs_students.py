@@ -235,71 +235,6 @@ def extract_proxy(df, proxy):
     return result
 
 # ------------------------------------------------
-# export long-format data for plots
-# ------------------------------------------------
-
-def export_student_long_data(df):
-
-    snippet_rows = []
-    question_rows = []
-
-    SCALE_MAP = {
-        "Very easy": 1,
-        "Easy": 2,
-        "Neutral": 3,
-        "Difficult": 4,
-        "Very difficult": 5,
-    }
-
-    SCORE_QUESTIONS = ["function", "output", "syntaxBL"]
-    SCALE_QUESTIONS = ["scaleSM", "scaleST"]
-    ALL_QUESTIONS = SCORE_QUESTIONS + SCALE_QUESTIONS
-
-    for student_id, row in df.iterrows():
-
-        for sid in range(1, 9):
-
-            read_col = f"snippet-{sid}.readTime"
-            read_time = row.get(read_col, np.nan)
-
-            snippet_rows.append({
-                "student_id": student_id,
-                "snippet_id": sid,
-                "read_time": read_time,
-                "log_read_time": np.log(read_time) if pd.notna(read_time) and read_time > 0 else np.nan,
-            })
-
-            for q in ALL_QUESTIONS:
-
-                time_col = f"snippet-{sid}.{q}.timeSec"
-                time_val = row.get(time_col, np.nan)
-
-                if q in SCORE_QUESTIONS:
-                    value_col = f"snippet-{sid}.{q}.score"
-                    value = row.get(value_col, np.nan)
-
-                else:
-                    value_col = f"snippet-{sid}.{q}.answer"
-                    raw_value = row.get(value_col, np.nan)
-
-                    if pd.notna(raw_value):
-                        value = SCALE_MAP.get(str(raw_value).strip(), np.nan)
-                    else:
-                        value = np.nan
-
-                question_rows.append({
-                    "student_id": student_id,
-                    "snippet_id": sid,
-                    "question": q,
-                    "value": value,
-                    "time_sec": time_val,
-                    "log_time_sec": np.log(time_val) if pd.notna(time_val) and time_val > 0 else np.nan,
-                })
-
-    return snippet_rows, question_rows
-
-
-# ------------------------------------------------
 # correlation engine
 # ------------------------------------------------
 
@@ -394,16 +329,10 @@ def main():
     proxy_data = {proxy: extract_proxy(df, proxy) for proxy in proxies}
     # print("Done extracting proxy data", flush=True)
 
-    # print("Exporting long-format student data...", flush=True)
-    snippet_rows, question_rows = export_student_long_data(df)
-    # print("Done exporting long-format student data", flush=True)
-
     corr_rows = []
 
     os.makedirs("results", exist_ok=True)
     agg_file = "results/correlation_results.csv"
-    # snippet_file = "student_factor_long_snippet.csv"
-    # question_file = "student_factor_long_question.csv"
     per_student_file = "results/per_student_correlations.csv"
 
     with open(agg_file, "w", newline="") as f:
@@ -472,8 +401,6 @@ def main():
 
     print("\nWriting additional CSV files...", flush=True)
 
-    # pd.DataFrame(snippet_rows).to_csv(snippet_file, index=False)
-    # pd.DataFrame(question_rows).to_csv(question_file, index=False)
     pd.DataFrame(corr_rows).to_csv(per_student_file, index=False)
 
     print("Done writing additional CSV files", flush=True)
@@ -481,8 +408,6 @@ def main():
     print("\n====================================", flush=True)
     print("Output files generated:", flush=True)
     print(f"  {agg_file}", flush=True)
-    # print(f"  {snippet_file}", flush=True)
-    # print(f"  {question_file}", flush=True)
     print(f"  {per_student_file}", flush=True)
     print("====================================\n", flush=True)
 

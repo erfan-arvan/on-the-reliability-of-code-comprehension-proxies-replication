@@ -2,13 +2,13 @@
 generate_table1.py
 
 Recreates "Table 1" (Task Category / Task / Number of Studies) from the raw
-per-study CSV data (Table1-data.csv), which has one row per (task, study).
+per-study CSV data (relatedwork/Table1-data.csv), which has one row per (task, study).
 
 Usage:
     python3 generate_table1.py [path/to/Table1-data.csv]
 
-If no path is given, it defaults to "Table1-data.csv" in the current
-directory.
+If no path is given, it defaults to "relatedwork/Table1-data.csv" relative to
+the current directory.
 """
 
 import sys
@@ -104,7 +104,7 @@ def print_table(counts, width=None):
 
 
 def main():
-    csv_path = sys.argv[1] if len(sys.argv) > 1 else "Table1-data.csv"
+    csv_path = sys.argv[1] if len(sys.argv) > 1 else "relatedwork/Table1-data.csv"
     counts = load_counts(csv_path)
     print_table(counts)
 
