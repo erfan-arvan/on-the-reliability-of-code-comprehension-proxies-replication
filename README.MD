@@ -17,20 +17,19 @@ No other software is required.
 
 ### Download the artifact
 
-This Zenodo record contains eight files:
+This Zenodo record contains two files:
 
-- `code-comprehension-analysis.tar.gz` — Python analysis environment (all scripts + data baked in)
-- `code-comprehension-web.tar.gz` — Spring Boot web application
-- `source-code.zip` — full source tree (same content as this repository, for building from source or inspecting scripts/data without Docker)
-- `README.MD` — this file, provided standalone for quick reference
-- `REQUIREMENTS` — hardware/software requirements
-- `STATUS` — badge application and justification
-- `LICENSE` — MIT (code) + CC BY 4.0 (data)
-- `artifact-abstract.pdf` — the AE submission abstract (paper link, purpose, badge, provenance, instructions)
+- `artifact.zip` — everything: the full source tree, all data and study
+  materials, and the two pre-built Docker images
+  (`code-comprehension-analysis.tar.gz`, `code-comprehension-web.tar.gz`) at
+  its top level, alongside this file, `REQUIREMENTS`, `STATUS`, and `LICENSE`.
+- `artifact-abstract.pdf` — the AE submission abstract (paper link, purpose, badge, provenance, instructions), provided standalone so reviewers can read it without downloading `artifact.zip`.
 
-Download the two Docker images and load them into Docker:
+Download and extract `artifact.zip`, then load the two Docker images:
 
 ```bash
+unzip artifact.zip
+cd artifact
 docker load < code-comprehension-analysis.tar.gz
 docker load < code-comprehension-web.tar.gz
 ```
@@ -134,7 +133,7 @@ docker run --rm -p 8080:8080 code-comprehension-web:latest
 
 Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
 
-See `App/README.md` (inside `source-code.zip`) for study entry points and demo login credentials.
+See `App/README.md` (inside `artifact.zip`) for study entry points and demo login credentials.
 
 To stop: `Ctrl+C`.
 
@@ -142,13 +141,12 @@ To stop: `Ctrl+C`.
 
 ## Artifact Layout
 
-Zenodo only lists this record's files individually (`README.MD`,
-`REQUIREMENTS`, `STATUS`, `LICENSE`, the two Docker images, `source-code.zip`,
+Zenodo only lists this record's two files (`artifact.zip`,
 `artifact-abstract.pdf`) — it does not let you browse folders directly. To see
 the contents of any subfolder shown below (`relatedwork/`, `experts_study/`,
 `App/`, `study_materials/`, `open_coding/`, `gradings/`), either:
 
-- download and extract `source-code.zip`, or
+- download and extract `artifact.zip` (see "Download the artifact" above), or
 - explore interactively inside the analysis container:
   `docker run -it --rm code-comprehension-analysis:latest bash` (see
   "Explore interactively or run individual scripts" below)
@@ -283,16 +281,13 @@ see `relatedwork/README.md`.
 
 ## Building from Source (optional)
 
-If you prefer to build the Docker images yourself instead of loading from Zenodo, use
-either the `source-code.zip` included in this Zenodo record (no external dependency,
-recommended for long-term reproducibility) or a fresh clone from GitHub:
+If you prefer to build the Docker images yourself instead of using the ones
+included in `artifact.zip`, you already have the full source after extracting
+it (see "Download the artifact" above — no external dependency needed, the
+recommended path for long-term reproducibility). A fresh clone from GitHub
+also works if you prefer:
 
 ```bash
-# Option A: from the Zenodo source archive
-unzip source-code.zip
-cd source-code
-
-# Option B: from GitHub
 git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
 cd on-the-reliability-of-code-comprehension-proxies-replication
 ```
