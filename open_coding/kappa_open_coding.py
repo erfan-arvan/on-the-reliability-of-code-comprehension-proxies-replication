@@ -1,7 +1,8 @@
+import os
 import pandas as pd
 from sklearn.metrics import cohen_kappa_score
 
-file_path = "open_coding_logs.xlsx"
+file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "open_coding_logs.xlsx")
 df = pd.read_excel(file_path)
 
 # Clean column names

@@ -1,9 +1,11 @@
+import os
 import pandas as pd
 import numpy as np
 from sklearn.metrics import cohen_kappa_score
 
 # === 1. Load file ===
-df = pd.read_excel("function_question_grading_log.xlsx")
+file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "function_question_grading_log.xlsx")
+df = pd.read_excel(file_path)
 
 # === 2. Extract paired ratings ===
 rater1_scores = []

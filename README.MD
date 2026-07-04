@@ -142,6 +142,17 @@ To stop: `Ctrl+C`.
 
 ## Artifact Layout
 
+Zenodo only lists this record's files individually (`README.MD`,
+`REQUIREMENTS`, `STATUS`, `LICENSE`, the two Docker images, `source-code.zip`,
+`artifact-abstract.pdf`) — it does not let you browse folders directly. To see
+the contents of any subfolder shown below (`relatedwork/`, `experts_study/`,
+`App/`, `study_materials/`, `open_coding/`, `gradings/`), either:
+
+- download and extract `source-code.zip`, or
+- explore interactively inside the analysis container:
+  `docker run -it --rm code-comprehension-analysis:latest bash` (see
+  "Explore interactively or run individual scripts" below)
+
 ```
 .
 ├── README.MD                  ← this file
