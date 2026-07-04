@@ -17,12 +17,16 @@ No other software is required.
 
 ### Download the artifact
 
-This Zenodo record contains four files:
+This Zenodo record contains eight files:
 
 - `code-comprehension-analysis.tar.gz` — Python analysis environment (all scripts + data baked in)
 - `code-comprehension-web.tar.gz` — Spring Boot web application
 - `source-code.zip` — full source tree (same content as this repository, for building from source or inspecting scripts/data without Docker)
 - `README.MD` — this file, provided standalone for quick reference
+- `REQUIREMENTS` — hardware/software requirements
+- `STATUS` — badge application and justification
+- `LICENSE` — MIT (code) + CC BY 4.0 (data)
+- `artifact-abstract.pdf` — the AE submission abstract (paper link, purpose, badge, provenance, instructions)
 
 Download the two Docker images and load them into Docker:
 
