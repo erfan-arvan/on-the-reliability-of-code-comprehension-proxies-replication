@@ -25,9 +25,8 @@ This Zenodo record contains two files:
   its top level, alongside this file, `REQUIREMENTS`, `STATUS`, and `LICENSE`.
 - `artifact-abstract.pdf` — the AE submission abstract (paper link, purpose, badge, provenance, instructions), provided standalone so reviewers can read it without downloading `artifact.zip`.
 
-> **Note:** these Docker images are currently ARM64 (Apple Silicon) only.
-> See `REQUIREMENTS` for what x86_64 reviewers need to do in the meantime;
-> multi-platform images are planned for a future version of this artifact.
+> **Note:** these Docker images are ARM64 (Apple Silicon) only. See
+> `REQUIREMENTS` for what x86_64 reviewers need to do.
 
 Download and extract `artifact.zip`, then load the two Docker images:
 

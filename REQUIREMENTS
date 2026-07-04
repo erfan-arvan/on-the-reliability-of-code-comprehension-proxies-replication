@@ -7,8 +7,7 @@ natively. Reviewers on x86_64 (amd64) machines will need QEMU-based
 emulation enabled for Docker (on Linux, typically via `tonistiigi/binfmt`
 or `qemu-user-static`; not enabled by default), or should build the images
 from source instead (see "Building from Source" in `README.MD`), which
-produces a native image for their own architecture. Multi-platform
-(x86_64 + ARM64) images are planned for a future version of this artifact.
+produces a native image for their own architecture.
 
 ## Recommended: Docker-based setup
 
