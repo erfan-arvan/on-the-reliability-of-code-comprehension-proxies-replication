@@ -17,19 +17,20 @@ No other software is required.
 
 ### Download the artifact
 
-This Zenodo record contains two files:
+This Zenodo record contains eight files:
 
-- `artifact.zip` — everything: this source tree, all data and study materials, and
-  the two pre-built Docker images (`code-comprehension-analysis.tar.gz`,
-  `code-comprehension-web.tar.gz`), all in one archive. This file (`README.MD`),
-  `REQUIREMENTS`, `STATUS`, and `LICENSE` are all included at its top level.
+- `code-comprehension-analysis.tar.gz` — Python analysis environment (all scripts + data baked in)
+- `code-comprehension-web.tar.gz` — Spring Boot web application
+- `source-code.zip` — full source tree (same content as this repository, for building from source or inspecting scripts/data without Docker)
+- `README.MD` — this file, provided standalone for quick reference
+- `REQUIREMENTS` — hardware/software requirements
+- `STATUS` — badge application and justification
+- `LICENSE` — MIT (code) + CC BY 4.0 (data)
 - `artifact-abstract.pdf` — the AE submission abstract (paper link, purpose, badge, provenance, instructions)
 
-Download and extract `artifact.zip`, then `cd` into it and load the two Docker images:
+Download the two Docker images and load them into Docker:
 
 ```bash
-unzip artifact.zip
-cd artifact
 docker load < code-comprehension-analysis.tar.gz
 docker load < code-comprehension-web.tar.gz
 ```
@@ -117,7 +118,7 @@ docker run -p 8080:8080 code-comprehension-web:latest
 
 Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
 
-See `App/README.md` (in this same `artifact.zip`) for study entry points and demo login credentials.
+See `App/README.md` (inside `source-code.zip`) for study entry points and demo login credentials.
 
 To stop: `Ctrl+C`.
 
@@ -224,12 +225,16 @@ cat experts_study/rounds_stats.txt
 
 ## Building from Source (optional)
 
-If you prefer to build the Docker images yourself instead of using the ones included
-in `artifact.zip`, you already have the full source after extracting it (see above,
-no external dependency needed — this is the recommended path for long-term
-reproducibility). A fresh clone from GitHub also works if you prefer:
+If you prefer to build the Docker images yourself instead of loading from Zenodo, use
+either the `source-code.zip` included in this Zenodo record (no external dependency,
+recommended for long-term reproducibility) or a fresh clone from GitHub:
 
 ```bash
+# Option A: from the Zenodo source archive
+unzip source-code.zip
+cd source-code
+
+# Option B: from GitHub
 git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
 cd on-the-reliability-of-code-comprehension-proxies-replication
 ```
