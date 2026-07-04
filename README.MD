@@ -17,12 +17,14 @@ No other software is required.
 
 ### Download the artifact
 
-Download the two Docker images from Zenodo:
+This Zenodo record contains four files:
 
 - `code-comprehension-analysis.tar.gz` — Python analysis environment (all scripts + data baked in)
 - `code-comprehension-web.tar.gz` — Spring Boot web application
+- `source-code.zip` — full source tree (same content as this repository, for building from source or inspecting scripts/data without Docker)
+- `README.MD` — this file, provided standalone for quick reference
 
-Load them into Docker:
+Download the two Docker images and load them into Docker:
 
 ```bash
 docker load < code-comprehension-analysis.tar.gz
@@ -114,7 +116,7 @@ docker run -p 8080:8080 code-comprehension-web:latest
 
 Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
 
-See `App/README.md` in the Zenodo archive for study entry points and demo login credentials.
+See `App/README.md` (inside `source-code.zip`) for study entry points and demo login credentials.
 
 To stop: `Ctrl+C`.
 
@@ -223,12 +225,23 @@ cat experts_study/rounds_stats.txt
 
 ## Building from Source (optional)
 
-If you prefer to build the Docker images yourself instead of loading from Zenodo:
+If you prefer to build the Docker images yourself instead of loading from Zenodo, use
+either the `source-code.zip` included in this Zenodo record (no external dependency,
+recommended for long-term reproducibility) or a fresh clone from GitHub:
 
 ```bash
+# Option A: from the Zenodo source archive
+unzip source-code.zip
+cd source-code
+
+# Option B: from GitHub
 git clone https://github.com/erfan-arvan/on-the-reliability-of-code-comprehension-proxies-replication.git
 cd on-the-reliability-of-code-comprehension-proxies-replication
+```
 
+Then, from either directory:
+
+```bash
 # Analysis image
 docker build -t code-comprehension-analysis:latest -f Dockerfile.analysis .
 
