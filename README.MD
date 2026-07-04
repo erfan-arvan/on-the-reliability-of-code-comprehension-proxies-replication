@@ -59,11 +59,19 @@ OK
 ### Part 1 — Reproduce all paper results (Figure 1, Tables 1, 3, 4, 6, Figures 3–11, Tables 7–8)
 
 ```bash
-docker run --name analysis_run code-comprehension-analysis:latest python run_all.py
+mkdir -p results plots
+docker run --rm \
+  -v "$(pwd)/results:/analysis/results" \
+  -v "$(pwd)/plots:/analysis/plots" \
+  code-comprehension-analysis:latest python run_all.py
 ```
 
 This single command reproduces all quantitative results in the paper.
 It streams progress to the terminal and completes in under 5 minutes.
+Generated CSVs and plots are written directly to your local `results/` and
+`plots/` directories via the volume mounts, and `--rm` removes the container
+when it finishes — safe to re-run as many times as you like, no cleanup needed
+between runs.
 
 **What is reproduced, in order:**
 
@@ -101,19 +109,14 @@ It streams progress to the terminal and completes in under 5 minutes.
 - The open coding process behind Figure 1's taxonomy — the final taxonomy is in `open_coding/FinalTreeWithNumbers.txt`; the log of coding decisions is in `open_coding/open_coding_logs.xlsx`
 - Table 2 (comprehension measure types) — no script; inspect `relatedwork/Table2-data.csv` directly (one row per prior study, with binary flags for measure type and task category — same format as `relatedwork/Table1-data.csv`)
 
-#### Retrieve generated plots and CSV files
-
-```bash
-mkdir -p results plots
-docker cp analysis_run:/analysis/plots/. plots/
-docker cp analysis_run:/analysis/results/. results/
-docker rm analysis_run
-```
-
 #### Explore interactively or run individual scripts
 
 ```bash
-docker run -it --rm code-comprehension-analysis:latest bash
+mkdir -p results plots
+docker run -it --rm \
+  -v "$(pwd)/results:/analysis/results" \
+  -v "$(pwd)/plots:/analysis/plots" \
+  code-comprehension-analysis:latest bash
 # inside the container:
 python show_all_figs_data.py
 python generate_table1.py
@@ -126,7 +129,7 @@ python analyze_student_factors.py
 ### Part 2 — Run the web application (study platform)
 
 ```bash
-docker run -p 8080:8080 code-comprehension-web:latest
+docker run --rm -p 8080:8080 code-comprehension-web:latest
 ```
 
 Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.

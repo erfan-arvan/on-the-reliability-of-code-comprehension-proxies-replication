@@ -13,7 +13,7 @@ docker load < code-comprehension-web.tar.gz
 Start the application:
 
 ```bash
-docker run -p 8080:8080 code-comprehension-web:latest
+docker run --rm -p 8080:8080 code-comprehension-web:latest
 ```
 
 Wait for `Started Main in X.XXX seconds`, then open `http://localhost:8080`.
@@ -39,7 +39,7 @@ data is written as JSON under `submissions/` inside the running container
 inspect it with `docker exec` or by mounting a volume, e.g.:
 
 ```bash
-docker run -p 8080:8080 -v "$(pwd)/submissions:/app/submissions" code-comprehension-web:latest
+docker run --rm -p 8080:8080 -v "$(pwd)/submissions:/app/submissions" code-comprehension-web:latest
 ```
 
 ## Demo login credentials
