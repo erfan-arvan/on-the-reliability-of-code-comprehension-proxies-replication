@@ -17,13 +17,21 @@ No other software is required.
 
 ### Download the artifact
 
-This Zenodo record contains two files:
+This Zenodo record contains six files:
 
 - `artifact.zip` — everything: the full source tree, all data and study
   materials, and the two pre-built Docker images
   (`code-comprehension-analysis.tar.gz`, `code-comprehension-web.tar.gz`) at
-  its top level, alongside this file, `REQUIREMENTS`, `STATUS`, and `LICENSE`.
-- `artifact-abstract.pdf` — the AE submission abstract (paper link, purpose, badge, provenance, instructions), provided standalone so reviewers can read it without downloading `artifact.zip`.
+  its top level.
+- `artifact-abstract.pdf` — the AE submission abstract (paper link, purpose, badge, provenance, instructions).
+- `README.MD` — this file, provided standalone for quick reference.
+- `REQUIREMENTS` — hardware/software requirements.
+- `STATUS` — badge application and justification.
+- `LICENSE` — MIT (code) + CC BY 4.0 (data).
+
+The last four are also included inside `artifact.zip`, but are provided
+standalone here so reviewers can read them without downloading the whole
+bundle.
 
 > **Note:** these Docker images are ARM64 (Apple Silicon) only. See
 > `REQUIREMENTS` for what x86_64 reviewers need to do.
@@ -144,10 +152,11 @@ To stop: `Ctrl+C`.
 
 ## Artifact Layout
 
-Zenodo only lists this record's two files (`artifact.zip`,
-`artifact-abstract.pdf`) — it does not let you browse folders directly. To see
-the contents of any subfolder shown below (`relatedwork/`, `experts_study/`,
-`App/`, `study_materials/`, `open_coding/`, `gradings/`), either:
+Zenodo only lists this record's files individually (`artifact.zip`,
+`artifact-abstract.pdf`, `README.MD`, `REQUIREMENTS`, `STATUS`, `LICENSE`) —
+it does not let you browse folders directly. To see the contents of any
+subfolder shown below (`relatedwork/`, `experts_study/`, `App/`,
+`study_materials/`, `open_coding/`, `gradings/`), either:
 
 - download and extract `artifact.zip` (see "Download the artifact" above), or
 - explore interactively inside the analysis container:
