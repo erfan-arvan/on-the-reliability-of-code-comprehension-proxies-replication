@@ -1,8 +1,14 @@
 # Requirements
 
 ## Architecture
-The artifact has been packaged and tested on x86-64 (amd64) architecture.
-Apple Silicon (ARM/M-series) is also supported via Docker Desktop's built-in emulation.
+The Docker images in this artifact were built and tested on ARM64 (Apple
+Silicon / M-series Mac) only. Reviewers on ARM64 machines can run them
+natively. Reviewers on x86_64 (amd64) machines will need QEMU-based
+emulation enabled for Docker (on Linux, typically via `tonistiigi/binfmt`
+or `qemu-user-static`; not enabled by default), or should build the images
+from source instead (see "Building from Source" in `README.MD`), which
+produces a native image for their own architecture. Multi-platform
+(x86_64 + ARM64) images are planned for a future version of this artifact.
 
 ## Recommended: Docker-based setup
 
