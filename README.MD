@@ -63,13 +63,11 @@ It streams progress to the terminal and completes in under 5 minutes.
 
 **What is reproduced:**
 
-| Paper element | Output |
-|---|---|
-| Figure 1 (taxonomy tree) | printed to terminal |
-| Table 1 (task categories) | printed to terminal |
-| Figures 3–11 (all correlation results) | exact numerical values printed to terminal; PNG plots saved to `plots/` |
-| Table 7 (student factors) | printed to terminal |
-| Table 8 (cross-institution) | printed to terminal; scatter plots saved to `plots/` |
+- **Figure 1** (taxonomy tree) — printed to terminal
+- **Table 1** (task categories) — printed to terminal
+- **Figures 3–11** (all correlation results) — exact numerical values printed to terminal; PNG plots saved to `plots/`
+- **Table 7** (student factors) — printed to terminal
+- **Table 8** (cross-institution) — printed to terminal; scatter plots saved to `plots/`
 
 **Claims supported by the artifact:**
 - All correlation values reported in Figures 3–11 (RQ1–RQ4)
@@ -178,16 +176,14 @@ To stop: `Ctrl+C`.
 One row per student (44 rows), wide format: each of the 8 snippets has its
 own block of columns. Key columns:
 
-| Column pattern | Description |
-|---|---|
-| `username` | Anonymous participant identifier |
-| `snippet-{1-8}.output.answer` / `.timeSec` / `.score` | Output-prediction task: answer, time spent (seconds), accuracy |
-| `snippet-{1-8}.syntaxBL.answer` / `.timeSec` / `.score` | Syntax/binary task: answer, time spent (seconds), accuracy (0 or 1) |
-| `snippet-{1-8}.function.answer` / `.timeSec` / `.score` | Function-description task: answer, time spent (seconds), accuracy (graded 0–3) |
-| `snippet-{1-8}.readTime` | Time spent reading the snippet before tasks (seconds) |
-| `snippet-{1-8}.scaleSM.answer` / `.timeSec` | Likert rating + response time: snippet difficulty (1–5) |
-| `snippet-{1-8}.scaleST.answer` / `.timeSec` | Likert rating + response time: task difficulty (1–5) |
-| `javaExperience.s.*`, `csKnowledgeSurveyAnswers.*`, `backgroundQuestionnaire.*` | Background columns: Java/OOP experience, CS knowledge survey, demographics |
+- **`username`** — Anonymous participant identifier
+- **`snippet-{1-8}.output.answer` / `.timeSec` / `.score`** — Output-prediction task: answer, time spent (seconds), accuracy
+- **`snippet-{1-8}.syntaxBL.answer` / `.timeSec` / `.score`** — Syntax/binary task: answer, time spent (seconds), accuracy (0 or 1)
+- **`snippet-{1-8}.function.answer` / `.timeSec` / `.score`** — Function-description task: answer, time spent (seconds), accuracy (graded 0–3)
+- **`snippet-{1-8}.readTime`** — Time spent reading the snippet before tasks (seconds)
+- **`snippet-{1-8}.scaleSM.answer` / `.timeSec`** — Likert rating + response time: snippet difficulty (1–5)
+- **`snippet-{1-8}.scaleST.answer` / `.timeSec`** — Likert rating + response time: task difficulty (1–5)
+- **`javaExperience.s.*`, `csKnowledgeSurveyAnswers.*`, `backgroundQuestionnaire.*`** — Background columns: Java/OOP experience, CS knowledge survey, demographics
 
 The per-(student × snippet × task) long-format columns referenced elsewhere
 in this README and used internally by the analysis scripts (`acc_output`,
