@@ -78,9 +78,18 @@ It streams progress to the terminal and completes in under 5 minutes.
 - Figure 1 and Table 1: open coding taxonomy and task category distribution
 - Table 7 (Appendix): impact of participant background and fatigue on proxies
 - Table 8 (Appendix): cross-institution consistency between University 1 and University 2
+- Table 4: evolution of expert agreement across the three Delphi rounds — run
+  `python experts_study/generate_table4.py` on the raw per-round data in
+  `experts_study/` (see `experts_study/README.md`)
 
 **Claims not directly reproducible from this artifact:**
-- The expert annotation process (Rounds 1–3) — the final consensus labels are stored in `students_graded.xlsx`; the raw round-by-round expert responses are in `experts_study/`
+- The qualitative content of the Delphi expert-consensus process itself (Rounds
+  1–3: experts' written justifications and the moderated Round 3 discussion) —
+  this is a human deliberation process, not something a script reproduces. The
+  quantitative outcome (Table 4, above) is reproducible; the raw per-round data
+  and justifications are in `experts_study/` for inspection. Note this expert
+  study is unrelated to `students_graded.xlsx`, which holds the separate student
+  study data.
 - The open coding process (Figure 2) — the final taxonomy is in `open_coding/FinalTreeWithNumbers.txt`; the log of coding decisions is in `open_coding/open_coding_logs.xlsx`
 
 #### Retrieve generated plots and CSV files
@@ -166,9 +175,14 @@ To stop: `Ctrl+C`.
 │   ├── function_question_grading_log.xlsx
 │   └── kappa_for_gradings.py  ← inter-rater agreement (Cohen's kappa)
 │
-└── experts_study/             ← expert study materials
-    ├── disagreement_points.js ← items shown to experts in Rounds 2 & 3
-    └── rounds_stats.txt       ← expert study round statistics (Table 4)
+└── experts_study/             ← expert study materials (Delphi ranking process, section 4)
+    ├── disagreement_points.js         ← items shown to experts in Rounds 2 & 3
+    ├── rounds_stats.txt                ← expert study round statistics
+    ├── experts_registration_data.json ← expert recruitment/eligibility data (PII-redacted)
+    ├── round{1,2,3}_submissions_raw.json       ← raw per-round rankings + justifications
+    ├── round{1,2,3}_submissions_transfered.json ← same, as carried over to the next round
+    ├── generate_stats_round{1,2,3}.py ← per-round agreement/disagreement stats
+    └── generate_table4.py             ← reproduces Table 4 (agreement across rounds)
 ```
 
 ---

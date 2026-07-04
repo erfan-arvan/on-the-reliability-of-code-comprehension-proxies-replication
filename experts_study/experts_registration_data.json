@@ -1,0 +1,1000 @@
+[
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "legacy code that is linked to multiple apps running in multiple platforms and used by hundreds of millions of users."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, Desktop applications, AI-intensive systems"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "insurance, legal, retail"
+        }
+      ],
+      "eligible": true,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0",
+      "timestamp": "2025-10-21T21:16:10.165Z",
+      "submitted": true,
+      "event": "eligibleBeforeConsent"
+    },
+    "timestamp": "2025-10-21T17:16:10.61271834-04:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "legacy code that is linked to multiple apps running in multiple platforms and used by hundreds of millions of users."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, Desktop applications, AI-intensive systems"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "insurance, legal, retail"
+        }
+      ],
+      "consentForm": {
+        "fullName": "Redacted",
+        "consentName": "Redacted",
+        "signature": "Redacted",
+        "dateSigned": "October 21, 2025",
+        "consentGiven": true,
+        "timestamp": "2025-10-21T21:18:27.576Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0"
+      },
+      "submitted": true,
+      "event": "consent"
+    },
+    "timestamp": "2025-10-21T17:18:28.074140546-04:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "No, I have not received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "No"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "A distributed services project in the healthcare industry encompassing a mobile application, a web application and multiple components embedded into client's applications. The project was composed of about 40 modules, handling on average 100.000 requests per minute, developed by a team of around 50 engineers."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, Mobile applications"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Government, healthcare, gaming, energy trading, postal service, webshop, bioinformatics."
+        }
+      ],
+      "eligible": true,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "timestamp": "2025-10-23T07:40:45.896Z",
+      "submitted": true,
+      "event": "eligibleBeforeConsent"
+    },
+    "timestamp": "2025-10-23T03:40:46.267693483-04:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "No, I have not received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "No"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "A distributed services project in the healthcare industry encompassing a mobile application, a web application and multiple components embedded into client's applications. The project was composed of about 40 modules, handling on average 100.000 requests per minute, developed by a team of around 50 engineers."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, Mobile applications"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Government, healthcare, gaming, energy trading, postal service, webshop, bioinformatics."
+        }
+      ],
+      "consentForm": {
+        "fullName": "Redacted",
+        "consentName": "Redacted",
+        "signature": "Redacted",
+        "dateSigned": "23 October 2025",
+        "consentGiven": true,
+        "timestamp": "2025-10-23T07:45:01.858Z",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+      },
+      "submitted": true,
+      "event": "consent"
+    },
+    "timestamp": "2025-10-23T03:45:02.193719125-04:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "25\u201334"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "5 years at [Company] and 5 years in [Company]. I own cost management functionality like anomaly detection, budgets, forecasting, cost explorer."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, AI-intensive systems"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Cloud Financial Management"
+        }
+      ],
+      "eligible": true,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+      "timestamp": "2025-10-24T21:29:19.593Z",
+      "submitted": true,
+      "event": "eligibleBeforeConsent"
+    },
+    "timestamp": "2025-10-24T17:29:19.72906884-04:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "25\u201334"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "5 years at [Company] and 5 years in [Company]. I own cost management functionality like anomaly detection, budgets, forecasting, cost explorer."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, AI-intensive systems"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Cloud Financial Management"
+        }
+      ],
+      "consentForm": {
+        "fullName": "Redacted",
+        "consentName": "Redacted",
+        "signature": "Redacted",
+        "dateSigned": "October 24, 2025",
+        "consentGiven": true,
+        "timestamp": "2025-10-24T21:30:46.457Z",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
+      },
+      "submitted": true,
+      "event": "consent"
+    },
+    "timestamp": "2025-10-24T17:30:46.612187625-04:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "20+ years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "20+ years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "A wallet backed by a trust fund with dozens of modules used by more than 15k users nowadays. About 20 people in the team through several years of development and operation"
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, AI-intensive systems"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Financial services, healthcare, government, education"
+        }
+      ],
+      "eligible": true,
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/141.0.7390.96 Mobile/15E148 Safari/604.1",
+      "timestamp": "2025-10-29T00:47:24.422Z",
+      "submitted": true,
+      "event": "eligibleBeforeConsent"
+    },
+    "timestamp": "2025-10-28T20:47:25.085480983-04:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "20+ years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "20+ years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "A wallet backed by a trust fund with dozens of modules used by more than 15k users nowadays. About 20 people in the team through several years of development and operation"
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, AI-intensive systems"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Financial services, healthcare, government, education"
+        }
+      ],
+      "consentForm": {
+        "fullName": "Redacted",
+        "consentName": "Redacted",
+        "signature": "Redacted",
+        "dateSigned": "October 28, 2025",
+        "consentGiven": true,
+        "timestamp": "2025-10-29T00:49:14.517Z",
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/141.0.7390.96 Mobile/15E148 Safari/604.1"
+      },
+      "submitted": true,
+      "event": "consent"
+    },
+    "timestamp": "2025-10-28T20:49:14.95786301-04:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "15\u201319 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "The largest and most complex software system I\u2019ve worked on was a multi-tenant enterprise platform built with .NET and Angular, designed to manage licensing, inspections, and compliance workflows for multiple government and industry clients. The system integrated with various external APIs (such as Okta for authentication and financial systems for transactions) and supported both online and offline modes through advanced caching and synchronization logic.\n\nIt served thousands of active users across different organizations, including inspectors, administrators, and external applicants, each with role-based access and complex business rules. The backend was a microservice-based architecture deployed in Azure Kubernetes Service (AKS) with automated CI/CD pipelines, containerized SQL Server databases, and a shared component library reused across applications.\n\nThe development team consisted of around 12 engineers, including frontend, backend, DevOps, and QA specialists, working in an Agile environment with Azure DevOps for work tracking, code reviews, and automated testing. My responsibilities included designing backend services, optimizing high-performance SQL queries, implementing Angular components, and leading refactors to improve scalability and maintainability."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial, Open-source"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, Mobile applications, AI-intensive systems, Libraries/frameworks"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Government and Regulatory Systems \u2013 Licensing, inspections, compliance management and weather prediction platforms for public sector clients.\n\nGovernment Decision-Making Tools and Systems \u2013 Developed internal software, platforms and ML tools for inspections, compliance, and decision-making tools, which included image classification using machine learning (natural language processing) and computer vision machine learning models.\n\nHealthcare and Pharmaceuticals \u2013 Prescription management and medical compliance systems.\n\nCryptocurrency and Financial Technology \u2013 Designed and deployed web applications for real-time cryptocurrency tracking and analytics.\n\nDeveloper Tools and Frameworks \u2013 Contributed to high-performance web frameworks and shared component libraries for .NET and Angular ecosystems.\n\nArtificial Intelligence and Machine Learning \u2013 Research and development of hybrid quantum-classical ML models and predictive maintenance systems."
+        }
+      ],
+      "eligible": true,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "timestamp": "2025-11-04T18:20:44.218Z",
+      "submitted": true,
+      "event": "eligibleBeforeConsent"
+    },
+    "timestamp": "2025-11-04T13:20:44.466875382-05:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "15\u201319 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "The largest and most complex software system I\u2019ve worked on was a multi-tenant enterprise platform built with .NET and Angular, designed to manage licensing, inspections, and compliance workflows for multiple government and industry clients. The system integrated with various external APIs (such as Okta for authentication and financial systems for transactions) and supported both online and offline modes through advanced caching and synchronization logic.\n\nIt served thousands of active users across different organizations, including inspectors, administrators, and external applicants, each with role-based access and complex business rules. The backend was a microservice-based architecture deployed in Azure Kubernetes Service (AKS) with automated CI/CD pipelines, containerized SQL Server databases, and a shared component library reused across applications.\n\nThe development team consisted of around 12 engineers, including frontend, backend, DevOps, and QA specialists, working in an Agile environment with Azure DevOps for work tracking, code reviews, and automated testing. My responsibilities included designing backend services, optimizing high-performance SQL queries, implementing Angular components, and leading refactors to improve scalability and maintainability."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial, Open-source"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, Mobile applications, AI-intensive systems, Libraries/frameworks"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Government and Regulatory Systems \u2013 Licensing, inspections, compliance management and weather prediction platforms for public sector clients.\n\nGovernment Decision-Making Tools and Systems \u2013 Developed internal software, platforms and ML tools for inspections, compliance, and decision-making tools, which included image classification using machine learning (natural language processing) and computer vision machine learning models.\n\nHealthcare and Pharmaceuticals \u2013 Prescription management and medical compliance systems.\n\nCryptocurrency and Financial Technology \u2013 Designed and deployed web applications for real-time cryptocurrency tracking and analytics.\n\nDeveloper Tools and Frameworks \u2013 Contributed to high-performance web frameworks and shared component libraries for .NET and Angular ecosystems.\n\nArtificial Intelligence and Machine Learning \u2013 Research and development of hybrid quantum-classical ML models and predictive maintenance systems."
+        }
+      ],
+      "consentForm": {
+        "fullName": "Redacted",
+        "consentName": "Redacted",
+        "signature": "Redacted",
+        "dateSigned": "November 4, 2025",
+        "consentGiven": true,
+        "timestamp": "2025-11-04T18:21:04.315Z",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+      },
+      "submitted": true,
+      "event": "consent"
+    },
+    "timestamp": "2025-11-04T13:21:04.424170235-05:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "No answer"
+        }
+      ],
+      "consentForm": {
+        "fullName": "Redacted",
+        "consentName": "Redacted",
+        "signature": "Redacted",
+        "dateSigned": "November 4, 2025",
+        "consentGiven": true,
+        "timestamp": "2025-11-05T01:22:05.343Z",
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/141.0.7390.96 Mobile/15E148 Safari/604.1"
+      },
+      "submitted": true,
+      "event": "consent"
+    },
+    "timestamp": "2025-11-04T20:22:05.674082812-05:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "No answer"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "No answer"
+        }
+      ],
+      "consentForm": {
+        "fullName": "Redacted",
+        "consentName": "Redacted",
+        "signature": "Redacted",
+        "dateSigned": "November 4, 2025",
+        "consentGiven": true,
+        "timestamp": "2025-11-05T01:22:06.306Z",
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/141.0.7390.96 Mobile/15E148 Safari/604.1"
+      },
+      "submitted": true,
+      "event": "consent"
+    },
+    "timestamp": "2025-11-04T20:22:06.838496064-05:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "3\u20135 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "One of the most complex software systems I\u2019ve worked on was at [Company], where we built a distributed, multi-tenant healthcare platform used across multiple medical providers in the U.S. The goal of the platform was to integrate medical transactions and patient data from different systems so clinicians could focus on care delivery rather than time-consuming data entry during consultations.\n\nThe system consumed and normalized healthcare data using the FHIR standard, then exposed it via a federated GraphQL API layer for presentation services and third-party integrations. It was designed for large-scale growth across new healthcare services and institutions.\n\nThe engineering team consisted of specialized developers working across Kubernetes, Go, TypeScript, and Rust. We focused heavily on reliability, performance, and security due to strict healthcare compliance requirements and the need to support real-time clinical workflows."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Other (please specify) \u2014 a mix of proprietaary/commercial and project oriented (by project according client)"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, Middleware, AI-intensive systems, Libraries/frameworks"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "healthcare, transportation-airlines, state, banking, education"
+        }
+      ],
+      "eligible": true,
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "timestamp": "2025-11-05T12:28:37.721Z",
+      "submitted": true,
+      "event": "eligibleBeforeConsent"
+    },
+    "timestamp": "2025-11-05T07:28:38.32849692-05:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "35\u201344"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "10\u201314 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "3\u20135 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "Yes, I have received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "Yes"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "One of the most complex software systems I\u2019ve worked on was at [Company], where we built a distributed, multi-tenant healthcare platform used across multiple medical providers in the U.S. The goal of the platform was to integrate medical transactions and patient data from different systems so clinicians could focus on care delivery rather than time-consuming data entry during consultations.\n\nThe system consumed and normalized healthcare data using the FHIR standard, then exposed it via a federated GraphQL API layer for presentation services and third-party integrations. It was designed for large-scale growth across new healthcare services and institutions.\n\nThe engineering team consisted of specialized developers working across Kubernetes, Go, TypeScript, and Rust. We focused heavily on reliability, performance, and security due to strict healthcare compliance requirements and the need to support real-time clinical workflows."
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Other (please specify) \u2014 a mix of proprietaary/commercial and project oriented (by project according client)"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications, Middleware, AI-intensive systems, Libraries/frameworks"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "healthcare, transportation-airlines, state, banking, education"
+        }
+      ],
+      "consentForm": {
+        "fullName": "Redacted",
+        "consentName": "Redacted",
+        "signature": "Redacted",
+        "dateSigned": "November 5, 2025",
+        "consentGiven": true,
+        "timestamp": "2025-11-05T12:29:50.755Z",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+      },
+      "submitted": true,
+      "event": "consent"
+    },
+    "timestamp": "2025-11-05T07:29:50.904429972-05:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "25\u201334"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "No, I have not received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "No"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "A code intelligence platform for analyzing the code quality of large code bases, which integrates with multiple external systems"
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Developer tools"
+        }
+      ],
+      "eligible": true,
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36",
+      "timestamp": "2025-11-06T05:57:00.637Z",
+      "submitted": true,
+      "event": "eligibleBeforeConsent"
+    },
+    "timestamp": "2025-11-06T00:57:01.377797938-05:00"
+  },
+  {
+    "data": {
+      "email": "Redacted",
+      "notify": false,
+      "selectedSlot": "unspecified",
+      "eligibilityResponses": [
+        {
+          "question": "What is your age?",
+          "selectedOption": "25\u201334"
+        },
+        {
+          "question": "How many years of professional development experience do you have (in any language)?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "How many years of professional development experience do you have with <strong>Java</strong>?",
+          "selectedOption": "6\u20139 years"
+        },
+        {
+          "question": "Have you ever been promoted within a software engineering role to a more senior level\u2014for example, a promotion from an entry-level position to the next level where engineers are expected to operate more independently or lead projects?<br/><br/>Examples include a promotion to: Apple ICT3, Facebook E4, Uber Level 4 (Software Engineer II), Microsoft Level 61, Amazon L5, or Walmart L3. <a style='font-size:10px;' href='https://www.levels.fyi' target='_blank'>Learn more about these levels</a>",
+          "selectedOption": "No, I have not received a promotion like that."
+        },
+        {
+          "question": "Have you ever mentored one or more junior software engineers in a professional setting?",
+          "selectedOption": "No"
+        },
+        {
+          "question": "Briefly describe the largest or most complex software system you\u2019ve worked on (e.g., its purpose, scale, users, and development team).",
+          "selectedOption": "A code intelligence platform for analyzing the code quality of large code bases, which integrates with multiple external systems"
+        },
+        {
+          "question": "What is your current job title? (You can select from the list or type your own)",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "What company or organization do you currently work for (if any)?",
+          "selectedOption": "Redacted"
+        },
+        {
+          "question": "Do you develop proprietary or commercial software, open-source software, or both? (Select all that apply.)",
+          "selectedOption": "Proprietary or commercial"
+        },
+        {
+          "question": "What types of systems do you spend time developing more than occasionally? (Select all that apply.)",
+          "selectedOption": "Web applications"
+        },
+        {
+          "question": "Please indicate the domains for which you have developed software (e.g., banking, healthcare, developer tools, \u2026).",
+          "selectedOption": "Developer tools"
+        }
+      ],
+      "consentForm": {
+        "fullName": "Redacted",
+        "consentName": "Redacted",
+        "signature": "Redacted",
+        "dateSigned": "November 5, 2025",
+        "consentGiven": true,
+        "timestamp": "2025-11-06T05:58:09.407Z",
+        "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36"
+      },
+      "submitted": true,
+      "event": "consent"
+    },
+    "timestamp": "2025-11-06T00:58:09.893018747-05:00"
+  }
+]

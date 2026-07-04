@@ -1,0 +1,1450 @@
+{
+  "expertC": [
+    {
+      "data": {
+        "username": "expertC",
+        "phase1": {
+          "snippet1": {
+            "summary": "Gets the lowest possible positive square root of 3 numbers (That's based on reading the method signature)\n\nReading through the code:\nCalculates 'det' and does a sanity check/error case\nCalculates a few other variables\nIf r1 is greater than r2, switch them around\nReturn whatever is positive checking in order r1 and r2",
+            "comprehensibility": "I'm not familiar enough with the math to know the abbreviation 'det' or 'r'\n\nI'm not familiar enough with it to know why we need to switch around r1 and r2\n\nI would simplify it and combine the if statements, like if r1 is bigger just check if r2>0 and return it. the swapping of numbers seems unnecessary.\n\nUsing variable 'tmp' to switch things around is hard to keep track of at first glance, until you see it's just swapping numbers."
+          },
+          "snippet2": {
+            "summary": "Checks if a URI is a remote(non-local) location",
+            "comprehensibility": "Not clear why the hardcoded checks for 'file' and 'jar' are there. Maybe they cannot be remote?\n\nSwitch statement is easy to understand but turning it into an if statement would turn like 8 lines of code into 2\n\nOr really I'd combine them all, ```if scheme == null || scheme.equals(\"file\") || scheme.equals(\"jar\")``` return false\n\nI think when you have very limited cases, and when you're not really doing different things with those cases (in this case, we have 3 cases that do 1 thing, return false) the switch statement is overkill"
+          },
+          "snippet3": {
+            "summary": "Based on method signature - indexOf method but it ignores case, with optional start position parameter (assuming it's optional based on other indexOf implementations I've seen)\n\nScanning code:\nerror case check up front\ndefault case check for start pos\nSet array index bounds\nerror case check that string is 1 char or less\nerror case that search string is empty (I don't think returning start pos makes sense here I would return index not found but as long as that's documented that could be OK)\n\nNow scan through string and see if each substring is the string we're looking for",
+            "comprehensibility": "I found it flowed very naturally and was easy to understand. The variable names made a lot of sense and each if statement had a clear check it was doing.\n\nMy only question was line 13-14 why return startPos. Maybe that's standard practice and I haven't used IndexOf recently enough.\n\nThis is probably how I would code it up making it as clear as possible (like for an interview)\n\nMost straightforward code so far but maybe biased because it's a simple index of check"
+          },
+          "snippet4": {
+            "summary": "validation method for a string name\n\nMakes sure the name isn't empty, doesn't start with a period, isn't too long\n\nMakes sure each char of string is a letter or digit and is within some Constant set of allowed characters",
+            "comprehensibility": "Isn't clear why we need both the letter or digit check and also valid name set. I would think the valid name set could easily contain all letters and numbers and avoid the other check. Because of the AND in the if statement, things need to be in the valid name set, so I would drop that separate check for isLetterOrDigit\n\nOtherwise very easy to understand and follow"
+          },
+          "snippet5": {
+            "summary": "Get encoded length of a string (as Char Sequence)",
+            "comprehensibility": "This code confuses me but I'm also not very familiar with UTF 8 vs. 16 and the bitwise stuff that's going on.\n\nline 7 while loop confuses me. It's probably important but I don't know why. Not sure what the <0x80 does. But it looks important. This will increment 'i' to ~something~ for the next loop\n\nFor loop - more comparisons to binary stuff that doesn't mean anything to me. Would have to look up these special characters.\n\nIn the end it seems to be incrementing the utf8Length based on the string somehow, doing a error case check, and returning it. Overall not very comprehensible to me. Anytime you're doing stuff like this, you NEED comments. the one comment 'Optimized Implementation' just tells me the obvious, or tells me someone did this on purpose at least."
+          },
+          "snippet6": {
+            "summary": "A complete guess is that this is related to arctangent but I could be wrong, not familiar with 'atan' otherwise. I would guess it takes the square of arc tangent? Don't know enough about math to know why XD\n\nReading the rest of the code, it returns 'atanUnchecked' so maybe it's literally like 'V2' of atan",
+            "comprehensibility": "using x y and n for variables makes it not so easy to comprehend\n\nnot clear what the if/else is doing line 4-7. I can understand it's setting some initial values in edge cases but not sure why\n\nThe code itself is straightforward, the if statements are simple and things like method calls and reference to PI makes sense but I don't know enough to say if it's correct or why it's doing these things"
+          },
+          "snippet7": {
+            "summary": "Takes a short and returns if it's a known machine type",
+            "comprehensibility": "not clear what Fields we're checkign or what 'isSynthetic' is doing\n\nIf it's not synthetic, check the modifiers and see if they're static and final, and then if they are and the field matches our type then it's valid? that's my quick read.\n\nIncomprehensible because I would need context of what is a Machine Type, what is CoffMachineType class. What does isSynthetic do?\nAnd why would I check all the fields of that class?\n\nWould need to see the class to know. I would think we would define some array of types and use that"
+          },
+          "snippet8": {
+            "summary": "Delete a local file directory and all sub directories",
+            "comprehensibility": "error cases (line 2-3) are straigthforward and make sense.\n\nmethod names like 'walkFileTree' make sense in this context.\n\nWe're using fancy java lambdas or whatever here, which maybe makes it a little more complicated but overall it makes sense because of the easy to understand class name and method names"
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-3",
+            "snippet-8"
+          ],
+          "2": [
+            "snippet-2",
+            "snippet-4"
+          ],
+          "3": [
+            "snippet-7"
+          ],
+          "4": [],
+          "5": [],
+          "6": [
+            "snippet-6"
+          ],
+          "7": [
+            "snippet-1"
+          ],
+          "8": [
+            "snippet-5"
+          ]
+        },
+        "phase3": {
+          "grouping:1:3,8": "I can go line by line through each and know what each line does. All variable names/method names make sense. Error cases are clear.\n\nThe business logic is straightforward based on the method name/signature.",
+          "comparison:1-2:3,8|2,4": "Position 2 requires more knowledge of the domain, like why are 'file' and 'jar' unique cases in isRemote.\n\nfor isValidProjectName, I would almost put that in position 1 but I only knocked it down because of the unclear reason for line 13 having two checks (why a separate letter or digit check? could be performance reasons, not sure)",
+          "grouping:2:2,4": "Kinda explained in the last one. Requires some business knowledge or knowledge of the unique cases here",
+          "comparison:2-3:2,4|7": "isMachineTypeDefined requires even more business knowledge about the domain, is this any machine? only coffee machines? is \"Coff\" even \"Coffee\" for sure?. I can make better guesses for Position 2 stuff.\n\nThis also uses advanced Java stuff that is not very common, checking class declared fields. I usually stay away from doing that",
+          "comparison:3-6:7|6": "At least in isMachienTypeDefined I can take good guesses at the logic, and at minimum the method name makes it clear what it's trying to check for.\n\natan2 requires either math knowledge or context in the package - I still don't know if it's a V2 or squared\n\nDepending on a user knowing math is difficult, I would add more comments",
+          "comparison:6-7:6|1": "lowestPositiveRoot is even more complicated math in my mind. Also it's confusing why line 10-17 are written the way they are, I think it could be combined and simplified",
+          "comparison:7-8:1|5": "I put CharSequence as most difficult because it's doing bitwise stuff and UTF stuff I'm not familiar with. Based on the comment about being optimized, I think it's complicated on purpose so that it's efficient. What's good for computers isn't always good for humans"
+        },
+        "round2_response_0": {
+          "q1": "The need to specific API knowledge and understanding what 'synthetic' means in this context.",
+          "q2": "It's made me realize it's easier to understand if you're familiar with reflection but overall doesn't change my understanding (without looking it up myself)",
+          "q3": "No, but if I read the API spec or looked it up I bet I would change my ranking to be easier"
+        },
+        "round2_response_1": {
+          "q1": "I agree with Expert D that it could be shorter",
+          "q2": "Not really but I think I understand it completely",
+          "q3": "No, I put it in position 2 because I think the other methods were just slightly easier to understand. Not that this one was hard but it wasn't the easiest."
+        },
+        "round2_response_2": {
+          "q1": "Not really resonating but rather I disagree with the feedback on variable names, they make sense to me and I think make the code more readable.",
+          "q2": "No.",
+          "q3": "No."
+        },
+        "round2_response_3": {
+          "q1": "A and D's notes on variable names and unannotated mathematical steps - I agree!",
+          "q2": "Seeing the feedback that this is how you would solve quadratic by hand makes me think this code is easier to understand, given that background knowledge.",
+          "q3": "I'd leave it at 7"
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-15T19:45:43.253981117-05:00"
+    }
+  ],
+  "expertD": [
+    {
+      "data": {
+        "username": "expertD",
+        "phase1": {
+          "snippet1": {
+            "summary": "Creates the validation of a machine type, where a type is received as a short variable and verified if it is a known type. If it is a known type, it checks whether the type entered is within CoffMachineType, filtering that it has been generated by the compiler and that it must be of final and static type (and clearly not an empty value). If all of this is true, the result is true; otherwise, it is false.\n\nTranslated with DeepL.com (free version)",
+            "comprehensibility": "The code is clear, concise, and uses the language's native resources to simplify its understanding."
+          },
+          "snippet2": {
+            "summary": "iterates through a sequence of characters to define   the length of utf8 characters in that sequence",
+            "comprehensibility": "It is difficult to follow the thread of the code when operating with numbers and the numerical values of a letter.\nThe handling of the exception is not well specified.\nIt is difficult to understand the purpose of the first while loop when there is immediately another for loop that iterates the same condition that has already been validated by the while loop.\nThe comment at the beginning does not provide me with any guiding information, but rather indicates a state of the code that is not important when reading it.\ni don't know what is the CharSequence object definition, and the method is not called like action"
+          },
+          "snippet3": {
+            "summary": "There is a definition of how to call a name, and this function defines whether the name is valid or not based on what is expected.",
+            "comprehensibility": "It is an understandable method, but the initial validations could be summarized a little without losing the readability of the code."
+          },
+          "snippet4": {
+            "summary": "is the calculation of an arctangent, returning a rational number for an angle.",
+            "comprehensibility": "It's understandable, but the names of the variables and the function are a little confusing. You can use Java validation in the first if and elif statements. The lack of curly brackets {} prevents me from seeing explicitly where the conditions begin and end."
+          },
+          "snippet5": {
+            "summary": "is the filter that receives a URI to determine whether it is a remote URI or not.",
+            "comprehensibility": "The code is clear and easy to read in its operation due to its good structure."
+          },
+          "snippet6": {
+            "summary": "deletes all files from a directory that is given as a parameter",
+            "comprehensibility": "The code is understandable, although it is difficult to understand why the methods are organized in this way."
+          },
+          "snippet7": {
+            "summary": "It is the calculation of the positive square root of a small number. Validating whether a value is null.",
+            "comprehensibility": "The names of the variables are unclear, which makes it quite difficult to understand (even though it is a mathematical principle)."
+          },
+          "snippet8": {
+            "summary": "searches for the position where a sequence of characters begins within another sequence of characters",
+            "comprehensibility": "The code is clear in its objective, declaring the statements in order and giving me the desired result."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-3"
+          ],
+          "2": [
+            "snippet-5"
+          ],
+          "3": [
+            "snippet-1"
+          ],
+          "4": [
+            "snippet-6"
+          ],
+          "5": [
+            "snippet-8"
+          ],
+          "6": [
+            "snippet-7"
+          ],
+          "7": [
+            "snippet-4"
+          ],
+          "8": [
+            "snippet-2"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:3|5": "I can understand isValidProjectName better than isRemote because of the clarity of the code flow.",
+          "comparison:2-3:5|1": "isRemote is simpler and easier to understand than isMachineTypeDefined due to the control flow.\nAdditionally, the complexity of the isRemote problem is perceived as less complex.",
+          "comparison:3-4:1|6": "The deleteRecursively code can be improved by using native Java resources, which I see are not being used. Unlike isMachineTypeDefined, which uses Java methods to shorten the code logic.",
+          "comparison:4-5:6|8": "The way indexOfIgnoreCase is resolved seems to be a more complicated problem than deleteRecursively, when in fact it is not, since an exception is not centralized as a response and this validation is performed several times.",
+          "comparison:5-6:8|7": "On lowestPositiveRoot, I disagree with naming variables as letters, because the code looks like a mathematical equation rather than the solution to an algorithm.",
+          "comparison:6-7:7|4": "The atan2 method expects a context to understand how each of its validations works. In this case, it shares several errors with lowestPositiveRoot, but lowestPositiveRoot handles the code better in fragments.",
+          "comparison:7-8:4|2": "la logica que se usa en las validaciones de encodedLength es muy complicado de entender"
+        },
+        "round2_response_0": {
+          "q1": "I'm mildly agree with the observations, given that the constants used by the code can be deduced from the names of those constants. However, it is true that the code can fail at one point, and this is confusing.",
+          "q2": "allowed me to see details that I hadn't noticed before",
+          "q3": "With that clarification, I would change my decision, but not by much."
+        },
+        "round2_response_1": {
+          "q1": "I agree with the statements made by the other experts, as the code has aspects of readability that make it understandable.",
+          "q2": "The comments show me some points of comparison with other functions that justify why it is more readable than other pieces of code.",
+          "q3": "I would change the order of this piece of code. I wouldn't leave it in first position, but I would leave it in second position."
+        },
+        "round2_response_2": {
+          "q1": "In some respects, such as the naming of variables, I disagree, since variables can be understood.",
+          "q2": "No, because the comments explain why it is in third place, in my opinion.",
+          "q3": "I don't see the need for it."
+        },
+        "round2_response_3": {
+          "q1": "I strongly agree that the code expects the reader to understand the context of how the square root works and that the names of the variables should be improved.",
+          "q2": "I think most of us end up in a similar position.",
+          "q3": "No, because the method must improve the names of the variables to better explain the mathematical procedure."
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-16T09:14:58.948841002-05:00"
+    },
+    {
+      "data": {
+        "username": "expertD",
+        "phase1": {
+          "snippet1": {
+            "summary": "Creates the validation of a machine type, where a type is received as a short variable and verified if it is a known type. If it is a known type, it checks whether the type entered is within CoffMachineType, filtering that it has been generated by the compiler and that it must be of final and static type (and clearly not an empty value). If all of this is true, the result is true; otherwise, it is false.\n\nTranslated with DeepL.com (free version)",
+            "comprehensibility": "The code is clear, concise, and uses the language's native resources to simplify its understanding."
+          },
+          "snippet2": {
+            "summary": "iterates through a sequence of characters to define   the length of utf8 characters in that sequence",
+            "comprehensibility": "It is difficult to follow the thread of the code when operating with numbers and the numerical values of a letter.\nThe handling of the exception is not well specified.\nIt is difficult to understand the purpose of the first while loop when there is immediately another for loop that iterates the same condition that has already been validated by the while loop.\nThe comment at the beginning does not provide me with any guiding information, but rather indicates a state of the code that is not important when reading it.\ni don't know what is the CharSequence object definition, and the method is not called like action"
+          },
+          "snippet3": {
+            "summary": "There is a definition of how to call a name, and this function defines whether the name is valid or not based on what is expected.",
+            "comprehensibility": "It is an understandable method, but the initial validations could be summarized a little without losing the readability of the code."
+          },
+          "snippet4": {
+            "summary": "is the calculation of an arctangent, returning a rational number for an angle.",
+            "comprehensibility": "It's understandable, but the names of the variables and the function are a little confusing. You can use Java validation in the first if and elif statements. The lack of curly brackets {} prevents me from seeing explicitly where the conditions begin and end."
+          },
+          "snippet5": {
+            "summary": "is the filter that receives a URI to determine whether it is a remote URI or not.",
+            "comprehensibility": "The code is clear and easy to read in its operation due to its good structure."
+          },
+          "snippet6": {
+            "summary": "deletes all files from a directory that is given as a parameter",
+            "comprehensibility": "The code is understandable, although it is difficult to understand why the methods are organized in this way."
+          },
+          "snippet7": {
+            "summary": "It is the calculation of the positive square root of a small number. Validating whether a value is null.",
+            "comprehensibility": "The names of the variables are unclear, which makes it quite difficult to understand (even though it is a mathematical principle)."
+          },
+          "snippet8": {
+            "summary": "searches for the position where a sequence of characters begins within another sequence of characters",
+            "comprehensibility": "The code is clear in its objective, declaring the statements in order and giving me the desired result."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-3"
+          ],
+          "2": [
+            "snippet-5"
+          ],
+          "3": [
+            "snippet-1"
+          ],
+          "4": [
+            "snippet-6"
+          ],
+          "5": [
+            "snippet-8"
+          ],
+          "6": [
+            "snippet-7"
+          ],
+          "7": [
+            "snippet-4"
+          ],
+          "8": [
+            "snippet-2"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:3|5": "I can understand isValidProjectName better than isRemote because of the clarity of the code flow.",
+          "comparison:2-3:5|1": "isRemote is simpler and easier to understand than isMachineTypeDefined due to the control flow.\nAdditionally, the complexity of the isRemote problem is perceived as less complex.",
+          "comparison:3-4:1|6": "The deleteRecursively code can be improved by using native Java resources, which I see are not being used. Unlike isMachineTypeDefined, which uses Java methods to shorten the code logic.",
+          "comparison:4-5:6|8": "The way indexOfIgnoreCase is resolved seems to be a more complicated problem than deleteRecursively, when in fact it is not, since an exception is not centralized as a response and this validation is performed several times.",
+          "comparison:5-6:8|7": "On lowestPositiveRoot, I disagree with naming variables as letters, because the code looks like a mathematical equation rather than the solution to an algorithm.",
+          "comparison:6-7:7|4": "The atan2 method expects a context to understand how each of its validations works. In this case, it shares several errors with lowestPositiveRoot, but lowestPositiveRoot handles the code better in fragments.",
+          "comparison:7-8:4|2": "la logica que se usa en las validaciones de encodedLength es muy complicado de entender"
+        },
+        "round2_response_0": {
+          "q1": "I'm mildly agree with the observations, given that the constants used by the code can be deduced from the names of those constants. However, it is true that the code can fail at one point, and this is confusing.",
+          "q2": "allowed me to see details that I hadn't noticed before",
+          "q3": "With that clarification, I would change my decision, but not by much."
+        },
+        "round2_response_1": {
+          "q1": "I agree with the statements made by the other experts, as the code has aspects of readability that make it understandable.",
+          "q2": "The comments show me some points of comparison with other functions that justify why it is more readable than other pieces of code.",
+          "q3": "I would change the order of this piece of code. I wouldn't leave it in first position, but I would leave it in second position."
+        },
+        "round2_response_2": {
+          "q1": "In some respects, such as the naming of variables, I disagree, since variables can be understood.",
+          "q2": "No, because the comments explain why it is in third place, in my opinion.",
+          "q3": "I don't see the need for it."
+        },
+        "round2_response_3": {
+          "q1": "I strongly agree that the code expects the reader to understand the context of how the square root works and that the names of the variables should be improved.",
+          "q2": "I think most of us end up in a similar position.",
+          "q3": "No, because the method must improve the names of the variables to better explain the mathematical procedure."
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-16T09:15:05.183562634-05:00"
+    },
+    {
+      "data": {
+        "username": "expertD",
+        "phase1": {
+          "snippet1": {
+            "summary": "Creates the validation of a machine type, where a type is received as a short variable and verified if it is a known type. If it is a known type, it checks whether the type entered is within CoffMachineType, filtering that it has been generated by the compiler and that it must be of final and static type (and clearly not an empty value). If all of this is true, the result is true; otherwise, it is false.\n\nTranslated with DeepL.com (free version)",
+            "comprehensibility": "The code is clear, concise, and uses the language's native resources to simplify its understanding."
+          },
+          "snippet2": {
+            "summary": "iterates through a sequence of characters to define   the length of utf8 characters in that sequence",
+            "comprehensibility": "It is difficult to follow the thread of the code when operating with numbers and the numerical values of a letter.\nThe handling of the exception is not well specified.\nIt is difficult to understand the purpose of the first while loop when there is immediately another for loop that iterates the same condition that has already been validated by the while loop.\nThe comment at the beginning does not provide me with any guiding information, but rather indicates a state of the code that is not important when reading it.\ni don't know what is the CharSequence object definition, and the method is not called like action"
+          },
+          "snippet3": {
+            "summary": "There is a definition of how to call a name, and this function defines whether the name is valid or not based on what is expected.",
+            "comprehensibility": "It is an understandable method, but the initial validations could be summarized a little without losing the readability of the code."
+          },
+          "snippet4": {
+            "summary": "is the calculation of an arctangent, returning a rational number for an angle.",
+            "comprehensibility": "It's understandable, but the names of the variables and the function are a little confusing. You can use Java validation in the first if and elif statements. The lack of curly brackets {} prevents me from seeing explicitly where the conditions begin and end."
+          },
+          "snippet5": {
+            "summary": "is the filter that receives a URI to determine whether it is a remote URI or not.",
+            "comprehensibility": "The code is clear and easy to read in its operation due to its good structure."
+          },
+          "snippet6": {
+            "summary": "deletes all files from a directory that is given as a parameter",
+            "comprehensibility": "The code is understandable, although it is difficult to understand why the methods are organized in this way."
+          },
+          "snippet7": {
+            "summary": "It is the calculation of the positive square root of a small number. Validating whether a value is null.",
+            "comprehensibility": "The names of the variables are unclear, which makes it quite difficult to understand (even though it is a mathematical principle)."
+          },
+          "snippet8": {
+            "summary": "searches for the position where a sequence of characters begins within another sequence of characters",
+            "comprehensibility": "The code is clear in its objective, declaring the statements in order and giving me the desired result."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-3"
+          ],
+          "2": [
+            "snippet-5"
+          ],
+          "3": [
+            "snippet-1"
+          ],
+          "4": [
+            "snippet-6"
+          ],
+          "5": [
+            "snippet-8"
+          ],
+          "6": [
+            "snippet-7"
+          ],
+          "7": [
+            "snippet-4"
+          ],
+          "8": [
+            "snippet-2"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:3|5": "I can understand isValidProjectName better than isRemote because of the clarity of the code flow.",
+          "comparison:2-3:5|1": "isRemote is simpler and easier to understand than isMachineTypeDefined due to the control flow.\nAdditionally, the complexity of the isRemote problem is perceived as less complex.",
+          "comparison:3-4:1|6": "The deleteRecursively code can be improved by using native Java resources, which I see are not being used. Unlike isMachineTypeDefined, which uses Java methods to shorten the code logic.",
+          "comparison:4-5:6|8": "The way indexOfIgnoreCase is resolved seems to be a more complicated problem than deleteRecursively, when in fact it is not, since an exception is not centralized as a response and this validation is performed several times.",
+          "comparison:5-6:8|7": "On lowestPositiveRoot, I disagree with naming variables as letters, because the code looks like a mathematical equation rather than the solution to an algorithm.",
+          "comparison:6-7:7|4": "The atan2 method expects a context to understand how each of its validations works. In this case, it shares several errors with lowestPositiveRoot, but lowestPositiveRoot handles the code better in fragments.",
+          "comparison:7-8:4|2": "la logica que se usa en las validaciones de encodedLength es muy complicado de entender"
+        },
+        "round2_response_0": {
+          "q1": "I'm mildly agree with the observations, given that the constants used by the code can be deduced from the names of those constants. However, it is true that the code can fail at one point, and this is confusing.",
+          "q2": "allowed me to see details that I hadn't noticed before",
+          "q3": "With that clarification, I would change my decision, but not by much."
+        },
+        "round2_response_1": {
+          "q1": "I agree with the statements made by the other experts, as the code has aspects of readability that make it understandable.",
+          "q2": "The comments show me some points of comparison with other functions that justify why it is more readable than other pieces of code.",
+          "q3": "I would change the order of this piece of code. I wouldn't leave it in first position, but I would leave it in second position."
+        },
+        "round2_response_2": {
+          "q1": "In some respects, such as the naming of variables, I disagree, since variables can be understood.",
+          "q2": "No, because the comments explain why it is in third place, in my opinion.",
+          "q3": "I don't see the need for it."
+        },
+        "round2_response_3": {
+          "q1": "I strongly agree that the code expects the reader to understand the context of how the square root works and that the names of the variables should be improved.",
+          "q2": "I think most of us end up in a similar position.",
+          "q3": "No, because the method must improve the names of the variables to better explain the mathematical procedure."
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-18T07:34:05.966373785-05:00"
+    },
+    {
+      "data": {
+        "username": "expertD",
+        "phase1": {
+          "snippet1": {
+            "summary": "Creates the validation of a machine type, where a type is received as a short variable and verified if it is a known type. If it is a known type, it checks whether the type entered is within CoffMachineType, filtering that it has been generated by the compiler and that it must be of final and static type (and clearly not an empty value). If all of this is true, the result is true; otherwise, it is false.\n\nTranslated with DeepL.com (free version)",
+            "comprehensibility": "The code is clear, concise, and uses the language's native resources to simplify its understanding."
+          },
+          "snippet2": {
+            "summary": "iterates through a sequence of characters to define   the length of utf8 characters in that sequence",
+            "comprehensibility": "It is difficult to follow the thread of the code when operating with numbers and the numerical values of a letter.\nThe handling of the exception is not well specified.\nIt is difficult to understand the purpose of the first while loop when there is immediately another for loop that iterates the same condition that has already been validated by the while loop.\nThe comment at the beginning does not provide me with any guiding information, but rather indicates a state of the code that is not important when reading it.\ni don't know what is the CharSequence object definition, and the method is not called like action"
+          },
+          "snippet3": {
+            "summary": "There is a definition of how to call a name, and this function defines whether the name is valid or not based on what is expected.",
+            "comprehensibility": "It is an understandable method, but the initial validations could be summarized a little without losing the readability of the code."
+          },
+          "snippet4": {
+            "summary": "is the calculation of an arctangent, returning a rational number for an angle.",
+            "comprehensibility": "It's understandable, but the names of the variables and the function are a little confusing. You can use Java validation in the first if and elif statements. The lack of curly brackets {} prevents me from seeing explicitly where the conditions begin and end."
+          },
+          "snippet5": {
+            "summary": "is the filter that receives a URI to determine whether it is a remote URI or not.",
+            "comprehensibility": "The code is clear and easy to read in its operation due to its good structure."
+          },
+          "snippet6": {
+            "summary": "deletes all files from a directory that is given as a parameter",
+            "comprehensibility": "The code is understandable, although it is difficult to understand why the methods are organized in this way."
+          },
+          "snippet7": {
+            "summary": "It is the calculation of the positive square root of a small number. Validating whether a value is null.",
+            "comprehensibility": "The names of the variables are unclear, which makes it quite difficult to understand (even though it is a mathematical principle)."
+          },
+          "snippet8": {
+            "summary": "searches for the position where a sequence of characters begins within another sequence of characters",
+            "comprehensibility": "The code is clear in its objective, declaring the statements in order and giving me the desired result."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-3"
+          ],
+          "2": [
+            "snippet-5"
+          ],
+          "3": [
+            "snippet-1"
+          ],
+          "4": [
+            "snippet-6"
+          ],
+          "5": [
+            "snippet-8"
+          ],
+          "6": [
+            "snippet-7"
+          ],
+          "7": [
+            "snippet-4"
+          ],
+          "8": [
+            "snippet-2"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:3|5": "I can understand isValidProjectName better than isRemote because of the clarity of the code flow.",
+          "comparison:2-3:5|1": "isRemote is simpler and easier to understand than isMachineTypeDefined due to the control flow.\nAdditionally, the complexity of the isRemote problem is perceived as less complex.",
+          "comparison:3-4:1|6": "The deleteRecursively code can be improved by using native Java resources, which I see are not being used. Unlike isMachineTypeDefined, which uses Java methods to shorten the code logic.",
+          "comparison:4-5:6|8": "The way indexOfIgnoreCase is resolved seems to be a more complicated problem than deleteRecursively, when in fact it is not, since an exception is not centralized as a response and this validation is performed several times.",
+          "comparison:5-6:8|7": "On lowestPositiveRoot, I disagree with naming variables as letters, because the code looks like a mathematical equation rather than the solution to an algorithm.",
+          "comparison:6-7:7|4": "The atan2 method expects a context to understand how each of its validations works. In this case, it shares several errors with lowestPositiveRoot, but lowestPositiveRoot handles the code better in fragments.",
+          "comparison:7-8:4|2": "la logica que se usa en las validaciones de encodedLength es muy complicado de entender"
+        },
+        "round2_response_0": {
+          "q1": "I'm mildly agree with the observations, given that the constants used by the code can be deduced from the names of those constants. However, it is true that the code can fail at one point, and this is confusing.",
+          "q2": "allowed me to see details that I hadn't noticed before",
+          "q3": "With that clarification, I would change my decision, but not by much."
+        },
+        "round2_response_1": {
+          "q1": "I agree with the statements made by the other experts, as the code has aspects of readability that make it understandable.",
+          "q2": "The comments show me some points of comparison with other functions that justify why it is more readable than other pieces of code.",
+          "q3": "I would change the order of this piece of code. I wouldn't leave it in first position, but I would leave it in second position."
+        },
+        "round2_response_2": {
+          "q1": "In some respects, such as the naming of variables, I disagree, since variables can be understood.",
+          "q2": "No, because the comments explain why it is in third place, in my opinion.",
+          "q3": "I don't see the need for it."
+        },
+        "round2_response_3": {
+          "q1": "I strongly agree that the code expects the reader to understand the context of how the square root works and that the names of the variables should be improved.",
+          "q2": "I think most of us end up in a similar position.",
+          "q3": "No, because the method must improve the names of the variables to better explain the mathematical procedure."
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-18T07:34:17.050596385-05:00"
+    },
+    {
+      "data": {
+        "username": "expertD",
+        "phase1": {
+          "snippet1": {
+            "summary": "Creates the validation of a machine type, where a type is received as a short variable and verified if it is a known type. If it is a known type, it checks whether the type entered is within CoffMachineType, filtering that it has been generated by the compiler and that it must be of final and static type (and clearly not an empty value). If all of this is true, the result is true; otherwise, it is false.\n\nTranslated with DeepL.com (free version)",
+            "comprehensibility": "The code is clear, concise, and uses the language's native resources to simplify its understanding."
+          },
+          "snippet2": {
+            "summary": "iterates through a sequence of characters to define   the length of utf8 characters in that sequence",
+            "comprehensibility": "It is difficult to follow the thread of the code when operating with numbers and the numerical values of a letter.\nThe handling of the exception is not well specified.\nIt is difficult to understand the purpose of the first while loop when there is immediately another for loop that iterates the same condition that has already been validated by the while loop.\nThe comment at the beginning does not provide me with any guiding information, but rather indicates a state of the code that is not important when reading it.\ni don't know what is the CharSequence object definition, and the method is not called like action"
+          },
+          "snippet3": {
+            "summary": "There is a definition of how to call a name, and this function defines whether the name is valid or not based on what is expected.",
+            "comprehensibility": "It is an understandable method, but the initial validations could be summarized a little without losing the readability of the code."
+          },
+          "snippet4": {
+            "summary": "is the calculation of an arctangent, returning a rational number for an angle.",
+            "comprehensibility": "It's understandable, but the names of the variables and the function are a little confusing. You can use Java validation in the first if and elif statements. The lack of curly brackets {} prevents me from seeing explicitly where the conditions begin and end."
+          },
+          "snippet5": {
+            "summary": "is the filter that receives a URI to determine whether it is a remote URI or not.",
+            "comprehensibility": "The code is clear and easy to read in its operation due to its good structure."
+          },
+          "snippet6": {
+            "summary": "deletes all files from a directory that is given as a parameter",
+            "comprehensibility": "The code is understandable, although it is difficult to understand why the methods are organized in this way."
+          },
+          "snippet7": {
+            "summary": "It is the calculation of the positive square root of a small number. Validating whether a value is null.",
+            "comprehensibility": "The names of the variables are unclear, which makes it quite difficult to understand (even though it is a mathematical principle)."
+          },
+          "snippet8": {
+            "summary": "searches for the position where a sequence of characters begins within another sequence of characters",
+            "comprehensibility": "The code is clear in its objective, declaring the statements in order and giving me the desired result."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-3"
+          ],
+          "2": [
+            "snippet-5"
+          ],
+          "3": [
+            "snippet-1"
+          ],
+          "4": [
+            "snippet-6"
+          ],
+          "5": [
+            "snippet-8"
+          ],
+          "6": [
+            "snippet-7"
+          ],
+          "7": [
+            "snippet-4"
+          ],
+          "8": [
+            "snippet-2"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:3|5": "I can understand isValidProjectName better than isRemote because of the clarity of the code flow.",
+          "comparison:2-3:5|1": "isRemote is simpler and easier to understand than isMachineTypeDefined due to the control flow.\nAdditionally, the complexity of the isRemote problem is perceived as less complex.",
+          "comparison:3-4:1|6": "The deleteRecursively code can be improved by using native Java resources, which I see are not being used. Unlike isMachineTypeDefined, which uses Java methods to shorten the code logic.",
+          "comparison:4-5:6|8": "The way indexOfIgnoreCase is resolved seems to be a more complicated problem than deleteRecursively, when in fact it is not, since an exception is not centralized as a response and this validation is performed several times.",
+          "comparison:5-6:8|7": "On lowestPositiveRoot, I disagree with naming variables as letters, because the code looks like a mathematical equation rather than the solution to an algorithm.",
+          "comparison:6-7:7|4": "The atan2 method expects a context to understand how each of its validations works. In this case, it shares several errors with lowestPositiveRoot, but lowestPositiveRoot handles the code better in fragments.",
+          "comparison:7-8:4|2": "la logica que se usa en las validaciones de encodedLength es muy complicado de entender"
+        },
+        "round2_response_0": {
+          "q1": "I'm mildly agree with the observations, given that the constants used by the code can be deduced from the names of those constants. However, it is true that the code can fail at one point, and this is confusing.",
+          "q2": "allowed me to see details that I hadn't noticed before",
+          "q3": "With that clarification, I would change my decision, but not by much."
+        },
+        "round2_response_1": {
+          "q1": "I agree with the statements made by the other experts, as the code has aspects of readability that make it understandable.",
+          "q2": "The comments show me some points of comparison with other functions that justify why it is more readable than other pieces of code.",
+          "q3": "I would change the order of this piece of code. I wouldn't leave it in first position, but I would leave it in second position."
+        },
+        "round2_response_2": {
+          "q1": "In some respects, such as the naming of variables, I disagree, since variables can be understood.",
+          "q2": "No, because the comments explain why it is in third place, in my opinion.",
+          "q3": "I don't see the need for it."
+        },
+        "round2_response_3": {
+          "q1": "I strongly agree that the code expects the reader to understand the context of how the square root works and that the names of the variables should be improved.",
+          "q2": "I think most of us end up in a similar position.",
+          "q3": "No, because the method must improve the names of the variables to better explain the mathematical procedure."
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-18T07:34:20.220629488-05:00"
+    },
+    {
+      "data": {
+        "username": "expertD",
+        "phase1": {
+          "snippet1": {
+            "summary": "Creates the validation of a machine type, where a type is received as a short variable and verified if it is a known type. If it is a known type, it checks whether the type entered is within CoffMachineType, filtering that it has been generated by the compiler and that it must be of final and static type (and clearly not an empty value). If all of this is true, the result is true; otherwise, it is false.\n\nTranslated with DeepL.com (free version)",
+            "comprehensibility": "The code is clear, concise, and uses the language's native resources to simplify its understanding."
+          },
+          "snippet2": {
+            "summary": "iterates through a sequence of characters to define   the length of utf8 characters in that sequence",
+            "comprehensibility": "It is difficult to follow the thread of the code when operating with numbers and the numerical values of a letter.\nThe handling of the exception is not well specified.\nIt is difficult to understand the purpose of the first while loop when there is immediately another for loop that iterates the same condition that has already been validated by the while loop.\nThe comment at the beginning does not provide me with any guiding information, but rather indicates a state of the code that is not important when reading it.\ni don't know what is the CharSequence object definition, and the method is not called like action"
+          },
+          "snippet3": {
+            "summary": "There is a definition of how to call a name, and this function defines whether the name is valid or not based on what is expected.",
+            "comprehensibility": "It is an understandable method, but the initial validations could be summarized a little without losing the readability of the code."
+          },
+          "snippet4": {
+            "summary": "is the calculation of an arctangent, returning a rational number for an angle.",
+            "comprehensibility": "It's understandable, but the names of the variables and the function are a little confusing. You can use Java validation in the first if and elif statements. The lack of curly brackets {} prevents me from seeing explicitly where the conditions begin and end."
+          },
+          "snippet5": {
+            "summary": "is the filter that receives a URI to determine whether it is a remote URI or not.",
+            "comprehensibility": "The code is clear and easy to read in its operation due to its good structure."
+          },
+          "snippet6": {
+            "summary": "deletes all files from a directory that is given as a parameter",
+            "comprehensibility": "The code is understandable, although it is difficult to understand why the methods are organized in this way."
+          },
+          "snippet7": {
+            "summary": "It is the calculation of the positive square root of a small number. Validating whether a value is null.",
+            "comprehensibility": "The names of the variables are unclear, which makes it quite difficult to understand (even though it is a mathematical principle)."
+          },
+          "snippet8": {
+            "summary": "searches for the position where a sequence of characters begins within another sequence of characters",
+            "comprehensibility": "The code is clear in its objective, declaring the statements in order and giving me the desired result."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-3"
+          ],
+          "2": [
+            "snippet-5"
+          ],
+          "3": [
+            "snippet-1"
+          ],
+          "4": [
+            "snippet-6"
+          ],
+          "5": [
+            "snippet-8"
+          ],
+          "6": [
+            "snippet-7"
+          ],
+          "7": [
+            "snippet-4"
+          ],
+          "8": [
+            "snippet-2"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:3|5": "I can understand isValidProjectName better than isRemote because of the clarity of the code flow.",
+          "comparison:2-3:5|1": "isRemote is simpler and easier to understand than isMachineTypeDefined due to the control flow.\nAdditionally, the complexity of the isRemote problem is perceived as less complex.",
+          "comparison:3-4:1|6": "The deleteRecursively code can be improved by using native Java resources, which I see are not being used. Unlike isMachineTypeDefined, which uses Java methods to shorten the code logic.",
+          "comparison:4-5:6|8": "The way indexOfIgnoreCase is resolved seems to be a more complicated problem than deleteRecursively, when in fact it is not, since an exception is not centralized as a response and this validation is performed several times.",
+          "comparison:5-6:8|7": "On lowestPositiveRoot, I disagree with naming variables as letters, because the code looks like a mathematical equation rather than the solution to an algorithm.",
+          "comparison:6-7:7|4": "The atan2 method expects a context to understand how each of its validations works. In this case, it shares several errors with lowestPositiveRoot, but lowestPositiveRoot handles the code better in fragments.",
+          "comparison:7-8:4|2": "la logica que se usa en las validaciones de encodedLength es muy complicado de entender"
+        },
+        "round2_response_0": {
+          "q1": "I'm mildly agree with the observations, given that the constants used by the code can be deduced from the names of those constants. However, it is true that the code can fail at one point, and this is confusing.",
+          "q2": "allowed me to see details that I hadn't noticed before",
+          "q3": "With that clarification, I would change my decision, but not by much."
+        },
+        "round2_response_1": {
+          "q1": "I agree with the statements made by the other experts, as the code has aspects of readability that make it understandable.",
+          "q2": "The comments show me some points of comparison with other functions that justify why it is more readable than other pieces of code.",
+          "q3": "I would change the order of this piece of code. I wouldn't leave it in first position, but I would leave it in second position."
+        },
+        "round2_response_2": {
+          "q1": "In some respects, such as the naming of variables, I disagree, since variables can be understood.",
+          "q2": "No, because the comments explain why it is in third place, in my opinion.",
+          "q3": "I don't see the need for it."
+        },
+        "round2_response_3": {
+          "q1": "I strongly agree that the code expects the reader to understand the context of how the square root works and that the names of the variables should be improved.",
+          "q2": "I think most of us end up in a similar position.",
+          "q3": "No, because the method must improve the names of the variables to better explain the mathematical procedure."
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-18T07:34:27.40426718-05:00"
+    },
+    {
+      "data": {
+        "username": "expertD",
+        "phase1": {
+          "snippet1": {
+            "summary": "Creates the validation of a machine type, where a type is received as a short variable and verified if it is a known type. If it is a known type, it checks whether the type entered is within CoffMachineType, filtering that it has been generated by the compiler and that it must be of final and static type (and clearly not an empty value). If all of this is true, the result is true; otherwise, it is false.\n\nTranslated with DeepL.com (free version)",
+            "comprehensibility": "The code is clear, concise, and uses the language's native resources to simplify its understanding."
+          },
+          "snippet2": {
+            "summary": "iterates through a sequence of characters to define   the length of utf8 characters in that sequence",
+            "comprehensibility": "It is difficult to follow the thread of the code when operating with numbers and the numerical values of a letter.\nThe handling of the exception is not well specified.\nIt is difficult to understand the purpose of the first while loop when there is immediately another for loop that iterates the same condition that has already been validated by the while loop.\nThe comment at the beginning does not provide me with any guiding information, but rather indicates a state of the code that is not important when reading it.\ni don't know what is the CharSequence object definition, and the method is not called like action"
+          },
+          "snippet3": {
+            "summary": "There is a definition of how to call a name, and this function defines whether the name is valid or not based on what is expected.",
+            "comprehensibility": "It is an understandable method, but the initial validations could be summarized a little without losing the readability of the code."
+          },
+          "snippet4": {
+            "summary": "is the calculation of an arctangent, returning a rational number for an angle.",
+            "comprehensibility": "It's understandable, but the names of the variables and the function are a little confusing. You can use Java validation in the first if and elif statements. The lack of curly brackets {} prevents me from seeing explicitly where the conditions begin and end."
+          },
+          "snippet5": {
+            "summary": "is the filter that receives a URI to determine whether it is a remote URI or not.",
+            "comprehensibility": "The code is clear and easy to read in its operation due to its good structure."
+          },
+          "snippet6": {
+            "summary": "deletes all files from a directory that is given as a parameter",
+            "comprehensibility": "The code is understandable, although it is difficult to understand why the methods are organized in this way."
+          },
+          "snippet7": {
+            "summary": "It is the calculation of the positive square root of a small number. Validating whether a value is null.",
+            "comprehensibility": "The names of the variables are unclear, which makes it quite difficult to understand (even though it is a mathematical principle)."
+          },
+          "snippet8": {
+            "summary": "searches for the position where a sequence of characters begins within another sequence of characters",
+            "comprehensibility": "The code is clear in its objective, declaring the statements in order and giving me the desired result."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-3"
+          ],
+          "2": [
+            "snippet-5"
+          ],
+          "3": [
+            "snippet-1"
+          ],
+          "4": [
+            "snippet-6"
+          ],
+          "5": [
+            "snippet-8"
+          ],
+          "6": [
+            "snippet-7"
+          ],
+          "7": [
+            "snippet-4"
+          ],
+          "8": [
+            "snippet-2"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:3|5": "I can understand isValidProjectName better than isRemote because of the clarity of the code flow.",
+          "comparison:2-3:5|1": "isRemote is simpler and easier to understand than isMachineTypeDefined due to the control flow.\nAdditionally, the complexity of the isRemote problem is perceived as less complex.",
+          "comparison:3-4:1|6": "The deleteRecursively code can be improved by using native Java resources, which I see are not being used. Unlike isMachineTypeDefined, which uses Java methods to shorten the code logic.",
+          "comparison:4-5:6|8": "The way indexOfIgnoreCase is resolved seems to be a more complicated problem than deleteRecursively, when in fact it is not, since an exception is not centralized as a response and this validation is performed several times.",
+          "comparison:5-6:8|7": "On lowestPositiveRoot, I disagree with naming variables as letters, because the code looks like a mathematical equation rather than the solution to an algorithm.",
+          "comparison:6-7:7|4": "The atan2 method expects a context to understand how each of its validations works. In this case, it shares several errors with lowestPositiveRoot, but lowestPositiveRoot handles the code better in fragments.",
+          "comparison:7-8:4|2": "la logica que se usa en las validaciones de encodedLength es muy complicado de entender"
+        },
+        "round2_response_0": {
+          "q1": "I'm mildly agree with the observations, given that the constants used by the code can be deduced from the names of those constants. However, it is true that the code can fail at one point, and this is confusing.",
+          "q2": "allowed me to see details that I hadn't noticed before",
+          "q3": "With that clarification, I would change my decision, but not by much."
+        },
+        "round2_response_1": {
+          "q1": "I agree with the statements made by the other experts, as the code has aspects of readability that make it understandable.",
+          "q2": "The comments show me some points of comparison with other functions that justify why it is more readable than other pieces of code.",
+          "q3": "I would change the order of this piece of code. I wouldn't leave it in first position, but I would leave it in second position."
+        },
+        "round2_response_2": {
+          "q1": "In some respects, such as the naming of variables, I disagree, since variables can be understood.",
+          "q2": "No, because the comments explain why it is in third place, in my opinion.",
+          "q3": "I don't see the need for it."
+        },
+        "round2_response_3": {
+          "q1": "I strongly agree that the code expects the reader to understand the context of how the square root works and that the names of the variables should be improved.",
+          "q2": "I think most of us end up in a similar position.",
+          "q3": "No, because the method must improve the names of the variables to better explain the mathematical procedure."
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-18T08:53:59.442843647-05:00"
+    },
+    {
+      "data": {
+        "username": "expertD",
+        "phase1": {
+          "snippet1": {
+            "summary": "Creates the validation of a machine type, where a type is received as a short variable and verified if it is a known type. If it is a known type, it checks whether the type entered is within CoffMachineType, filtering that it has been generated by the compiler and that it must be of final and static type (and clearly not an empty value). If all of this is true, the result is true; otherwise, it is false.\n\nTranslated with DeepL.com (free version)",
+            "comprehensibility": "The code is clear, concise, and uses the language's native resources to simplify its understanding."
+          },
+          "snippet2": {
+            "summary": "iterates through a sequence of characters to define   the length of utf8 characters in that sequence",
+            "comprehensibility": "It is difficult to follow the thread of the code when operating with numbers and the numerical values of a letter.\nThe handling of the exception is not well specified.\nIt is difficult to understand the purpose of the first while loop when there is immediately another for loop that iterates the same condition that has already been validated by the while loop.\nThe comment at the beginning does not provide me with any guiding information, but rather indicates a state of the code that is not important when reading it.\ni don't know what is the CharSequence object definition, and the method is not called like action"
+          },
+          "snippet3": {
+            "summary": "There is a definition of how to call a name, and this function defines whether the name is valid or not based on what is expected.",
+            "comprehensibility": "It is an understandable method, but the initial validations could be summarized a little without losing the readability of the code."
+          },
+          "snippet4": {
+            "summary": "is the calculation of an arctangent, returning a rational number for an angle.",
+            "comprehensibility": "It's understandable, but the names of the variables and the function are a little confusing. You can use Java validation in the first if and elif statements. The lack of curly brackets {} prevents me from seeing explicitly where the conditions begin and end."
+          },
+          "snippet5": {
+            "summary": "is the filter that receives a URI to determine whether it is a remote URI or not.",
+            "comprehensibility": "The code is clear and easy to read in its operation due to its good structure."
+          },
+          "snippet6": {
+            "summary": "deletes all files from a directory that is given as a parameter",
+            "comprehensibility": "The code is understandable, although it is difficult to understand why the methods are organized in this way."
+          },
+          "snippet7": {
+            "summary": "It is the calculation of the positive square root of a small number. Validating whether a value is null.",
+            "comprehensibility": "The names of the variables are unclear, which makes it quite difficult to understand (even though it is a mathematical principle)."
+          },
+          "snippet8": {
+            "summary": "searches for the position where a sequence of characters begins within another sequence of characters",
+            "comprehensibility": "The code is clear in its objective, declaring the statements in order and giving me the desired result."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-3"
+          ],
+          "2": [
+            "snippet-5"
+          ],
+          "3": [
+            "snippet-1"
+          ],
+          "4": [
+            "snippet-6"
+          ],
+          "5": [
+            "snippet-8"
+          ],
+          "6": [
+            "snippet-7"
+          ],
+          "7": [
+            "snippet-4"
+          ],
+          "8": [
+            "snippet-2"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:3|5": "I can understand isValidProjectName better than isRemote because of the clarity of the code flow.",
+          "comparison:2-3:5|1": "isRemote is simpler and easier to understand than isMachineTypeDefined due to the control flow.\nAdditionally, the complexity of the isRemote problem is perceived as less complex.",
+          "comparison:3-4:1|6": "The deleteRecursively code can be improved by using native Java resources, which I see are not being used. Unlike isMachineTypeDefined, which uses Java methods to shorten the code logic.",
+          "comparison:4-5:6|8": "The way indexOfIgnoreCase is resolved seems to be a more complicated problem than deleteRecursively, when in fact it is not, since an exception is not centralized as a response and this validation is performed several times.",
+          "comparison:5-6:8|7": "On lowestPositiveRoot, I disagree with naming variables as letters, because the code looks like a mathematical equation rather than the solution to an algorithm.",
+          "comparison:6-7:7|4": "The atan2 method expects a context to understand how each of its validations works. In this case, it shares several errors with lowestPositiveRoot, but lowestPositiveRoot handles the code better in fragments.",
+          "comparison:7-8:4|2": "la logica que se usa en las validaciones de encodedLength es muy complicado de entender"
+        },
+        "round2_response_0": {
+          "q1": "I'm mildly agree with the observations, given that the constants used by the code can be deduced from the names of those constants. However, it is true that the code can fail at one point, and this is confusing.",
+          "q2": "allowed me to see details that I hadn't noticed before",
+          "q3": "With that clarification, I would change my decision, but not by much."
+        },
+        "round2_response_1": {
+          "q1": "I agree with the statements made by the other experts, as the code has aspects of readability that make it understandable.",
+          "q2": "The comments show me some points of comparison with other functions that justify why it is more readable than other pieces of code.",
+          "q3": "I would change the order of this piece of code. I wouldn't leave it in first position, but I would leave it in second position."
+        },
+        "round2_response_2": {
+          "q1": "In some respects, such as the naming of variables, I disagree, since variables can be understood.",
+          "q2": "No, because the comments explain why it is in third place, in my opinion.",
+          "q3": "I don't see the need for it."
+        },
+        "round2_response_3": {
+          "q1": "I strongly agree that the code expects the reader to understand the context of how the square root works and that the names of the variables should be improved.",
+          "q2": "I think most of us end up in a similar position.",
+          "q3": "No, because the method must improve the names of the variables to better explain the mathematical procedure."
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-18T08:54:03.544649166-05:00"
+    }
+  ],
+  "expertB": [
+    {
+      "data": {
+        "username": "expertB",
+        "phase1": {
+          "snippet1": {
+            "summary": "The snippet defines any URI that points to a file system path, a file, a jar, or lacks a URI scheme definition, as non-remote URIs.",
+            "comprehensibility": "The comprehensibility is not bad but it's not perfect either. Part of the check is given by a call to a function to assess if the URI points to a file system path, and the rest of the code makes a remoteness decision based on the scheme of the URI. As these are two independent grouping categories, the code could be clearer making the separation of concerns a bit more explicit (for instance having an `isSchemeRemote`/`isSchemeLocal` function. Nevertheless the code is short enough that it is still comprehensible."
+          },
+          "snippet2": {
+            "summary": "It deletes all files and directories inside a given filesystem path.",
+            "comprehensibility": "The comprehensibility is good except for the name of the function. The main function `deleteRecursively` being named `-recursively` may lead a code reader into thinking that the method was implemented using recursion. In this case the method itself is not written recursively (Files.walkFileTree may or may not use a recursive pattern but this is out of the scope of this function). Instead the method could be called \"deepDelete\" or something similar to avoid reading the method looking for a recursive call that doesn't actually happen."
+          },
+          "snippet3": {
+            "summary": "I'm not sure what this snippet does. I guess it's trying to compute the atan2 mathematical function but I it's definitely not implemented properly.",
+            "comprehensibility": "The code is terrible. The first if/else condition does nothing as the if conditions for lines 4 and 6 are never true.\n\nThe last line (line 19) returns the sum of two coordinates, when the atan2 function should return a result in degrees or radians.\n\nLines 15 and 17 are operating between a coordinate value and a radians value, which again doesn't make sense.\n\nIn order to analise the rest of the code I'd need to review what the atan2 function math is, but I think it's not necessary as the rest of the implementation is so flawed."
+          },
+          "snippet4": {
+            "summary": "What it does: Depending on the input string the code throws an index out of bounds exception in line 12.\n\nWhat maybe it tries to do: It may try to encode the integer value corresponding to the length of a characters sequence into the integer representation of a the length of a string in UTF-8. This description doesn't even make sense but it may be that someone needs that at some point (?)",
+            "comprehensibility": "The comprehensibility is extremely bad. The factors that make it hard to understand are:\n\n- UTF-8 is a string encoding. From line 1 you would expect the length of the input CharSequence to be encoded as a UTF-8 string, but instead the method returns an integer.\n- line 7 gives a condition to a loop that depends both on the length of the input CharSequence as well as the specific values contained in this sequence. Not clear why ascii values above 0x80 would not be considered.\n- Checking the 0x80 value (128) we can assume that most characters given in a CharSequence will be under 128, hence line 12 will in most cases throw an index out of bounds exception.\n- Line 14 uses bit shift which can be clever and optimised for some operations but normally doesn't lead to easy understanding of code in most scenarios.\n- Line 16 calls another function that probably does something very similar to the current function but it's unclear what we could expect from a function that uses an unreliable index and the input sequence as parameters.\n- In general the function is extremely cryptic and most likely incorrect"
+          },
+          "snippet5": {
+            "summary": "In case the CoffMachineType has declared fields the code throws a null pointer exception in line 11. Otherwise it will return false",
+            "comprehensibility": "The code is difficult to comprehend. The following reasons explain this:\n\n- By the name it's expected that the short representation of a type (input value) is checked to know whether it is defined as a \"MachineType\".\n- Line 2 validation is very specific and covers only the case when the type is associated to an `IMAGE_FILE_MACHINE` and this is unknown. This is strange as you would expect to either having a wide range of unkown types (not only images), or a validation that is not so specific as to know what kind of unknown type is given.\n- Line 6 explicitly checks values for a CoffMachineType. By the definition of the main function you would expect the function to cover more cases than a specific CoffMachineType, but it could be that this is the only machine ever defined in the system.\n- Line 11 will always throw a null pointer exception trying to convert null into a Short"
+          },
+          "snippet6": {
+            "summary": "The code validates whether the input name is valid, given the restrictions defined in the application (nullability, length, and valid characters).",
+            "comprehensibility": "The code is easy to comprehend.\n\nThe code is well structured, as each condition evaluates an independent factor to know whether the input string is a valid project name.\n\nThe evaluated conditions also build upon the previous ones making the code easy to follow when reading it sequentially."
+          },
+          "snippet7": {
+            "summary": "This code gives the root for a second degree polynomial of the form ax^2+bx+c=0.\n\nEdit: Initially I didn't notice that the code was using the quadratic formula to compute the roots of a second degree polynomial. I'm changing this review after I realised this is the case after the final questions in the survey.\n\n---\nOriginal response: \n\nNot sure what this code does. Depending on the inputs it could return a Float.NaN. Otherwise it does some seemingly random computations and returns one of those computations as a result.",
+            "comprehensibility": "The comprehensibility is alright. Given that I didn't learn this formula in English I'm not sure if the components of the equation are called something similar to Det and Inv. Nevertheless I think the variable naming could be improved. In addition to it using Float is not the best decision give it could lead to arithmetic mistakes. Instead something like BigDecimal could be a better choice.\n\n---\nOriginal:\n\nThe comprehensibility is bad.\n\n- The main name makes you understand that we'll be trying to find the lowest root for the three input numbers, but the math inside the method is quite confusing.\n- Line 2 computes what by the name of the variable would be expected to be a \"determinant\", making you think that the values come from a matrix, but this doesn't make sense.\n- Line 6 would make you think an inverse of a number is being calculated, but it's rather the \"double multiplicative inverse\".\n- The code does some sorting in an ascending manner but it's not clear whether the values that are being sort make sense. It could be that all the math executed in lines 2 to 8 are indeed some \"root\" computation for 3 input float numbers. In that case the code would make some sense."
+          },
+          "snippet8": {
+            "summary": "The code returns the index of a substring `searchStr` inside a given string `str` using an offset of `startPos` to search inside the `str`. Allegedly the function ignores case sensitivity. In cases when the `searchStr` is an empty string the `startPos` value is returned.",
+            "comprehensibility": "The snippet is ok. The good things:\n- Uses well defined constants to express the concept of an `INDEX_NOT_FOUND`\n- Variables have meaningful names\n- Defines variables with useful concepts that build upon each other to compute the business logic.\n\nGiven that we don't know the implementation of the `regionMatches` method we have to assume that the second or fourth parameters indicate that case-sensitivity has to be ignored in the matching."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-6"
+          ],
+          "2": [
+            "snippet-1"
+          ],
+          "3": [
+            "snippet-2"
+          ],
+          "4": [
+            "snippet-8"
+          ],
+          "5": [
+            "snippet-7"
+          ],
+          "6": [
+            "snippet-5"
+          ],
+          "7": [],
+          "8": [
+            "snippet-4",
+            "snippet-3"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:6|1": "Because the problem of defining a valid project name is more straightforward than that of defining a URI as local. The URI class is one of those classes that you don't use everyday and you need to go to check the documentation to remember how it is composed. On the other hand the valid project name function is very self explanatory.",
+          "comparison:2-3:1|2": "While reading the `deleteRecursively` method for the first time I was looking for the recursion pattern in the code and instead the code used the Files.walkFileTree method to traverse the files. Because of this reading this code was a bit more confusing than the snippet checking whether a URI is remote.",
+          "comparison:3-4:2|8": "`deleteRecursively` is still clearer than `indexOfIgnoreCase` in that the method reads quite nicely with well defined variable names and usage of the familiar Files java library. Despite the fact that the method uses a Visitor pattern, even not knowing what the pattern exactly does a reader could understand the file tree traversing method happening based on the names of the overridden methods for the SimpleFileVisitor instance. Even though `indexOfIgnoreCase` is a simple method I still consider that its implementation needs a bit more thinking and mental compilation than the `deleteRecursively` method.",
+          "comparison:4-5:8|7": "`indexOfIgnoreCase` requires less background knowledge to understand what the method is doing. The issue with `lowestPositiveRoot` is still that the names are not fully explicit and the fact that we're using the quadratic formula is not given anywhere in the code. Some comments or better naming could make this more explicit.",
+          "comparison:5-6:7|5": "The difference in the ranking for these two methods is a bit harder to give as they sit close in how comprehensible they are. I still consider that `lowestPositiveRoot` reads easier than `isMachineTypeDefined` once you know you're dealing with the quadratic formula. On the other hand `isMachineTypeDefined` has the difficulties of dealing with the reflection libraries which is always a bit confusing.",
+          "comparison:6-8:5|3,4": "`isMachineTypeDefined` is still a well defined method that can be understood even if it has some struggles due to the reflection library used. On the other hand both `encodedLength` and `atan2` methods are still very cryptic on their implementations. Despite other experts clarifications I still find the explanations not fully convincing and the two methods feel equally incomprehensible to me.",
+          "grouping:8:3,4": "After reading the feedback from other experts, it's still unclear to me whether the methods actually do what they are intended to do. One of the experts explained that `atan2` is an approximation method but I'm still not convinced the mathematics behind it are sound. And `encodedLenght` using binary shifts and validating a set of ascii characters, that to me still don't make sense, make this method not easy to comprehend. I still think they are equally cryptic and possibly equally flawed"
+        },
+        "round2_response_0": {
+          "q1": "Yes, after reading the feedback for the method from other experts I realised the null pointer exception is not an issue and instead the method returns final static fields only.",
+          "q2": "Yes, in particular the explanation of Expert E made things clearer.",
+          "q3": "Yes, I'd position it now into number 6 in the ranking."
+        },
+        "round2_response_1": {
+          "q1": "I agree with the experts that set it as the easiest snippet",
+          "q2": "No",
+          "q3": "No"
+        },
+        "round2_response_2": {
+          "q1": "I agree with most of the comments by other experts.",
+          "q2": "No",
+          "q3": "Yes, maybe I could consider moving it one step upwards in the list (to position 4)"
+        },
+        "round2_response_3": {
+          "q1": "Yes, the variable names are still not the clearest and having previous math knowledge is required in order to understand the full code. Extra comments or more explicit names could help",
+          "q2": "Yes",
+          "q3": "Yes, I would consider moving it one step downwards in the ranking (to position 5)"
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "dark",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-16T19:26:42.814123213-05:00"
+    }
+  ],
+  "expertA": [
+    {
+      "data": {
+        "username": "expertA",
+        "phase1": {
+          "snippet1": {
+            "summary": "Apparently, given a string, the function will return an index greater than or equals to the provided position, that corresponds to the starting position of the substring contained in the original string.",
+            "comprehensibility": "Pros: names are, for the most part, simple to understand. Early returns make easy to identify special cases that needs to be handled. Indentation is just what one would expect to easily follow the code.\n\nCons: str is not a good method name. Same applies to endLimit. Not clear where the IgnoreCase part of the method is implemented (yes, the second arg in regionMatches seems to be the one that controls the ignore case logic, but that's something not explicit in this snippet)"
+          },
+          "snippet2": {
+            "summary": "Implements some rules that make a project name invalid. If a project name does not satisfy the rules implemented, then the name is valid.",
+            "comprehensibility": "Method and variable names are very clear. Simple to understand."
+          },
+          "snippet3": {
+            "summary": "Implements the quadratic function formula to return the lowest positive root of a function represented by the coefficients a, b, and c.",
+            "comprehensibility": "Not good. It requires previous knowledge to understand the purpose of the method. \n\ndet, sqrtD, invA, r1, and r2 mean nothing to someone not familiar with the quadratic function formula."
+          },
+          "snippet4": {
+            "summary": "Uses reflection to implement a checker that verifies if a given value matches the value any of the declared static final attributes/fields in the class CoffMachineType.",
+            "comprehensibility": "It is simple to comprehend for someone familiar with reflection. The use of the for-each loop simplifies the intention of the check. Using local var names that align with the return types of some methods does help a lot in understanding the purpose (see getDeclaredFields, getModifiers)"
+          },
+          "snippet5": {
+            "summary": "No idea.",
+            "comprehensibility": "atan, and the presence of HALF_PI suggest that this method could be related to some computation of an arctan, but neither the method name nor the local variables shed any light on the purpose of the method; in other words, the method is ciphered. Only a person with previous knowledge has the key to decipher it."
+          },
+          "snippet6": {
+            "summary": "Implements some rules that determine if a given URI is not remote. If no rule is satisfied, the method concludes that the URI is remote.",
+            "comprehensibility": "Is concise, method names are explicit and simple to understand. Overall, good comprehensibility."
+          },
+          "snippet7": {
+            "summary": "Deletes a folder, starting from its content.",
+            "comprehensibility": "Simple only for someone familiar with the visitor pattern. Most of the comprehensibility comes from the good naming used by the API elements being called so it is easily comprehensively"
+          },
+          "snippet8": {
+            "summary": "No idea. Encodes a string into a number, but the nature of the encoding is ciphered.",
+            "comprehensibility": "The logic relies on some magic numbers that are not explained. Without that information, it is hard to guess the purpose of encodedLengthGeneral. The local variables shed a bit of light on the purpose, but nothing conclusive. Overall, not very comprehensible."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-6",
+            "snippet-2"
+          ],
+          "2": [],
+          "3": [],
+          "4": [
+            "snippet-4",
+            "snippet-7",
+            "snippet-1"
+          ],
+          "5": [],
+          "6": [],
+          "7": [
+            "snippet-3"
+          ],
+          "8": [
+            "snippet-8",
+            "snippet-5"
+          ]
+        },
+        "phase3": {
+          "grouping:1:2,6": "Short snippets. The purpose of local variables and called methods is clear.",
+          "comparison:7-8:3|5,8": "The name of the method gives a good (but not complete) idea of its purpose. In Position 8, nothing seems to be descriptive enough to decipher their purpose.",
+          "grouping:8:5,8": "suffer from the same issue: names that do not really convey the purpose of the method. Also, the existence of some magic numbers with unclear meaning.",
+          "comparison:1-4:2,6|1,4,7": "Short and simple. The simplicity also includes the fact that no specific previous knowledge is required. In contrast, the ones in Position 4 do require specific knowledge. Also, Snippet 1 suffers from bad naming.",
+          "grouping:4:1,4,7": "4 and seven required specific knowledge. \n1 was downgraded from Position 5 after reading reviewer's comments.",
+          "comparison:4-7:1,4,7|3": "Variable names easily convey the purpose of the method. Specific knowledge is required only to understand the implementation in detail. \n\nSnippet 3 suffers from bad variable naming. Specific knowledge is required to understand the purpose AND the actual implementation of the method."
+        },
+        "round2_response_0": {
+          "q1": "Yes. Expert D also mentions the role of previous knowledge about reflection. I guess the disagreement is just on the difficulty score. I would consider that a snippet that requires previous knowledge is in principle, difficult. The thing is that this snippet is short enough to not be \n\"that\" difficult.",
+          "q2": "No",
+          "q3": "No"
+        },
+        "round2_response_1": {
+          "q1": "No. The comments that explain the higher ranking (and in turn the whole disagreement) do not seem to be about the comprehensibility of the snippet, but rather about its quality.",
+          "q2": "NO",
+          "q3": "No"
+        },
+        "round2_response_2": {
+          "q1": "I do share the reasoning of Expert E when it comes to less intuitive snippets that require previous knowledge.",
+          "q2": "No",
+          "q3": "Maybe down to 4. The purpose of the method is easy to understand mostly due to its title, but its implementation is still hard to follow due to poor variable naming."
+        },
+        "round2_response_3": {
+          "q1": "Expert 5 reasoning suggests that more than one pass was required to get an idea of the purpose of the method (see \"once you recognize the flow\"). If multiple passes and careful walkthroughs are needed, the method is simply very hard (> 5) to understand.",
+          "q2": "No",
+          "q3": "No"
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "light",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-17T01:37:15.981832416-05:00"
+    },
+    {
+      "data": {
+        "username": "expertA",
+        "phase1": {
+          "snippet1": {
+            "summary": "Apparently, given a string, the function will return an index greater than or equals to the provided position, that corresponds to the starting position of the substring contained in the original string.",
+            "comprehensibility": "Pros: names are, for the most part, simple to understand. Early returns make easy to identify special cases that needs to be handled. Indentation is just what one would expect to easily follow the code.\n\nCons: str is not a good method name. Same applies to endLimit. Not clear where the IgnoreCase part of the method is implemented (yes, the second arg in regionMatches seems to be the one that controls the ignore case logic, but that's something not explicit in this snippet)"
+          },
+          "snippet2": {
+            "summary": "Implements some rules that make a project name invalid. If a project name does not satisfy the rules implemented, then the name is valid.",
+            "comprehensibility": "Method and variable names are very clear. Simple to understand."
+          },
+          "snippet3": {
+            "summary": "Implements the quadratic function formula to return the lowest positive root of a function represented by the coefficients a, b, and c.",
+            "comprehensibility": "Not good. It requires previous knowledge to understand the purpose of the method. \n\ndet, sqrtD, invA, r1, and r2 mean nothing to someone not familiar with the quadratic function formula."
+          },
+          "snippet4": {
+            "summary": "Uses reflection to implement a checker that verifies if a given value matches the value any of the declared static final attributes/fields in the class CoffMachineType.",
+            "comprehensibility": "It is simple to comprehend for someone familiar with reflection. The use of the for-each loop simplifies the intention of the check. Using local var names that align with the return types of some methods does help a lot in understanding the purpose (see getDeclaredFields, getModifiers)"
+          },
+          "snippet5": {
+            "summary": "No idea.",
+            "comprehensibility": "atan, and the presence of HALF_PI suggest that this method could be related to some computation of an arctan, but neither the method name nor the local variables shed any light on the purpose of the method; in other words, the method is ciphered. Only a person with previous knowledge has the key to decipher it."
+          },
+          "snippet6": {
+            "summary": "Implements some rules that determine if a given URI is not remote. If no rule is satisfied, the method concludes that the URI is remote.",
+            "comprehensibility": "Is concise, method names are explicit and simple to understand. Overall, good comprehensibility."
+          },
+          "snippet7": {
+            "summary": "Deletes a folder, starting from its content.",
+            "comprehensibility": "Simple only for someone familiar with the visitor pattern. Most of the comprehensibility comes from the good naming used by the API elements being called so it is easily comprehensively"
+          },
+          "snippet8": {
+            "summary": "No idea. Encodes a string into a number, but the nature of the encoding is ciphered.",
+            "comprehensibility": "The logic relies on some magic numbers that are not explained. Without that information, it is hard to guess the purpose of encodedLengthGeneral. The local variables shed a bit of light on the purpose, but nothing conclusive. Overall, not very comprehensible."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-6",
+            "snippet-2"
+          ],
+          "2": [],
+          "3": [],
+          "4": [
+            "snippet-4",
+            "snippet-7",
+            "snippet-1"
+          ],
+          "5": [],
+          "6": [],
+          "7": [
+            "snippet-3"
+          ],
+          "8": [
+            "snippet-8",
+            "snippet-5"
+          ]
+        },
+        "phase3": {
+          "grouping:1:2,6": "Short snippets. The purpose of local variables and called methods is clear.",
+          "comparison:7-8:3|5,8": "The name of the method gives a good (but not complete) idea of its purpose. In Position 8, nothing seems to be descriptive enough to decipher their purpose.",
+          "grouping:8:5,8": "suffer from the same issue: names that do not really convey the purpose of the method. Also, the existence of some magic numbers with unclear meaning.",
+          "comparison:1-4:2,6|1,4,7": "Short and simple. The simplicity also includes the fact that no specific previous knowledge is required. In contrast, the ones in Position 4 do require specific knowledge. Also, Snippet 1 suffers from bad naming.",
+          "grouping:4:1,4,7": "4 and seven required specific knowledge. \n1 was downgraded from Position 5 after reading reviewer's comments.",
+          "comparison:4-7:1,4,7|3": "Variable names easily convey the purpose of the method. Specific knowledge is required only to understand the implementation in detail. \n\nSnippet 3 suffers from bad variable naming. Specific knowledge is required to understand the purpose AND the actual implementation of the method."
+        },
+        "round2_response_0": {
+          "q1": "Yes. Expert D also mentions the role of previous knowledge about reflection. I guess the disagreement is just on the difficulty score. I would consider that a snippet that requires previous knowledge is in principle, difficult. The thing is that this snippet is short enough to not be \n\"that\" difficult.",
+          "q2": "No",
+          "q3": "No"
+        },
+        "round2_response_1": {
+          "q1": "No. The comments that explain the higher ranking (and in turn the whole disagreement) do not seem to be about the comprehensibility of the snippet, but rather about its quality.",
+          "q2": "NO",
+          "q3": "No"
+        },
+        "round2_response_2": {
+          "q1": "I do share the reasoning of Expert E when it comes to less intuitive snippets that require previous knowledge.",
+          "q2": "No",
+          "q3": "Maybe down to 4. The purpose of the method is easy to understand mostly due to its title, but its implementation is still hard to follow due to poor variable naming."
+        },
+        "round2_response_3": {
+          "q1": "Expert 5 reasoning suggests that more than one pass was required to get an idea of the purpose of the method (see \"once you recognize the flow\"). If multiple passes and careful walkthroughs are needed, the method is simply very hard (> 5) to understand.",
+          "q2": "No",
+          "q3": "No"
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "light",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-17T01:37:31.146126018-05:00"
+    },
+    {
+      "data": {
+        "username": "expertA",
+        "phase1": {
+          "snippet1": {
+            "summary": "Apparently, given a string, the function will return an index greater than or equals to the provided position, that corresponds to the starting position of the substring contained in the original string.",
+            "comprehensibility": "Pros: names are, for the most part, simple to understand. Early returns make easy to identify special cases that needs to be handled. Indentation is just what one would expect to easily follow the code.\n\nCons: str is not a good method name. Same applies to endLimit. Not clear where the IgnoreCase part of the method is implemented (yes, the second arg in regionMatches seems to be the one that controls the ignore case logic, but that's something not explicit in this snippet)"
+          },
+          "snippet2": {
+            "summary": "Implements some rules that make a project name invalid. If a project name does not satisfy the rules implemented, then the name is valid.",
+            "comprehensibility": "Method and variable names are very clear. Simple to understand."
+          },
+          "snippet3": {
+            "summary": "Implements the quadratic function formula to return the lowest positive root of a function represented by the coefficients a, b, and c.",
+            "comprehensibility": "Not good. It requires previous knowledge to understand the purpose of the method. \n\ndet, sqrtD, invA, r1, and r2 mean nothing to someone not familiar with the quadratic function formula."
+          },
+          "snippet4": {
+            "summary": "Uses reflection to implement a checker that verifies if a given value matches the value any of the declared static final attributes/fields in the class CoffMachineType.",
+            "comprehensibility": "It is simple to comprehend for someone familiar with reflection. The use of the for-each loop simplifies the intention of the check. Using local var names that align with the return types of some methods does help a lot in understanding the purpose (see getDeclaredFields, getModifiers)"
+          },
+          "snippet5": {
+            "summary": "No idea.",
+            "comprehensibility": "atan, and the presence of HALF_PI suggest that this method could be related to some computation of an arctan, but neither the method name nor the local variables shed any light on the purpose of the method; in other words, the method is ciphered. Only a person with previous knowledge has the key to decipher it."
+          },
+          "snippet6": {
+            "summary": "Implements some rules that determine if a given URI is not remote. If no rule is satisfied, the method concludes that the URI is remote.",
+            "comprehensibility": "Is concise, method names are explicit and simple to understand. Overall, good comprehensibility."
+          },
+          "snippet7": {
+            "summary": "Deletes a folder, starting from its content.",
+            "comprehensibility": "Simple only for someone familiar with the visitor pattern. Most of the comprehensibility comes from the good naming used by the API elements being called so it is easily comprehensively"
+          },
+          "snippet8": {
+            "summary": "No idea. Encodes a string into a number, but the nature of the encoding is ciphered.",
+            "comprehensibility": "The logic relies on some magic numbers that are not explained. Without that information, it is hard to guess the purpose of encodedLengthGeneral. The local variables shed a bit of light on the purpose, but nothing conclusive. Overall, not very comprehensible."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-6",
+            "snippet-2"
+          ],
+          "2": [],
+          "3": [],
+          "4": [
+            "snippet-4",
+            "snippet-7",
+            "snippet-1"
+          ],
+          "5": [],
+          "6": [],
+          "7": [
+            "snippet-3"
+          ],
+          "8": [
+            "snippet-8",
+            "snippet-5"
+          ]
+        },
+        "phase3": {
+          "grouping:1:2,6": "Short snippets. The purpose of local variables and called methods is clear.",
+          "comparison:7-8:3|5,8": "The name of the method gives a good (but not complete) idea of its purpose. In Position 8, nothing seems to be descriptive enough to decipher their purpose.",
+          "grouping:8:5,8": "suffer from the same issue: names that do not really convey the purpose of the method. Also, the existence of some magic numbers with unclear meaning.",
+          "comparison:1-4:2,6|1,4,7": "Short and simple. The simplicity also includes the fact that no specific previous knowledge is required. In contrast, the ones in Position 4 do require specific knowledge. Also, Snippet 1 suffers from bad naming.",
+          "grouping:4:1,4,7": "4 and seven required specific knowledge. \n1 was downgraded from Position 5 after reading reviewer's comments.",
+          "comparison:4-7:1,4,7|3": "Variable names easily convey the purpose of the method. Specific knowledge is required only to understand the implementation in detail. \n\nSnippet 3 suffers from bad variable naming. Specific knowledge is required to understand the purpose AND the actual implementation of the method."
+        },
+        "round2_response_0": {
+          "q1": "Yes. Expert D also mentions the role of previous knowledge about reflection. I guess the disagreement is just on the difficulty score. I would consider that a snippet that requires previous knowledge is in principle, difficult. The thing is that this snippet is short enough to not be \n\"that\" difficult.",
+          "q2": "No",
+          "q3": "No"
+        },
+        "round2_response_1": {
+          "q1": "No. The comments that explain the higher ranking (and in turn the whole disagreement) do not seem to be about the comprehensibility of the snippet, but rather about its quality.",
+          "q2": "NO",
+          "q3": "No"
+        },
+        "round2_response_2": {
+          "q1": "I do share the reasoning of Expert E when it comes to less intuitive snippets that require previous knowledge.",
+          "q2": "No",
+          "q3": "Maybe down to 4. The purpose of the method is easy to understand mostly due to its title, but its implementation is still hard to follow due to poor variable naming."
+        },
+        "round2_response_3": {
+          "q1": "Expert 5 reasoning suggests that more than one pass was required to get an idea of the purpose of the method (see \"once you recognize the flow\"). If multiple passes and careful walkthroughs are needed, the method is simply very hard (> 5) to understand.",
+          "q2": "No",
+          "q3": "No"
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "light",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-17T01:37:35.183563392-05:00"
+    }
+  ],
+  "expertE": [
+    {
+      "data": {
+        "username": "expertE",
+        "phase1": {
+          "snippet1": {
+            "summary": "This method deletes the file or directory at the given path passed into the method. If the path is a directory, it recursively deletes all files and subdirectories, then deletes the directory itself. It returns true only if the path is non-null and exists.",
+            "comprehensibility": "I assessed the snippet\u2019s comprehensibility by reading it top-down and checking for clear and traditional structure, familiar APIs, generally accepted naming conventions, and consistent flow. The method is relatively easy to understand because it uses a straightforward control flow and well-known Java NIO constructs like Files.walkFileTree and SimpleFileVisitor. The overridden visitFile and postVisitDirectory methods make the deletion logic explicit and predictable.\n\nThe main difficulty is that understanding recursive deletion through a file-tree visitor requires familiarity with how walkFileTree behaves, so someone new to that API might find it less intuitive. Additionally, the snippet provides no comments explaining why these methods are overridden or what assumptions are being made about edge cases (e.g., symbolic links, partial failures). Brief comments could make the intent clearer and help readers understand the boundaries of its correctness."
+          },
+          "snippet2": {
+            "summary": "This method checks whether the given type value corresponds to any of the machine type constants defined in the CoffMachineType class. It skips the IMAGE_FILE_MACHINE_UNKNOWN value, then uses reflection to loop through the class\u2019s static final fields and compares each one\u2019s short value to the input. If it finds a match, it returns true; otherwise it returns false",
+            "comprehensibility": "I read through the snippet from top to bottom and focused on what the method was trying to check and how it went about doing that. The basic idea is pretty easy to follow once you notice it\u2019s looping over constants in a class, but the use of reflection makes it a little harder to read at first glance. Reflection typically requires a moment to think about what fields are being inspected and why. The check for static final fields helps clarify the intent, but it\u2019s still not immediately obvious unless you\u2019re familiar with how reflection works in Java. A short comment explaining why reflection is being used would make the code a bit easier to digest. Overall, it\u2019s understandable, just not as straightforward as it would be without reflection."
+          },
+          "snippet3": {
+            "summary": "This method appears to be calculating how many bytes a given CharSequence would take if it were encoded as UTF-8.  The method iterates through the characters, skipping over the ASCII range, then adjusts the count for multi-byte UTF-8 characters. If the resulting length would overflow an int data type, it throws an exception. Otherwise, it returns the computed UTF-8 byte length.",
+            "comprehensibility": "I read through the snippet step by step and tried to figure out how the length calculation worked and why certain branches existed. I don't think overall idea is too hard to follow once you realize it\u2019s computing UTF-8 length from UTF-16 characters, and the early loop that skips ASCII makes sense. The harder part is the bit-level expressions like ((0x7f - c) >>> 31), which aren\u2019t immediately obvious unless you\u2019ve seen or worked with that style of optimization before. The lack of comments around the more complex arithmetic also makes it take a little longer to understand and discern what\u2019s going on. Overall, it\u2019s readable, but some of the low-level operations require a little extra thinking."
+          },
+          "snippet4": {
+            "summary": "This method checks whether a given URI should be considered \u201cremote.\u201d It returns false: (1) for filesystem paths; (2) if the URI has no scheme; or (3) if the scheme is something local like file or jar. For anything else, it treats the URI as remote and returns true.",
+            "comprehensibility": "I went through the snippet line by line and looked at the early-return conditions to see how it decides whether a URI is considered remote. The logic is pretty straightforward, and the switch statement makes the handling of local schemes clear. The only part that requires a little guesswork is the call to isFilesystemPath(uri) since that method isn\u2019t shown\u2014 a short comment explaining what counts as a filesystem path would make that intention a bit clearer. Otherwise, the code is easy to read and generally understand."
+          },
+          "snippet5": {
+            "summary": "This method solves a quadratic equation and returns the smallest positive root. It first checks the discriminant, then computes both roots, sorts them so the smaller one is ordered first, and returns the first positive one it finds. If neither root is positive or the discriminant is negative, it returns Float.NaN.",
+            "comprehensibility": "I started by looking at the parameters and then read through the method from top to bottom to see how it handles the quadratic equation. The flow is easy to follow because it more or less mirrors how you\u2019d solve a quadratic by hand: check the discriminant, compute both roots, sort them, and then pick the smallest positive one. The variable names also follow normal mathematical naming conventions, which makes it easier to keep track of what\u2019s going on. The only part that takes a second to think about is the little swap section to reorder the roots, but even that makes sense once you notice why it\u2019s there. Overall, the method is clear and pretty straightforward to understand."
+          },
+          "snippet6": {
+            "summary": "This method checks whether a given project name is valid. It rejects names that are: (1) null, (2) start with a dot, (3) are too short (less than 1) or too long (over a defined maximum length), or (4) contain characters that aren\u2019t letters, digits, or part of an allowed predefined character set. If the name passes all those checks, it returns true.",
+            "comprehensibility": "I started by looking at the method signature and then read through the methods and its various checks from top to bottom. The code is pretty easy to understand because each condition is simple and the early returns make the logic straightforward. The variable and method names also make the intent clear \u2014 it\u2019s obvious this is validating a project name. The only part that requires a quick glance is the reference to the predefined character set, since you\u2019d need to see what\u2019s in that set to know exactly what\u2019s allowed. A comment may be useful there. Other than that, the snippet is clean and very readable."
+          },
+          "snippet7": {
+            "summary": "This method computes an approximation of atan2(y, x), which is the angle of the point (x, y) in radians. It handles different quadrants by checking the signs of x and y, uses a fallback when the y/x ratio is undefined or produces NaN, and then adjusts the result with either pi or pi/2 depending on where the point lies. The actual angle calculation is done through a helper method called atanUnchecked.",
+            "comprehensibility": "I looked at the parameters first and then read through the method from top to bottom to see how it was trying to approximate atan2. The general structure appears to be similar to how you\u2019d reason about the problem by hand \u2014 compute the y/x ratio and then figure out the correct quadrant based on the signs of x and y. That part makes the intent fairly easy to follow. The harder part is the NaN handling using expressions like n != n and n - n != n - n, which isn\u2019t very intuitive unless you\u2019ve seen that pattern before. It\u2019s also not a traditional way to check for NaN, since most code would use built-in helper functions like Float.isNaN(), so it takes a moment to understand what the code is doing. Without comments explaining those cases, you have to stop and think about what\u2019s going on. Overall, the snippet is understandable, but the NaN checks make it harder to read than it should be."
+          },
+          "snippet8": {
+            "summary": "This method performs a case-insensitive search for a substring within a larger character sequence, starting at a given position passed in as a parameter to the function. If it finds a match, it returns the index where the match begins. If the input is invalid or no match is found, it returns a special \u201cnot found\u201d value.",
+            "comprehensibility": "I started by looking at the parameters and then read through the method from top to bottom to see how it handled the search. The overall flow is pretty easy to follow because the conditions are simple and the early returns make the logic clear. The variable names are straightforward and descriptive, and the loop that checks each position lines up with how you\u2019d expect a substring search to work. The only part that isn\u2019t immediately obvious is what regionMatches does without seeing its implementation, but the name gives you a good hint, and a short comment there might help if that method isn't in the same file or nearby. Overall, the snippet is clean and easy to understand."
+          }
+        },
+        "phase2": {
+          "1": [
+            "snippet-6"
+          ],
+          "2": [
+            "snippet-4"
+          ],
+          "3": [
+            "snippet-8"
+          ],
+          "4": [
+            "snippet-1"
+          ],
+          "5": [
+            "snippet-5"
+          ],
+          "6": [
+            "snippet-2"
+          ],
+          "7": [
+            "snippet-3"
+          ],
+          "8": [
+            "snippet-7"
+          ]
+        },
+        "phase3": {
+          "comparison:1-2:6|4": "I found the project name validation snippet easier to understand than the URI one because everything it does is right there in front of you and self-contained. It just walks through a series of simple checks on a single string: null, leading dot, length range, and allowed characters. The loop is straightforward, the conditions are easy to read, and the intent matches the method name exactly.\n\nThe isRemote method is still pretty readable, but it pulls in a bit more context. You have to reason about URI schemes and what counts as \u201cremote\u201d.  And, there\u2019s also a dependency on isFilesystemPath(uri), whose behavior you don\u2019t see in this snippet and must infer. That extra bit of indirection and the need to think and infer about external behavior makes it slightly less immediate to understand than the project name validator.",
+          "comparison:2-3:4|8": "The isRemote snippet is easier to understand because it\u2019s shorter, more linear, and deals with only a couple of simple conditions. You can read straight through it and immediately see the intent: check a few properties of the URI and return true or false based on the scheme. There are no loops and the branching stays relatively shallow.\n\nThe indexOfIgnoreCase snippet, while still readable, requires a little more mental work to parse out its logic. It has more parameters to consider, several edge-case checks, and a loop that searches through the characters. You also have to reason about the starting position, the calculated end boundary, and infer what regionMatches does. None of the code is overly complex, but there are simply more moving parts than in isRemote, which makes it take a bit more effort to follow.",
+          "comparison:3-4:8|1": "The substring search method is easier to understand because everything it\u2019s doing is contained within the method itself. Even though it has a loop and a few boundary checks, the overall idea is straightforward: adjust the starting position, calculate how far you can search, and then scan through the string looking for a match. The control flow is familiar and the logic stays localized.\n\nConversely, the recursive delete method requires understanding how Files.walkFileTree works and how the SimpleFileVisitor callbacks interact with it. The actual deletion logic is simple, but the pattern itself isn\u2019t something you interpret linearly\u2014you have to mentally connect the visitor methods to the traversal process and understand that the framework is controlling the recursion. Because the behavior depends on the external file-tree traversal API rather than just the code in front of you, it takes more effort to follow and understand what\u2019s happening in the function.",
+          "comparison:4-5:1|5": "The recursive delete snippet is easier to understand because the overall intent is clear right away: walk through a directory tree and delete everything in it. Even though it uses walkFileTree, the logic inside the visitor is simple\u2014delete each file, then delete each directory. Once you recognize the pattern, the flow is pretty easy to follow.\n\nThe quadratic-root snippet requires more mental work because you have to track the math. You need to remember how the discriminant works, how the quadratic formula is applied, and why the roots are swapped. The code itself isn\u2019t really complicated \u2014 it\u2019s the underlying math that makes you pause. A brief comment explaining the steps of the quadratic calculation would make it easier to understand more quickly. The method is still readable, but you do have to think through the algebra and the ordering logic, which makes it a bit more involved than just iterating over a file tree and deleting entries.",
+          "comparison:5-6:5|2": "The quadratic-root snippet, even though it requires some math, has a very linear and predictable flow. You compute the discriminant, calculate two roots, reorder them if necessary, and then return the smallest positive one. The logic is contained entirely within the method, and once you understand the math, the code itself is straightforward and easy to follow, particularly with the variables named appropriately.\n\nThe machine-type snippet is harder because it relies heavily on reflection, which is much less intuitive to read. Instead of simply working with local variables, the code dynamically inspects fields on another class, checks their modifiers, and retrieves values at runtime. Understanding what\u2019s happening means keeping track of the reflection API, the meaning of synthetic fields, and why static final fields are being filtered. Without comments, you also have to infer why reflection is even being used. All of that requires more mental overhead and analysis outside of the function itself than following the quadratic formula.",
+          "comparison:6-7:2|3": "The machine-type snippet is easier to understand because, even though it uses reflection, the overall idea is straightforward: loop through a set of constants and check whether any of them match the input value. Once you recognize the pattern, the flow is pretty direct, and most of the complexity comes from the API calls rather than any tricky or confusing logic.\n\nThe UTF-8 encoded-length snippet is more difficult because the logic is dense and optimized in ways that aren\u2019t immediately obvious or intuitive. You have to understand character ranges, multi-byte UTF-8 encoding rules, and why certain bit-level expressions, like ((0x7f - c) >>> 31), work the way they do. There\u2019s also an abrupt jump to a helper method when a non-ASCII, non-2-byte character is found, which adds another layer you have to understand and think about. The method is correct but compact and \u201cclever,\u201d so it takes more effort to unpack than the reflection loop.",
+          "comparison:7-8:3|7": "The UTF-8 length calculation snippet is tricky because of the bit-level optimizations, but the overall structure is still pretty logical. It walks through the characters, handles ASCII first, then moves on to multi-byte ranges, and finally checks for overflow. Even if you don\u2019t fully understand the condensed/clever arithmetic, you can still follow the high-level idea.\n\nThe atan2 snippet is harder because the flow is much less intuitive. It uses unusual NaN-detection tricks like n != n and n - n != n - n, which aren\u2019t patterns most developers use or encounter, since they would typically rely on built-in helper functions. On top of that, the method branches into several quadrant-handling cases, and the fallback returns involve expressions like x + HALF_PI, which require you to reason about what x actually represents at that point. Without comments, you have to mentally reconstruct how each case produces the correct angle. All of that makes the atan2 code more confusing and less straightforward than the UTF-8 length calculation."
+        },
+        "round2_response_0": {
+          "q1": "Yes, several of the concerns raised by the other experts resonate with me, especially those from Experts C, A, and E. I agree that while the overall control flow is understandable, the method relies heavily on familiarity with Java\u2019s reflection API and concepts like synthetic fields and field modifiers. Without that background, it\u2019s harder to quickly grasp what the code is doing and why reflection is being used in the first place. I also agree that understanding the intent requires some domain context about CoffMachineType, which isn\u2019t obvious from the method alone.",
+          "q2": "Yes, their feedback helped clarify why this method can feel harder or easier depending on perspective and experience. In particular, it highlighted how much the perceived difficulty depends on prior experience with reflection and how much domain context a reader assumes. While my understanding of what the code does didn\u2019t change, the feedback made it clearer why others might rate it as easier if they see the reflective pattern immediately, or much harder if they focus on the hidden assumptions and required background knowledge.",
+          "q3": "No, I would not change my ranking. After reviewing the feedback, I still think placing this snippet toward the harder side is appropriate. While the intent becomes clear once you recognize the reflective pattern, the method still depends on specific API knowledge, familiarity with reflection details in Java and some implicit domain context. The feedback reinforced why others might rank it differently, but it didn\u2019t change my assessment of the overall cognitive effort required to understand it."
+        },
+        "round2_response_1": {
+          "q1": "To a small extent, yes. I can see why Experts C and D mentioned the length of the validation chain and questioned whether some of the checks could be consolidated. The distinction between checking for letters or digits and then separately checking a predefined valid character set could momentarily raise questions about redundancy, and the method does assume some understanding of what characters are considered valid in the project\u2019s domain. With that said, these concerns didn\u2019t significantly affect my perception of difficulty, since each check is still simple and the overall intent remains very clear.",
+          "q2": "Their feedback didn\u2019t change my understanding of what the snippet does, but it did help clarify why some people might rate it as slightly harder. In particular, the comments about check redundancy and method length made it clearer how different experts / developers might weigh conciseness versus explicitness. While I still find the method fairly easy to understand, the feedback does definitely highlight how even small design choices can affect perceived complexity for some developers.",
+          "q3": "No, I would not change my ranking. After reviewing the feedback, I still think placing this snippet on the easiest side of the ranking make sense. The method is self-contained, the logic is explicit, and each check is easy to follow on its own. While some experts preferred a more compact approach, the clarity and straightforward structure outweigh those concerns for me."
+        },
+        "round2_response_2": {
+          "q1": "Yes, some of their concerns do resonate with me, particularly those from Experts A and B. I can see how the number of intermediate variables and the manual implementation of a substring search might make the method feel more involved than the simplest snippets. The naming choices, like str and endLimit, are serviceable but not especially descriptive, and that can slightly slow down comprehension. With that said, these issues didn\u2019t outweigh the fact that the control flow is still clear and the logic follows a familiar / logical pattern, which is why I kept it on the easier side overall.",
+          "q2": "Their feedback didn\u2019t change my understanding of what the snippet does, but again it did help clarify why some people might rate it as harder than I did. In particular, the points about naming choices and the fact that the method reimplements functionality that could be handled by built-in APIs made it clearer why others see additional cognitive overhead. While I still find the logic easy to follow, the feedback highlighted how design decisions like naming and abstraction level can influence perceived readability.",
+          "q3": "No, I would not change my ranking. After considering the feedback, I still think Position 3 is appropriate. The method remains readable, self-contained and follows a familiar search pattern, even if it has more moving parts than the very simplest snippets. The feedback helped explain differing opinions, but it didn\u2019t change my overall assessment of its difficulty as I think some of the complaints are more related to style rather than the logic of the method."
+        },
+        "round2_response_3": {
+          "q1": "Yes, some of their concerns resonate with me, especially the points about naming conventions of the variables and mathematical background. I agree that abbreviated variable names like det, invA, r1, and r2 don\u2019t offer much help to someone who isn\u2019t already comfortable with the quadratic formula. I also understand why the swapping of the roots might be confusing without that context. With that said, I still see the method as more of a math-familiarity issue than a code-structure problem, which is why I didn\u2019t place it among the hardest snippets.",
+          "q2": "Their feedback didn\u2019t change my understanding of what the snippet is doing, but again it did clarify why others found it significantly harder to comprehend. In particular, it highlighted how much the perceived difficulty depends on a reader\u2019s comfort with the underlying math and their expectations around variable naming and documentation. While I was able to follow the logic by recognizing the quadratic formula, the feedback helped explain why someone without that background might struggle more with the snippet.",
+          "q3": "No, I would not change my ranking. After reviewing the feedback, I still think Position 5 is appropriate. The method\u2019s control flow is straightforward and self-contained, and the primary challenge comes from the underlying math rather than the code itself. While clearer variable names or brief comments could lower the barrier for readers without a strong math background, the feedback didn\u2019t change my overall assessment of its difficulty relative to the other snippets."
+        },
+        "round2-phase1-complete": "true",
+        "round2-phase2-complete": "true",
+        "round2-phase3-complete": "true",
+        "round2-phase4-complete": "true",
+        "round2-phase5-complete": "true",
+        "codeTheme": "light",
+        "submitted": "1",
+        "studyRound": "2"
+      },
+      "isFinal": true,
+      "timestamp": "2025-12-22T22:00:51.785756332-05:00"
+    }
+  ]
+}
