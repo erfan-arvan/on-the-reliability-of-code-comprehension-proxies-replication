@@ -20,9 +20,8 @@ No other software is required.
 This Zenodo record contains six files:
 
 - `artifact.zip` — everything: the full source tree, all data and study
-  materials, and the two pre-built Docker images
-  (`code-comprehension-analysis.tar.gz`, `code-comprehension-web.tar.gz`) at
-  its top level.
+  materials, and four pre-built Docker image files at its top level (two
+  architectures × two images — see below).
 - `artifact-abstract.pdf` — the AE submission abstract (paper link, purpose, badge, provenance, instructions).
 - `README.MD` — this file, provided standalone for quick reference.
 - `REQUIREMENTS` — hardware/software requirements.
@@ -33,17 +32,27 @@ The last four are also included inside `artifact.zip`, but are provided
 standalone here so reviewers can read them without downloading the whole
 bundle.
 
-> **Note:** these Docker images are ARM64 (Apple Silicon) only. See
-> `REQUIREMENTS` for what x86_64 reviewers need to do.
-
-Download and extract `artifact.zip`, then load the two Docker images:
+The Docker images are provided as native builds for both x86_64 (amd64) and
+ARM64 (Apple Silicon) — no emulation required on either platform. Check your
+machine's architecture with `uname -m` (`x86_64` → amd64 files; `arm64`/`aarch64`
+→ arm64 files), then load only the matching pair:
 
 ```bash
 unzip artifact.zip
 cd artifact
-docker load < code-comprehension-analysis.tar.gz
-docker load < code-comprehension-web.tar.gz
+
+# x86_64 (Intel/AMD) machines:
+docker load < code-comprehension-analysis-amd64.tar.gz
+docker load < code-comprehension-web-amd64.tar.gz
+
+# ARM64 (Apple Silicon) machines:
+docker load < code-comprehension-analysis-arm64.tar.gz
+docker load < code-comprehension-web-arm64.tar.gz
 ```
+
+Either pair loads as `code-comprehension-analysis:latest` /
+`code-comprehension-web:latest`, so every other command in this README is
+unaffected by which pair you picked.
 
 Expected output for each:
 ```
