@@ -21,8 +21,11 @@ artifact is unaffected by which pair you use.
   - https://www.docker.com/products/docker-desktop/
 - Approximately **2 GB** of free disk space for the pair of images matching
   your architecture (you only need to load one pair, not all four files)
-- An internet connection is required only for the initial `docker compose up --build`
-  to pull base images; all subsequent runs are fully offline
+- No internet connection is required: the recommended path uses the
+  pre-built images in `artifact.zip` (`docker load` + `docker run`), which
+  works fully offline. An internet connection is only needed if you choose
+  to build the images from source yourself (`docker build` or
+  `docker compose up --build`) instead of using the pre-built ones.
 
 No other software is required when using Docker.
 
