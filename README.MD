@@ -178,8 +178,8 @@ subfolder shown below (`relatedwork/`, `experts_study/`, `App/`,
 ├── REQUIREMENTS               ← hardware/software requirements
 ├── STATUS                     ← badge applications
 ├── LICENSE                    ← MIT + CC BY 4.0
-├── Dockerfile                 ← web application image (used to build code-comprehension-web.tar.gz)
-├── Dockerfile.analysis        ← Python analysis image (used to build code-comprehension-analysis.tar.gz)
+├── Dockerfile                 ← web application image (used to build code-comprehension-web-{amd64,arm64}.tar.gz)
+├── Dockerfile.analysis        ← Python analysis image (used to build code-comprehension-analysis-{amd64,arm64}.tar.gz)
 ├── docker-compose.yml         ← alternative orchestration (for building from source)
 ├── requirements.txt           ← Python dependencies
 │

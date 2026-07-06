@@ -4,10 +4,11 @@ Spring Boot application used to administer the study to participants.
 
 ## Running the web app
 
-Load the image from Zenodo (if not already done):
+Load the image from Zenodo matching your machine's architecture (if not
+already done — see the top-level README.MD):
 
 ```bash
-docker load < code-comprehension-web.tar.gz
+docker load < code-comprehension-web-amd64.tar.gz   # or -arm64
 ```
 
 Start the application:
