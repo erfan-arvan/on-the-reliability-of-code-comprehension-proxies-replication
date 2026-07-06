@@ -8,7 +8,7 @@ We are applying for the following ACM artifact badges:
 ## Artifacts Reusable
 **Reason:** The artifact is self-contained and reproducible via Docker with a single command. It includes:
 - A complete Docker-based setup for both the web application and all analysis scripts
-- Step-by-step instructions to reproduce every figure (Figures 3–11) and table (Tables 1, 7, 8) in the paper
+- Step-by-step instructions to reproduce every figure (Figures 1, 3–11) and table (Tables 1, 2, 3, 4, 6, 7, 8) in the paper
 - All raw data (students_graded.xlsx, expert annotations, grading logs)
 - All study materials (code snippets, comprehension tasks, surveys) in both machine-readable (.js) and human-readable (.md) formats
 - Inter-rater agreement scripts (Cohen's kappa) for grading and open coding
