@@ -4,3 +4,6 @@
 plots/*.png
 __pycache__
 *.pyc
+images/
+artifact/
+artifact.zip
