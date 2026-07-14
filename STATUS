@@ -1,9 +1,12 @@
 # Artifact Status
 
-We are applying for the following ACM artifact badges:
+We are applying for the following ACM artifact badges: Available, Functional, and Reusable.
 
 ## Artifacts Available
 **Reason:** The artifact is permanently archived on Zenodo with a DOI, ensuring long-term public availability beyond the authors' personal infrastructure. It includes all collected data, analysis scripts, the web application used to conduct the study, and all study materials.
+
+## Artifacts Functional
+**Reason:** The artifact is documented, consistent, complete, and exercisable, and it directly supports the claims made in the paper. Every quantitative claim in the paper (Figures 1, 3-11, Tables 1, 2, 3, 4, 6, 7, 8) is mapped in the README to the exact command or script that reproduces it, and running `python run_all.py` inside the provided Docker container exercises the full pipeline end to end in under 5 minutes. The dataset schema, artifact layout, and which claims are and are not directly reproducible are all documented in the README.
 
 ## Artifacts Reusable
 **Reason:** The artifact is self-contained and reproducible via Docker with a single command. It includes:
